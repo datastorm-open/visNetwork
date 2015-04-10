@@ -41,7 +41,7 @@ Network visualization using vis.js library
 nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges)
+visNetwork(nodes, edges, width = "400px", height = "400px")
 
 # more variables
 nb = 15
@@ -69,7 +69,7 @@ visNetwork(nodes, edges) \%>\% visOptions(dataManipulation = TRUE)
 # Hierarchical Layout
 visNetwork(nodes, edges) \%>\% visHierarchicalLayout()
 
-# freeze netork
+# freeze network
 visNetwork(nodes, edges) \%>\% visOptions(dragNetwork = FALSE, dragNodes = FALSE)
 
 # clustering
