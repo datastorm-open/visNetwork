@@ -1,0 +1,16 @@
+Package: visNetwork
+Title: Network visualization using vis.js library
+Version: 0.1
+Authors@R: c(
+    person(family = "Almende B.V.", role = c("aut", "cph"),
+       comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
+    person("Benoit", "Thieurmel", role = c("aut", "cre"),
+       comment = "R interface", email = "bt@datak.fr")
+    )
+Maintainer: B.Thieurmel <bt@datak.fr>
+Description: Network visualization using vis.js library
+Depends: R (>= 3.1.2),
+  magrittr
+Imports: htmlwidgets
+License: MIT, Apache 2.0
+LazyData: true
