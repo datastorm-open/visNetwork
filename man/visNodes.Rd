@@ -81,7 +81,7 @@ visNodes(graph, borderWidth = NULL, borderWidthSelected = NULL,
 
 \item{iconFontFace}{: String. Undefined. Font face for icons, for example FontAwesome or Ionicon. You have to link to the css defining the font by yourself (see Examples)}
 
-\item{icon}{: String. Undefined. Unicode of the icon f.e. \uf0c0 (user-icon in FontAwesome)}
+\item{icon}{: String. Undefined. Unicode of the icon f.e. (user-icon in FontAwesome)}
 
 \item{iconSize}{: Number. Default to 50. Size of the icon}
 }

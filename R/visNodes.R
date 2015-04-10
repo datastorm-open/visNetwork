@@ -44,7 +44,7 @@
 #' @param radiusMin : Number. Default to 10. The minimum radius for a scaled node. Only applicable to shapes dot, star, triangle, triangleDown, and square. This only does something if you supply a value.
 #' @param radiusMax : Number. Default to 30. The maximum radius for a scaled node. Only applicable to shapes dot, star, triangle, triangleDown, and square. This only does something if you supply a value.
 #' @param iconFontFace : String. Undefined. Font face for icons, for example FontAwesome or Ionicon. You have to link to the css defining the font by yourself (see Examples)
-#' @param icon : String. Undefined. Unicode of the icon f.e. \uf0c0 (user-icon in FontAwesome)
+#' @param icon : String. Undefined. Unicode of the icon f.e. (user-icon in FontAwesome)
 #' @param iconSize : Number. Default to 50. Size of the icon
 #'
 #' @export
