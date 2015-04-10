@@ -13,12 +13,46 @@ HTMLWidgets.widget({
 
   renderValue: function(el, x, instance) {
     
+    //legend  
+    if(x.groups && x.legend){
+      var legend = document.createElement('div');
+      legend.id = "legend"
+      legend.setAttribute('style', 'width:100%;height:50px;');
+      document.getElementById(el.id).appendChild(legend);
+      
+      var legendnodes = new vis.DataSet();
+      
+      var mynetwork = document.getElementById('legend');
+      var lx = - mynetwork.clientWidth / 2 + 50;
+      var ly = - mynetwork.clientWidth / 2 + 50;
+      var step = 70;
+      for (g = 0; g < x.groups.length; g++){
+        legendnodes.add({id: g, x : lx+g*step, y : ly, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
+      }
+      
+      var datalegend = {
+        nodes: legendnodes, 
+        edges: null
+      };
+      
+      var optionslegend = {
+        dragNetwork: false,
+        dragNodes: false,
+        selectable: false
+      }
+      
+      optionslegend.groups = x.options.groups
+      instance.legend = new vis.Network(document.getElementById("legend"), datalegend, optionslegend);
+      
+    }
+    
+    // network
     var nodes = new vis.DataSet();
     var edges = new vis.DataSet();
 
     nodes.add(x.nodes);
     edges.add(x.edges);
-
+    
     var data = {
       nodes: nodes,
       edges: edges
@@ -52,7 +86,7 @@ HTMLWidgets.widget({
         <input type="button" value="save" id="saveButton"></button>\
         <input type="button" value="cancel" id="cancelButton"></button>';
 
-     document.getElementById(el.id).appendChild(div);
+      document.getElementById(el.id).appendChild(div);
 
       options.onAdd = function(data,callback) {
           var span = document.getElementById('operation');
@@ -82,21 +116,22 @@ HTMLWidgets.widget({
           saveButton.onclick = saveData.bind(this,data,callback);
           cancelButton.onclick = clearPopUp.bind();
           div.style.display = 'block';
-        }
+      }
 
-        options.onConnect = function(data,callback) {
-          if (data.from == data.to) {
-            var r=confirm('Do you want to connect the node to itself?');
-            if (r==true) {
-              callback(data);
-            }
-          }
-          else {
+      options.onConnect = function(data,callback) {
+        if (data.from == data.to) {
+          var r=confirm('Do you want to connect the node to itself?');
+          if (r==true) {
             callback(data);
           }
         }
+        else {
+          callback(data);
+        }
+      }
     }
 
+    // create network
     instance.network = new vis.Network(document.getElementById("graph"), data, options);
 
     // add Events
@@ -272,6 +307,8 @@ HTMLWidgets.widget({
   resize: function(el, width, height, instance) {
     if(instance.network)
       instance.network.redraw();
+    if(instance.legend)
+      instance.legend.redraw();
   }
 
 });

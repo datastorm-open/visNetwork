@@ -4,8 +4,8 @@
 \alias{visNetwork}
 \title{Network visualization}
 \usage{
-visNetwork(nodes, edges, highlight.nearest = TRUE, width = NULL,
-  height = NULL)
+visNetwork(nodes, edges, highlight.nearest = TRUE, legend = FALSE,
+  width = NULL, height = NULL)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id".
@@ -32,6 +32,8 @@ See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/doc
 
 \item{highlight.nearest}{: Highlight nearest when clicking a node ? Default to TRUE. Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
 This options use click event}
+
+\item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
 }
 \description{
 Network visualization using vis.js library
@@ -56,6 +58,9 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
 
 # simple network
 visNetwork(nodes, edges)
+
+# try a legend...
+visNetwork(nodes, edges, legend = TRUE)
 
 # directed network
 visNetwork(nodes, edges) \%>\% visEdges(style = "arrow")

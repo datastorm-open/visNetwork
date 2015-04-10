@@ -26,6 +26,8 @@
 #'
 #' @param highlight.nearest : Highlight nearest when clicking a node ? Default to TRUE. Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
 #' This options use click event
+#' 
+#' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #'
 #' @examples
 #'
@@ -49,6 +51,9 @@
 #' # simple network
 #' visNetwork(nodes, edges)
 #'
+#' # try a legend...
+#' visNetwork(nodes, edges, legend = TRUE)
+#' 
 #' # directed network
 #' visNetwork(nodes, edges) %>% visEdges(style = "arrow")
 #'
@@ -76,12 +81,12 @@
 #' @import htmlwidgets
 #'
 #' @export
-visNetwork <- function(nodes, edges, highlight.nearest = TRUE, width = NULL, height = NULL) {
+visNetwork <- function(nodes, edges, highlight.nearest = TRUE, legend = FALSE, width = NULL, height = NULL) {
 
   # forward options using x
   x = list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
            options = list(width = '100%', height = '100%', nodes = list(shape = "dot")),
-           highlight = highlight.nearest)
+           highlight = highlight.nearest, groups = as.character(unique(nodes$group)), legend = legend)
 
   # create widget
   htmlwidgets::createWidget(
