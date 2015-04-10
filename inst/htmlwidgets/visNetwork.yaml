@@ -1,0 +1,6 @@
+dependencies:
+  - name: vis
+    version: 3.12.0
+    src: htmlwidgets/lib/vis
+    script: vis.min.js
+    stylesheet: vis.css
