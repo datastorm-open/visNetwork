@@ -12,9 +12,7 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(el, x, instance) {
-
-    var container = document.getElementById(el.id);
-
+    
     var nodes = new vis.DataSet();
     var edges = new vis.DataSet();
 
@@ -28,6 +26,11 @@ HTMLWidgets.widget({
 
     var options = x.options
 
+    var graph = document.createElement('div');
+    graph.id = "graph"
+    graph.setAttribute('style', 'width:100%;height:100%;');
+    document.getElementById(el.id).appendChild(graph);
+      
     // Custom data manipualtion http://visjs.org/examples/network/21_data_manipulation.html
     if(x.options.dataManipulation){
 
@@ -49,7 +52,7 @@ HTMLWidgets.widget({
         <input type="button" value="save" id="saveButton"></button>\
         <input type="button" value="cancel" id="cancelButton"></button>';
 
-     document.getElementById('htmlwidget_container').appendChild(div);
+     document.getElementById(el.id).appendChild(div);
 
       options.onAdd = function(data,callback) {
           var span = document.getElementById('operation');
@@ -94,7 +97,7 @@ HTMLWidgets.widget({
         }
     }
 
-    instance.network = new vis.Network(container, data, options);
+    instance.network = new vis.Network(document.getElementById("graph"), data, options);
 
     // add Events
     for (var key in x.events) {
