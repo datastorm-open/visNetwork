@@ -41,22 +41,22 @@ HTMLWidgets.widget({
   renderValue: function(el, x, instance) {
     
 
-    if(document.getElementById("maindiv")){
-      document.getElementById("maindiv").remove();
-    };
+    //if(document.getElementById("maindiv"+el.id)){
+    //  document.getElementById("maindiv"+el.id).remove();
+    //};
     
-    if(document.getElementById("nodeSelect")){
-      document.getElementById("nodeSelect").remove();
-    };
+    //if(document.getElementById("nodeSelect"+el.id)){
+    //  document.getElementById("nodeSelect"+el.id).remove();
+    //};
 
     // id nodes selection
     if(x.idselection){  
       //Create and append select list
       var selectList = document.createElement("select");
-      selectList.id = "nodeSelect";
+      selectList.id = "nodeSelect"+el.id;
       selectList.onchange =  function(){
        if(instance.network)
-         instance.network.selectNodes([document.getElementById("nodeSelect").value])
+         instance.network.selectNodes([document.getElementById("nodeSelect"+el.id).value])
          onClick(instance.network.getSelection());
       };
       
@@ -77,7 +77,7 @@ HTMLWidgets.widget({
     }
 
     var myrow  = document.createElement('div');
-    myrow.id = "maindiv";
+    myrow.id = "maindiv"+el.id;
     myrow.setAttribute('class', 'row');
     myrow.setAttribute('style', 'height:'+x.height);
     document.getElementById(el.id).appendChild(myrow);
@@ -86,20 +86,20 @@ HTMLWidgets.widget({
     if(x.groups && x.legend){
       
       var legend = document.createElement('div');
-      legend.id = "legend"
+      legend.id = "legend"+el.id;
       legend.setAttribute('style', 'height:100%;');
       legend.setAttribute('class', 'col-lg-1 col-md-1 col-sm-1 col-xs-1');
-      document.getElementById("maindiv").appendChild(legend);
+      document.getElementById("maindiv"+el.id).appendChild(legend);
       
       var graph = document.createElement('div');
-      graph.id = "graph"
+      graph.id = "graph"+el.id
       graph.setAttribute('style', 'height:100%;');
       graph.setAttribute('class', 'col-lg-11 col-md-11 col-sm-11 col-xs-11');
-      document.getElementById("maindiv").appendChild(graph);
+      document.getElementById("maindiv"+el.id).appendChild(graph);
       
       var legendnodes = new vis.DataSet();
       
-      var mynetwork = document.getElementById('legend');
+      var mynetwork = document.getElementById('legend'+el.id);
       var lx = - mynetwork.clientWidth / 2 + 50;
       var ly = - mynetwork.clientWidth / 2 + 50;
       var step = 70;
@@ -119,14 +119,14 @@ HTMLWidgets.widget({
       }
       
       optionslegend.groups = x.options.groups
-      instance.legend = new vis.Network(document.getElementById("legend"), datalegend, optionslegend);
+      instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
       
     }else{
       var graph = document.createElement('div');
-      graph.id = "graph"
+      graph.id = "graph"+el.id
       graph.setAttribute('class', 'col-lg-12 col-md-12 col-sm-12 col-xs-12');
       graph.setAttribute('style', 'height:100%;');
-      document.getElementById("maindiv").appendChild(graph);
+      document.getElementById("maindiv"+el.id).appendChild(graph);
     }
     
     // network
@@ -210,7 +210,7 @@ HTMLWidgets.widget({
     }
 
     // create network
-    instance.network = new vis.Network(document.getElementById("graph"), data, options);
+    instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
 
     // add Events
     for (var key in x.events) {
@@ -239,7 +239,7 @@ HTMLWidgets.widget({
       }
       else {
         if(x.idselection){
-          var selectNode = document.getElementById('nodeSelect');
+          var selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = selectedItems.nodes;
         }
     
