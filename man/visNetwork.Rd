@@ -43,7 +43,7 @@ Network visualization using vis.js library
 nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges, width = "400px", height = "400px")
+visNetwork(nodes, edges, highlight.nearest = FALSE)
 
 # more variables
 nb = 15
