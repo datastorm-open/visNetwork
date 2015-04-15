@@ -28,7 +28,9 @@
 #' This options use click event
 #' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
-#'
+#' 
+#' @param id.selection : Boolean. Default to FALSE. A little bit experimental. Add an id node selection.
+#' 
 #' @examples
 #'
 #' # minimal example
@@ -53,6 +55,9 @@
 #'
 #' # try a legend...
 #' visNetwork(nodes, edges, legend = TRUE)
+#' 
+#' # try an id node selection 
+#' visNetwork(nodes, edges, id.selection = TRUE)
 #' 
 #' # directed network
 #' visNetwork(nodes, edges) %>% visEdges(style = "arrow")
@@ -81,12 +86,19 @@
 #' @import htmlwidgets
 #'
 #' @export
-visNetwork <- function(nodes, edges, highlight.nearest = TRUE, legend = FALSE, width = NULL, height = NULL) {
+visNetwork <- function(nodes, edges, highlight.nearest = TRUE, legend = FALSE, id.selection = FALSE,
+                       width = "100%", height = "400px") {
 
   # forward options using x
+  
+  groups = as.character(unique(nodes$group))
+  if(length(groups) == 0){
+    groups = NULL
+  }
   x = list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
-           options = list(width = '100%', height = '100%', nodes = list(shape = "dot")),
-           highlight = highlight.nearest, groups = as.character(unique(nodes$group)), legend = legend)
+           options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+           highlight = highlight.nearest, groups = groups, legend = legend,
+           idselection = id.selection, width = width, height = height )
 
   # create widget
   htmlwidgets::createWidget(

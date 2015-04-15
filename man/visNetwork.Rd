@@ -5,7 +5,7 @@
 \title{Network visualization}
 \usage{
 visNetwork(nodes, edges, highlight.nearest = TRUE, legend = FALSE,
-  width = NULL, height = NULL)
+  id.selection = FALSE, width = "100\%", height = "400px")
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id".
@@ -34,6 +34,8 @@ See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/doc
 This options use click event}
 
 \item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
+
+\item{id.selection}{: Boolean. Default to FALSE. A little bit experimental. Add an id node selection.}
 }
 \description{
 Network visualization using vis.js library
@@ -61,6 +63,9 @@ visNetwork(nodes, edges)
 
 # try a legend...
 visNetwork(nodes, edges, legend = TRUE)
+
+# try an id node selection
+visNetwork(nodes, edges, id.selection = TRUE)
 
 # directed network
 visNetwork(nodes, edges) \%>\% visEdges(style = "arrow")
