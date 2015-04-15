@@ -39,12 +39,63 @@ HTMLWidgets.widget({
   },
 
   renderValue: function(el, x, instance) {
+    
+
+    if(document.getElementById("maindiv")){
+      document.getElementById("maindiv").remove();
+    };
+    
+    if(document.getElementById("nodeSelect")){
+      document.getElementById("nodeSelect").remove();
+    };
+
+    // id nodes selection
+    if(x.idselection){  
+      //Create and append select list
+      var selectList = document.createElement("select");
+      selectList.id = "nodeSelect";
+      selectList.onchange =  function(){
+       if(instance.network)
+         instance.network.selectNodes([document.getElementById("nodeSelect").value])
+         onClick(instance.network.getSelection());
+      };
+      
+      document.getElementById(el.id).appendChild(selectList);
+
+      //Create and append the options
+      for (var i = 0; i < x.nodes.length; i++) {
+        var option = document.createElement("option");
+        option.value = x.nodes[i]["id"];
+        if(x.nodes[i]["label"]){
+          option.text = x.nodes[i]["label"];
+        }else{
+          option.text = x.nodes[i]["id"];
+        }
+          
+        selectList.appendChild(option);
+      }
+    }
+
+    var myrow  = document.createElement('div');
+    myrow.id = "maindiv";
+    myrow.setAttribute('class', 'row');
+    myrow.setAttribute('style', 'height:'+x.height);
+    document.getElementById(el.id).appendChild(myrow);
+      
     //legend  
     if(x.groups && x.legend){
+      
       var legend = document.createElement('div');
       legend.id = "legend"
-      legend.setAttribute('style', 'width:100%;height:50px;');
-      document.getElementById(el.id).appendChild(legend);
+      legend.setAttribute('style', 'height:100%;');
+      legend.setAttribute('class', 'col-lg-1 col-md-1 col-sm-1 col-xs-1');
+      document.getElementById("maindiv").appendChild(legend);
+      
+      var graph = document.createElement('div');
+      graph.id = "graph"
+      graph.setAttribute('style', 'height:100%;');
+      graph.setAttribute('class', 'col-lg-11 col-md-11 col-sm-11 col-xs-11');
+      document.getElementById("maindiv").appendChild(graph);
       
       var legendnodes = new vis.DataSet();
       
@@ -53,7 +104,7 @@ HTMLWidgets.widget({
       var ly = - mynetwork.clientWidth / 2 + 50;
       var step = 70;
       for (g = 0; g < x.groups.length; g++){
-        legendnodes.add({id: g, x : lx+g*step, y : ly, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
+        legendnodes.add({id: g, x : lx, y : ly+g*step, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
       }
       
       var datalegend = {
@@ -70,6 +121,12 @@ HTMLWidgets.widget({
       optionslegend.groups = x.options.groups
       instance.legend = new vis.Network(document.getElementById("legend"), datalegend, optionslegend);
       
+    }else{
+      var graph = document.createElement('div');
+      graph.id = "graph"
+      graph.setAttribute('class', 'col-lg-12 col-md-12 col-sm-12 col-xs-12');
+      graph.setAttribute('style', 'height:100%;');
+      document.getElementById("maindiv").appendChild(graph);
     }
     
     // network
@@ -86,11 +143,6 @@ HTMLWidgets.widget({
 
     var options = x.options
 
-    var graph = document.createElement('div');
-    graph.id = "graph"
-    graph.setAttribute('style', 'width:100%;height:100%;');
-    document.getElementById(el.id).appendChild(graph);
-      
     // Custom data manipualtion http://visjs.org/examples/network/21_data_manipulation.html
     if(x.options.dataManipulation){
 
@@ -186,6 +238,11 @@ HTMLWidgets.widget({
         }
       }
       else {
+        if(x.idselection){
+          var selectNode = document.getElementById('nodeSelect');
+          selectNode.value = selectedItems.nodes;
+        }
+    
         var allEdges = edges.get();
 
         // we clear the level of seperation in all nodes.
