@@ -4,8 +4,8 @@
 \alias{visNetwork}
 \title{Network visualization}
 \usage{
-visNetwork(nodes, edges, legend = FALSE, legend.width = 1,
-  width = "100\%", height = "400px")
+visNetwork(nodes, edges, legend = FALSE, legend.width = 1, width = NULL,
+  height = NULL)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id".

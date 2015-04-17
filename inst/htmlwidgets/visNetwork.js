@@ -49,7 +49,7 @@ HTMLWidgets.widget({
     //  document.getElementById("nodeSelect"+el.id).remove();
     //};
 
-    // id nodes selection
+    // id nodes selection : add a list on top left
     if(x.idselection){  
       //Create and append select list
       var selectList = document.createElement("select");
@@ -78,8 +78,8 @@ HTMLWidgets.widget({
 
     var myrow  = document.createElement('div');
     myrow.id = "maindiv"+el.id;
-    myrow.setAttribute('class', 'row');
-    myrow.setAttribute('style', 'height:'+x.height);
+    myrow.setAttribute('class', 'row-fluid');
+    myrow.setAttribute('style', 'height:100%');
     document.getElementById(el.id).appendChild(myrow);
       
     //legend  

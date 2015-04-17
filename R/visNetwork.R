@@ -88,7 +88,7 @@
 #'
 #' @export
 visNetwork <- function(nodes, edges, legend = FALSE, legend.width = 1,
-                       width = "100%", height = "400px") {
+                       width = NULL, height = NULL) {
 
   # forward options using x
   
