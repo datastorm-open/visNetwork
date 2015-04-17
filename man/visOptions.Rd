@@ -4,8 +4,9 @@
 \alias{visOptions}
 \title{Network visualization general options}
 \usage{
-visOptions(graph, clickToUse = NULL, useDefaultGroups = NULL,
-  configurePhysics = NULL, dataManipulation = NULL, clustering = NULL,
+visOptions(graph, highlightNearest = FALSE, nodesIdSelection = FALSE,
+  clickToUse = NULL, useDefaultGroups = NULL, configurePhysics = NULL,
+  dataManipulation = NULL, clustering = NULL,
   freezeForStabilization = NULL, height = NULL, hover = NULL,
   keyboard = NULL, dragNetwork = NULL, dragNodes = NULL,
   hideNodesOnDrag = NULL, hideEdgesOnDrag = NULL, navigation = NULL,
@@ -14,6 +15,11 @@ visOptions(graph, clickToUse = NULL, useDefaultGroups = NULL,
   width = NULL, zoomable = NULL)
 }
 \arguments{
+\item{highlightNearest}{: Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ? Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
+This options use click event}
+
+\item{nodesIdSelection}{:  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection.}
+
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
 \item{useDefaultGroups}{: Boolean. Default to true. If true, the default groups are used when groups are used. If you have defined your own groups those will be used. If you have an item with a group that is NOT in your own group list, setting useDefaultGroups true will iterate over the default groups for unknown groups. If it is set to false, it will iterate over your own groups for unknown groups.}

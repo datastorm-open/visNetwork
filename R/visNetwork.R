@@ -24,12 +24,9 @@
 #'  \item{...}{}
 #'}
 #'
-#' @param highlight.nearest : Highlight nearest when clicking a node ? Default to TRUE. Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
-#' This options use click event
-#' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #' 
-#' @param id.selection : Boolean. Default to FALSE. A little bit experimental. Add an id node selection.
+#' @param legend.width : Number. Default to 1. Bootstrap column width (from 1 to 12)
 #' 
 #' @examples
 #'
@@ -37,10 +34,10 @@
 #' nodes <- data.frame(id = 1:3)
 #' edges <- data.frame(from = c(1,2), to = c(1,3))
 #'
-#' visNetwork(nodes, edges, highlight.nearest = FALSE)
+#' visNetwork(nodes, edges)
 #'
 #' # more variables
-#' nb = 15
+#' nb <- 15
 #' nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
 #'  group = sample(1:nb, nb, replace = TRUE), value = 1:nb,
 #'  title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
@@ -53,11 +50,15 @@
 #' # simple network
 #' visNetwork(nodes, edges)
 #'
+#' # highlight nearest
+#' visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
+#' 
 #' # try a legend...
 #' visNetwork(nodes, edges, legend = TRUE)
 #' 
 #' # try an id node selection 
-#' visNetwork(nodes, edges, id.selection = TRUE)
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 #' 
 #' # directed network
 #' visNetwork(nodes, edges) %>% visEdges(style = "arrow")
@@ -86,7 +87,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-visNetwork <- function(nodes, edges, highlight.nearest = TRUE, legend = FALSE, id.selection = FALSE,
+visNetwork <- function(nodes, edges, legend = FALSE, legend.width = 1,
                        width = "100%", height = "400px") {
 
   # forward options using x
@@ -97,8 +98,7 @@ visNetwork <- function(nodes, edges, highlight.nearest = TRUE, legend = FALSE, i
   }
   x = list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
            options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
-           highlight = highlight.nearest, groups = groups, legend = legend,
-           idselection = id.selection, width = width, height = height )
+           groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height )
 
   # create widget
   htmlwidgets::createWidget(

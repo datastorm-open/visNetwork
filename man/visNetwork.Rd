@@ -4,8 +4,8 @@
 \alias{visNetwork}
 \title{Network visualization}
 \usage{
-visNetwork(nodes, edges, highlight.nearest = TRUE, legend = FALSE,
-  id.selection = FALSE, width = "100\%", height = "400px")
+visNetwork(nodes, edges, legend = FALSE, legend.width = 1,
+  width = "100\%", height = "400px")
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id".
@@ -30,12 +30,9 @@ See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/doc
  \item{...}{}
 }}
 
-\item{highlight.nearest}{: Highlight nearest when clicking a node ? Default to TRUE. Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
-This options use click event}
-
 \item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
 
-\item{id.selection}{: Boolean. Default to FALSE. A little bit experimental. Add an id node selection.}
+\item{legend.width}{: Number. Default to 1. Bootstrap column width (from 1 to 12)}
 }
 \description{
 Network visualization using vis.js library
@@ -45,10 +42,10 @@ Network visualization using vis.js library
 nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges, highlight.nearest = FALSE)
+visNetwork(nodes, edges)
 
 # more variables
-nb = 15
+nb <- 15
 nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
  group = sample(1:nb, nb, replace = TRUE), value = 1:nb,
  title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
@@ -61,11 +58,15 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
 # simple network
 visNetwork(nodes, edges)
 
+# highlight nearest
+visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = TRUE)
+
 # try a legend...
 visNetwork(nodes, edges, legend = TRUE)
 
 # try an id node selection
-visNetwork(nodes, edges, id.selection = TRUE)
+visNetwork(nodes, edges) \%>\%
+ visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
 # directed network
 visNetwork(nodes, edges) \%>\% visEdges(style = "arrow")
