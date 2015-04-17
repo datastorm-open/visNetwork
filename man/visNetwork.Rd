@@ -4,8 +4,8 @@
 \alias{visNetwork}
 \title{Network visualization}
 \usage{
-visNetwork(nodes, edges, legend = FALSE, legend.width = 1, width = NULL,
-  height = NULL)
+visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
+  legend = FALSE, legend.width = 1, width = NULL, height = NULL)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id".
@@ -29,6 +29,10 @@ See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/doc
  \item{"title"}{ : tooltip of the node}
  \item{...}{}
 }}
+
+\item{dot}{: Character DOT language.  See \url{http://visjs.org/docs/network.html#DOT_language}}
+
+\item{gephi}{: Json export gephi path file.  See \url{http://visjs.org/docs/network.html#Gephi_import}}
 
 \item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
 
@@ -89,6 +93,22 @@ edges <- data.frame(from = round(runif(120)*100), to = round(runif(120)*100))
 
 visNetwork(nodes, edges) \%>\%
  visClustering(initialMaxNodes = 50, nodeScaling = list(width = 50, height = 50, radius = 50))
+
+# Save a network
+network <- visNetwork(nodes, edges, legend = TRUE) \%>\%
+ visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
+ navigation = TRUE, dataManipulation = TRUE)
+
+htmlwidgets::saveWidget(network, "network.html")
+
+# DOT language
+visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
+
+# gephi json file
+gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') \%>\%
+ visOptions(smoothCurves = list(dynamic = FALSE, type ="continuous"), stabilize = FALSE,
+ hideEdgesOnDrag = TRUE) \%>\% visEdges(width = 0.15, inheritColor = "from") \%>\%
+ visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
 }
 \seealso{
 \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, ...

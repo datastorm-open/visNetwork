@@ -50,7 +50,8 @@ HTMLWidgets.widget({
     //};
 
     // id nodes selection : add a list on top left
-    if(x.idselection){  
+    // actually only with nodes + edges data (not dot and gephi)
+    if(x.idselection && x.nodes){  
       //Create and append select list
       var selectList = document.createElement("select");
       selectList.id = "nodeSelect"+el.id;
@@ -129,17 +130,27 @@ HTMLWidgets.widget({
       document.getElementById("maindiv"+el.id).appendChild(graph);
     }
     
-    // network
-    var nodes = new vis.DataSet();
-    var edges = new vis.DataSet();
+    if(x.nodes){
+      // network
+      var nodes = new vis.DataSet();
+      var edges = new vis.DataSet();
 
-    nodes.add(x.nodes);
-    edges.add(x.edges);
+      nodes.add(x.nodes);
+      edges.add(x.edges);
     
-    var data = {
-      nodes: nodes,
-      edges: edges
-    };
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+    }else if(x.dot){
+      var data = {
+        dot: x.dot
+      };
+    }else if(x.gephi){
+      var data = {
+        gephi: x.gephi
+      };
+    } 
 
     var options = x.options
 
@@ -356,7 +367,9 @@ HTMLWidgets.widget({
       return connectedNodes;
     }
 
-    if(x.highlight){
+
+    // actually only with nodes + edges data (not dot and gephi)
+    if(x.highlight && x.nodes){
       instance.network.on("click",onClick);
     }
 

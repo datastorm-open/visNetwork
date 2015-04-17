@@ -3,8 +3,8 @@
 #' Network visualization general options. See \url{http://visjs.org/docs/network.html#Configuration_options}.
 #'
 #'@param highlightNearest : Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ? Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
-#' This options use click event
-#'@param nodesIdSelection :  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection.
+#' This options use click event. Not available for DOT and Gephi.
+#'@param nodesIdSelection :  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection.. Not available for DOT and Gephi.
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
 #'@param useDefaultGroups : Boolean. Default to true. If true, the default groups are used when groups are used. If you have defined your own groups those will be used. If you have an item with a group that is NOT in your own group list, setting useDefaultGroups true will iterate over the default groups for unknown groups. If it is set to false, it will iterate over your own groups for unknown groups.
 #'@param configurePhysics : Boolean. Default to false. Enabling this setting will create a physics configuration div above the network. You can use this to fine tune the physics system to suit your needs. Because of the many possible configurations, there is not a one-size-fits-all setting. By using this tool, you can adapt the physics to your dataset.

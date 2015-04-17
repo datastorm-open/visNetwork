@@ -24,6 +24,10 @@
 #'  \item{...}{}
 #'}
 #'
+#' @param dot : Character DOT language.  See \url{http://visjs.org/docs/network.html#DOT_language}
+#' 
+#' @param gephi : Json export gephi path file.  See \url{http://visjs.org/docs/network.html#Gephi_import}
+#' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #' 
 #' @param legend.width : Number. Default to 1. Bootstrap column width (from 1 to 12)
@@ -82,23 +86,55 @@
 #' visNetwork(nodes, edges) %>%
 #'  visClustering(initialMaxNodes = 50, nodeScaling = list(width = 50, height = 50, radius = 50))
 #'
+#' # Save a network
+#' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
+#'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
+#'  navigation = TRUE, dataManipulation = TRUE)
+#'  
+#' htmlwidgets::saveWidget(network, "network.html")
+#' 
+#' # DOT language
+#' visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
+#' 
+#' # gephi json file
+#' gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') %>%
+#'  visOptions(smoothCurves = list(dynamic = FALSE, type ="continuous"), stabilize = FALSE, 
+#'  hideEdgesOnDrag = TRUE) %>% visEdges(width = 0.15, inheritColor = "from") %>%
+#'  visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
+#'
+#' 
 #' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, ...
 #'
 #' @import htmlwidgets
 #'
 #' @export
-visNetwork <- function(nodes, edges, legend = FALSE, legend.width = 1,
+#' 
+visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 1,
                        width = NULL, height = NULL) {
 
-  # forward options using x
-  
-  groups = as.character(unique(nodes$group))
-  if(length(groups) == 0){
-    groups = NULL
+  if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
+    stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
   }
-  x = list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
-           options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
-           groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height )
+  
+  if(!is.null(dot)){
+    x <- list(dot = dot,
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
+  }else if(!is.null(gephi)){
+    x <- list(gephi = rjson::fromJSON(file = gephi),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
+  }else{
+    
+    # forward options using x
+    groups = as.character(unique(nodes$group))
+    if(length(groups) == 0){
+      groups = NULL
+    }
+    x <- list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height)
+  }
 
   # create widget
   htmlwidgets::createWidget(

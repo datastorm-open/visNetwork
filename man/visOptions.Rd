@@ -16,9 +16,9 @@ visOptions(graph, highlightNearest = FALSE, nodesIdSelection = FALSE,
 }
 \arguments{
 \item{highlightNearest}{: Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ? Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
-This options use click event}
+This options use click event. Not available for DOT and Gephi.}
 
-\item{nodesIdSelection}{:  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection.}
+\item{nodesIdSelection}{:  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection.. Not available for DOT and Gephi.}
 
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
