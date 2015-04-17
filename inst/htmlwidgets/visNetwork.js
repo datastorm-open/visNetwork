@@ -94,7 +94,7 @@ HTMLWidgets.widget({
       var graph = document.createElement('div');
       graph.id = "graph"+el.id
       graph.setAttribute('style', 'height:100%;');
-      graph.setAttribute('class', 'col-lg-'+ 12-x.legendWidth + ' col-md-'+ 12-x.legendWidth + ' col-sm-'+ 12-x.legendWidth + ' col-xs-'+ 12-x.legendWidth + '');
+      graph.setAttribute('class', 'col-lg-'+ (12-x.legendWidth) + ' col-md-'+ (12-x.legendWidth) + ' col-sm-'+ (12-x.legendWidth) + ' col-xs-'+ (12-x.legendWidth) + '');
       document.getElementById("maindiv"+el.id).appendChild(graph);
       
       var legendnodes = new vis.DataSet();
