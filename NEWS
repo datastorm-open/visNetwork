@@ -1,0 +1,7 @@
+
+visNetwork 0.0.2
+--------------------------------------------------------------------------------
+  
+  * Move highlight.nearest argument from visNetwork to visOptions, and rename as highlightNearest
+  * Move id.selection argument from visNetwork to visOptions, and rename as nodesIdSelection
+  * Move legend.width argument to visNetwork
