@@ -7,5 +7,5 @@ dependencies:
   - name: bootstrap
     version: 3.2.0
     src: htmlwidgets/lib/bootstrap
-    script: bootstrap.min.js
-    stylesheet: bootstrap.min.css
+    script: js/bootstrap.min.js
+    stylesheet: css/bootstrap.min.css
