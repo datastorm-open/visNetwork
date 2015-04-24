@@ -2,7 +2,7 @@
 R package, using vis.js library for network visualization
 
 ```` 
-devtools::install_github("bthieurmel/visNetwork")
+devtools::install_github("dataknowledge/visNetwork")
 
 require(visNetwork)
 ?visNetwork
@@ -14,4 +14,4 @@ visNetwork(nodes, edges)
 ````
 
 A page of examples is under construction, and available at 
-http://bthieurmel.github.io/visNetwork/
+http://dataknowledge.github.io/visNetwork/
