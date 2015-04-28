@@ -53,7 +53,9 @@ HTMLWidgets.widget({
     // actually only with nodes + edges data (not dot and gephi)
     if(x.idselection && x.nodes){  
       //Create and append select list
+      var selnodes = HTMLWidgets.dataframeToD3(x.nodes);
       var selectList = document.createElement("select");
+      
       selectList.id = "nodeSelect"+el.id;
       selectList.onchange =  function(){
        if(instance.network)
@@ -64,13 +66,13 @@ HTMLWidgets.widget({
       document.getElementById(el.id).appendChild(selectList);
 
       //Create and append the options
-      for (var i = 0; i < x.nodes.length; i++) {
+      for (var i = 0; i < selnodes.length; i++) {
         var option = document.createElement("option");
-        option.value = x.nodes[i]["id"];
-        if(x.nodes[i]["label"]){
-          option.text = x.nodes[i]["label"];
+        option.value = selnodes[i]["id"];
+        if(selnodes[i]["label"]){
+          option.text = selnodes[i]["label"];
         }else{
-          option.text = x.nodes[i]["id"];
+          option.text = selnodes[i]["id"];
         }
           
         selectList.appendChild(option);
@@ -135,13 +137,14 @@ HTMLWidgets.widget({
       var nodes = new vis.DataSet();
       var edges = new vis.DataSet();
 
-      nodes.add(x.nodes);
-      edges.add(x.edges);
-    
+      nodes.add(HTMLWidgets.dataframeToD3(x.nodes));
+      edges.add(HTMLWidgets.dataframeToD3(x.edges));
+      
       var data = {
         nodes: nodes,
         edges: edges
       };
+      
     }else if(x.dot){
       var data = {
         dot: x.dot

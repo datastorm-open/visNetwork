@@ -131,7 +131,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
     if(length(groups) == 0){
       groups = NULL
     }
-    x <- list(nodes = dataToJSON(nodes), edges = dataToJSON(edges),
+    x <- list(nodes = nodes, edges = edges,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
               groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height)
   }
