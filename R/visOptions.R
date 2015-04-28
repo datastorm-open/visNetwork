@@ -103,6 +103,16 @@ visOptions <- function(graph,
   }
 
   x <- list(highlight = highlightNearest, idselection = nodesIdSelection)
+  
+  if(highlightNearest){
+    if(!"label"%in%colnames(graph$x$nodes)){
+      graph$x$nodes$label <- as.character(graph$x$nodes$id)
+    }
+    if(!"group"%in%colnames(graph$x$nodes)){
+      graph$x$nodes$group <- 1
+    }
+  }
+  
   graph$x <- mergeLists(graph$x, x)
   graph$x$options <- mergeLists(graph$x$options, options)
 
