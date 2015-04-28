@@ -19,14 +19,3 @@ mergeLists <- function (base_list, overlay_list, recursive = TRUE) {
     merged_list
   }
 }
-
-dataToJSON <- function(obj) {
-  value = lapply(1:nrow(obj), function(i) {
-    res <- as.list(obj[i,, drop = FALSE])
-    return(res)
-  })
-
-  names(value) <- NULL
-  return(value)
-
-}
