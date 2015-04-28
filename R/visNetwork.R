@@ -43,7 +43,7 @@
 #' # more variables
 #' nb <- 15
 #' nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
-#'  group = sample(1:nb, nb, replace = TRUE), value = 1:nb,
+#'  group = sample(LETTERS[1:3], nb, replace = TRUE), value = 1:nb,
 #'  title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
 #'
 #' edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
