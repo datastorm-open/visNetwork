@@ -18,7 +18,8 @@ shinyServer(function(input, output) {
       
       # custom navigation
       visNetwork(nodes, edges, legend = input$legend2) %>% 
-        visOptions(navigation = TRUE, dataManipulation = TRUE, stabilize = FALSE, nodesIdSelection = TRUE)
+        visOptions(navigation = TRUE, dataManipulation = TRUE, stabilize = FALSE, 
+                   highlightNearest = TRUE, nodesIdSelection = TRUE)
     })
 
 })
