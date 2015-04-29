@@ -368,7 +368,7 @@ HTMLWidgets.widget({
     
     function onClickIDSlection(selectedItems) {
       if (selectedItems.nodes.length != 0) {
-        var selectNode = document.getElementById('nodeSelect');
+        var selectNode = document.getElementById('nodeSelect'+el.id);
         selectNode.value = selectedItems.nodes;
       }
     }
