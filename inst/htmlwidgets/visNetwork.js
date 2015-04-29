@@ -7,48 +7,42 @@ if (!Function.prototype.bind) {
     // closest thing possible to the ECMAScript 5 internal IsCallable function
       throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
     }
-
+    
     var aArgs = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP = function () {},
-        fBound = function () {
-            return fToBind.apply(this instanceof fNOP && oThis
-                                               ? this
-                                               : oThis,
-                                             aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-
+    fToBind = this,
+    fNOP = function () {},
+    fBound = function () {
+      return fToBind.apply(this instanceof fNOP && oThis
+                           ? this
+                           : oThis,
+                           aArgs.concat(Array.prototype.slice.call(arguments)));
+    };
+    
     fNOP.prototype = this.prototype;
     fBound.prototype = new fNOP();
-
+    
     return fBound;
   };
 }
 
 HTMLWidgets.widget({
-
+  
   name: 'visNetwork',
-
+  
   type: 'output',
-
+  
   initialize: function(el, width, height) {
-
+    
     return {
     }
-
+    
   },
-
+  
   renderValue: function(el, x, instance) {
     
-
-    //if(document.getElementById("maindiv"+el.id)){
-    //  document.getElementById("maindiv"+el.id).remove();
-    //};
+    // clear el.id (for shiny...)
+    document.getElementById(el.id).innerHTML = "";  
     
-    //if(document.getElementById("nodeSelect"+el.id)){
-    //  document.getElementById("nodeSelect"+el.id).remove();
-    //};
-
     // id nodes selection : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
     if(x.idselection && x.nodes){  
@@ -58,13 +52,15 @@ HTMLWidgets.widget({
       
       selectList.id = "nodeSelect"+el.id;
       selectList.onchange =  function(){
-       if(instance.network)
-         instance.network.selectNodes([document.getElementById("nodeSelect"+el.id).value])
-         onClick(instance.network.getSelection());
+        if(instance.network)
+          instance.network.selectNodes([document.getElementById("nodeSelect"+el.id).value])
+          if(x.highlight){
+            onClick(instance.network.getSelection());
+          }
       };
       
       document.getElementById(el.id).appendChild(selectList);
-
+      
       //Create and append the options
       for (var i = 0; i < selnodes.length; i++) {
         var option = document.createElement("option");
@@ -74,17 +70,17 @@ HTMLWidgets.widget({
         }else{
           option.text = selnodes[i]["id"];
         }
-          
+        
         selectList.appendChild(option);
       }
     }
-
+    
     var myrow  = document.createElement('div');
     myrow.id = "maindiv"+el.id;
     myrow.setAttribute('class', 'row-fluid');
     myrow.setAttribute('style', 'height:100%');
     document.getElementById(el.id).appendChild(myrow);
-      
+    
     //legend  
     if(x.groups && x.legend){
       
@@ -136,7 +132,7 @@ HTMLWidgets.widget({
       // network
       var nodes = new vis.DataSet();
       var edges = new vis.DataSet();
-
+      
       nodes.add(HTMLWidgets.dataframeToD3(x.nodes));
       edges.add(HTMLWidgets.dataframeToD3(x.edges));
       
@@ -154,62 +150,62 @@ HTMLWidgets.widget({
         gephi: x.gephi
       };
     } 
-
+    
     var options = x.options
-
+    
     // Custom data manipualtion http://visjs.org/examples/network/21_data_manipulation.html
     if(x.options.dataManipulation){
-
+      
       var style = document.createElement('style');
       style.type = 'text/css';
       style.appendChild(document.createTextNode(x.datacss));
       document.getElementsByTagName("head")[0].appendChild(style);
-
+      
       var div = document.createElement('div');
       div.id = 'network-popUp';
-
+      
       div.innerHTML = '<span id="operation">node</span> <br>\
-        <table style="margin:auto;"><tr>\
-        <td>id</td><td><input id="node-id" value="new value"></td>\
-        </tr>\
-        <tr>\
-        <td>label</td><td><input id="node-label" value="new value"> </td>\
-        </tr></table>\
-        <input type="button" value="save" id="saveButton"></button>\
-        <input type="button" value="cancel" id="cancelButton"></button>';
-
+      <table style="margin:auto;"><tr>\
+      <td>id</td><td><input id="node-id" value="new value"></td>\
+      </tr>\
+      <tr>\
+      <td>label</td><td><input id="node-label" value="new value"> </td>\
+      </tr></table>\
+      <input type="button" value="save" id="saveButton"></button>\
+      <input type="button" value="cancel" id="cancelButton"></button>';
+      
       document.getElementById(el.id).appendChild(div);
-
+      
       options.onAdd = function(data,callback) {
-          var span = document.getElementById('operation');
-          var idInput = document.getElementById('node-id');
-          var labelInput = document.getElementById('node-label');
-          var saveButton = document.getElementById('saveButton');
-          var cancelButton = document.getElementById('cancelButton');
-          var div = document.getElementById('network-popUp');
-          span.innerHTML = 'Add Node';
-          idInput.value = data.id;
-          labelInput.value = data.label;
-          saveButton.onclick = saveData.bind(this,data,callback);
-          cancelButton.onclick = clearPopUp.bind();
-          div.style.display = 'block';
+        var span = document.getElementById('operation');
+        var idInput = document.getElementById('node-id');
+        var labelInput = document.getElementById('node-label');
+        var saveButton = document.getElementById('saveButton');
+        var cancelButton = document.getElementById('cancelButton');
+        var div = document.getElementById('network-popUp');
+        span.innerHTML = 'Add Node';
+        idInput.value = data.id;
+        labelInput.value = data.label;
+        saveButton.onclick = saveData.bind(this,data,callback);
+        cancelButton.onclick = clearPopUp.bind();
+        div.style.display = 'block';
       }
-
+      
       options.onEdit = function(data,callback) {
-          var span = document.getElementById('operation');
-          var idInput = document.getElementById('node-id');
-          var labelInput = document.getElementById('node-label');
-          var saveButton = document.getElementById('saveButton');
-          var cancelButton = document.getElementById('cancelButton');
-          var div = document.getElementById('network-popUp');
-          span.innerHTML = 'Edit Node';
-          idInput.value = data.id;
-          labelInput.value = data.label;
-          saveButton.onclick = saveData.bind(this,data,callback);
-          cancelButton.onclick = clearPopUp.bind();
-          div.style.display = 'block';
+        var span = document.getElementById('operation');
+        var idInput = document.getElementById('node-id');
+        var labelInput = document.getElementById('node-label');
+        var saveButton = document.getElementById('saveButton');
+        var cancelButton = document.getElementById('cancelButton');
+        var div = document.getElementById('network-popUp');
+        span.innerHTML = 'Edit Node';
+        idInput.value = data.id;
+        labelInput.value = data.label;
+        saveButton.onclick = saveData.bind(this,data,callback);
+        cancelButton.onclick = clearPopUp.bind();
+        div.style.display = 'block';
       }
-
+      
       options.onConnect = function(data,callback) {
         if (data.from == data.to) {
           var r=confirm('Do you want to connect the node to itself?');
@@ -222,15 +218,15 @@ HTMLWidgets.widget({
         }
       }
     }
-
+    
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
-
+    
     // add Events
     for (var key in x.events) {
       instance.network.on(key, x.events[key]);
     }
-
+    
     // Neighbourhood Highlight http://visjs.org/examples/network/29_neighbourhood_highlight.html
     function onClick(selectedItems) {
       var nodeId;
@@ -256,15 +252,15 @@ HTMLWidgets.widget({
           var selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = selectedItems.nodes;
         }
-    
+        
         var allEdges = edges.get();
-
+        
         // we clear the level of seperation in all nodes.
         clearLevelOfSeperation(allNodes);
-
+        
         // we will now start to collect all the connected nodes we want to highlight.
         var connectedNodes = selectedItems.nodes;
-
+        
         // we can store them into levels of seperation and we could then later use this to define a color per level
         // any data can be added to a node, this is just stored in the nodeObject.
         storeLevelOfSeperation(connectedNodes,0, allNodes);
@@ -309,7 +305,7 @@ HTMLWidgets.widget({
       }
       nodes.update(updateArray);
     }
-
+    
     function storeLevelOfSeperation(connectedNodes, level, allNodes) {
       for (var i = 0; i < connectedNodes.length; i++) {
         var nodeId = connectedNodes[i];
@@ -319,7 +315,7 @@ HTMLWidgets.widget({
         allNodes[nodeId]['inConnectionList'] = true;
       }
     }
-
+    
     function clearLevelOfSeperation(allNodes) {
       for (var nodeId in allNodes) {
         if (allNodes.hasOwnProperty(nodeId)) {
@@ -328,14 +324,14 @@ HTMLWidgets.widget({
         }
       }
     }
-
+    
     function appendConnectedNodes(sourceNodes, allEdges) {
       var tempSourceNodes = [];
       // first we make a copy of the nodes so we do not extend the array we loop over.
       for (var i = 0; i < sourceNodes.length; i++) {
         tempSourceNodes.push(sourceNodes[i])
       }
-
+      
       for (var i = 0; i < tempSourceNodes.length; i++) {
         var nodeId = tempSourceNodes[i];
         if (sourceNodes.indexOf(nodeId) == -1) {
@@ -345,7 +341,7 @@ HTMLWidgets.widget({
       }
       tempSourceNodes = null;
     }
-
+    
     function addUnique(fromArray, toArray) {
       for (var i = 0; i < fromArray.length; i++) {
         if (toArray.indexOf(fromArray[i]) == -1) {
@@ -353,11 +349,11 @@ HTMLWidgets.widget({
         }
       }
     }
-
+    
     function getConnectedNodes(nodeId, allEdges) {
       var edgesArray = allEdges;
       var connectedNodes = [];
-
+      
       for (var i = 0; i < edgesArray.length; i++) {
         var edge = edgesArray[i];
         if (edge.to == nodeId) {
@@ -369,47 +365,55 @@ HTMLWidgets.widget({
       }
       return connectedNodes;
     }
-
-
+    
+    function onClickIDSlection(selectedItems) {
+      if (selectedItems.nodes.length != 0) {
+        var selectNode = document.getElementById('nodeSelect');
+        selectNode.value = selectedItems.nodes;
+      }
+    }
+    
     // actually only with nodes + edges data (not dot and gephi)
     if(x.highlight && x.nodes){
       instance.network.on("click",onClick);
+    }else if(x.idselection && x.nodes){
+      instance.network.on("click",onClickIDSlection);
     }
-
-
+    
+    
     if(x.options.dataManipulation){
       instance.network.on("resize", function(params) {console.log(params.width,params.height)});
     }
-
-      function clearPopUp() {
-        var saveButton = document.getElementById('saveButton');
-        var cancelButton = document.getElementById('cancelButton');
-        saveButton.onclick = null;
-        cancelButton.onclick = null;
-        var div = document.getElementById('network-popUp');
-        div.style.display = 'none';
-
-      }
-
-      function saveData(data,callback) {
-        var idInput = document.getElementById('node-id');
-        var labelInput = document.getElementById('node-label');
-        var div = document.getElementById('network-popUp');
-        data.id = idInput.value;
-        data.label = labelInput.value;
-        clearPopUp();
-        callback(data);
-
-      }
+    
+    function clearPopUp() {
+      var saveButton = document.getElementById('saveButton');
+      var cancelButton = document.getElementById('cancelButton');
+      saveButton.onclick = null;
+      cancelButton.onclick = null;
+      var div = document.getElementById('network-popUp');
+      div.style.display = 'none';
       
+    }
+    
+    function saveData(data,callback) {
+      var idInput = document.getElementById('node-id');
+      var labelInput = document.getElementById('node-label');
+      var div = document.getElementById('network-popUp');
+      data.id = idInput.value;
+      data.label = labelInput.value;
+      clearPopUp();
+      callback(data);
       
+    }
+    
+    
   },
-
+  
   resize: function(el, width, height, instance) {
     if(instance.network)
       instance.network.redraw();
     if(instance.legend)
       instance.legend.redraw();
   }
-
+  
 });
