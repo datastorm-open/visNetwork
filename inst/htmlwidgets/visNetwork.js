@@ -32,10 +32,8 @@ HTMLWidgets.widget({
   type: 'output',
   
   initialize: function(el, width, height) {
-    
     return {
     }
-    
   },
   
   renderValue: function(el, x, instance) {
@@ -51,16 +49,14 @@ HTMLWidgets.widget({
       var selectList = document.createElement("select");
       
       selectList.id = "nodeSelect"+el.id;
-      selectList.onchange =  function(){
-        if(instance.network)
-          instance.network.selectNodes([document.getElementById("nodeSelect"+el.id).value])
-          if(x.highlight){
-            onClick(instance.network.getSelection());
-          }
-      };
       
       document.getElementById(el.id).appendChild(selectList);
       
+      var option = document.createElement("option");
+      option.value = "";
+      option.text = "";
+      selectList.appendChild(option);
+        
       //Create and append the options
       for (var i = 0; i < selnodes.length; i++) {
         var option = document.createElement("option");
@@ -70,9 +66,35 @@ HTMLWidgets.widget({
         }else{
           option.text = selnodes[i]["id"];
         }
-        
         selectList.appendChild(option);
       }
+      
+      if (window.Shiny){
+            var changeInput = function(id, data) {
+              Shiny.onInputChange(el.id + '_' + id, data);
+            };
+            changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+      }
+          
+      selectList.onchange =  function(){
+        if(instance.network)
+          currentid = document.getElementById("nodeSelect"+el.id).value
+          console.info(currentid)
+          if(currentid === ""){
+            instance.network.selectNodes([])
+          }else{
+            instance.network.selectNodes([currentid])
+          }
+          if(x.highlight){
+            onClick(instance.network.getSelection());
+          }
+          if (window.Shiny){
+            var changeInput = function(id, data) {
+              Shiny.onInputChange(el.id + '_' + id, data);
+            };
+            changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+          }
+      };
     }
     
     var myrow  = document.createElement('div');
@@ -229,11 +251,24 @@ HTMLWidgets.widget({
     
     // Neighbourhood Highlight http://visjs.org/examples/network/29_neighbourhood_highlight.html
     function onClick(selectedItems) {
+      console.info(selectedItems);
       var nodeId;
       var degrees = 2;
       // we get all data from the dataset once to avoid updating multiple times.
       var allNodes = nodes.get({returnType:"Object"});
       if (selectedItems.nodes.length == 0) {
+        
+        if(x.idselection){
+          var selectNode = document.getElementById('nodeSelect'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            var changeInput = function(id, data) {
+              Shiny.onInputChange(el.id + '_' + id, data);
+            };
+            changeInput('selected', "");
+          }
+        }
+        
         // restore on unselect
         for (nodeId in allNodes) {
           if (allNodes.hasOwnProperty(nodeId)) {
@@ -251,6 +286,12 @@ HTMLWidgets.widget({
         if(x.idselection){
           var selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = selectedItems.nodes;
+          if (window.Shiny){
+            var changeInput = function(id, data) {
+              Shiny.onInputChange(el.id + '_' + id, data);
+            };
+            changeInput('selected', selectNode.value);
+          }
         }
         
         var allEdges = edges.get();
@@ -370,6 +411,21 @@ HTMLWidgets.widget({
       if (selectedItems.nodes.length != 0) {
         var selectNode = document.getElementById('nodeSelect'+el.id);
         selectNode.value = selectedItems.nodes;
+        if (window.Shiny){
+          var changeInput = function(id, data) {
+              Shiny.onInputChange(el.id + '_' + id, data);
+          };
+          changeInput('selected', selectNode.value);
+        }
+      }else{
+        var selectNode = document.getElementById('nodeSelect'+el.id);
+        selectNode.value = "";
+        if (window.Shiny){
+          var changeInput = function(id, data) {
+            Shiny.onInputChange(el.id + '_' + id, data);
+          };
+          changeInput('selected', "");
+        }
       }
     }
     
