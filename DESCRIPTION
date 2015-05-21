@@ -10,7 +10,7 @@ Authors@R: c(
     )
 Maintainer: B.Thieurmel <bt@datak.fr>
 Description: Network visualization using vis.js library
-Depends: R (>= 3.1.2),
+Depends: R (>= 3.1.1),
   magrittr
 Imports: htmlwidgets
 License: MIT, Apache 2.0
