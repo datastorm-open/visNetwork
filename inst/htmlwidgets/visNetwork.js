@@ -176,7 +176,7 @@ HTMLWidgets.widget({
     var options = x.options
     
     // Custom data manipualtion http://visjs.org/examples/network/21_data_manipulation.html
-    if(x.options.dataManipulation){
+    if(x.options.manipulation.enabled){
       
       var style = document.createElement('style');
       style.type = 'text/css';
@@ -198,7 +198,7 @@ HTMLWidgets.widget({
       
       document.getElementById(el.id).appendChild(div);
       
-      options.onAdd = function(data,callback) {
+      options.manipulation.addNode = function(data,callback) {
         var span = document.getElementById('operation');
         var idInput = document.getElementById('node-id');
         var labelInput = document.getElementById('node-label');
@@ -213,7 +213,7 @@ HTMLWidgets.widget({
         div.style.display = 'block';
       }
       
-      options.onEdit = function(data,callback) {
+      options.manipulation.editNode = function(data,callback) {
         var span = document.getElementById('operation');
         var idInput = document.getElementById('node-id');
         var labelInput = document.getElementById('node-label');
@@ -228,7 +228,7 @@ HTMLWidgets.widget({
         div.style.display = 'block';
       }
       
-      options.onConnect = function(data,callback) {
+      options.manipulation.addEdge = function(data,callback) {
         if (data.from == data.to) {
           var r=confirm('Do you want to connect the node to itself?');
           if (r==true) {
