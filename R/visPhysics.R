@@ -1,7 +1,7 @@
 #' Network visualization Physics options
 #'
-#' Network visualization Physics options. See \url{http://visjs.org/docs/network.html#Physics}.
-
+#' Network visualization Physics options.
+#' 
 #'@param solver : String. Default to 'barnesHut'.	You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.
 #'@param maxVelocity : Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.
 #'@param minVelocity : Number. Default to 0.1. Once the minimum velocity is reached for all nodes, we assume the network has been stabilized and the simulation stops.
@@ -51,10 +51,11 @@
 #'  \item{"iterations"}{ : Number. Default to 1000. The physics module tries to stabilize the network on load up til a maximum number of iterations defined here. If the network stabilized with less, you are finished before the maximum number.}
 #'  \item{"updateInterval"}{ : Number. Default to 50. When stabilizing, the DOM can freeze. You can chop the stabilization up into pieces to show a loading bar for instance. The interval determines after how many iterations the stabilizationProgress event is triggered.}
 #'  \item{"onlyDynamicEdges"}{ : Boolean. Default to false. If you have predefined the position of all nodes and only want to stabilize the dynamic smooth edges, set this to true. It freezes all nodes except the invisible dynamic smooth curve support nodes. If you want the visible nodes to move and stabilize, do not use this.}
-#'  \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.
+#'  \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.}
 #'}
 #'
-#'
+#' @seealso \url{../doc/network/physics.html}
+#' 
 #' @examples
 #'
 #'nodes <- data.frame(id = 1:10)
