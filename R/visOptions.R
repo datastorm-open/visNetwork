@@ -74,9 +74,13 @@ visOptions <- function(graph,
 
   options$autoResize <- autoResize
   options$clickToUse <- clickToUse
-  options$useDefaultGroups <- useDefaultGroups
+  options$groups$useDefaultGroups <- useDefaultGroups
   options$configurePhysics <- configurePhysics
-  options$manipulation <- list(enabled = TRUE)
+  if(is.null(manipulation)){
+    options$manipulation <- list(enabled = FALSE)
+  }else{
+    options$manipulation <- list(enabled = manipulation)
+  }
   options$clustering <- clustering
   options$freezeForStabilization <- freezeForStabilization
   options$height <- height

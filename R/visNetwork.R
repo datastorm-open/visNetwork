@@ -118,11 +118,11 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
   
   if(!is.null(dot)){
     x <- list(dot = dot,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
   }else if(!is.null(gephi)){
     x <- list(gephi = rjson::fromJSON(file = gephi),
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
   }else{
     
@@ -132,7 +132,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
       groups = NULL
     }
     x <- list(nodes = nodes, edges = edges,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height)
   }
 
