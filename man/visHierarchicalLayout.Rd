@@ -5,21 +5,19 @@
 \title{Network visualization Hierarchical layout options}
 \usage{
 visHierarchicalLayout(graph, enabled = TRUE, levelSeparation = NULL,
-  nodeSpacing = NULL, direction = NULL, layout = NULL)
+  direction = NULL, sortMethod = NULL)
 }
 \arguments{
 \item{enabled}{: Boolean. Default to TRUE when calling this function.    Enable or disable the hierarchical layout.}
 
-\item{levelSeparation}{: Number. Default to 150.  This defines the space between levels (in the Y-direction, considering UP-DOWN direction).}
+\item{levelSeparation}{: Number. Default to 150.  The distance between the different levels.}
 
-\item{nodeSpacing}{: Number. Default to 100.  This defines the space between nodes in the same level (in the X-direction, considering UP-DOWN direction). This is only relevant during the initial placing of nodes.}
+\item{direction}{: String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.}
 
-\item{direction}{: String. Default to 'UD'.  This defines the direction the network is drawn in. The supported directions are: Up-Down (UD), Down-Up (DU), Left-Right (LR) and Right-Left (RL). These need to be supplied by the acronyms in parentheses.}
-
-\item{layout}{: String. Default to 'hubsize'.  This defines the way the nodes are distributed. Available options are "hubsize" and "direction". The default value is hubsize, meaning the node with the most edges connected to it (largest hub) is on top. Alternatively, direction arranges the nodes based on the direction of the edges.}
+\item{sortMethod}{: String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.}
 }
 \description{
-Network visualization Hierarchical layout options. See \url{http://visjs.org/docs/network.html#Hierarchical_layout}.
+Network visualization Hierarchical layout options
 }
 \examples{
 nodes <- data.frame(id = 1:10)
@@ -30,5 +28,8 @@ visNetwork(nodes, edges) \%>\%
 
 visNetwork(nodes, edges) \%>\%
  visHierarchicalLayout(direction = "LR")
+}
+\seealso{
+\url{../doc/network/layout.html}
 }
 

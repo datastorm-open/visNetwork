@@ -4,22 +4,47 @@
 \alias{visNodes}
 \title{Network visualization nodes options}
 \usage{
-visNodes(graph, borderWidth = NULL, borderWidthSelected = NULL,
-  customScalingFunction = NULL, color = NULL, fontColor = NULL,
-  fontFace = NULL, fontSize = NULL, scaleFontWithValue = NULL,
-  fontSizeMin = NULL, fontSizeMax = NULL, fontSizeMaxVisible = NULL,
-  fontDrawThreshold = NULL, fontFill = NULL, fontStrokeWidth = NULL,
-  fontStrokeColor = NULL, shape = NULL, image = NULL,
-  brokenImage = NULL, mass = NULL, widthMin = NULL, widthMax = NULL,
-  radius = NULL, radiusMin = NULL, radiusMax = NULL,
-  iconFontFace = NULL, icon = NULL, iconSize = NULL)
+visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
+  value = NULL, x = NULL, y = NULL, label = NULL, level = NULL,
+  group = NULL, hidden = NULL, image = NULL, mass = NULL,
+  physics = NULL, borderWidth = NULL, borderWidthSelected = NULL,
+  brokenImage = NULL, color = NULL, fixed = NULL, font = NULL,
+  icon = NULL, shadow = NULL)
 }
 \arguments{
+\item{id}{: String. Default to undefined. The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.}
+
+\item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, square and icon.}
+
+\item{size}{: Number. Default to 25. The size is used to determine the size of node shapes that do not have the label inside of them. These shapes are: image, circularImage, diamond, dot, star, triangle, triangleDown, square and icon}
+
+\item{title}{: String or Element. Default to undefined. Title to be displayed when the user hovers over the node. The title can be an HTML element or a string containing plain text or HTML.}
+
+\item{value}{: Number. Default to undefined. When a value is set, the nodes will be scaled using the options in the scaling object defined above.}
+
+\item{x}{: Number. Default to undefined. This gives a node an initial x position. When using the hierarchical layout, either the x or y position is set by the layout engine depending on the type of view. The other value remains untouched. When using stabilization, the stabilized position may be different from the initial one. To lock the node to that position use the physics or fixed options.}
+
+\item{y}{: Number. Default to undefined. This gives a node an initial y position. When using the hierarchical layout, either the x or y position is set by the layout engine depending on the type of view. The other value remains untouched. When using stabilization, the stabilized position may be different from the initial one. To lock the node to that position use the physics or fixed options.}
+
+\item{label}{: String. Default to undefined. The label is the piece of text shown in or under the node, depending on the shape.}
+
+\item{level}{: Number. Default to undefined. When using the hierarchical layout, the level determines where the node is going to be positioned.}
+
+\item{group}{: String. Default to undefined. When not undefined, the group of node(s)}
+
+\item{hidden}{: Boolean. Default to false. When true, the node will not be shown. It will still be part of the physics simulation though!}
+
+\item{image}{: String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.}
+
+\item{mass}{: Number. Default to 1. The barnesHut physics model (which is enabled by default) is based on an inverted gravity model. By increasing the mass of a node, you increase it's repulsion. Values lower than 1 are not recommended.}
+
+\item{physics}{: Boolean. Default to true. When false, the node is not part of the physics simulation. It will not move except for from manual dragging.}
+
 \item{borderWidth}{: Number. Default to 1. The width of the border of the node when it is not selected, automatically limited by the width of the node.}
 
 \item{borderWidthSelected}{: Number. Undefined. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.}
 
-\item{customScalingFunction}{: Function. This is a function you can override to make the nodes scale the way you want them based on their values.}
+\item{brokenImage}{: String. Undefined. When the shape is set to image or circularImage, this option can be an URL to a backup image in case the URL supplied in the image option cannot be resolved}
 
 \item{color}{: String | named list.    Color for the node. Can be just one color, or a list with several elements :
 \itemize{
@@ -39,53 +64,42 @@ visNodes(graph, borderWidth = NULL, borderWidthSelected = NULL,
  }
 }}
 
-\item{fontColor}{: String. Default to 'black'. Font color for label in the node.}
+\item{fixed}{: Boolean | named list. Default to false. When true, the node will not move but IS part of the physics simulation. When defined as an lisl, movement in either X or Y direction can be disabled.
+\itemize{
+ \item{"x"}{ : Boolean. When true, the node will not move in the X direction.}
+ \item{"y"}{ : Boolean. When false, the node will not move in the X direction.}
+}}
 
-\item{fontFace}{: String. Default to 'verdana'. Font face for label in the node, for example "verdana" or "arial".}
+\item{font}{: Named list. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
+\itemize{
+ \item{"color"}{ : String. Default to '#343434'. Color of the label text.}
+ \item{"size"}{ : Number. Default to 14. Size of the label text.}
+ \item{"face"}{ : String. Default to 'arial. Font face (or font family) of the label text.}
+ \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
+ \item{"strokeWidth"}{ : Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
+ \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
+}}
 
-\item{fontSize}{: Number. Default to 14. Font size in pixels for label in the node.}
+\item{icon}{: Named list. These options are only used when the shape is set to 'icon'.
+\itemize{
+ \item{"face"}{ : String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome' and 'Ionicons'.}
+ \item{"code"}{ : String. Default to undefined. This is the code of the icon, for example '\\uf007'.}
+ \item{"size"}{ : Number. Default to 50. The size of the icon.}
+ \item{"color"}{ : String. Default to '#2B7CE9'. The color of the icon.}
+}}
 
-\item{scaleFontWithValue}{: Boolean. Default to false. When using values, you can let the font scale with the size of the nodes if you enable the this option.}
-
-\item{fontSizeMin}{: Number. Default to 14. When using values, you can let the font scale with the size of the nodes if you enable the scaleFontWithValue option. This is the minimum value of the fontSize.}
-
-\item{fontSizeMax}{: Number. Default to 30. When using values, you can let the font scale with the size of the nodes if you enable the scaleFontWithValue option. This is the maximum value of the fontSize.}
-
-\item{fontSizeMaxVisible}{: Number. Default to 30. When using values, you can let the font scale with the size of the nodes if you enable the scaleFontWithValue option. If you have a wide distribution of values and have a large max fontSize, the text will become huge if you zoom in on it. This option limits the percieved fontSize to avoid this. If you set it to 20, no label will be larger than fontsize 20 (at scale = 1) regardless of the scale.}
-
-\item{fontDrawThreshold}{: Number. Default to 3. When zooming out, the text becomes smaller. This option sets the minimum size of the label before not being drawn. Just like the fontSizeMaxVisible option, this is the relative fontSize (fontSize * scale). You can combine this with the min and max values to have the labels of influential nodes show earlier when zooming in.}
-
-\item{fontFill}{: String. Undefined. If a color is supplied, there will be a background color behind the label. If left undefined, no background color is shown.}
-
-\item{fontStrokeWidth}{: Number. Default to 0. The width of the label stroke (border around label's text) in pixels.}
-
-\item{fontStrokeColor}{: String. Default to 'white'. The color of the label stroke.}
-
-\item{shape}{: String. Default to 'ellipse'. Define the shape for the node. Choose from ellipse (default), circle, box, database, image, circularImage, label, dot, star, triangle, triangleDown, square and icon. The shapes dot, star, triangle, triangleDown, and square, are scalable. The size is determined by the properties radius or value.}
-
-\item{image}{: String. Undefined. Default image url for the nodes. only applicable to shape image.}
-
-\item{brokenImage}{: String. Undefined. Image url to use in the event that the url specified in the image property fails to load. only applicable to shape image.}
-
-\item{mass}{: Number. Default to 1. When using the Barnes Hut simulation method (which is selected by default), the mass of a node determines the gravitational repulsion during the simulation. Higher mass will push other nodes further away. Preferably use the physics configuration to alter the simulation.}
-
-\item{widthMin}{: Number. Default to 16. The minimum width for a scaled image. Only applicable to shape image. This only does something if you supply a value.}
-
-\item{widthMax}{: Number. Default to 64. The maximum width for a scaled image. Only applicable to shape image. This only does something if you supply a value.}
-
-\item{radius}{: Number. Default to 10. The default radius for a node. Only applicable to shapes dot, star, triangle, triangleDown, and square.}
-
-\item{radiusMin}{: Number. Default to 10. The minimum radius for a scaled node. Only applicable to shapes dot, star, triangle, triangleDown, and square. This only does something if you supply a value.}
-
-\item{radiusMax}{: Number. Default to 30. The maximum radius for a scaled node. Only applicable to shapes dot, star, triangle, triangleDown, and square. This only does something if you supply a value.}
-
-\item{iconFontFace}{: String. Undefined. Font face for icons, for example FontAwesome or Ionicon. You have to link to the css defining the font by yourself (see Examples)}
-
-\item{icon}{: String. Undefined. Unicode of the icon f.e. (user-icon in FontAwesome)}
-
-\item{iconSize}{: Number. Default to 50. Size of the icon}
+\item{shadow}{: Boolean | named list. Default to false. When true, the node casts a shadow using the default settings. This can be further refined by supplying a list
+\itemize{
+ \item{"enabled"}{ : Boolean. Default to false. Toggle the casting of shadows. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+ \item{"size"}{ : Number. Default to 10. The blur size of the shadow.}
+ \item{"x"}{ : Number. Default to 5. The x offset.}
+ \item{"y"}{ : Number. Default to 5. The y offset.}
+}}
 }
 \description{
-Network visualization nodes options \url{http://visjs.org/docs/network.html#Nodes_configuration}
+Network visualization nodes options
+}
+\seealso{
+\url{../doc/network/nodes.html}
 }
 

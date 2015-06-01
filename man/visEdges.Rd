@@ -4,61 +4,40 @@
 \alias{visEdges}
 \title{Network visualization edges options}
 \usage{
-visEdges(graph, arrowScaleFactor = NULL, color = NULL, hoverWidth = NULL,
-  dash = NULL, fontColor = NULL, fontFace = NULL, fontSize = NULL,
-  fontFill = NULL, fontStrokeWidth = NULL, fontStrokeColor = NULL,
-  inheritColor = NULL, labelAlignment = NULL, opacity = NULL,
-  style = NULL, width = NULL, widthSelectionMultiplier = NULL,
-  widthMin = NULL, widthMax = NULL)
+visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
+  width = NULL, dashes = NULL, hidden = NULL, hoverWidth = NULL,
+  id = NULL, physics = NULL, selectionWidth = NULL,
+  selfReferenceSize = NULL)
 }
 \arguments{
-\item{arrowScaleFactor}{: Number. Default to 1. If you are using arrows, this will scale the arrow. Values < 1 give smaller arrows, > 1 larger arrows. Default: 1.}
+\item{title}{: String. Default to undefined. The title is shown in a pop-up when the mouse moves over the edge.}
 
-\item{color}{: String | named list.    Color for the edge. Can be just one color, or a list with several elements :
-\itemize{
- \item{"color"}{ : String. Default to' #848484'. Color of the edge when not selected.}
- \item{"highlight"}{ : String. Default to '#848484'. Color of the edge when selected.}
- \item{"hover"}{ : String. Default to '#848484'. Color of the edge when selected.}
-}}
+\item{value}{: Number. Default to undefined. When a value is set, the edges' width will be scaled using the options in the scaling object defined above.}
 
-\item{hoverWidth}{: Number. Default to 1.5. This determines the thickness of the edge if it is hovered over. This will only manifest when the hover option is enabled.}
+\item{label}{: String. Default to undefined. The label of the edge. HTML does not work in here because the network uses HTML5 Canvas.}
 
-\item{dash}{: String | named list. Containing properties for dashed lines. Available properties: length, gap, altLength.
-\itemize{
- \item{"altLength"}{ : Number. Undefined. Length of the alternated dash in pixels on a dashed line. Specifying dash.altLength allows for creating a dashed line with a dash-dot style, for example when dash.length=10 and dash.altLength=5. See also the option dahs.length. Only applicable when the line style is dash-line.}
- \item{"length"}{ : Number. Default to 10. Length of a dash in pixels on a dashed line. Only applicable when the line style is dash-line.}
- \item{"gap"}{ : Number. Default to 5. Length of a gap in pixels on a dashed line. Only applicable when the line style is dash-line.}
-}}
+\item{length}{: Number. Default to undefined. The physics simulation gives edges a spring length. This value can override the length of the spring in rest.}
 
-\item{fontColor}{: String. Default to '#343434'. Font color for the text label of the edge. Only applicable when property label is defined.}
+\item{width}{: Number. Default to 1. The width of the edge. If value is set, this is not used.}
 
-\item{fontFace}{: String. Default to 'arial'. Font face for the text label of the edge, for example "verdana" or "arial". Only applicable when property label is defined.}
+\item{dashes}{: Array or Boolean. Default to false. When true, the edge will be drawn as a dashed line. You can customize the dashes by supplying an Array. Array formart: Array of numbers, gap length, dash length, gap length, dash length, ... etc. The array is repeated until the distance is filled. When using dashed lines in IE versions older than 11, the line will be drawn straight, not smooth.}
 
-\item{fontSize}{: Number. Default to 14. Font size in pixels for the text label of the edge. Only applicable when property label is defined.}
+\item{hidden}{: Boolean. Default to false. When true, the edge is not drawn. It is part still part of the physics simulation however!}
 
-\item{fontFill}{: String. Default to 'white'. Font fill for the background color of the text label of the edge. Only applicable when property label is defined.}
+\item{hoverWidth}{: Number or Function. Default to 0.5. Assuming the hover behaviour is enabled in the interaction module, the hoverWidth determines the width of the edge when the user hovers over it with the mouse. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.}
 
-\item{fontStrokeWidth}{: Number. Default to     0. The width of the label stroke (border around label's text) in pixels. Only applicable when property label is defined.}
+\item{id}{: String. Default to undefined. The id of the edge. The id is optional for edges. When not supplied, an UUID will be assigned to the edge.}
 
-\item{fontStrokeColor}{: String. Default to 'white'. The color of the label stroke. Only applicable when property label is defined.}
+\item{physics}{: Boolean. Default to true. When true, the edge is part of the physics simulation. When false, it will not act as a spring.}
 
-\item{inheritColor}{: String | Boolean     from     Possible values: "to","from", true, false. If this value is set to false, the edge color information is used. If the value is set to true or "from", the color data from the borders of the "from" node is used. If this value is "to", the color data from the borders of the "to" node is used.}
+\item{selectionWidth}{: Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.}
 
-\item{labelAlignment}{: String. Default to 'horizontal'. Possible values: "line-above", "line-center", "line-below". The alignment of the label when drawn on the edge. If horizontal it will align the label absolute horizontial.}
-
-\item{opacity}{:     Number. Default to 1.0. Possible values: [0 .. 1]. This opacity value is added on top of the color information. This only happens for the unselected state.}
-
-\item{style}{: String. Default to 'line'. Define a line style for the edge. Choose from line (default), arrow, arrow-center, or dash-line.}
-
-\item{width}{: Number. Default to 1. Width of the line in pixels. The width will override a specified value, if a value is specified too.}
-
-\item{widthSelectionMultiplier}{: Number. Default to 2. Determines the thickness scaling of an selected edge. This is applied when an edge, or a node connected to it, is selected.}
-
-\item{widthMin}{: Number. Default to 1. The minimum thickness of the line when using per-edge defined values. This does nothing if you have not defined a value.}
-
-\item{widthMax}{: Number. Default to 15. The maximum thickness of the line when using per-edge defined values. This does nothing if you have not defined a value.}
+\item{selfReferenceSize}{: Number. Default to false.    When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.}
 }
 \description{
-Network visualization edges options. See \url{http://visjs.org/docs/network.html#Edges_configuration}.
+Network visualization edges options
+}
+\seealso{
+\url{../doc/network/nodes.html}
 }
 

@@ -4,44 +4,17 @@
 \alias{visGroups}
 \title{Network visualization groups options}
 \usage{
-visGroups(graph, groupname = NULL, color = NULL, image = NULL,
-  fontColor = NULL, fontFace = NULL, fontSize = NULL,
-  fontStrokeWidth = NULL, fontStrokeColor = NULL, shape = NULL,
-  radius = NULL)
+visGroups(graph, useDefaultGroups = NULL, groupname = NULL, ...)
 }
 \arguments{
+\item{useDefaultGroups}{: Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle.}
+
 \item{groupname}{: String. Name of target group.}
 
-\item{color}{: String | named list.    Color for the node. Can be just one color, or a list with several elements :
-\itemize{
- \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node.}
- \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node.}
- \item{"highlight"}{ : String | named list,     Color of the node when selected.
-   \itemize{
-     \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node when selected.}
-     \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node when selected.}
-   }
- }
-}}
-
-\item{image}{: String. Default to none. Default image for the nodes. Only applicable in combination with shape image.}
-
-\item{fontColor}{: String. Default to "black". Font color of the node.}
-
-\item{fontFace}{: String. Default to "sans". Font name of the node, for example "verdana" or "arial".}
-
-\item{fontSize}{: Number. Default to 14. Font size for the node in pixels.}
-
-\item{fontStrokeWidth}{: Number. Default to 0. The width of the label stroke (border around label's text) in pixels.}
-
-\item{fontStrokeColor}{: String. Default to "white". The color of the label stroke.}
-
-\item{shape}{: String. Default to "ellipse". Choose from ellipse (default), circle, box, database, image, label, dot, star, triangle, triangleDown, and square. In case of image, a property with name image must be provided, containing image urls.}
-
-\item{radius}{: Number. Default to 5. Default radius for the node. Only applicable in combination with shapes box and dot.}
+\item{...}{: \link{visNodes}. You can add multiple groups containing styling information that applies to a certain subset of groups. All options described in the nodes module that make sense can be used here (you're not going to set the same id or x,y position for a group of nodes)}
 }
 \description{
-Network visualization groups options. See \url{http://visjs.org/docs/network.html#Groups_configuration}.
+Network visualization groups options
 }
 \examples{
 nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), group = sample(c("A", "B"), 10, replace = TRUE))
@@ -50,5 +23,8 @@ edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 visNetwork(nodes, edges, legend = TRUE) \%>\%
  visGroups(groupname = "A", color = "red", shape = "database") \%>\%
  visGroups(groupname = "B", color = "yellow", shape = "label")
+}
+\seealso{
+\url{../doc/network/groups.html}
 }
 
