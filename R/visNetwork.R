@@ -2,8 +2,7 @@
 #'
 #' Network visualization using vis.js library
 #'
-#' @param nodes : data.frame with nodes informations. Needed at least column "id".
-#' See \url{http://visjs.org/docs/network.html#Nodes} and \url{http://visjs.org/docs/network.html#Nodes_configuration}
+#' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
 #'  \item{"id"}{ : id of the node, needed in edges information}
 #'  \item{"label"}{ : label of the node}
@@ -14,7 +13,7 @@
 #'}
 #'
 #' @param edges : data.frame with edges informations. Needed at least columns "from" and "to".
-#' See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/docs/network.html#Edges_configuration}
+#' See See \link{visEdges}
 #' \itemize{
 #'  \item{"from"}{ : node id of begin of the edge}
 #'  \item{"to"}{ : node id of end of the edge}
@@ -24,9 +23,9 @@
 #'  \item{...}{}
 #'}
 #'
-#' @param dot : Character DOT language.  See \url{http://visjs.org/docs/network.html#DOT_language}
+#' @param dot : Character DOT language.
 #' 
-#' @param gephi : Json export gephi path file.  See \url{http://visjs.org/docs/network.html#Gephi_import}
+#' @param gephi : Json export gephi path file.
 #' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #' 
@@ -103,7 +102,7 @@
 #'  visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
 #'
 #' 
-#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, ...
+#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, \url{../doc/network/index.html}
 #'
 #' @import htmlwidgets
 #'
