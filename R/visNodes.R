@@ -55,7 +55,7 @@
 #' @param icon : Named list. These options are only used when the shape is set to 'icon'.
 #' \itemize{
 #'  \item{"face"}{ : String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome' and 'Ionicons'.}
-#'  \item{"code"}{ : String. Default to undefined. This is the code of the icon, for example '\uf007'.}
+#'  \item{"code"}{ : String. Default to undefined. This is the code of the icon, for example '\\uf007'.}
 #'  \item{"size"}{ : Number. Default to 50. The size of the icon.}
 #'  \item{"color"}{ : String. Default to '#2B7CE9'. The color of the icon.}
 #'}
