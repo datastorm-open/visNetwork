@@ -67,28 +67,27 @@
 #' visNetwork(nodes, edges) %>% visEdges(style = "arrow")
 #'
 #' # custom navigation
-#' visNetwork(nodes, edges) %>% visOptions(navigation = TRUE)
+#' visNetwork(nodes, edges) %>%
+#'  visInteraction(navigationButtons = TRUE)
 #'
 #' # data Manipulation
-#' visNetwork(nodes, edges) %>% visOptions(dataManipulation = TRUE)
+#' visNetwork(nodes, edges) %>% visOptions(manipulation = TRUE)
 #'
 #' # Hierarchical Layout
 #' visNetwork(nodes, edges) %>% visHierarchicalLayout()
 #'
 #' # freeze network
-#' visNetwork(nodes, edges) %>% visOptions(dragNetwork = FALSE, dragNodes = FALSE)
+#' visNetwork(nodes, edges) %>%
+#'  visInteraction(dragNodes = FALSE, dragView = FALSE, zoomView = FALSE)
 #'
 #' # clustering
 #' nodes <- data.frame(id = 1:100)
 #' edges <- data.frame(from = round(runif(120)*100), to = round(runif(120)*100))
 #'
-#' visNetwork(nodes, edges) %>%
-#'  visClustering(initialMaxNodes = 50, nodeScaling = list(width = 50, height = 50, radius = 50))
-#'
 #' # Save a network
 #' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
 #'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
-#'  navigation = TRUE, dataManipulation = TRUE)
+#'  manipulation = TRUE)
 #'  
 #' htmlwidgets::saveWidget(network, "network.html")
 #' 
