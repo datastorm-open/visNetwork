@@ -1,7 +1,8 @@
 #' Network visualization configure options
 #'
 #' Network visualization configure options
-
+#' 
+#' @param graph : a visNetwork object
 #' @param enabled : Boolean. Default to true. Toggle the configuration interface on or off. This is an optional parameter. If left undefined and any of the other properties of this object are defined, this will be set to true.
 #' @param filter : String, Array, Boolean, Function. Default to true. When a boolean, true gives you all options, false will not show any. If a string is supplied, any combination of the following is allowed: nodes, edges, layout, interaction, manipulation, physics, selection, renderer. Feel free to come up with a fun seperating character. Finally, when supplied an array of strings, any of the previously mentioned fields are accepted.
 #' @param container : DOM element. This allows you to put the configure list in another HTML container than below the network.

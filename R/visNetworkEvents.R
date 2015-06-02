@@ -1,7 +1,8 @@
 #' Network visualization events
 #'
-#' Network visualization events. See \url{http://visjs.org/docs/network.html#Events}.
+#' Network visualization events.
 #'
+#' @param graph : a visNetwork object
 #' @param animationFinished : Fired after an animation is finished
 #' @param select : Fired after the user selects or deselects a node by clicking it. Not fired when the method setSelectionis executed.
 #' @param click : Fired after the user clicks or taps on a touchscreen.

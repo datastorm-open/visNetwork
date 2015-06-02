@@ -2,6 +2,7 @@
 #'
 #' Network visualization Hierarchical layout options
 #' 
+#'@param graph : a visNetwork object 
 #'@param enabled : Boolean. Default to TRUE when calling this function.	Enable or disable the hierarchical layout.
 #'@param levelSeparation : Number. Default to 150.  The distance between the different levels.
 #'@param direction : String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.

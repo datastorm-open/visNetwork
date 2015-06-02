@@ -2,6 +2,7 @@
 #'
 #' Network visualization Physics options.
 #' 
+#'@param graph : a visNetwork object
 #'@param solver : String. Default to 'barnesHut'.	You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.
 #'@param maxVelocity : Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.
 #'@param minVelocity : Number. Default to 0.1. Once the minimum velocity is reached for all nodes, we assume the network has been stabilized and the simulation stops.

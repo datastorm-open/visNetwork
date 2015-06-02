@@ -2,6 +2,7 @@
 #'
 #' Network visualization groups options
 #'
+#' @param graph : a visNetwork object
 #' @param useDefaultGroups : Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle. 
 #' @param groupname : String. Name of target group.
 #' @param ... : \link{visNodes}. You can add multiple groups containing styling information that applies to a certain subset of groups. All options described in the nodes module that make sense can be used here (you're not going to set the same id or x,y position for a group of nodes)
