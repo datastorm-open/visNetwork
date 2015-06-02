@@ -9,6 +9,8 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
   manipulation = NULL, clustering = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{width}{: String. Default to "400px". The width of the network in pixels or as a percentage.}
 
 \item{height}{: String. Default to "400px". The height of the network in pixels or as a percentage.}

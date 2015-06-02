@@ -8,6 +8,8 @@ visConfigure(graph, enabled = NULL, filter = NULL, container = NULL,
   showButton = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{enabled}{: Boolean. Default to true. Toggle the configuration interface on or off. This is an optional parameter. If left undefined and any of the other properties of this object are defined, this will be set to true.}
 
 \item{filter}{: String, Array, Boolean, Function. Default to true. When a boolean, true gives you all options, false will not show any. If a string is supplied, any combination of the following is allowed: nodes, edges, layout, interaction, manipulation, physics, selection, renderer. Feel free to come up with a fun seperating character. Finally, when supplied an array of strings, any of the previously mentioned fields are accepted.}

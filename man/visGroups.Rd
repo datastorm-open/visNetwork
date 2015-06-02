@@ -7,6 +7,8 @@
 visGroups(graph, useDefaultGroups = NULL, groupname = NULL, ...)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{useDefaultGroups}{: Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle.}
 
 \item{groupname}{: String. Name of target group.}

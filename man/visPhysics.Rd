@@ -9,6 +9,8 @@ visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
   repulsion = NULL, hierarchicalRepulsion = NULL, stabilization = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{solver}{: String. Default to 'barnesHut'.    You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.}
 
 \item{maxVelocity}{: Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.}

@@ -11,6 +11,8 @@ visEvents(graph, animationFinished = NULL, select = NULL, click = NULL,
   viewChanged = NULL, zoom = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{animationFinished}{: Fired after an animation is finished}
 
 \item{select}{: Fired after the user selects or deselects a node by clicking it. Not fired when the method setSelectionis executed.}
@@ -40,7 +42,7 @@ visEvents(graph, animationFinished = NULL, select = NULL, click = NULL,
 \item{zoom}{: Fired when the network has zoomed. This event can be used to trigger the .storePositions() function after stabilization.}
 }
 \description{
-Network visualization events. See \url{http://visjs.org/docs/network.html#Events}.
+Network visualization events.
 }
 \examples{
 nodes <- data.frame(id = 1:3)

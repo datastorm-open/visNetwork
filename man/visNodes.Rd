@@ -9,9 +9,11 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
   group = NULL, hidden = NULL, image = NULL, mass = NULL,
   physics = NULL, borderWidth = NULL, borderWidthSelected = NULL,
   brokenImage = NULL, color = NULL, fixed = NULL, font = NULL,
-  icon = NULL, shadow = NULL)
+  icon = NULL, shadow = NULL, scaling = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{id}{: String. Default to undefined. The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.}
 
 \item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, square and icon.}
@@ -70,7 +72,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"y"}{ : Boolean. When false, the node will not move in the X direction.}
 }}
 
-\item{font}{: Named list. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
+\item{font}{: Named list or String. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
 \itemize{
  \item{"color"}{ : String. Default to '#343434'. Color of the label text.}
  \item{"size"}{ : Number. Default to 14. Size of the label text.}
@@ -95,9 +97,42 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"x"}{ : Number. Default to 5. The x offset.}
  \item{"y"}{ : Number. Default to 5. The y offset.}
 }}
+
+\item{scaling}{: Named list.  If the value option is specified, the size of the nodes will be scaled according to the properties in this object.
+\itemize{
+ \item{"min"}{ :  Number. Default to 10. If nodes have a value, their sizes are determined by the value, the scaling function and the min max values.}
+ \item{"max"}{ : Number. Default to 30. This is the maximum allowed size when the nodes are scaled using the value option.}
+ \item{"label"}{ : Named list or Boolean. Default to Named list. This can be false if the label is not allowed to scale with the node. If true it will scale using default settigns. For further customization, you can supply an object.
+   \itemize{
+     \item{"enabled"}{ : Boolean. Default to false. Toggle the scaling of the label on or off. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+     \item{"min"}{ : Number. Default to 14. The minimum font-size used for labels when scaling.}
+     \item{"max"}{ : Number. Default to 30. The maximum font-size used for labels when scaling.}
+     \item{"maxVisible"}{ :   Number. Default to 30. When zooming in, the font is drawn larger as well. You can limit the perceived font size using this option. If set to 30, the font will never look larger than size 30 zoomed at 100\%.}
+     \item{"drawThreshold"}{ : Number. Default to 5. When zooming out, the font will be drawn smaller. This defines a lower limit for when the font is drawn. When using font scaling, you can use this together with the maxVisible to first show labels of important nodes when zoomed out and only show the rest when zooming in.}
+   }
+ }
+ \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
+}}
 }
 \description{
 Network visualization nodes options
+}
+\examples{
+nodes <- data.frame(id = 1:3)
+edges <- data.frame(from = c(1,2), to = c(1,3))
+
+visNetwork(nodes, edges) \%>\% visNodes(shape = "square", title = "I'm a node", borderWidth = 3)
+
+visNetwork(nodes, edges) \%>\% visNodes(color = list(hover = "green")) \%>\%
+ visInteraction(hover = TRUE)
+
+visNetwork(nodes, edges) \%>\% visNodes(color = "red")
+
+visNetwork(nodes, edges) \%>\% visNodes(color = list(background = "red", border = "blue", highlight = "yellow"))
+
+visNetwork(nodes, edges) \%>\% visNodes(shadow = TRUE)
+
+visNetwork(nodes, edges) \%>\% visNodes(shadow = list(enabled = TRUE, size = 50))
 }
 \seealso{
 \url{../doc/network/nodes.html}

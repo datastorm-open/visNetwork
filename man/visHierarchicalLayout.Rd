@@ -8,6 +8,8 @@ visHierarchicalLayout(graph, enabled = TRUE, levelSeparation = NULL,
   direction = NULL, sortMethod = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{enabled}{: Boolean. Default to TRUE when calling this function.    Enable or disable the hierarchical layout.}
 
 \item{levelSeparation}{: Number. Default to 150.  The distance between the different levels.}
