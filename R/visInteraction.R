@@ -8,13 +8,16 @@
 #'@param hideNodesOnDrag : Boolean. Default to false. When true, the nodes are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.
 #'@param hover : Boolean. Default to false. When true, the nodes use their hover colors when the mouse moves over them.
 #'@param hoverSelectedEdges : Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.
-#'@param keyboard : Just a Boolean, or a named list. Configuration options for shortcuts keys. Shortcut keys are turned off by default. See \url{http://visjs.org/docs/network.html#Keyboard_navigation}
+#'@param keyboard : Just a Boolean, or a named list. When true, the keyboard shortcuts are enabled with the default settings. For further customization, you can supply an object.
 #'\itemize{
-#'  \item{"speed}{ : a named list} \itemize{
+#'  \item{"enabled"}{ : Boolean. Default to false.	Toggle the usage of the keyboard shortcuts. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+#'  \item{"speed"}{ : a named list
+#'   \itemize{
 #'    \item{"x"}{ : Number. Default to 1. This defines the speed of the camera movement in the x direction when using the keyboard navigation.}
 #'    \item{"y"}{ : Number. Default to 1. This defines the speed of the camera movement in the y direction when using the keyboard navigation.}
 #'    \item{"zoom"}{ : Number. Default to 0.02. This defines the zoomspeed when using the keyboard navigation.Number   0.02   This defines the zoomspeed when using the keyboard navigation.}
 #'    }
+#'  }
 #'  \item{"bindToWindow"}{ : Boolean. Default to true. If this is true, global keyboard events will be used. If it is false, the keyboard events are only used when the network is active. It is activated on mouseOver automatically.}
 #'}
 #'@param multiselect : Boolean. Default to false. When true, a longheld click (or touch) as well as a control-click will add to the selection.
@@ -46,7 +49,13 @@
 #'  visInteraction(navigationButtons = TRUE)
 #'  
 #'visNetwork(nodes, edges) %>%
-#'  visInteraction(selectable = FALSE)
+#'  visInteraction(selectConnectedEdges = FALSE)
+#'  
+#'visNetwork(nodes, edges) %>%
+#'  visInteraction(multiselect = TRUE)
+#'  
+#'visNetwork(nodes, edges) %>%
+#'   visInteraction(keyboard = TRUE)
 #'  
 #'@export
 
