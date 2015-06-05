@@ -1,11 +1,6 @@
 dependencies:
   - name: vis
-    version: 4.1.0
+    version: 4.2.0
     src: htmlwidgets/lib/vis
     script: vis.min.js
     stylesheet: vis.min.css
-  - name: bootstrap
-    version: 3.2.0
-    src: htmlwidgets/lib/bootstrap
-    script: js/bootstrap.min.js
-    stylesheet: css/bootstrap.min.css
