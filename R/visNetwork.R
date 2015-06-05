@@ -1,6 +1,6 @@
 #' Network visualization
 #'
-#' Network visualization using vis.js library
+#' Network visualization using vis.js library.  \href{../doc/network/index.html}{vis.js html documentation}
 #'
 #' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
@@ -29,7 +29,7 @@
 #' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #' 
-#' @param legend.width : Number. Default to 1. Bootstrap column width (from 1 to 12)
+#' @param legend.width : Number, in [0,...,1]. Default to 0.2
 #' 
 #' @examples
 #'
@@ -80,9 +80,6 @@
 #' visNetwork(nodes, edges) %>%
 #'  visInteraction(dragNodes = FALSE, dragView = FALSE, zoomView = FALSE)
 #'
-#' # clustering
-#' nodes <- data.frame(id = 1:100)
-#' edges <- data.frame(from = round(runif(120)*100), to = round(runif(120)*100))
 #'
 #' # Save a network
 #' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
@@ -101,13 +98,13 @@
 #'  visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
 #'
 #' 
-#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, \url{../doc/network/index.html}
+#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
 #'
 #' @import htmlwidgets
 #'
 #' @export
 #' 
-visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 1,
+visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 0.2,
                        width = NULL, height = NULL) {
 
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
