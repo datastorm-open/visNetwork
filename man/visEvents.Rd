@@ -79,6 +79,11 @@ edges <- data.frame(from = c(1,2), to = c(1,3))
 
 visNetwork(nodes, edges) \%>\%
  visEvents(select = "function onSelect (properties) {
-     alert('selected nodes: ' + properties.nodes);}")
+     alert('selected nodes: ' + properties.nodes);}",
+     dragEnd = "function onSelect (properties) {
+     alert('finsih to drag');}")
+}
+\seealso{
+\url{../doc/network/index.html}
 }
 
