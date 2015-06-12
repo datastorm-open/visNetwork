@@ -1,6 +1,9 @@
-# WARNING
+# INFORMATION
 
-### vis.js was updated recently from 3.12.0 to 4.0, adding some functionnalities, and changing all html documentation. Let us a few weeks to update visNetwork code, options, and man !
+### visNetwork was updated from vis.js 3.12.0 to vis.js 4.2.0. visNetwork 0.0.4 and higher use vis.js 4.2.0, with some changes from ealier version
+
+## main changes
+
 
 # visNetwork
 R package, using vis.js library for network visualization
