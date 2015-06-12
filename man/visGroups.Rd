@@ -24,7 +24,7 @@ edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
 visNetwork(nodes, edges, legend = TRUE) \%>\%
  visGroups(groupname = "A", color = "red", shape = "database") \%>\%
- visGroups(groupname = "B", color = "yellow", shape = "label")
+ visGroups(groupname = "B", color = "yellow", shape = "triangle")
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,

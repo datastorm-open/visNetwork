@@ -14,7 +14,7 @@
 #'
 #' visNetwork(nodes, edges, legend = TRUE) %>%
 #'  visGroups(groupname = "A", color = "red", shape = "database") %>%
-#'  visGroups(groupname = "B", color = "yellow", shape = "label")
+#'  visGroups(groupname = "B", color = "yellow", shape = "triangle")
 #'  
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
