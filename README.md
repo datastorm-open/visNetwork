@@ -10,6 +10,7 @@
   - dataManipulation, rename navigationButtons
 - new ````visLayout```` function, on which we can fixed seed, and new options on ````visHierarchicalLayout ````
 - new solver forceAtlas2Based, and new options on ````visPhysics````
+- delete ````visTooltips```` (just tooltipDelay on ````visInteraction````)
 - new events on  ````visEvents ````
 - new cool configure options, look at ````visConfigure  ````
 - more flexible clustering possibilities for javascript coder, but a simple integration into R is really more difficult. We'll try to propose something. Actually, ````visClustergin```` is deprecated
