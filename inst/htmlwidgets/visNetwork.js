@@ -108,14 +108,23 @@ HTMLWidgets.widget({
     }
     
     // divide page
+    
     var maindiv  = document.createElement('div');
     maindiv.id = "maindiv"+el.id;
-    maindiv.setAttribute('style', 'width:100%;height:100%');
+    maindiv.setAttribute('style', 'height:100%');
+              //graph.addEventListener("resize", divredraw());
     document.getElementById(el.id).appendChild(maindiv);
     
     var graph = document.createElement('div');
     graph.id = "graph"+el.id;
       
+      window.onresize = function(event) {
+    if(instance.network)
+      instance.network.redraw();
+    if(instance.legend)
+      instance.legend.redraw();
+};
+
     if(x.groups && x.legend){
       var legendwidth = x.legendWidth*100;
       var legend = document.createElement('div');
@@ -124,6 +133,7 @@ HTMLWidgets.widget({
       document.getElementById("maindiv"+el.id).appendChild(legend);
       
       graph.setAttribute('style', 'float:right; width:'+(100-legendwidth)+'%;height:100%');
+
       
     }else{
       graph.setAttribute('style', 'float:right; width:100%;height:100%');
@@ -153,7 +163,8 @@ HTMLWidgets.widget({
         interaction:{
           dragNodes: false,
           dragView: false,
-          selectable: false
+          selectable: false,
+          zoomView: false
         }
       };
       
