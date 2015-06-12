@@ -18,7 +18,9 @@ shinyServer(function(input, output) {
       
       # custom navigation
       visNetwork(nodes, edges, legend = input$legend2) %>% 
-        visOptions(navigation = TRUE, dataManipulation = TRUE, stabilize = FALSE, 
+        visPhysics(stabilization = FALSE) %>%
+        visInteraction(navigationButtons = TRUE) %>%
+        visOptions(manipulation = TRUE,
                    highlightNearest = TRUE, nodesIdSelection = TRUE)
     })
     
@@ -37,8 +39,10 @@ shinyServer(function(input, output) {
                         title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
     
     # custom navigation
-    visNetwork(nodes, edges) %>% 
-      visOptions(navigation = TRUE, dataManipulation = TRUE, stabilize = FALSE, nodesIdSelection = TRUE)
+    visNetwork(nodes, edges) %>% visPhysics(stabilization = FALSE) %>%
+      visInteraction(navigationButtons = TRUE) %>%
+      visOptions(manipulation = TRUE,
+               highlightNearest = TRUE, nodesIdSelection = TRUE)
     
     
     

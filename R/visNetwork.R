@@ -1,9 +1,8 @@
 #' Network visualization
 #'
-#' Network visualization using vis.js library
+#' Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
 #'
-#' @param nodes : data.frame with nodes informations. Needed at least column "id".
-#' See \url{http://visjs.org/docs/network.html#Nodes} and \url{http://visjs.org/docs/network.html#Nodes_configuration}
+#' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
 #'  \item{"id"}{ : id of the node, needed in edges information}
 #'  \item{"label"}{ : label of the node}
@@ -14,7 +13,7 @@
 #'}
 #'
 #' @param edges : data.frame with edges informations. Needed at least columns "from" and "to".
-#' See \url{http://visjs.org/docs/network.html#Edges} and \url{http://visjs.org/docs/network.html#Edges_configuration}
+#' See See \link{visEdges}
 #' \itemize{
 #'  \item{"from"}{ : node id of begin of the edge}
 #'  \item{"to"}{ : node id of end of the edge}
@@ -24,13 +23,13 @@
 #'  \item{...}{}
 #'}
 #'
-#' @param dot : Character DOT language.  See \url{http://visjs.org/docs/network.html#DOT_language}
+#' @param dot : Character DOT language.
 #' 
-#' @param gephi : Json export gephi path file.  See \url{http://visjs.org/docs/network.html#Gephi_import}
+#' @param gephi : Json export gephi path file.
 #' 
 #' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
 #' 
-#' @param legend.width : Number. Default to 1. Bootstrap column width (from 1 to 12)
+#' @param legend.width : Number, in [0,...,1]. Default to 0.2
 #' 
 #' @examples
 #'
@@ -68,28 +67,24 @@
 #' visNetwork(nodes, edges) %>% visEdges(style = "arrow")
 #'
 #' # custom navigation
-#' visNetwork(nodes, edges) %>% visOptions(navigation = TRUE)
+#' visNetwork(nodes, edges) %>%
+#'  visInteraction(navigationButtons = TRUE)
 #'
 #' # data Manipulation
-#' visNetwork(nodes, edges) %>% visOptions(dataManipulation = TRUE)
+#' visNetwork(nodes, edges) %>% visOptions(manipulation = TRUE)
 #'
 #' # Hierarchical Layout
 #' visNetwork(nodes, edges) %>% visHierarchicalLayout()
 #'
 #' # freeze network
-#' visNetwork(nodes, edges) %>% visOptions(dragNetwork = FALSE, dragNodes = FALSE)
-#'
-#' # clustering
-#' nodes <- data.frame(id = 1:100)
-#' edges <- data.frame(from = round(runif(120)*100), to = round(runif(120)*100))
-#'
 #' visNetwork(nodes, edges) %>%
-#'  visClustering(initialMaxNodes = 50, nodeScaling = list(width = 50, height = 50, radius = 50))
+#'  visInteraction(dragNodes = FALSE, dragView = FALSE, zoomView = FALSE)
+#'
 #'
 #' # Save a network
 #' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
 #'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
-#'  navigation = TRUE, dataManipulation = TRUE)
+#'  manipulation = TRUE)
 #'  
 #' htmlwidgets::saveWidget(network, "network.html")
 #' 
@@ -103,13 +98,13 @@
 #'  visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
 #'
 #' 
-#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, ...
+#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
 #'
 #' @import htmlwidgets
 #'
 #' @export
 #' 
-visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 1,
+visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 0.2,
                        width = NULL, height = NULL) {
 
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
@@ -118,11 +113,11 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
   
   if(!is.null(dot)){
     x <- list(dot = dot,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
   }else if(!is.null(gephi)){
     x <- list(gephi = rjson::fromJSON(file = gephi),
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
   }else{
     
@@ -132,7 +127,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
       groups = NULL
     }
     x <- list(nodes = nodes, edges = edges,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot")),
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height)
   }
 

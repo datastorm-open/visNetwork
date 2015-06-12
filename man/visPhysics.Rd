@@ -4,52 +4,86 @@
 \alias{visPhysics}
 \title{Network visualization Physics options}
 \usage{
-visPhysics(graph, barnesHut = NULL, repulsion = NULL,
-  hierarchicalRepulsion = NULL)
+visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
+  timestep = NULL, barnesHut = NULL, forceAtlas2Based = NULL,
+  repulsion = NULL, hierarchicalRepulsion = NULL, stabilization = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
+\item{solver}{: String. Default to 'barnesHut'.    You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.}
+
+\item{maxVelocity}{: Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.}
+
+\item{minVelocity}{: Number. Default to 0.1. Once the minimum velocity is reached for all nodes, we assume the network has been stabilized and the simulation stops.}
+
+\item{timestep}{: Number. Default to 0.5. The physics simulation is discrete. This means we take a step in time, calculate the forces, move the nodes and take another step. If you increase this number the steps will be too large and the network can get unstable. If you see a lot of jittery movement in the network, you may want to reduce this value a little.}
+
 \item{barnesHut,}{named list of options
 \itemize{
- \item{"enabled"}{ : Boolean. Default to true. This switches the Barnes-Hut simulation on or off. If it is turned off, the old repulsion model is used. Barnes-Hut is generally faster and yields better results.}
- \item{"gravitationalConstant"}{ : Number. Default to -2000. This is the gravitational constand used to calculate the gravity forces. More information is available here.}
- \item{"centralGravity"}{ : Number. Default to 0.1. The central gravity is a force that pulls all nodes to the center. This ensures independent groups do not float apart.}
- \item{"springLength"}{ : Number. Default to 95. In the previous versions this was a property of the edges, called length. This is the length of the springs when they are at rest. During the simulation they will be streched by the gravitational fields. To greatly reduce the edge length, the gravitationalConstant has to be reduced as well.}
- \item{"springConstant"}{ : Number. Default to 0.04. This is the spring constant used to calculate the spring forces based on Hooke′s Law. More information is available here.}
- \item{"damping""}{ : Number. Default to 0.09. This is the damping constant. It is used to dissipate energy from the system to have it settle in an equilibrium. More information is available here.}
+ \item{"gravitationalConstant"}{ : Number. Default to -2000. Gravity attracts. We like repulsion. So the value is negative. If you want the repulsion to be stronger, decrease the value (so -10000, -50000).}
+ \item{"centralGravity"}{ : Number. Default to 0.3. There is a central gravity attractor to pull the entire network back to the center.}
+ \item{"springLength"}{ : Number. Default to 95. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
+ \item{"springConstant"}{ : Number. Default to 0.04. This is how 'sturdy' the springs are. Higher values mean stronger springs.}
+ \item{"damping"}{ : Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.}
+ \item{"avoidOverlap"}{ : Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.}
+}}
+
+\item{forceAtlas2Based,}{named list of options
+\itemize{
+ \item{"gravitationalConstant"}{ : Number. Default to -50. Gravity attracts. We like repulsion. So the value is negative. If you want the repulsion to be stronger, decrease the value (so -10000, -50000).}
+ \item{"centralGravity"}{ : Number. Default to 0.01. There is a central gravity attractor to pull the entire network back to the center.}
+ \item{"springLength"}{ : Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
+ \item{"springConstant"}{ : Number. Default to 0.08. This is how 'sturdy' the springs are. Higher values mean stronger springs.}
+ \item{"damping"}{ : Number. Default to 0.4. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.}
+ \item{"avoidOverlap"}{ : Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.}
 }}
 
 \item{repulsion,}{named list of options
 \itemize{
- \item{"centralGravity"}{ : Number. Default to 0.1. The central gravity is a force that pulls all nodes to the center. This ensures independent groups do not float apart.}
- \item{"nodeDistance"}{ : Number. Default to 100. This parameter is used to define the distance of influence of the repulsion field of the nodes. Below half this distance, the repulsion is maximal and beyond twice this distance the repulsion is zero.}
- \item{"springLength"}{ : Number. Default to 50. In the previous versions this was a property of the edges, called length. This is the length of the springs when they are at rest. During the simulation they will be streched by the gravitational fields. To greatly reduce the edge length, the gravitationalConstant has to be reduced as well.}
- \item{"springConstant"}{ : Number. Default to 0.05. This is the spring constant used to calculate the spring forces based on Hooke′s Law. More information is available here.}
- \item{"damping"}{ : Number. Default to 0.09. This is the damping constant. It is used to dissipate energy from the system to have it settle in an equilibrium. More information is available here.}
+ \item{"nodeDistance"}{ : Number. Default to 100. This is the range of influence for the repulsion.}
+ \item{"centralGravity"}{ : Number. Default to 0.2. There is a central gravity attractor to pull the entire network back to the center.}
+ \item{"springLength"}{ : Number. Default to 200. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
+ \item{"springConstant"}{ : Number. Default to 0.05. This is how 'sturdy' the springs are. Higher values mean stronger springs.}
+ \item{"damping"}{ : Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.}
 }}
 
 \item{hierarchicalRepulsion,}{named list of options
 \itemize{
- \item{"centralGravity"}{ : Number. Default to 0.5. The central gravity is a force that pulls all nodes to the center. This ensures independent groups do not float apart.}
- \item{"nodeDistance"}{ : Number. Default to 60. This parameter is used to define the distance of influence of the repulsion field of the nodes. Below half this distance, the repulsion is maximal and beyond twice this distance the repulsion is zero.}
- \item{"springLength"}{ : Number. Default to 100. In the previous versions this was a property of the edges, called length. This is the length of the springs when they are at rest. During the simulation they will be streched by the gravitational fields. To greatly reduce the edge length, the gravitationalConstant has to be reduced as well.}
- \item{"springConstant"}{ : Number. Default to 0.01. This is the spring constant used to calculate the spring forces based on Hooke′s Law. More information is available here.}
- \item{"damping"}{ : Number. Default to 0.09. This is the damping constant. It is used to dissipate energy from the system to have it settle in an equilibrium. More information is available here.}
+ \item{"nodeDistance"}{ : Number. Default to 120. This is the range of influence for the repulsion.}
+ \item{"centralGravity"}{ : Number. Default to 0.0. There is a central gravity attractor to pull the entire network back to the center.}
+ \item{"springLength"}{ : Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
+ \item{"springConstant"}{ : Number. Default to 0.01. This is how 'sturdy' the springs are. Higher values mean stronger springs.}
+ \item{"damping"}{ : Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.}
+}}
+
+\item{stabilization,}{Just a boolean, or a named list of options
+\itemize{
+ \item{"enabled"}{ : Boolean. Default to true. Toggle the stabilization. This is an optional property. If undefined, it is automatically set to true when any of the properties of this object are defined.}
+ \item{"iterations"}{ : Number. Default to 1000. The physics module tries to stabilize the network on load up til a maximum number of iterations defined here. If the network stabilized with less, you are finished before the maximum number.}
+ \item{"updateInterval"}{ : Number. Default to 50. When stabilizing, the DOM can freeze. You can chop the stabilization up into pieces to show a loading bar for instance. The interval determines after how many iterations the stabilizationProgress event is triggered.}
+ \item{"onlyDynamicEdges"}{ : Boolean. Default to false. If you have predefined the position of all nodes and only want to stabilize the dynamic smooth edges, set this to true. It freezes all nodes except the invisible dynamic smooth curve support nodes. If you want the visible nodes to move and stabilize, do not use this.}
+ \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.}
 }}
 }
 \description{
-Network visualization Physics options. See \url{http://visjs.org/docs/network.html#Physics}.
+Network visualization Physics options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10)
 edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
 
 visNetwork(nodes, edges) \%>\%
- visPhysics(repulsion = list(nodeDistance = 2))
+ visPhysics(solver = "repulsion")
 
 visNetwork(nodes, edges) \%>\%
- visPhysics(barnesHut = list(enabled = TRUE))
+ visPhysics(solver = "forceAtlas2Based", forceAtlas2Based = list(gravitationalConstant = -10))
 
 visNetwork(nodes, edges) \%>\%
- visPhysics(hierarchicalRepulsion = list(nodeDistance = 129))
+ visPhysics(stabilization = FALSE)
+}
+\seealso{
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

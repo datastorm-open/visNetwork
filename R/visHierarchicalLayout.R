@@ -1,12 +1,12 @@
 #' Network visualization Hierarchical layout options
 #'
-#' Network visualization Hierarchical layout options. See \url{http://visjs.org/docs/network.html#Hierarchical_layout}.
-#'
+#' Network visualization Hierarchical layout options. For full documentation, have a look at \link{visDocumentation}.
+#' 
+#'@param graph : a visNetwork object 
 #'@param enabled : Boolean. Default to TRUE when calling this function.	Enable or disable the hierarchical layout.
-#'@param levelSeparation : Number. Default to 150.  This defines the space between levels (in the Y-direction, considering UP-DOWN direction).
-#'@param nodeSpacing : Number. Default to 100.  This defines the space between nodes in the same level (in the X-direction, considering UP-DOWN direction). This is only relevant during the initial placing of nodes.
-#'@param direction : String. Default to 'UD'.  This defines the direction the network is drawn in. The supported directions are: Up-Down (UD), Down-Up (DU), Left-Right (LR) and Right-Left (RL). These need to be supplied by the acronyms in parentheses.
-#'@param layout : String. Default to 'hubsize'.  This defines the way the nodes are distributed. Available options are "hubsize" and "direction". The default value is hubsize, meaning the node with the most edges connected to it (largest hub) is on top. Alternatively, direction arranges the nodes based on the direction of the edges.
+#'@param levelSeparation : Number. Default to 150.  The distance between the different levels.
+#'@param direction : String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.
+#'@param sortMethod : String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.
 #'
 #'@examples
 #'
@@ -18,25 +18,27 @@
 #'
 #' visNetwork(nodes, edges) %>%
 #'  visHierarchicalLayout(direction = "LR")
+#'  
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #'@export
 
 visHierarchicalLayout <- function(graph,
                                   enabled = TRUE,
                                   levelSeparation = NULL,
-                                  nodeSpacing = NULL,
                                   direction = NULL,
-                                  layout = NULL){
+                                  sortMethod = NULL){
 
   hierarchicalLayout <- list()
 
   hierarchicalLayout$enabled <- enabled
   hierarchicalLayout$levelSeparation <- levelSeparation
-  hierarchicalLayout$nodeSpacing <- nodeSpacing
   hierarchicalLayout$direction <- direction
-  hierarchicalLayout$layout <- layout
+  hierarchicalLayout$sortMethod <- sortMethod
 
-  graph$x$options$hierarchicalLayout <- hierarchicalLayout
-
+  graph$x$options$layout$hierarchical <- hierarchicalLayout
+  
   graph
 }

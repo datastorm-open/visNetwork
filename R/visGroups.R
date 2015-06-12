@@ -1,28 +1,11 @@
 #' Network visualization groups options
 #'
-#' Network visualization groups options. See \url{http://visjs.org/docs/network.html#Groups_configuration}.
+#' Network visualization groups options. For full documentation, have a look at \link{visDocumentation}.
 #'
-#'
+#' @param graph : a visNetwork object
+#' @param useDefaultGroups : Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle. 
 #' @param groupname : String. Name of target group.
-#' @param color : String | named list.	Color for the node. Can be just one color, or a list with several elements :
-#'\itemize{
-#'  \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node.}
-#'  \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node.}
-#'  \item{"highlight"}{ : String | named list, 	Color of the node when selected.
-#'    \itemize{
-#'      \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node when selected.}
-#'      \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node when selected.}
-#'    }
-#'  }
-#'}
-#' @param image : String. Default to none. Default image for the nodes. Only applicable in combination with shape image.
-#' @param fontColor : String. Default to "black". Font color of the node.
-#' @param fontFace : String. Default to "sans". Font name of the node, for example "verdana" or "arial".
-#' @param fontSize : Number. Default to 14. Font size for the node in pixels.
-#' @param fontStrokeWidth : Number. Default to 0. The width of the label stroke (border around label's text) in pixels.
-#' @param fontStrokeColor : String. Default to "white". The color of the label stroke.
-#' @param shape : String. Default to "ellipse". Choose from ellipse (default), circle, box, database, image, label, dot, star, triangle, triangleDown, and square. In case of image, a property with name image must be provided, containing image urls.
-#' @param radius : Number. Default to 5. Default radius for the node. Only applicable in combination with shapes box and dot.
+#' @param ... : \link{visNodes}. You can add multiple groups containing styling information that applies to a certain subset of groups. All options described in the nodes module that make sense can be used here (you're not going to set the same id or x,y position for a group of nodes)
 #'
 #' @examples
 #'
@@ -32,40 +15,35 @@
 #' visNetwork(nodes, edges, legend = TRUE) %>%
 #'  visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'  visGroups(groupname = "B", color = "yellow", shape = "label")
+#'  
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #' @export
 #'
 
 visGroups <- function(graph,
+                      useDefaultGroups = NULL,
                       groupname = NULL,
-                      color = NULL,
-                      image = NULL,
-                      fontColor = NULL,
-                      fontFace = NULL,
-                      fontSize = NULL,
-                      fontStrokeWidth = NULL,
-                      fontStrokeColor = NULL,
-                      shape = NULL,
-                      radius = NULL){
+                      ...){
 
-  if(is.null(groupname)){
-    stop("Must have a groupname to identify group")
-  }
-
-  groups <- list(list())
-  names(groups) <- groupname
-
-  groups[[1]]$color = color
-  groups[[1]]$image = image
-  groups[[1]]$fontColor = fontColor
-  groups[[1]]$fontFace = fontFace
-  groups[[1]]$fontSize = fontSize
-  groups[[1]]$fontStrokeWidth = fontStrokeWidth
-  groups[[1]]$fontStrokeColor = fontStrokeColor
-  groups[[1]]$shape = shape
-  groups[[1]]$radius = radius
-
+  groups <- list()
+  groups$useDefaultGroups = useDefaultGroups
   graph$x$options$groups <- mergeLists(graph$x$options$groups, groups)
-
+  
+  params <- list(...)
+  
+  if(length(params) > 0){
+    if(is.null(groupname)){
+      stop("Must have a groupname to identify group")
+    }
+    
+    groups <- list(list(...))
+    names(groups) <- groupname
+    
+    graph$x$options$groups <- mergeLists(graph$x$options$groups, groups)
+  }
+  
   graph
 }
