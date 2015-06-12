@@ -67,7 +67,7 @@ visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
 }}
 }
 \description{
-Network visualization Physics options.
+Network visualization Physics options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10)
@@ -83,6 +83,7 @@ visNetwork(nodes, edges) \%>\%
  visPhysics(stabilization = FALSE)
 }
 \seealso{
-\url{../doc/network/physics.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

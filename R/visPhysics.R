@@ -1,6 +1,6 @@
 #' Network visualization Physics options
 #'
-#' Network visualization Physics options.
+#' Network visualization Physics options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a visNetwork object
 #'@param solver : String. Default to 'barnesHut'.	You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.
@@ -55,7 +55,9 @@
 #'  \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.}
 #'}
 #'
-#' @seealso \url{../doc/network/physics.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #' 
 #' @examples
 #'

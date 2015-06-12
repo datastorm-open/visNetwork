@@ -29,7 +29,7 @@ This options use click event. Not available for DOT and Gephi.}
 \item{clustering}{: Boolean. Default to false. Clustering is turned off by default. Set to true to enabled clustering or see \link{visClustering} to set options..}
 }
 \description{
-Network visualization general options.
+Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,

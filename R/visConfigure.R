@@ -1,6 +1,6 @@
 #' Network visualization configure options
 #'
-#' Network visualization configure options
+#' Network visualization configure options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #' @param graph : a visNetwork object
 #' @param enabled : Boolean. Default to true. Toggle the configuration interface on or off. This is an optional parameter. If left undefined and any of the other properties of this object are defined, this will be set to true.
@@ -16,6 +16,8 @@
 #' visNetwork(nodes, edges) %>%
 #'  visConfigure(enabled = TRUE, filter = "interaction")
 #
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 #'
 #' @export
 visConfigure <- function(graph,

@@ -19,7 +19,7 @@ visConfigure(graph, enabled = NULL, filter = NULL, container = NULL,
 \item{showButton}{: Boolean. Default to true. Show the generate options button at the bottom of the configurator.}
 }
 \description{
-Network visualization configure options
+Network visualization configure options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
@@ -27,5 +27,9 @@ edges <- data.frame(from = c(1,2), to = c(1,3))
 
 visNetwork(nodes, edges) \%>\%
  visConfigure(enabled = TRUE, filter = "interaction")
+}
+\seealso{
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

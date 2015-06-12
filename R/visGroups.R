@@ -1,6 +1,6 @@
 #' Network visualization groups options
 #'
-#' Network visualization groups options
+#' Network visualization groups options. For full documentation, have a look at \link{visDocumentation}.
 #'
 #' @param graph : a visNetwork object
 #' @param useDefaultGroups : Boolean. Default to true. If your nodes have groups defined that are not in the Groups module, the module loops over the groups it does have, allocating one for each unknown group. When all are used, it goes back to the first group. By setting this to false, the default groups will not be used in this cycle. 
@@ -16,7 +16,9 @@
 #'  visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'  visGroups(groupname = "B", color = "yellow", shape = "label")
 #'  
-#' @seealso \url{../doc/network/groups.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #' @export
 #'

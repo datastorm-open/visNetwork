@@ -71,7 +71,7 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
 \item{beforeDrawing}{: Fired after the canvas has been cleared, scaled and translated to the viewing position but before all edges and nodes are drawn. Can be used to draw behind the network.}
 }
 \description{
-Network visualization events.
+Network visualization events. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:3)
@@ -84,6 +84,7 @@ visNetwork(nodes, edges) \%>\%
      alert('finsih to drag');}")
 }
 \seealso{
-\url{../doc/network/index.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

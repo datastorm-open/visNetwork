@@ -19,7 +19,7 @@ visHierarchicalLayout(graph, enabled = TRUE, levelSeparation = NULL,
 \item{sortMethod}{: String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.}
 }
 \description{
-Network visualization Hierarchical layout options
+Network visualization Hierarchical layout options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10)
@@ -32,6 +32,7 @@ visNetwork(nodes, edges) \%>\%
  visHierarchicalLayout(direction = "LR")
 }
 \seealso{
-\url{../doc/network/layout.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

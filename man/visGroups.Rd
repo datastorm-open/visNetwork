@@ -16,7 +16,7 @@ visGroups(graph, useDefaultGroups = NULL, groupname = NULL, ...)
 \item{...}{: \link{visNodes}. You can add multiple groups containing styling information that applies to a certain subset of groups. All options described in the nodes module that make sense can be used here (you're not going to set the same id or x,y position for a group of nodes)}
 }
 \description{
-Network visualization groups options
+Network visualization groups options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), group = sample(c("A", "B"), 10, replace = TRUE))
@@ -27,6 +27,7 @@ visNetwork(nodes, edges, legend = TRUE) \%>\%
  visGroups(groupname = "B", color = "yellow", shape = "label")
 }
 \seealso{
-\url{../doc/network/groups.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

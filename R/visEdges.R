@@ -1,6 +1,6 @@
 #' Network visualization edges options
 #'
-#' Network visualization edges options
+#' Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #' @param graph : a visNetwork object
 #' @param title : String. Default to undefined. The title is shown in a pop-up when the mouse moves over the edge.
@@ -78,7 +78,9 @@
 #'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 #'}
 #'
-#' @seealso \url{../doc/network/edges.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #' 
 #' @examples
 #' nodes <- data.frame(id = 1:3)

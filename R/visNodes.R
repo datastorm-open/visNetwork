@@ -1,6 +1,6 @@
 #' Network visualization nodes options
 #'
-#' Network visualization nodes options
+#' Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.
 #'
 #' @param graph : a visNetwork object
 #' @param id : String. Default to undefined. The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.
@@ -85,7 +85,9 @@
 #'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 #'}
 #'
-#' @seealso \url{../doc/network/nodes.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #' 
 #' @examples
 #' nodes <- data.frame(id = 1:3)

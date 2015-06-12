@@ -49,7 +49,7 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
 \item{zoomView}{: Boolean. Default to true. When true, the user can zoom in.}
 }
 \description{
-Network visualization interaction
+Network visualization interaction. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10)
@@ -79,6 +79,7 @@ visNetwork(nodes, edges) \%>\%
   visInteraction(keyboard = TRUE)
 }
 \seealso{
-\url{../doc/network/interaction.html}, \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

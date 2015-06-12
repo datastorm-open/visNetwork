@@ -1,6 +1,6 @@
 #' Network visualization layout options
 #'
-#' Network visualization layout options
+#' Network visualization layout options. For full documentation, have a look at \link{visDocumentation}.
 #'
 #'@param graph : a visNetwork object
 #'@param randomSeed : Number. When NOT using the hierarchical layout, the nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time. Ideally you try with an undefined seed, reload until you are happy with the layout and use the getSeed() method to ascertain the seed.
@@ -17,7 +17,9 @@
 #' visNetwork(nodes, edges) %>%
 #'  visHierarchicalLayout(direction = "LR")
 #'
-#'@seealso \url{../doc/network/layout.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #'@export
 

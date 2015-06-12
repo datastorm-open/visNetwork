@@ -1,6 +1,6 @@
 #' Network visualization
 #'
-#' Network visualization using vis.js library.  \href{../doc/network/index.html}{vis.js html documentation}
+#' Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
 #'
 #' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{

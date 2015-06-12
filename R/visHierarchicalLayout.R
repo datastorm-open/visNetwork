@@ -1,6 +1,6 @@
 #' Network visualization Hierarchical layout options
 #'
-#' Network visualization Hierarchical layout options
+#' Network visualization Hierarchical layout options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a visNetwork object 
 #'@param enabled : Boolean. Default to TRUE when calling this function.	Enable or disable the hierarchical layout.
@@ -19,7 +19,9 @@
 #' visNetwork(nodes, edges) %>%
 #'  visHierarchicalLayout(direction = "LR")
 #'  
-#'@seealso \url{../doc/network/layout.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #'@export
 

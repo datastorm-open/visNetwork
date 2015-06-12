@@ -1,6 +1,6 @@
 #' Network visualization events
 #'
-#' Network visualization events.
+#' Network visualization events. For full documentation, have a look at \link{visDocumentation}.
 #'
 #' @param graph : a visNetwork object
 #' @param click : Fired when the user clicks the mouse or taps on a touchscreen device.
@@ -43,7 +43,9 @@
 #'      alert('finsih to drag');}")
 #'
 #'
-#'@seealso \url{../doc/network/index.html}
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
+#'
 #'
 #' @export
 visEvents <- function(graph,

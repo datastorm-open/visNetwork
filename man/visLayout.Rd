@@ -14,7 +14,7 @@ visLayout(graph, randomSeed = TRUE, hierarchical = NULL)
 \item{hierarchical}{: Boolean. Default to false. >When true, the layout engine positions the nodes in a hierarchical fashion using default settings. For customization you can use \link{visHierarchicalLayout}}
 }
 \description{
-Network visualization layout options
+Network visualization layout options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:10)
@@ -27,6 +27,7 @@ visNetwork(nodes, edges) \%>\%
  visHierarchicalLayout(direction = "LR")
 }
 \seealso{
-\url{../doc/network/layout.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

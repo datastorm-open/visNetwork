@@ -115,7 +115,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 }}
 }
 \description{
-Network visualization nodes options
+Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 nodes <- data.frame(id = 1:3)
@@ -135,6 +135,7 @@ visNetwork(nodes, edges) \%>\% visNodes(shadow = TRUE)
 visNetwork(nodes, edges) \%>\% visNodes(shadow = list(enabled = TRUE, size = 50))
 }
 \seealso{
-\url{../doc/network/nodes.html}
+\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
+\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 }
 

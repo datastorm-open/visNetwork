@@ -1,6 +1,6 @@
 #' Network visualization general options
 #'
-#' Network visualization general options.
+#' Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a visNetwork object
 #'@param width : String. Default to "400px". The width of the network in pixels or as a percentage.

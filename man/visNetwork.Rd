@@ -38,7 +38,7 @@ See See \link{visEdges}
 \item{legend.width}{: Number, in [0,...,1]. Default to 0.2}
 }
 \description{
-Network visualization using vis.js library.  \href{../doc/network/index.html}{vis.js html documentation}
+Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 # minimal example

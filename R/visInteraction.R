@@ -1,6 +1,6 @@
 #' Network visualization interaction
 #'
-#' Network visualization interaction
+#' Network visualization interaction. For full documentation, have a look at \link{visDocumentation}.
 #'
 #'@param dragNodes : Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.
 #'@param dragView : Boolean. Default to true. When true, the view can be dragged around by the user.
@@ -27,7 +27,8 @@
 #'@param tooltipDelay : Number. Default to 300. When nodes or edges have a defined 'title' field, this can be shown as a pop-up tooltip. The tooltip itself is an HTML element that can be fully styled using CSS. The delay is the amount of time in milliseconds it takes before the tooltip is shown.
 #'@param zoomView : Boolean. Default to true. When true, the user can zoom in.
 #'
-#'@seealso \url{../doc/network/interaction.html}, \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 #'
 #' @examples
 #'
