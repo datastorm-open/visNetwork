@@ -150,16 +150,17 @@ HTMLWidgets.widget({
       };
       
       var optionslegend = {
-        dragNetwork: false,
-        dragNodes: false,
-        selectable: false,
         interaction:{
           dragNodes: false,
-          dragView: false
+          dragView: false,
+          selectable: false
         }
       };
       
-      optionslegend.groups = x.options.groups;
+      if(x.options.groups){
+        optionslegend.groups = x.options.groups;
+      }
+      
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
       
     }
