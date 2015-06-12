@@ -37,9 +37,9 @@
 #' edges <- data.frame(from = c(1,2), to = c(1,3))
 #'
 #' visNetwork(nodes, edges) %>%
-#'  visEvents(select = "function onSelect (properties) {
+#'  visEvents(select = "function(properties) {
 #'      alert('selected nodes: ' + properties.nodes);}", 
-#'      dragEnd = "function onSelect (properties) {
+#'      dragEnd = "function(properties) {
 #'      alert('finsih to drag');}")
 #'
 #'

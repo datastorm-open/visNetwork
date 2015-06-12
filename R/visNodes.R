@@ -108,9 +108,6 @@
 #' 
 #' 
 #' @export
-
-
-
 visNodes <- function(graph,
                      id = NULL,
                      shape = NULL,

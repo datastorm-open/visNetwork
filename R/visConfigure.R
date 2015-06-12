@@ -12,7 +12,8 @@
 #'
 #' nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
 #' edges <- data.frame(from = c(1,2), to = c(1,3))
-#'
+#' 
+#' # don't look in RStudio viewer
 #' visNetwork(nodes, edges) %>%
 #'  visConfigure(enabled = TRUE, filter = "interaction")
 #

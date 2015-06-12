@@ -72,7 +72,8 @@ visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
 # directed network
-visNetwork(nodes, edges) \%>\% visEdges(style = "arrow")
+visNetwork(nodes, edges) \%>\%
+ visEdges(arrow = 'from', scaling = list(min = 2, max = 2))
 
 # custom navigation
 visNetwork(nodes, edges) \%>\%
@@ -100,10 +101,7 @@ htmlwidgets::saveWidget(network, "network.html")
 visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 
 # gephi json file
-gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') \%>\%
- visOptions(smoothCurves = list(dynamic = FALSE, type ="continuous"), stabilize = FALSE,
- hideEdgesOnDrag = TRUE) \%>\% visEdges(width = 0.15, inheritColor = "from") \%>\%
- visPhysics(barnesHut = list(gravitationalConstant = -10000, springConstant = 0.002, springLength= 150))
+gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') \%>\% ...
 }
 \seealso{
 \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
