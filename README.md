@@ -4,10 +4,11 @@
 
 ## main changes
 
-- new options on ````visNodes````, ````visEdges````, ````visGroups````
+- new options on ````visNodes````, ````visEdges````, ````vdataManipulation rename isGroups````
+- in ````visOptions```` dataManipulation rename manipulation
 - lot of options move from ````visOptions```` to new ````visInteraction````, and some have been deleted/renamed
   - dragNetwork, hideNodesOnDrag, hover, selectable, keyboard, ....
-  - dataManipulation, rename navigationButtons
+  - navigation, rename navigationButtons
 - new ````visLayout```` function, on which we can fixed seed, and new options on ````visHierarchicalLayout ````
 - new solver forceAtlas2Based, and new options on ````visPhysics````
 - delete ````visTooltips```` (just tooltipDelay on ````visInteraction````)
