@@ -1,10 +1,10 @@
 // Add shim for Function.prototype.bind() from:
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
+  // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
 // for fix some RStudio viewer bug (Desktop / windows)
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {
     if (typeof this !== "function") {
-    // closest thing possible to the ECMAScript 5 internal IsCallable function
+      // closest thing possible to the ECMAScript 5 internal IsCallable function
       throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
     }
     
@@ -47,7 +47,7 @@ HTMLWidgets.widget({
     var highlightActive = false;
     var nodesDataset ;
     var edgesDataset ;
-
+    
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
@@ -67,7 +67,7 @@ HTMLWidgets.widget({
       option.value = "";
       option.text = "";
       selectList.appendChild(option);
-        
+      
       //Create and append the options
       for (var i = 0; i < selnodes.length; i++) {
         option = document.createElement("option");
@@ -81,50 +81,41 @@ HTMLWidgets.widget({
       }
       
       if (window.Shiny){
-            var changeInput = function(id, data) {
-              Shiny.onInputChange(el.id + '_' + id, data);
-            };
-            changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+        var changeInput = function(id, data) {
+          Shiny.onInputChange(el.id + '_' + id, data);
+        };
+        changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
       }
-          
+      
       selectList.onchange =  function(){
         if(instance.network)
           currentid = document.getElementById("nodeSelect"+el.id).value;
-          if(currentid === ""){
-            instance.network.selectNodes([]);
-          }else{
-            instance.network.selectNodes([currentid]);
-          }
-          if(x.highlight){
-            neighbourhoodHighlight(instance.network.getSelection());
-          }
-          if (window.Shiny){
-            var changeInput = function(id, data) {
-              Shiny.onInputChange(el.id + '_' + id, data);
-            };
-            changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
-          }
+        if(currentid === ""){
+          instance.network.selectNodes([]);
+        }else{
+          instance.network.selectNodes([currentid]);
+        }
+        if(x.highlight){
+          neighbourhoodHighlight(instance.network.getSelection());
+        }
+        if (window.Shiny){
+          var changeInput = function(id, data) {
+            Shiny.onInputChange(el.id + '_' + id, data);
+          };
+          changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+        }
       };
     }
     
     // divide page
-    
     var maindiv  = document.createElement('div');
     maindiv.id = "maindiv"+el.id;
     maindiv.setAttribute('style', 'height:100%');
-              //graph.addEventListener("resize", divredraw());
     document.getElementById(el.id).appendChild(maindiv);
     
     var graph = document.createElement('div');
     graph.id = "graph"+el.id;
-      
-      window.onresize = function(event) {
-    if(instance.network)
-      instance.network.redraw();
-    if(instance.legend)
-      instance.legend.redraw();
-};
-
+    
     if(x.groups && x.legend){
       var legendwidth = x.legendWidth*100;
       var legend = document.createElement('div');
@@ -133,7 +124,6 @@ HTMLWidgets.widget({
       document.getElementById("maindiv"+el.id).appendChild(legend);
       
       graph.setAttribute('style', 'float:right; width:'+(100-legendwidth)+'%;height:100%');
-
       
     }else{
       graph.setAttribute('style', 'float:right; width:100%;height:100%');
@@ -177,7 +167,7 @@ HTMLWidgets.widget({
     }
     
     if(x.nodes){
-
+      
       // network
       nodes = new vis.DataSet();
       edges = new vis.DataSet();
@@ -258,7 +248,7 @@ HTMLWidgets.widget({
     
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
-    
+
     // add Events
     for (var key in x.events) {
       instance.network.on(key, x.events[key]);
@@ -270,7 +260,7 @@ HTMLWidgets.widget({
         Shiny.onInputChange(el.id + '_' + id, data);
       };
       if (params.nodes.length > 0) {
-  
+        
         if(x.idselection){
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = params.nodes;
@@ -278,12 +268,12 @@ HTMLWidgets.widget({
             changeInput('selected', selectNode.value);
           }
         }
-
+        
         highlightActive = true;
         var i,j;
         var selectedNode = params.nodes[0];
         var degrees = 2;
-
+        
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
           allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
@@ -294,14 +284,14 @@ HTMLWidgets.widget({
         }
         var connectedNodes = instance.network.getConnectedNodes(selectedNode);
         var allConnectedNodes = [];
-
+        
         // get the second degree nodes
         for (i = 1; i < degrees; i++) {
           for (j = 0; j < connectedNodes.length; j++) {
             allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
           }
         }
-
+        
         // all second degree nodes get a different color and their label back
         for (i = 0; i < allConnectedNodes.length; i++) {
           //allNodes[allConnectedNodes[i]].color = 'rgba(150,150,150,0.75)';
@@ -310,7 +300,7 @@ HTMLWidgets.widget({
             allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
           }
         }
-
+        
         // all first degree nodes get their own color and their label back
         for (i = 0; i < connectedNodes.length; i++) {
           allNodes[connectedNodes[i]].color = undefined;
@@ -319,7 +309,7 @@ HTMLWidgets.widget({
             allNodes[connectedNodes[i]].hiddenLabel = undefined;
           }
         }
-
+        
         // the main node gets its own color and its label back.
         allNodes[selectedNode].color = undefined;
         if (allNodes[selectedNode].hiddenLabel !== undefined) {
@@ -339,13 +329,13 @@ HTMLWidgets.widget({
         for (var nodeId in allNodes) {
           allNodes[nodeId].color = undefined;
           if (allNodes[nodeId].hiddenLabel !== undefined) {
-          allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+            allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
             allNodes[nodeId].hiddenLabel = undefined;
           }
         }
-      highlightActive = false
+        highlightActive = false
       }
-
+      
       // transform the object into an array
       var updateArray = [];
       for (nodeId in allNodes) {
@@ -355,7 +345,7 @@ HTMLWidgets.widget({
       }
       nodesDataset.update(updateArray);
     }
-  
+    
     function onClickIDSlection(selectedItems) {
       var selectNode;
       var changeInput = function(id, data) {
@@ -387,11 +377,6 @@ HTMLWidgets.widget({
       instance.network.on("click",onClickIDSlection);
     }
     
-    
-    if(x.options.dataManipulation){
-      instance.network.on("resize", function(params) {console.log(params.width,params.height)});
-    }
-    
     function clearPopUp() {
       document.getElementById('saveButton').onclick = null;
       document.getElementById('cancelButton').onclick = null;
@@ -410,17 +395,20 @@ HTMLWidgets.widget({
       callback(null);
     }
     
+    window.onresize = function() {
+      if(instance.network)
+        instance.network.fit();
+      if(instance.legend)
+        instance.legend.fit();
+    }
+      
   },
   
   resize: function(el, width, height, instance) {
-    console.info("width");
-    console.info(width);
-    console.info("height");
-    console.info(height);
     if(instance.network)
-      instance.network.redraw();
+      instance.network.fit();
     if(instance.legend)
-      instance.legend.redraw();
+      instance.legend.fit();
   }
   
 });
