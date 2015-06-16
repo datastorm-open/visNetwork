@@ -11,7 +11,6 @@
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
 #'@param manipulation : Just a Boolean
-#'@param clustering : Boolean. Default to false. Clustering is turned off by default. Set to true to enabled clustering or see \link{visClustering} to set options..
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
@@ -24,8 +23,7 @@ visOptions <- function(graph,
                        nodesIdSelection = FALSE,
                        autoResize = NULL,
                        clickToUse = NULL,
-                       manipulation = NULL,
-                       clustering = NULL){
+                       manipulation = NULL){
 
   options <- list()
 
@@ -38,8 +36,6 @@ visOptions <- function(graph,
     options$manipulation <- list(enabled = manipulation)
   }
   
-  options$clustering <- clustering
-
   options$height <- height
   options$width <- width
 
