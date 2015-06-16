@@ -48,8 +48,18 @@ HTMLWidgets.widget({
     var nodesDataset ;
     var edgesDataset ;
     
+    // clustergin by zoom variables
+    var clusterIndex = 0;
+    var clusters = [];
+    var lastClusterZoomLevel = 0;
+    var clusterFactor;
+    var ctrlwait = 0;
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
+    
+    //*************************
+    //idselection
+    //*************************
     
     // id nodes selection : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
@@ -131,7 +141,9 @@ HTMLWidgets.widget({
     
     document.getElementById("maindiv"+el.id).appendChild(graph);
     
-    //create legend if needed  
+    //*************************
+    //legend
+    //*************************
     if(x.groups && x.legend){
       
       var legendnodes = new vis.DataSet();
@@ -192,7 +204,9 @@ HTMLWidgets.widget({
     
     var options = x.options;
     
-    // Custom data manipualtion
+    //*************************
+    //manipulation
+    //*************************
     if(x.options.manipulation.enabled){
       
       var style = document.createElement('style');
@@ -253,6 +267,10 @@ HTMLWidgets.widget({
     for (var key in x.events) {
       instance.network.on(key, x.events[key]);
     }
+    
+    //*************************
+    //Highlight
+    //*************************
     
     function neighbourhoodHighlight(params) {
       var selectNode;
@@ -377,6 +395,9 @@ HTMLWidgets.widget({
       instance.network.on("click",onClickIDSlection);
     }
     
+    //*************************
+    //manipulation
+    //*************************
     function clearPopUp() {
       document.getElementById('saveButton').onclick = null;
       document.getElementById('cancelButton').onclick = null;
@@ -395,6 +416,213 @@ HTMLWidgets.widget({
       callback(null);
     }
     
+    if(x.clusteringGroup || x.clusteringColor){
+      
+      var clusterbutton = document.createElement("input");
+      clusterbutton.id = "backbtn"+el.id;
+      clusterbutton.setAttribute('type', 'button');  
+      clusterbutton.setAttribute('value', 'Re-init clustering'); 
+      clusterbutton.setAttribute('style', 'background-color:#FFFFFF;border: none');
+      document.getElementById(el.id).appendChild(clusterbutton);
+
+      clusterbutton.onclick =  function(){
+        if(x.clusteringColor){
+          instance.network.setData(data);
+          clusterByColor();
+        }
+        if(x.clusteringGroup){
+          instance.network.setData(data);
+          clusterByGroup();
+        }
+        instance.network.fit();
+      }
+    }
+    
+    if(x.clusteringColor){
+      
+      instance.network.on("doubleClick", function(params) {
+        if (params.nodes.length == 1) {
+          if (instance.network.isCluster(params.nodes[0]) == true) {
+            instance.network.openCluster(params.nodes[0]);
+          }
+        }
+      })
+      
+    //*************************
+    //clustering color
+    //*************************
+    
+      function clusterByColor() {
+        var colors = x.clusteringColor.colors
+        console.info(colors)
+        var clusterOptionsByData;
+        for (var i = 0; i < colors.length; i++) {
+          var color = colors[i];
+          console.info(color)
+          clusterOptionsByData = {
+              joinCondition: function (childOptions) {
+                  return childOptions.color.background == color; // the color is fully defined in the node.
+              },
+              processProperties: function (clusterOptions, childNodes, childEdges) {
+                  console.info(childNodes)
+                  var totalMass = 0;
+                  for (var i = 0; i < childNodes.length; i++) {
+                      totalMass += childNodes[i].mass;
+                  }
+                  clusterOptions.value = totalMass;
+                  return clusterOptions;
+              },
+              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, shape: 'database', color:color, label:'color:' + color}
+          }
+          instance.network.cluster(clusterOptionsByData);
+        }
+      }
+      
+      clusterByColor();
+    }
+
+    //*************************
+    //clustering groups
+    //*************************
+    
+    if(x.clusteringGroup){
+      
+      instance.network.on("doubleClick", function(params) {
+        if (params.nodes.length == 1) {
+          if (instance.network.isCluster(params.nodes[0]) == true) {
+            instance.network.openCluster(params.nodes[0]);
+          }
+        }
+      })
+      
+      function clusterByGroup() {
+        var groups = x.clusteringGroup.groups;
+        var clusterOptionsByData;
+        for (var i = 0; i < groups.length; i++) {
+          var group = groups[i];
+          clusterOptionsByData = {
+              joinCondition: function (childOptions) {
+                  return childOptions.group == group; //
+              },
+              processProperties: function (clusterOptions, childNodes, childEdges) {
+                console.info(childNodes);
+                  var totalMass = 0;
+                  for (var i = 0; i < childNodes.length; i++) {
+                      totalMass += childNodes[i].mass;
+                      if(i === 0){
+                        clusterOptions.shape =  childNodes[i].shape;
+                        clusterOptions.color =  childNodes[i].color.background;
+                      }else{
+                        if(childNodes[i].shape !== clusterOptions.shape){
+                          clusterOptions.shape = 'database';
+                        }
+                        if(childNodes[i].color.background !== clusterOptions.color){
+                          clusterOptions.color = 'grey';
+                        }
+                      }
+                  }
+                  clusterOptions.value = totalMass;
+                  return clusterOptions;
+              },
+              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:'group:' + group}
+          }
+          instance.network.cluster(clusterOptionsByData);
+        }
+      }
+      clusterByGroup();
+    }
+  
+    //*************************
+    //clustering by zoom
+    //*************************
+    
+    if(x.clusteringOutliers.enabled){
+      
+      clusterFactor = x.clusteringOutliers.clusterFactor;
+      
+      // set the first initial zoom level
+      instance.network.on('initRedraw', function() {
+        if (lastClusterZoomLevel === 0) {
+          lastClusterZoomLevel = instance.network.getScale();
+        }
+      });
+
+      // we use the zoom event for our clustering
+      instance.network.on('zoom', function (params) {
+        if(ctrlwait === 0){
+        if (params.direction == '-') {
+          if (params.scale < lastClusterZoomLevel*clusterFactor) {
+            makeClusters(params.scale);
+            lastClusterZoomLevel = params.scale;
+          }
+        }
+        else {
+          openClusters(params.scale);
+        }
+        }
+      });
+
+      // if we click on a node, we want to open it up!
+      instance.network.on("selectNode", function (params) {
+        if (params.nodes.length == 1) {
+          if (instance.network.isCluster(params.nodes[0]) == true) {
+            instance.network.openCluster(params.nodes[0])
+          }
+        }
+      });
+    }
+
+    // make the clusters
+    function makeClusters(scale) {
+        ctrlwait = 1;
+        var clusterOptionsByData = {
+            processProperties: function (clusterOptions, childNodes) {
+                clusterIndex = clusterIndex + 1;
+                var childrenCount = 0;
+                for (var i = 0; i < childNodes.length; i++) {
+                    childrenCount += childNodes[i].childrenCount || 1;
+                }
+                clusterOptions.childrenCount = childrenCount;
+                clusterOptions.label = "# " + childrenCount + "";
+                clusterOptions.font = {size: childrenCount*5+30}
+                clusterOptions.id = 'cluster:' + clusterIndex;
+                clusters.push({id:'cluster:' + clusterIndex, scale:scale});
+                return clusterOptions;
+            },
+            clusterNodeProperties: {borderWidth: 3, shape: 'database', font: {size: 30}}
+        }
+        instance.network.clusterOutliers(clusterOptionsByData);
+        if (x.clusteringOutliers.stabilize) {
+            instance.network.stabilize();
+        };
+        ctrlwait = 0;
+    }
+
+    // open them back up!
+    function openClusters(scale) {
+        ctrlwait = 1;
+        var newClusters = [];
+        var declustered = false;
+        for (var i = 0; i < clusters.length; i++) {
+            if (clusters[i].scale < scale) {
+                instance.network.openCluster(clusters[i].id);
+                lastClusterZoomLevel = scale;
+                declustered = true;
+            }
+            else {
+                newClusters.push(clusters[i])
+            }
+        }
+        clusters = newClusters;
+        if (x.clusteringOutliers.stabilize) {
+            instance.network.stabilize();
+        };
+        ctrlwait = 0;
+    }
+    
+    //*************************
+    //resize
+    //*************************
     window.onresize = function() {
       if(instance.network)
         instance.network.fit();
