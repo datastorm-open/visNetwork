@@ -610,6 +610,7 @@ HTMLWidgets.widget({
     //resize
     //*************************
     window.onresize = function() {
+      //alert("resize");
       if(instance.network)
         instance.network.fit();
       if(instance.legend)
@@ -619,10 +620,6 @@ HTMLWidgets.widget({
   },
   
   resize: function(el, width, height, instance) {
-    if(instance.network)
-      instance.network.fit();
-    if(instance.legend)
-      instance.legend.fit();
   }
   
 });
