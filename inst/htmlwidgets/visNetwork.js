@@ -168,6 +168,9 @@ HTMLWidgets.widget({
           dragView: false,
           selectable: false,
           zoomView: false
+        },
+        physics:{
+          stabilization: false
         }
       };
       
