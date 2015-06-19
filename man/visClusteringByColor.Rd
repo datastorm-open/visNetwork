@@ -23,6 +23,7 @@ visNetwork(nodes, edges) \%>\%
  visNetwork(nodes, edges, legend = TRUE) \%>\%
    visGroups(groupname = "A", color = "red", shape = "database") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
-   visClusteringByColor(colors = c("red", "yellow"))
+   visClusteringByColor(colors = c("red", "yellow")) \%>\%
+   visClusteringByGroup(groups = c("B"))
 }
 

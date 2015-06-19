@@ -16,7 +16,7 @@
 #' @export
 visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
   
-  clusteringOutliers <- list(enabled = TRUE, clusterFactor = clusterFactor, stabilize = stabilize)
+  clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
   
   graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
   
@@ -43,7 +43,8 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #'  visNetwork(nodes, edges, legend = TRUE) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-#'    visClusteringByColor(colors = c("red", "yellow"))
+#'    visClusteringByColor(colors = c("red")) %>%
+#'    visClusteringByGroup(groups = c("B"))
 #'  
 #' @export
 visClusteringByColor <- function(graph, colors){
@@ -74,6 +75,7 @@ visClusteringByColor <- function(graph, colors){
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
 #'    visClusteringByGroup(groups = c("B"))
 #'  
+#' @export
 visClusteringByGroup <- function(graph, groups){
   
   if(length(groups) == 1){

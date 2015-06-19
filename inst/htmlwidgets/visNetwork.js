@@ -54,6 +54,7 @@ HTMLWidgets.widget({
     var lastClusterZoomLevel = 0;
     var clusterFactor;
     var ctrlwait = 0;
+    
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
@@ -426,27 +427,29 @@ HTMLWidgets.widget({
       document.getElementById(el.id).appendChild(clusterbutton);
 
       clusterbutton.onclick =  function(){
+        instance.network.setData(data);
         if(x.clusteringColor){
-          instance.network.setData(data);
           clusterByColor();
         }
         if(x.clusteringGroup){
-          instance.network.setData(data);
           clusterByGroup();
         }
         instance.network.fit();
       }
     }
     
-    if(x.clusteringColor){
-      
-      instance.network.on("doubleClick", function(params) {
+    if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers){
+      // if we click on a node, we want to open it up!
+      instance.network.on("doubleClick", function (params) {
         if (params.nodes.length == 1) {
           if (instance.network.isCluster(params.nodes[0]) == true) {
-            instance.network.openCluster(params.nodes[0]);
+            instance.network.openCluster(params.nodes[0])
           }
         }
-      })
+      });
+    
+    }
+    if(x.clusteringColor){
       
     //*************************
     //clustering color
@@ -486,14 +489,6 @@ HTMLWidgets.widget({
     //*************************
     
     if(x.clusteringGroup){
-      
-      instance.network.on("doubleClick", function(params) {
-        if (params.nodes.length == 1) {
-          if (instance.network.isCluster(params.nodes[0]) == true) {
-            instance.network.openCluster(params.nodes[0]);
-          }
-        }
-      })
       
       function clusterByGroup() {
         var groups = x.clusteringGroup.groups;
@@ -536,7 +531,7 @@ HTMLWidgets.widget({
     //clustering by zoom
     //*************************
     
-    if(x.clusteringOutliers.enabled){
+    if(x.clusteringOutliers){
       
       clusterFactor = x.clusteringOutliers.clusterFactor;
       
@@ -559,15 +554,6 @@ HTMLWidgets.widget({
         else {
           openClusters(params.scale);
         }
-        }
-      });
-
-      // if we click on a node, we want to open it up!
-      instance.network.on("selectNode", function (params) {
-        if (params.nodes.length == 1) {
-          if (instance.network.isCluster(params.nodes[0]) == true) {
-            instance.network.openCluster(params.nodes[0])
-          }
         }
       });
     }
