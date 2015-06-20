@@ -15,7 +15,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 
 \item{height}{: String. Default to "400px". The height of the network in pixels or as a percentage.}
 
-\item{highlightNearest}{: Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ? Based on \url{http://visjs.org/examples/network/29_neighbourhood_highlight.html}
+\item{highlightNearest}{: Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ?
 This options use click event. Not available for DOT and Gephi.}
 
 \item{nodesIdSelection}{:  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection. This options use click event. Not available for DOT and Gephi.}

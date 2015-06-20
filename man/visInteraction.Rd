@@ -6,7 +6,7 @@
 \usage{
 visInteraction(graph, dragNodes = NULL, dragView = NULL,
   hideEdgesOnDrag = NULL, hideNodesOnDrag = NULL, hover = NULL,
-  hoverSelectedEdges = NULL, keyboard = NULL, multiselect = NULL,
+  hoverConnectedEdges = NULL, keyboard = NULL, multiselect = NULL,
   navigationButtons = NULL, selectable = NULL,
   selectConnectedEdges = NULL, tooltipDelay = NULL, zoomView = NULL)
 }
@@ -21,7 +21,7 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
 
 \item{hover}{: Boolean. Default to false. When true, the nodes use their hover colors when the mouse moves over them.}
 
-\item{hoverSelectedEdges}{: Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.}
+\item{hoverConnectedEdges}{: Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.}
 
 \item{keyboard}{: Just a Boolean, or a named list. When true, the keyboard shortcuts are enabled with the default settings. For further customization, you can supply an object.
 \itemize{

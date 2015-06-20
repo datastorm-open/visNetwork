@@ -7,7 +7,7 @@
 #'@param hideEdgesOnDrag : Boolean. Default to false. When true, the edges are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.
 #'@param hideNodesOnDrag : Boolean. Default to false. When true, the nodes are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.
 #'@param hover : Boolean. Default to false. When true, the nodes use their hover colors when the mouse moves over them.
-#'@param hoverSelectedEdges : Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.
+#'@param hoverConnectedEdges : Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.
 #'@param keyboard : Just a Boolean, or a named list. When true, the keyboard shortcuts are enabled with the default settings. For further customization, you can supply an object.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false.	Toggle the usage of the keyboard shortcuts. If this option is not defined, it is set to true if any of the properties in this object are defined.}
@@ -66,7 +66,7 @@ visInteraction <- function(graph,
                        hideEdgesOnDrag = NULL,
                        hideNodesOnDrag = NULL,
                        hover = NULL,
-                       hoverSelectedEdges = NULL,
+                       hoverConnectedEdges = NULL,
                        keyboard = NULL,
                        multiselect = NULL,
                        navigationButtons = NULL,
@@ -81,7 +81,7 @@ visInteraction <- function(graph,
   interaction$hideEdgesOnDrag <- hideEdgesOnDrag
   interaction$hideNodesOnDrag <- hideNodesOnDrag
   interaction$hover <- hover
-  interaction$hoverSelectedEdges <- hoverSelectedEdges
+  interaction$hoverConnectedEdges <- hoverConnectedEdges
   interaction$keyboard <- keyboard
   interaction$multiselect <- multiselect
   interaction$navigationButtons <- navigationButtons
