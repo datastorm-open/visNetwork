@@ -420,15 +420,19 @@ HTMLWidgets.widget({
       callback(null);
     }
     
+    //*************************
+    // CLUSTERING
+    //*************************
+    
     if(x.clusteringGroup || x.clusteringColor){
       
       var clusterbutton = document.createElement("input");
       clusterbutton.id = "backbtn"+el.id;
       clusterbutton.setAttribute('type', 'button');  
-      clusterbutton.setAttribute('value', 'Re-init clustering'); 
+      clusterbutton.setAttribute('value', 'Reinitialize clustering'); 
       clusterbutton.setAttribute('style', 'background-color:#FFFFFF;border: none');
       document.getElementById(el.id).appendChild(clusterbutton);
-
+      
       clusterbutton.onclick =  function(){
         instance.network.setData(data);
         if(x.clusteringColor){
@@ -446,7 +450,8 @@ HTMLWidgets.widget({
       instance.network.on("doubleClick", function (params) {
         if (params.nodes.length == 1) {
           if (instance.network.isCluster(params.nodes[0]) == true) {
-            instance.network.openCluster(params.nodes[0])
+            instance.network.openCluster(params.nodes[0]);
+            instance.network.fit()
           }
         }
       });
@@ -460,25 +465,29 @@ HTMLWidgets.widget({
     
       function clusterByColor() {
         var colors = x.clusteringColor.colors
-        console.info(colors)
         var clusterOptionsByData;
         for (var i = 0; i < colors.length; i++) {
           var color = colors[i];
-          console.info(color)
           clusterOptionsByData = {
               joinCondition: function (childOptions) {
                   return childOptions.color.background == color; // the color is fully defined in the node.
               },
               processProperties: function (clusterOptions, childNodes, childEdges) {
-                  console.info(childNodes)
                   var totalMass = 0;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
+                      if(i === 0){
+                        clusterOptions.shape =  childNodes[i].shape;
+                      }else{
+                        if(childNodes[i].shape !== clusterOptions.shape){
+                          clusterOptions.shape = 'database';
+                        }
+                      }
                   }
                   clusterOptions.value = totalMass;
                   return clusterOptions;
               },
-              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, shape: 'database', color:color, label:'color:' + color}
+              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, color:color, label:'Cluster on color:' + color}
           }
           instance.network.cluster(clusterOptionsByData);
         }
@@ -503,7 +512,7 @@ HTMLWidgets.widget({
                   return childOptions.group == group; //
               },
               processProperties: function (clusterOptions, childNodes, childEdges) {
-                console.info(childNodes);
+                //console.info(clusterOptions);
                   var totalMass = 0;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
@@ -522,7 +531,7 @@ HTMLWidgets.widget({
                   clusterOptions.value = totalMass;
                   return clusterOptions;
               },
-              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:'group:' + group}
+              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:'Cluster on group:' + group}
           }
           instance.network.cluster(clusterOptionsByData);
         }
