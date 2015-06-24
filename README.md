@@ -4,8 +4,8 @@
 
 ## main changes
 
-- new options on ````visNodes````, ````visEdges````, ````vdataManipulation rename isGroups````
-- in ````visOptions```` dataManipulation rename manipulation
+- new options on ````visNodes````, ````visEdges````, ````visGroups````
+- in ````visOptions```` dataManipulation rename to manipulation
 - lot of options move from ````visOptions```` to new ````visInteraction````, and some have been deleted/renamed
   - dragNetwork, hideNodesOnDrag, hover, selectable, keyboard, ....
   - navigation, rename navigationButtons
@@ -14,7 +14,7 @@
 - delete ````visTooltips```` (just tooltipDelay on ````visInteraction````)
 - new events on  ````visEvents ````
 - new cool configure options, look at ````visConfigure  ````
-- more flexible clustering possibilities for javascript coder, but a simple integration into R is really more difficult. We'll try to propose something. Actually, ````visClustergin```` is deprecated
+- more flexible clustering possibilities for javascript coder, but a simple integration into R is really more difficult. We'll try to propose something. Actually, ````visClustering```` is deprecated
 
 Have a look to multiple R examples, vis.js documentation (````visDocumentation````), and online help page http://dataknowledge.github.io/visNetwork/
 
