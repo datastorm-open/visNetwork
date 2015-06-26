@@ -6,6 +6,11 @@
 \usage{
 visClusteringByColor(graph, colors)
 }
+\arguments{
+\item{graph}{: a visNetwork object}
+
+\item{colors}{: Character/vector. colors we want to cluster}
+}
 \description{
 Network visualization clustering options - by color.
 }

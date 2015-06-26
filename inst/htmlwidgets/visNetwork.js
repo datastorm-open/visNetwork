@@ -424,7 +424,7 @@ HTMLWidgets.widget({
     // CLUSTERING
     //*************************
     
-    if(x.clusteringGroup || x.clusteringColor){
+    if(x.clusteringGroup || x.clusteringColor || x.clusteringHubsize || x.clusteringConnection){
       
       var clusterbutton = document.createElement("input");
       clusterbutton.id = "backbtn"+el.id;
@@ -441,11 +441,17 @@ HTMLWidgets.widget({
         if(x.clusteringGroup){
           clusterByGroup();
         }
+        if(x.clusteringHubsize){
+          clusterByHubsize();
+        }
+        if(x.clusteringConnection){
+          clusterByConnection();
+        }
         instance.network.fit();
       }
     }
     
-    if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers){
+    if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers || x.clusteringHubsize || x.clusteringConnection){
       // if we click on a node, we want to open it up!
       instance.network.on("doubleClick", function (params) {
         if (params.nodes.length == 1) {
@@ -455,8 +461,59 @@ HTMLWidgets.widget({
           }
         }
       });
-    
     }
+    //*************************
+    //clustering Connection
+    //*************************
+    
+    if(x.clusteringConnection){
+      
+      function clusterByConnection() {
+        for (var i = 0; i < x.clusteringConnection.nodes.length; i++) {
+          instance.network.clusterByConnection(x.clusteringConnection.nodes[i])
+        }
+      }
+      clusterByConnection();
+    }
+    
+    //*************************
+    //clustering hubsize
+    //*************************
+    
+    if(x.clusteringHubsize){
+      
+      function clusterByHubsize() {
+        var clusterOptionsByData = {
+          processProperties: function(clusterOptions, childNodes) {
+                  for (var i = 0; i < childNodes.length; i++) {
+                      //totalMass += childNodes[i].mass;
+                      if(i === 0){
+                        //clusterOptions.shape =  childNodes[i].shape;
+                        clusterOptions.color =  childNodes[i].color.background;
+                      }else{
+                        //if(childNodes[i].shape !== clusterOptions.shape){
+                          //clusterOptions.shape = 'database';
+                        //}
+                        if(childNodes[i].color.background !== clusterOptions.color){
+                          clusterOptions.color = 'grey';
+                        }
+                      }
+                  }
+            clusterOptions.label = "[" + childNodes.length + "]";
+            return clusterOptions;
+          },
+          clusterNodeProperties: {borderWidth:3, shape:'box', font:{size:30}}
+        }
+        if(x.clusteringHubsize.size > 0){
+          instance.network.clusterByHubsize(x.clusteringHubsize.size, clusterOptionsByData);
+        }else{
+          instance.network.clusterByHubsize(undefined, clusterOptionsByData);
+        }
+      }
+      
+      clusterByHubsize();
+    }
+    
     if(x.clusteringColor){
       
     //*************************

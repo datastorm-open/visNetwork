@@ -2,7 +2,9 @@
 
 export(renderVisNetwork)
 export(visClusteringByColor)
+export(visClusteringByConnection)
 export(visClusteringByGroup)
+export(visClusteringByHubsize)
 export(visClusteringOutliers)
 export(visConfigure)
 export(visDocumentation)

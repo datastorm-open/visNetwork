@@ -27,7 +27,10 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #' Network visualization clustering options - by color
 #'
 #' Network visualization clustering options - by color.
-#'
+#' 
+#' @param graph : a visNetwork object
+#' @param colors : Character/vector. colors we want to cluster
+#' 
 #' @examples
 #'
 #' set.seed(123)
@@ -64,10 +67,49 @@ visClusteringByColor <- function(graph, colors){
   
 }
 
+
+#' Network visualization clustering options - by hubsize
+#'
+#' Network visualization clustering options - by hubsize
+#' 
+#' @param graph : a visNetwork object
+#' @param size : Integer. This method checks all nodes in the network and those with a equal or higher amount of edges than specified with size argument. If size is null (defaut), the size will be determined as the average value plus two standard deviations. 
+#' 
+#' @examples
+#'
+#' set.seed(123)
+#' nodes <- data.frame(id = 1:10, color = c(rep("blue", 6), rep("red", 3), rep("green", 1)))
+#' edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
+#'
+#' visNetwork(nodes, edges) %>%
+#'  visClusteringByHubsize()
+#'  
+#' visNetwork(nodes, edges) %>%
+#'  visClusteringByHubsize(size = 2)
+#'  
+#' @export
+visClusteringByHubsize <- function(graph, size = NULL){
+  
+  if(is.null(size)){
+    clusteringHubsize <- list(size = 0)
+  }else{
+    clusteringHubsize <- list(size = size)
+  }
+
+  
+  graph$x$clusteringHubsize <- clusteringHubsize 
+  
+  graph
+  
+}
+
 #' Network visualization clustering options - by group
 #'
 #' Network visualization clustering options - by group.
-#'
+#' 
+#' @param graph : a visNetwork object
+#' @param groups : Character/vector. groups we want to cluster
+#' 
 #' @examples
 #'
 #'  
@@ -88,6 +130,40 @@ visClusteringByGroup <- function(graph, groups){
   clusteringGroup<- list(groups = groups)
   
   graph$x$clusteringGroup <- clusteringGroup
+  
+  graph
+  
+}
+
+#' Network visualization clustering options - by node id
+#'
+#' Network visualization clustering options - by node id
+#' 
+#' @param graph : a visNetwork object
+#' @param nodes : Character/vector. gid of nodes we wqnt to cluster
+#' 
+#' @examples
+#'
+#' set.seed(123)
+#' nodes <- data.frame(id = 1:10, color = c(rep("blue", 6), rep("red", 3), rep("green", 1)))
+#' edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
+#'
+#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'    visClusteringByConnection(nodes = 9)
+#'  
+#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'    visClusteringByConnection(nodes = c(9,5))
+#'      
+#' @export
+visClusteringByConnection <- function(graph, nodes){
+  
+  if(length(nodes) == 1){
+    nodes <- list(nodes)
+  }
+  
+  clusteringConnection<- list(nodes = nodes)
+  
+  graph$x$clusteringConnection <- clusteringConnection
   
   graph
   

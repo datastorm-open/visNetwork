@@ -6,6 +6,11 @@
 \usage{
 visClusteringByGroup(graph, groups)
 }
+\arguments{
+\item{graph}{: a visNetwork object}
+
+\item{groups}{: Character/vector. groups we want to cluster}
+}
 \description{
 Network visualization clustering options - by group.
 }
