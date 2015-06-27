@@ -1,28 +1,29 @@
-#' Network visualization clustering options
-#'
-#' Network visualization clustering options.
-#'
-#' @examples
-#'
-#' set.seed(123)
-#' nodes <- data.frame(id = 1:100)
-#' edges <- data.frame(from = round(runif(60)*100), to = round(runif(60)*100))
-#'
-#' visNetwork(nodes, edges) %>%
-#'  visClusteringOutliers(clusterFactor = 1) %>%
-#'  visLayout(randomSeed = 123)
-#
-#'
-#' @export
-visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
-  
-  clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
-  
-  graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
-  
-  graph
-  
-}
+# Network visualization clustering options
+# 
+# Network visualization clustering options.
+# 
+# 
+# @examples
+# 
+# set.seed(123)
+# nodes <- data.frame(id = 1:100)
+# edges <- data.frame(from = round(runif(60)*100), to = round(runif(60)*100))
+# 
+# visNetwork(nodes, edges) %>%
+#  visClusteringOutliers(clusterFactor = 1) %>%
+#  visLayout(randomSeed = 123)
+# 
+# 
+# @export
+# visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
+#   
+#   clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
+#   
+#   graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
+#   
+#   graph
+#   
+# }
 
 #' Network visualization clustering options - by color
 #'
