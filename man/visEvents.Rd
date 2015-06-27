@@ -11,7 +11,8 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
   blurNode = NULL, zoom = NULL, showPopup = NULL, hidePopup = NULL,
   startStabilizing = NULL, stabilizationProgress = NULL,
   stabilizationIterationsDone = NULL, stabilized = NULL, resize = NULL,
-  initRedraw = NULL, afterDrawing = NULL, animationFinished = NULL)
+  initRedraw = NULL, beforeDrawing = NULL, afterDrawing = NULL,
+  animationFinished = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -64,11 +65,11 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
 
 \item{initRedraw}{: Fired before the redrawing begins. The simulation step has completed at this point. Can be used to move custom elements before starting drawing the new frame.}
 
+\item{beforeDrawing}{: Fired after the canvas has been cleared, scaled and translated to the viewing position but before all edges and nodes are drawn. Can be used to draw behind the network.}
+
 \item{afterDrawing}{: Fired after drawing on the canvas has been completed. Can be used to draw on top of the network.}
 
 \item{animationFinished}{: Fired when an animation is finished.}
-
-\item{beforeDrawing}{: Fired after the canvas has been cleared, scaled and translated to the viewing position but before all edges and nodes are drawn. Can be used to draw behind the network.}
 }
 \description{
 Network visualization events. For full documentation, have a look at \link{visDocumentation}.

@@ -73,6 +73,7 @@ visEvents <- function(graph,
                       stabilized = NULL,
                       resize = NULL,
                       initRedraw = NULL,
+                      beforeDrawing = NULL,
                       afterDrawing = NULL,
                       animationFinished = NULL){
 
@@ -101,6 +102,7 @@ visEvents <- function(graph,
   events$stabilized  <- JS(stabilized)
   events$resize  <- JS(resize)
   events$initRedraw  <- JS(initRedraw)
+  events$beforeDrawing  <- JS(beforeDrawing)
   events$afterDrawing  <- JS(afterDrawing)
   events$animationFinished <- JS(animationFinished)
 
