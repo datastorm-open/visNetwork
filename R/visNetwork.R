@@ -64,11 +64,14 @@
 #'                     shadow = c(FALSE, TRUE, FALSE, TRUE))                       # shadow
 #'
 #' visNetwork(nodes, edges) 
-#' 
-#' # simple network
-#' visNetwork(nodes, edges)
 #'
 #' # highlight nearest
+#' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
+#'  group = sample(LETTERS[1:3], 15, replace = TRUE))
+#'
+#' edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
+#'  to = trunc(runif(15)*(15-1))+1)
+#'  
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
 #' 
 #' # try a legend...
