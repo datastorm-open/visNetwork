@@ -11,6 +11,8 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
   selectConnectedEdges = NULL, tooltipDelay = NULL, zoomView = NULL)
 }
 \arguments{
+\item{graph}{: a visNetwork object}
+
 \item{dragNodes}{: Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.}
 
 \item{dragView}{: Boolean. Default to true. When true, the view can be dragged around by the user.}

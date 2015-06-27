@@ -19,3 +19,13 @@ mergeLists <- function (base_list, overlay_list, recursive = TRUE) {
     merged_list
   }
 }
+
+#' Export magrittr function
+#' 
+#' Export magrittr function
+#' 
+#' @importFrom magrittr %>%
+#' @name %>%
+#' @export
+#' @rdname visNetwork-exports
+NULL

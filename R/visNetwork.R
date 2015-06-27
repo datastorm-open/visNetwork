@@ -31,6 +31,10 @@
 #' 
 #' @param legend.width : Number, in [0,...,1]. Default to 0.2
 #' 
+#' @param width	: Width (optional, defaults to automatic sizing)
+#' 
+#' @param height	: Height (optional, defaults to automatic sizing)
+#' 
 #' @examples
 #'
 #' # minimal example
@@ -39,17 +43,28 @@
 #'
 #' visNetwork(nodes, edges)
 #'
-#' # more variables
-#' nb <- 15
-#' nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
-#'  group = sample(LETTERS[1:3], nb, replace = TRUE), value = 1:nb,
-#'  title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
+#' # customization adding more variables (see visNodes and visEdges)
+#' nodes <- data.frame(id = 1:10, 
+#'                     label = paste("Node", 1:10),                                 # labels
+#'                     group = c("GrA", "GrB"),                                     # groups 
+#'                     value = 1:10,                                                # size 
+#'                     shape = c("square", "triangle", "box", "circle", "dot", "star",
+#'                               "ellipse", "database", "text", "diamond"),         # shape
+#'                     title = paste0("<p><b>", 1:10,"</b><br>Node !</p>"),         # tooltip
+#'                     color = c("darkred", "grey", "orange", "darkblue", "purple"),# color
+#'                     shadow = c(FALSE, TRUE, FALSE, TRUE, TRUE))                  # shadow
 #'
-#' edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
-#'  to = trunc(runif(nb)*(nb-1))+1,
-#'  value = rnorm(nb, 10), label = paste("Edge", 1:nb),
-#'  title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
+#' edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
+#'                     label = paste("Edge", 1:8),                                 # labels
+#'                     length = c(100,500),                                        # length
+#'                     arrows = c("to", "from", "middle", "middle;to"),            # arrows
+#'                     dashes = c(TRUE, FALSE),                                    # dashes
+#'                     title = paste("Edge", 1:8),                                 # tooltip
+#'                     smooth = c(FALSE, TRUE),                                    # smooth
+#'                     shadow = c(FALSE, TRUE, FALSE, TRUE))                       # shadow
 #'
+#' visNetwork(nodes, edges) 
+#' 
 #' # simple network
 #' visNetwork(nodes, edges)
 #'
@@ -93,12 +108,19 @@
 #' visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 #' 
 #' # gephi json file
-#' gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') %>% ...
-#'
+#' \dontrun{
+#' visNetwork(gephi = 'WorldCup2014.json') %>% visPhysics(stabilization = FALSE,   barnesHut = list(
+#'     gravitationalConstant = -10000,
+#'     springConstant = 0.002,
+#'     springLength = 150
+#'   ))
+#'}
 #' 
 #' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
 #'
 #' @import htmlwidgets
+#' 
+#' @importFrom rjson fromJSON
 #'
 #' @export
 #' 
@@ -139,17 +161,31 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
   )
 }
 
-#' Widget output function for use in Shiny
+#' Shiny bindings for visNetwork
+#' 
+#' Output and render functions for using visNetwork within Shiny 
+#' applications and interactive Rmd documents.
+#' 
+#' @param outputId : output variable to read from
+#' @param width,height Must be a valid CSS unit (like \code{"100\%"},
+#'   \code{"400px"}, \code{"auto"}) or a number, which will be coerced to a
+#'   string and have \code{"px"} appended.
+#' @param expr An expression that generates a visNetwork
+#' @param env The environment in which to evaluate \code{expr}.
+#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This 
+#'   is useful if you want to save an expression in a variable.
+#'   
+#' @name visNetwork-shiny
 #'
 #' @export
 visNetworkOutput <- function(outputId, width = '100%', height = '400px'){
   shinyWidgetOutput(outputId, 'visNetwork', width, height, package = 'visNetwork')
 }
 
-#' Widget render function for use in Shiny
-#'
+#' @rdname visNetwork-shiny
 #' @export
 renderVisNetwork <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   shinyRenderWidget(expr, visNetworkOutput, env, quoted = TRUE)
 }
+

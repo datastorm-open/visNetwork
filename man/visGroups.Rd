@@ -19,7 +19,8 @@ visGroups(graph, useDefaultGroups = NULL, groupname = NULL, ...)
 Network visualization groups options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
-nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), group = sample(c("A", "B"), 10, replace = TRUE))
+nodes <- data.frame(id = 1:10, label = paste("Label", 1:10),
+ group = sample(c("A", "B"), 10, replace = TRUE))
 edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
 visNetwork(nodes, edges, legend = TRUE) \%>\%

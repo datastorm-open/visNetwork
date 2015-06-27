@@ -36,6 +36,10 @@ See See \link{visEdges}
 \item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
 
 \item{legend.width}{: Number, in [0,...,1]. Default to 0.2}
+
+\item{width}{: Width (optional, defaults to automatic sizing)}
+
+\item{height}{: Height (optional, defaults to automatic sizing)}
 }
 \description{
 Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
@@ -47,16 +51,27 @@ edges <- data.frame(from = c(1,2), to = c(1,3))
 
 visNetwork(nodes, edges)
 
-# more variables
-nb <- 15
-nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
- group = sample(LETTERS[1:3], nb, replace = TRUE), value = 1:nb,
- title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
+# customization adding more variables (see visNodes and visEdges)
+nodes <- data.frame(id = 1:10,
+                    label = paste("Node", 1:10),                                 # labels
+                    group = c("GrA", "GrB"),                                     # groups
+                    value = 1:10,                                                # size
+                    shape = c("square", "triangle", "box", "circle", "dot", "star",
+                              "ellipse", "database", "text", "diamond"),         # shape
+                    title = paste0("<p><b>", 1:10,"</b><br>Node !</p>"),         # tooltip
+                    color = c("darkred", "grey", "orange", "darkblue", "purple"),# color
+                    shadow = c(FALSE, TRUE, FALSE, TRUE, TRUE))                  # shadow
 
-edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
- to = trunc(runif(nb)*(nb-1))+1,
- value = rnorm(nb, 10), label = paste("Edge", 1:nb),
- title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
+edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
+                    label = paste("Edge", 1:8),                                 # labels
+                    length = c(100,500),                                        # length
+                    arrows = c("to", "from", "middle", "middle;to"),            # arrows
+                    dashes = c(TRUE, FALSE),                                    # dashes
+                    title = paste("Edge", 1:8),                                 # tooltip
+                    smooth = c(FALSE, TRUE),                                    # smooth
+                    shadow = c(FALSE, TRUE, FALSE, TRUE))                       # shadow
+
+visNetwork(nodes, edges)
 
 # simple network
 visNetwork(nodes, edges)
@@ -101,7 +116,13 @@ htmlwidgets::saveWidget(network, "network.html")
 visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 
 # gephi json file
-gephiNetwork <- visNetwork(gephi = 'WorldCup2014.json') \%>\% ...
+\dontrun{
+visNetwork(gephi = 'WorldCup2014.json') \%>\% visPhysics(stabilization = FALSE,   barnesHut = list(
+    gravitationalConstant = -10000,
+    springConstant = 0.002,
+    springLength = 150
+  ))
+}
 }
 \seealso{
 \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}

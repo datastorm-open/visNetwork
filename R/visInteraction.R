@@ -2,6 +2,7 @@
 #'
 #' Network visualization interaction. For full documentation, have a look at \link{visDocumentation}.
 #'
+#'@param graph : a visNetwork object
 #'@param dragNodes : Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.
 #'@param dragView : Boolean. Default to true. When true, the view can be dragged around by the user.
 #'@param hideEdgesOnDrag : Boolean. Default to false. When true, the edges are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.

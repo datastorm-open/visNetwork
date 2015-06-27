@@ -128,7 +128,8 @@ visNetwork(nodes, edges) \%>\% visNodes(color = list(hover = "green")) \%>\%
 
 visNetwork(nodes, edges) \%>\% visNodes(color = "red")
 
-visNetwork(nodes, edges) \%>\% visNodes(color = list(background = "red", border = "blue", highlight = "yellow"))
+visNetwork(nodes, edges) \%>\% visNodes(color = list(background = "red", border = "blue",
+ highlight = "yellow"))
 
 visNetwork(nodes, edges) \%>\% visNodes(shadow = TRUE)
 

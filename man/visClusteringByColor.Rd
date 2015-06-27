@@ -22,7 +22,8 @@ edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
 visNetwork(nodes, edges) \%>\%
  visClusteringByColor(colors = c("blue"))
 
- nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), group = sample(c("A", "B"), 10, replace = TRUE))
+ nodes <- data.frame(id = 1:10, label = paste("Label", 1:10),
+   group = sample(c("A", "B"), 10, replace = TRUE))
  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
  visNetwork(nodes, edges, legend = TRUE) \%>\%
