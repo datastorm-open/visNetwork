@@ -298,6 +298,9 @@ HTMLWidgets.widget({
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
+          if (allNodes[nodeId].hiddenColor === undefined & allNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
+            allNodes[nodeId].hiddenColor = allNodes[nodeId].color;
+          }
           allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
           if (allNodes[nodeId].hiddenLabel === undefined) {
             allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
@@ -314,6 +317,7 @@ HTMLWidgets.widget({
           }
         }
         
+
         // all second degree nodes get a different color and their label back
         for (i = 0; i < allConnectedNodes.length; i++) {
           //allNodes[allConnectedNodes[i]].color = 'rgba(150,150,150,0.75)';
@@ -325,15 +329,24 @@ HTMLWidgets.widget({
         
         // all first degree nodes get their own color and their label back
         for (i = 0; i < connectedNodes.length; i++) {
-          allNodes[connectedNodes[i]].color = undefined;
+          if (allNodes[connectedNodes[i]].hiddenColor !== undefined) {
+            allNodes[connectedNodes[i]].color = allNodes[connectedNodes[i]].hiddenColor;
+          }else{
+            allNodes[connectedNodes[i]].color = undefined;
+          }
           if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
             allNodes[connectedNodes[i]].label = allNodes[connectedNodes[i]].hiddenLabel;
             allNodes[connectedNodes[i]].hiddenLabel = undefined;
           }
         }
         
+        
         // the main node gets its own color and its label back.
-        allNodes[selectedNode].color = undefined;
+        if (allNodes[selectedNode].hiddenColor !== undefined) {
+          allNodes[selectedNode].color = allNodes[selectedNode].hiddenColor;
+        }else{
+          allNodes[selectedNode].color = undefined;
+        }
         if (allNodes[selectedNode].hiddenLabel !== undefined) {
           allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
           allNodes[selectedNode].hiddenLabel = undefined;
@@ -348,13 +361,20 @@ HTMLWidgets.widget({
           }
         }
         // reset all nodes
+
         for (var nodeId in allNodes) {
-          allNodes[nodeId].color = undefined;
+          if (allNodes[nodeId].hiddenColor !== undefined) {
+            allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
+            allNodes[nodeId].hiddenColor = undefined;
+          }else{
+            allNodes[nodeId].color = undefined;
+          }
           if (allNodes[nodeId].hiddenLabel !== undefined) {
             allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
             allNodes[nodeId].hiddenLabel = undefined;
           }
         }
+        
         highlightActive = false
       }
       
@@ -391,8 +411,8 @@ HTMLWidgets.widget({
     
     // actually only with nodes + edges data (not dot and gephi)
     if(x.highlight && x.nodes){
-      nodesDataset = nodes; // these come from WorldCup2014.js
-      edgesDataset = edges; // these come from WorldCup2014.js
+      nodesDataset = nodes; 
+      edgesDataset = edges;
       allNodes = nodesDataset.get({returnType:"Object"});
       instance.network.on("click",neighbourhoodHighlight);
     }else if(x.idselection && x.nodes){
