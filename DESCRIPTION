@@ -1,7 +1,7 @@
 Package: visNetwork
 Title: Network visualization using vis.js library
 Version: 0.0.4
-Date: 2015-06-01
+Date: 2015-07-07
 Authors@R: c(
     person(family = "Almende B.V.", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
@@ -15,3 +15,5 @@ Imports: htmlwidgets,
   rjson,
   magrittr
 License: MIT + file LICENSE
+Suggests: knitr
+VignetteBuilder: knitr
