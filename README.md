@@ -1,6 +1,6 @@
 # INFORMATION
 
-### visNetwork was updated from vis.js 3.12.0 to vis.js 4.2.0. visNetwork 0.0.4 and higher use vis.js 4.2.0, with some changes from ealier version
+### visNetwork was updated from vis.js 3.12.0 to vis.js 4.4.0. visNetwork 0.0.4 and higher use vis.js 4.4.0, with some changes from ealier version
 
 ## main changes
 
