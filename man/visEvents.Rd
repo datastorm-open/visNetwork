@@ -8,11 +8,11 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
   hold = NULL, release = NULL, select = NULL, selectNode = NULL,
   selectEdge = NULL, deselectNode = NULL, deselectEdge = NULL,
   dragStart = NULL, dragging = NULL, dragEnd = NULL, hoverNode = NULL,
-  blurNode = NULL, zoom = NULL, showPopup = NULL, hidePopup = NULL,
-  startStabilizing = NULL, stabilizationProgress = NULL,
-  stabilizationIterationsDone = NULL, stabilized = NULL, resize = NULL,
-  initRedraw = NULL, beforeDrawing = NULL, afterDrawing = NULL,
-  animationFinished = NULL)
+  blurNode = NULL, hoverEdge = NULL, blurEdge = NULL, zoom = NULL,
+  showPopup = NULL, hidePopup = NULL, startStabilizing = NULL,
+  stabilizationProgress = NULL, stabilizationIterationsDone = NULL,
+  stabilized = NULL, resize = NULL, initRedraw = NULL,
+  beforeDrawing = NULL, afterDrawing = NULL, animationFinished = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -46,6 +46,10 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
 \item{hoverNode}{: Fired interaction:{hover:true} and the mouse hovers over a node.}
 
 \item{blurNode}{: Fired interaction:{hover:true} and the mouse moved away from a node it was hovering over before.}
+
+\item{hoverEdge}{: Fired interaction:{hover:true} and the mouse hovers over a edge}
+
+\item{blurEdge}{: Fired interaction:{hover:true} and the mouse moved away from a edge it was hovering over before.}
 
 \item{zoom}{: Fired when the user zooms in or out. The properties tell you which direction the zoom is in. The scale is a number greater than 0, which is the same that you get with network.getScale().}
 

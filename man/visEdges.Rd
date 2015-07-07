@@ -7,8 +7,9 @@
 visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
   width = NULL, dashes = NULL, hidden = NULL, hoverWidth = NULL,
   id = NULL, physics = NULL, selectionWidth = NULL,
-  selfReferenceSize = NULL, color = NULL, font = NULL, arrows = NULL,
-  smooth = NULL, shadow = NULL, scaling = NULL)
+  selfReferenceSize = NULL, labelHighlightBold = NULL, color = NULL,
+  font = NULL, arrows = NULL, smooth = NULL, shadow = NULL,
+  scaling = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -36,6 +37,8 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
 \item{selectionWidth}{: Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.}
 
 \item{selfReferenceSize}{: Number. Default to false.    When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.}
+
+\item{labelHighlightBold}{: Boolean. Default to    true. Determines whether or not the label becomes bold when the edge is selected.}
 
 \item{color}{: Named list or String. Default to named list. Color information of the edge in every situation. When the edge only needs a single color, a color value like 'rgb(120,32,14)', '#ffffff' or 'red'</code> can be supplied instead of an object.
 \itemize{

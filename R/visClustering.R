@@ -1,6 +1,6 @@
-# Network visualization clustering options
+# Network visualization clustering options - outliers
 # 
-# Network visualization clustering options.
+# Network visualization clustering options - outliers
 # 
 # 
 # @examples
@@ -15,15 +15,15 @@
 # 
 # 
 # @export
-# visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
-#   
-#   clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
-#   
-#   graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
-#   
-#   graph
-#   
-# }
+#visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
+#  
+#  clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
+#  
+#  graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
+#  
+#  graph
+#  
+#}
 
 #' Network visualization clustering options - by color
 #'

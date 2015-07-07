@@ -20,6 +20,7 @@
 #' @param borderWidth : Number. Default to 1. The width of the border of the node when it is not selected, automatically limited by the width of the node.
 #' @param borderWidthSelected : Number. Undefined. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.
 #' @param brokenImage : String. Undefined. When the shape is set to image or circularImage, this option can be an URL to a backup image in case the URL supplied in the image option cannot be resolved
+#' @param labelHighlightBold : Boolean. Default to true. Determines whether or not the label becomes bold when the node is selected.
 #' @param color : String | named list.	Color for the node. Can be just one color, or a list with several elements :
 #' \itemize{
 #'  \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node.}
@@ -127,6 +128,7 @@ visNodes <- function(graph,
                      borderWidth = NULL,
                      borderWidthSelected = NULL,
                      brokenImage = NULL,
+                     labelHighlightBold = NULL,
                      color = NULL,
                      fixed = NULL,
                      font = NULL,
@@ -152,7 +154,8 @@ visNodes <- function(graph,
   nodes$physics <- physics
   nodes$borderWidth <- borderWidth
   nodes$borderWidthSelected <- borderWidthSelected
-  nodes$brokenImage <- nodes$brokenImage
+  nodes$brokenImage <- brokenImage
+  nodes$labelHighlightBold <- labelHighlightBold
   nodes$color <- color
   nodes$fixed <- fixed
   nodes$font <- font

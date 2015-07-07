@@ -18,6 +18,8 @@
 #' @param dragEnd : Fired when the drag has finished.
 #' @param hoverNode : Fired interaction:{hover:true} and the mouse hovers over a node.
 #' @param blurNode : Fired interaction:{hover:true} and the mouse moved away from a node it was hovering over before.
+#' @param hoverEdge : Fired interaction:{hover:true} and the mouse hovers over a edge
+#' @param blurEdge : Fired interaction:{hover:true} and the mouse moved away from a edge it was hovering over before.
 #' @param zoom : Fired when the user zooms in or out. The properties tell you which direction the zoom is in. The scale is a number greater than 0, which is the same that you get with network.getScale().
 #' @param showPopup : Fired when the popup (tooltip) is shown.
 #' @param hidePopup : Fired when the popup (tooltip) is hidden.
@@ -64,6 +66,8 @@ visEvents <- function(graph,
                       dragEnd = NULL,
                       hoverNode = NULL,
                       blurNode = NULL,
+                      hoverEdge = NULL,
+                      blurEdge = NULL,
                       zoom = NULL,
                       showPopup = NULL,
                       hidePopup = NULL,
@@ -93,6 +97,8 @@ visEvents <- function(graph,
   events$dragEnd  <- JS(dragEnd)
   events$hoverNode  <- JS(hoverNode)
   events$blurNode  <- JS(blurNode)
+  events$hoverEdge  <- JS(hoverEdge)
+  events$blurEdge  <- JS(blurEdge)
   events$zoom  <- JS(zoom)
   events$showPopup  <- JS(showPopup)
   events$hidePopup  <- JS(hidePopup)

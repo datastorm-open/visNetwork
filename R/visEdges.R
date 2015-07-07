@@ -15,6 +15,7 @@
 #' @param physics : Boolean. Default to true. When true, the edge is part of the physics simulation. When false, it will not act as a spring.
 #' @param selectionWidth : Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.
 #' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.
+#' @param labelHighlightBold 	: Boolean. Default to	true. Determines whether or not the label becomes bold when the edge is selected.
 #' 
 #' @param color : Named list or String. Default to named list. Color information of the edge in every situation. When the edge only needs a single color, a color value like 'rgb(120,32,14)', '#ffffff' or 'red'</code> can be supplied instead of an object.
 #' \itemize{
@@ -124,6 +125,7 @@ visEdges <- function(graph,
                      physics = NULL,
                      selectionWidth = NULL,
                      selfReferenceSize = NULL, 
+                     labelHighlightBold = NULL,
                      color = NULL,
                      font = NULL, 
                      arrows = NULL, 
@@ -145,6 +147,7 @@ visEdges <- function(graph,
   edges$physics <- physics
   edges$selectionWidth <- selectionWidth
   edges$selfReferenceSize <- selfReferenceSize
+  edges$labelHighlightBold <- labelHighlightBold 
   edges$arrows <- arrows
   edges$color <- color
   edges$font <- font

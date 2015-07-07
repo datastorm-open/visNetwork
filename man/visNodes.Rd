@@ -8,8 +8,9 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
   value = NULL, x = NULL, y = NULL, label = NULL, level = NULL,
   group = NULL, hidden = NULL, image = NULL, mass = NULL,
   physics = NULL, borderWidth = NULL, borderWidthSelected = NULL,
-  brokenImage = NULL, color = NULL, fixed = NULL, font = NULL,
-  icon = NULL, shadow = NULL, scaling = NULL)
+  brokenImage = NULL, labelHighlightBold = NULL, color = NULL,
+  fixed = NULL, font = NULL, icon = NULL, shadow = NULL,
+  scaling = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -47,6 +48,8 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 \item{borderWidthSelected}{: Number. Undefined. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.}
 
 \item{brokenImage}{: String. Undefined. When the shape is set to image or circularImage, this option can be an URL to a backup image in case the URL supplied in the image option cannot be resolved}
+
+\item{labelHighlightBold}{: Boolean. Default to true. Determines whether or not the label becomes bold when the node is selected.}
 
 \item{color}{: String | named list.    Color for the node. Can be just one color, or a list with several elements :
 \itemize{
