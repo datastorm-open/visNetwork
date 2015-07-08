@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-**visNetwork** is a R package for network visualization, using **vis.js** javascript library (http://visjs.org/). All the remarks and bugs returns are welcome on github : https://github.com/DataKnowledge/visNetwork.
+**visNetwork** is a R package for network visualization, using **vis.js** javascript library (http://visjs.org). All the remarks and bugs returns are welcome on github : https://github.com/DataKnowledge/visNetwork.
 
 ## Minimal example
 
