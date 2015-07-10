@@ -101,12 +101,13 @@
 #'
 #'
 #' # Save a network
+#' \dontrun{
 #' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
 #'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
 #'  manipulation = TRUE)
 #'  
 #' htmlwidgets::saveWidget(network, "network.html")
-#' 
+#' }
 #' # DOT language
 #' visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 #' 
