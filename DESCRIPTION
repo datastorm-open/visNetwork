@@ -10,6 +10,7 @@ Authors@R: c(
     )
 Maintainer: Benoit Thieurmel <bt@datak.fr>
 Description: Provides an R interface to the 'vis.js' JavaScript charting library. It allows an interactive visualization of networks.
+BugReports: https://github.com/DataKnowledge/visNetwork/issues
 Depends: R (>= 3.0)
 Imports: htmlwidgets,
   rjson,
