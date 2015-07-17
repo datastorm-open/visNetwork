@@ -1,7 +1,7 @@
 Package: visNetwork
 Title: Network Visualization using 'vis.js' Library
 Version: 0.0.4
-Date: 2015-07-07
+Date: 2015-07-17
 Authors@R: c(
     person(family = "Almende B.V.", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
@@ -11,6 +11,7 @@ Authors@R: c(
 Maintainer: Benoit Thieurmel <bt@datak.fr>
 Description: Provides an R interface to the 'vis.js' JavaScript charting library. It allows an interactive visualization of networks.
 BugReports: https://github.com/DataKnowledge/visNetwork/issues
+URL: https://github.com/DataKnowledge/visNetwork
 Depends: R (>= 3.0)
 Imports: htmlwidgets,
   rjson,
