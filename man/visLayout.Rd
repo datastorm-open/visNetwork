@@ -4,7 +4,7 @@
 \alias{visLayout}
 \title{Network visualization layout options}
 \usage{
-visLayout(graph, randomSeed = TRUE, hierarchical = NULL)
+visLayout(graph, randomSeed = NULL, hierarchical = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -21,7 +21,10 @@ nodes <- data.frame(id = 1:10)
 edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
 
 visNetwork(nodes, edges) \%>\%
- visLayout(randomSeed = 123, hierarchical = FALSE)
+ visLayout(randomSeed = 123)
+
+visNetwork(nodes, edges) \%>\%
+ visLayout(hierarchical = TRUE)
 
 visNetwork(nodes, edges) \%>\%
  visHierarchicalLayout(direction = "LR")

@@ -12,8 +12,11 @@
 #' edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
 #'
 #' visNetwork(nodes, edges) %>%
-#'  visLayout(randomSeed = 123, hierarchical = FALSE) 
-#'
+#'  visLayout(randomSeed = 123) 
+#'  
+#' visNetwork(nodes, edges) %>%
+#'  visLayout(hierarchical = TRUE) 
+#'  
 #' visNetwork(nodes, edges) %>%
 #'  visHierarchicalLayout(direction = "LR")
 #'
@@ -24,7 +27,7 @@
 #'@export
 
 visLayout <- function(graph,
-                      randomSeed = TRUE,
+                      randomSeed = NULL,
                       hierarchical = NULL){
   
   layout <- list()
