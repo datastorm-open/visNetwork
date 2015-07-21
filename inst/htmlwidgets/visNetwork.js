@@ -140,6 +140,19 @@ HTMLWidgets.widget({
       graph.setAttribute('style', 'float:right; width:100%;height:100%');
     }
     
+    // fontAwesome unicode
+    if(x.options.groups){
+      for (var gr in x.options.groups){
+        if(x.options.groups[gr].icon){
+          x.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + x.options.groups[gr].icon.code + '"');
+        }
+      }
+    }
+    
+    if(x.options.nodes.icon){
+        x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
+    }
+
     document.getElementById("maindiv"+el.id).appendChild(graph);
     
     //*************************
