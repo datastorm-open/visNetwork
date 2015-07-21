@@ -18,7 +18,7 @@ Add \href{http://fortawesome.github.io/Font-Awesome/}{Font-Awesome} for styling
   that you'll already have these icons if using Shiny.
 }
 \examples{
-#╦ use fontAwesome icons using groups or nodes options
+# use fontAwesome icons using groups or nodes options
 # font-awesome is not part of dependencies. use addFontAwesome() if needed.
 # http://fortawesome.github.io/Font-Awesome/
 

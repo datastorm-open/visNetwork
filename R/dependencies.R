@@ -10,7 +10,7 @@
 #' 
 #' @examples
 #' 
-#' #╦ use fontAwesome icons using groups or nodes options 
+#' # use fontAwesome icons using groups or nodes options 
 #' # font-awesome is not part of dependencies. use addFontAwesome() if needed.
 #' # http://fortawesome.github.io/Font-Awesome/
 #' 
