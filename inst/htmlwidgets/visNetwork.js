@@ -711,17 +711,22 @@ HTMLWidgets.widget({
     //*************************
     //resize
     //*************************
-    window.onresize = function() {
-      //alert("resize");
+    
+    /*window.onresize = function() {
+
       if(instance.network)
         instance.network.fit();
       if(instance.legend)
         instance.legend.fit();
-    }
+    } */
       
   },
   
   resize: function(el, width, height, instance) {
+      if(instance.network)
+        instance.network.fit();
+      if(instance.legend)
+        instance.legend.fit();
   }
   
 });
