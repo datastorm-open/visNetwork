@@ -279,7 +279,7 @@ HTMLWidgets.widget({
     
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
-
+    
     // add Events
     for (var key in x.events) {
       instance.network.on(key, x.events[key]);
