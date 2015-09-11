@@ -25,6 +25,15 @@ if (!Function.prototype.bind) {
   };
 }
 
+function clone(obj) {
+    if(obj === null || typeof(obj) != 'object')
+        return obj;    
+    var temp = new obj.constructor(); 
+    for(var key in obj)
+        temp[key] = clone(obj[key]);    
+    return temp;
+}
+
 HTMLWidgets.widget({
   
   name: 'visNetwork',
@@ -188,7 +197,12 @@ HTMLWidgets.widget({
       };
       
       if(x.options.groups){
-        optionslegend.groups = x.options.groups;
+        optionslegend.groups = clone(x.options.groups);
+        for (var grp in optionslegend.groups) {
+          if(optionslegend.groups[grp].shape === "icon"){
+            optionslegend.groups[grp].icon.size = 50;
+          }
+        }
       }
       
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
@@ -219,6 +233,7 @@ HTMLWidgets.widget({
       };
     } 
     
+
     var options = x.options;
     
     //*************************
