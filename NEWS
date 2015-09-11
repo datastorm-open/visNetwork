@@ -2,6 +2,7 @@ visNetwork 0.1.1
 --------------------------------------------------------------------------------
   
   * add font-awesome icons possibilities. See ?addFontAwesome
+  * fix multiple network resize bug in shiny
   
 visNetwork 0.1.0
 --------------------------------------------------------------------------------
