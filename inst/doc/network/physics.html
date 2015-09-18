@@ -10,6 +10,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
+    <!-- Tipue vendor css -->
+    <link href="../css/tipuesearch.css" rel="stylesheet">
+
     <link href="../css/style.css" rel="stylesheet">
 
 
@@ -32,7 +35,6 @@
     <script type="text/javascript" src="../js/toggleTable.js"></script>
 </head>
 <body onload="prettyPrint();">
-
 
 <div class="navbar-wrapper">
     <div class="container">
@@ -58,6 +60,20 @@
                         <li><a href="http://www.visjs.org/featureRequests.html">Feature requests</a></li>
                         <li><a href="http://www.visjs.org/index.html#licenses">License</a></li>
                     </ul>
+                    <form class="navbar-form navbar-right" role="search">
+                        <input name="q" id="tipue_search_input" autocomplete="off" type="text" class="form-control" placeholder="Enter keywords">
+                        <button type="button" class="btn btn-default" onclick="vis.initSiteSearch(true);">Go!</button>
+                    </form>
+                    <div id="search-results-wrapper" class="panel panel-default">
+                      <div class="panel-body">
+                        <div id="tipue_search_content"></div>
+                      </div>
+                    </div>
+                    <div id="keyword-info" class="panel panel-success">
+                      <div class="panel-body">
+                          Found <span id="keyword-count"></span> results. Click <a id="keyword-jumper-button" href="">here</a> to jump to the first keyword occurence!
+                      </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -68,7 +84,6 @@
 <div class="container full">
     <h1>Network - physics</h1>
     <p>Handles the physics simulation, moving the nodes and edges to show them clearly.</p>
-    <a class="btn btn-primary" role="button" onclick="history.back()">Back to overview.</a>
     <h3>Options</h3>
     <p>The options for the physics have to be contained in an object titled 'physics'.</p>
     <p>Click on the full options or shorthand options to show how these options are supposed to be used.</p>
@@ -123,7 +138,8 @@ var options = {
       onlyDynamicEdges: false,
       fit: true
     },
-    timestep: 0.5
+    timestep: 0.5,
+    adaptiveTimestep: true
   }
 }
 
@@ -186,6 +202,7 @@ network.setOptions(options);
         <tr parent="stabilization" class="hidden"><td class="indent">stabilization.onlyDynamicEdges</td>         <td>Boolean</td>        <td><code>false</code></td>      <td>If you have predefined the position of all nodes and only want to stabilize the dynamic smooth edges, set this to true. It freezes all nodes except the invisible dynamic smooth curve support nodes. If you want the visible nodes to move and stabilize, do not use this.</td></tr>
         <tr parent="stabilization" class="hidden"><td class="indent">stabilization.fit</td>                      <td>Boolean</td>        <td><code>true</code></td>       <td>Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.</td></tr>
         <tr><td>timestep</td>                               <td>Number</td>         <td><code>0.5</code></td>        <td>The physics simulation is discrete. This means we take a step in time, calculate the forces, move the nodes and take another step. If you increase this number the steps will be too large and the network can get unstable. If you see a lot of jittery movement in the network, you may want to reduce this value a little.</td></tr>
+        <tr><td>adaptiveTimestep</td>                       <td>Boolean</td>        <td><code>true</code></td>       <td>If this is enabled, the timestep will intelligently be adapted <b>(only during the stabilization stage if stabilization is enabled!)</b> to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. <a href="layout.html#layout" target="_blank">This can be further improved by using the improvedLayout algorithm</a>.</td></tr>
     </table>
 
 </div>
@@ -197,5 +214,11 @@ network.setOptions(options);
 <script src="../js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../js/ie10-viewport-bug-workaround.js"></script>
+<!-- jquery extensions -->
+<script src="../js/jquery.highlight.js"></script>
+<script src="../js/jquery.url.min.js"></script>
+<!-- Tipue vendor js -->
+<script src="../js/tipuesearch.config.js"></script>
+<script src="../js/tipuesearch.js"></script>
 <!-- controller -->
 <script src="../js/main.js"></script>

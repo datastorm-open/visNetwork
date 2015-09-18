@@ -3,8 +3,8 @@
 #' Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a visNetwork object
-#'@param width : String. Default to "400px". The width of the network in pixels or as a percentage.
-#'@param height : String. Default to "400px". The height of the network in pixels or as a percentage.
+#'@param width : String. Default to "100\%". The width of the network in pixels or as a percentage.
+#'@param height : String. Default to "100\%". The height of the network in pixels or as a percentage.
 #'@param highlightNearest : Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ?
 #' This options use click event. Not available for DOT and Gephi.
 #'@param nodesIdSelection :  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection. This options use click event. Not available for DOT and Gephi.

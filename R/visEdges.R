@@ -34,6 +34,7 @@
 #'  \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
 #'  \item{"strokeWidth"}{ : Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
 #'  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
+#'  \item{"align"}{ : String. Default tp 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.}
 #'}
 #'
 #' @param arrows : Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. If you want to control the size of the arrowheads, you can supply an object.
@@ -51,8 +52,9 @@
 #' @param smooth : Boolean | named list. Default to named list. When true, the edge is drawn as a dynamic quadratic bezier curve. The drawing of these curves takes longer than that of straight curves but it looks better.
 #' \itemize{
 #'  \item{"enabled"}{ : Boolean. Default to true. Toggle smooth curves on and off. This is an optional option. If any of the other properties in this object are set, this option will be set to true.}
-#'  \item{"type"}{ : String. Default to 'dynamic'. Possible options: 'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal', 'vertical', 'curvedCW', 'curvedCCW'.}
+#'  \item{"type"}{ : String. Default to 'dynamic'. Possible options: 'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal', 'vertical', 'curvedCW', 'curvedCCW', 'cubicBezier'.}
 #'  \item{"roundness"}{ : Number. Default to 0.5. Accepted range: 0 .. 1.0. This parameter tweaks the roundness of the smooth curves for all types EXCEPT dynamic.}
+#'  \item{"forceDirection"}{ : String or Boolean. Default to false. Accepted options: ['horizontal', 'vertical', 'none']. This options is only used with the cubicBezier curves. When true, horizontal is chosen, when false, the direction that is larger (x distance between nodes vs y distance between nodes) is used. If the x distance is larger, horizontal. This is ment to be used with hierarchical layouts. }
 #'}
 #'
 #' @param shadow : Boolean | named list. Default to false. When true, the edges casts a shadow using the default settings. This can be further refined by supplying a list

@@ -55,6 +55,8 @@
 #'  \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.}
 #'}
 #'
+#'@param adaptiveTimestep :	Boolean. Defaut to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.
+#'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 #'
@@ -85,7 +87,8 @@ visPhysics <- function(graph,
                        forceAtlas2Based = NULL,
                        repulsion = NULL,
                        hierarchicalRepulsion = NULL, 
-                       stabilization = NULL){
+                       stabilization = NULL, 
+                       adaptiveTimestep = NULL){
 
   if(!is.null(solver)){
     if(!solver%in%c("barnesHut", "repulsion", "hierarchicalRepulsion", "forceAtlas2Based")){
@@ -104,6 +107,7 @@ visPhysics <- function(graph,
   physics$minVelocity <- minVelocity
   physics$timestep <- timestep
   physics$stabilization <- stabilization
+  physics$adaptiveTimestep <-  adaptiveTimestep
   
   if(!is.null(barnesHut)){
     physics$barnesHut <- barnesHut

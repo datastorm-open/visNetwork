@@ -172,18 +172,9 @@ You can use **Font Awesome** icons using groups or nodes options. **Font Awesome
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
-visNetwork(nodes, edges, width = "100%") %>%
+visNetwork(nodes, edges, width = "100%", legend = TRUE) %>%
   visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
   visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
-  addFontAwesome()
-```
-
-```{r}
-nodes <- data.frame(id = 1:3)
-edges <- data.frame(from = c(1,2), to = c(1,3))
-
-visNetwork(nodes, edges, width = "100%") %>%
-  visNodes(shape = "icon", icon = list( face ='FontAwesome', code = "f0c0")) %>%
   addFontAwesome()
 ```
 
@@ -209,16 +200,45 @@ visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }', width = "10
 visNetwork(gephi = 'WorldCup2014.json')
 ```
 
-## Physics, tooltip, events, shiny, ...
+## Clustering
 
-You can also control :
+Some first (experimental) functions are available : 
 
-* physics of network : *visPhysics*
-* events : *visEvents*
+* *visClusteringByColor*
+* *visClusteringByConnection*
+* *visClusteringByHubsize*
+* *visClusteringByGroup*
+* *visClusteringOutliers*
 
-And use in shiny apps with *visNetworkOutput* and *renderVisNetwork*. Using with shiny, and enabled options *nodesIdSelection*, you can access to new input with current selection value
+You can open clusters by double-clicking, and re-cluster with button.
+
+```{r, eval = TRUE, echo = TRUE}
+nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), 
+   group = sample(c("A", "B"), 10, replace = TRUE))
+
+edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
+
+visNetwork(nodes, edges, legend = TRUE, width = "100%") %>%
+   visGroups(groupname = "A", color = "red", shape = "square") %>%
+   visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
+   visClusteringByColor(colors = c("red")) %>%
+   visClusteringByGroup(groups = c("B"))
+
+```
+
+
+## Use in Shiny
+
+With *visNetworkOutput* and *renderVisNetwork*. Using with shiny, and enabled options *nodesIdSelection*, you can access to new input with current selection value :
 
 ```{r, eval = FALSE}
 output$mynetwork <- renderVisNetwork({... visOptions(nodesIdSelection = TRUE)}) # created input$mynetwork_selected
 
 ```
+
+## Physics, tooltip, events, 
+
+You can also control :
+
+* physics of network : *visPhysics*
+* events : *visEvents*

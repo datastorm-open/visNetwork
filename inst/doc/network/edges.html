@@ -11,6 +11,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">
+    <!-- Tipue vendor css -->
+    <link href="../css/tipuesearch.css" rel="stylesheet">
+
     <link href="../css/style.css" rel="stylesheet">
 
     <link href="../css/prettify.css" type="text/css" rel="stylesheet"/>
@@ -36,10 +39,8 @@
     </style>
     <script type="text/javascript" src="../js/toggleTable.js"></script>
 </head>
-<!-- NAVBAR
-================================================== -->
-<body onload="prettyPrint();">
 
+<body onload="prettyPrint();">
 
 <div class="navbar-wrapper">
     <div class="container">
@@ -65,6 +66,20 @@
                         <li><a href="http://www.visjs.org/featureRequests.html">Feature requests</a></li>
                         <li><a href="http://www.visjs.org/index.html#licenses">License</a></li>
                     </ul>
+                    <form class="navbar-form navbar-right" role="search">
+                        <input name="q" id="tipue_search_input" autocomplete="off" type="text" class="form-control" placeholder="Enter keywords">
+                        <button type="button" class="btn btn-default" onclick="vis.initSiteSearch(true);">Go!</button>
+                    </form>
+                    <div id="search-results-wrapper" class="panel panel-default">
+                      <div class="panel-body">
+                        <div id="tipue_search_content"></div>
+                      </div>
+                    </div>
+                    <div id="keyword-info" class="panel panel-success">
+                      <div class="panel-body">
+                          Found <span id="keyword-count"></span> results. Click <a id="keyword-jumper-button" href="">here</a> to jump to the first keyword occurence!
+                      </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -81,7 +96,6 @@
     <h1>Network - edges</h1>
 
     <p>Handles the creation and deletion of edges and contains the global edge options and styles.</p>
-    <a class="btn btn-primary" role="button" onclick="history.back()">Back to overview.</a>
     <h3>Options</h3>
 
     <p>The options for the edges have to be contained in an object titled 'edges'. All of these options can be supplied per edge as well. Obviously, 'id' should not be defined globally but per edge. Options defined
@@ -609,11 +623,19 @@ var options: {
             <td>String</td>
             <td><code>'dynamic'</code></td>
             <td>Possible options: <code>'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal',
-                'vertical', 'curvedCW', 'curvedCCW'</code>. Take a look at our example 26 to see what these look like
+                'vertical', 'curvedCW', 'curvedCCW', 'cubicBezier'</code>. Take a look at our example 26 to see what these look like
                 and pick the one that you like best!
                 <br><br>
                 When using dynamic, the edges will have an invisible support node guiding the shape. This node is part of the
                 physics simulation.
+            </td>
+        </tr>
+        <tr parent="smooth" class="hidden">
+            <td class="indent">smooth.forceDirection</td>
+            <td>String or Boolean</td>
+            <td><code>false</code></td>
+            <td>Accepted options: <code>['horizontal', 'vertical', 'none']</code>. This options is only used with the cubicBezier curves. When true, horizontal is chosen, when false,
+                the direction that is larger (x distance between nodes vs y distance between nodes) is used. If the x distance is larger, horizontal. This is ment to be used with hierarchical layouts.
             </td>
         </tr>
         <tr parent="smooth" class="hidden">
@@ -660,5 +682,11 @@ var options: {
 <script src="../js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../js/ie10-viewport-bug-workaround.js"></script>
+<!-- jquery extensions -->
+<script src="../js/jquery.highlight.js"></script>
+<script src="../js/jquery.url.min.js"></script>
+<!-- Tipue vendor js -->
+<script src="../js/tipuesearch.config.js"></script>
+<script src="../js/tipuesearch.js"></script>
 <!-- controller -->
 <script src="../js/main.js"></script>

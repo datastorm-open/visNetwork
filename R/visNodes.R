@@ -86,6 +86,13 @@
 #'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 #'}
 #'
+#' @param shapeProperties : Named list. This object contains configuration for specific shapes. 
+#' \itemize{
+#'  \item{"borderDashes"}{ : Vector or Boolean. Default to	false. This property applies to all shapes that have borders. You set the dashes by supplying an Vector Vector formart: [dash length, gap length]. You can also use a Boolean, false is disable and true is default [5,15].}
+#'  \item{"borderRadius"}{ : Number. Defaut to	6. This property is used only for the box shape. It allows you to determine the roundness of the corners of the shape.}
+#'  \item{"useImageSize"}{ : Boolean. Defaut to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
+#'}
+#'  
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
 #'
@@ -134,7 +141,8 @@ visNodes <- function(graph,
                      font = NULL,
                      icon = NULL, 
                      shadow = NULL,
-                     scaling = NULL){
+                     scaling = NULL, 
+                     shapeProperties = NULL){
 
   nodes <- list()
 
@@ -161,7 +169,8 @@ visNodes <- function(graph,
   nodes$font <- font
   nodes$icon <- icon
   nodes$shadow <- shadow
-
+  nodes$shapeProperties <- shapeProperties
+  
   if(!is.null(scaling)){
     if("customScalingFunction"%in%names(scaling)){
       scaling$customScalingFunction <- JS(scaling$customScalingFunction)
