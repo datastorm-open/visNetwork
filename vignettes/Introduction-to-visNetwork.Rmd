@@ -180,26 +180,6 @@ visNetwork(nodes, edges, width = "100%", legend = TRUE) %>%
 
 # Additional features
 
-## Export
-
-```{r, eval = FALSE}
-network <- visNetwork(nodes, edges, width = "100%")
-htmlwidgets::saveWidget(network, "network.html")
-```
-
-## Use DOT language data 
-
-```{r}
-visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }', width = "100%")
-```
-
-## Use gephi json export file
-
-```{r, eval = FALSE}
-# don't run here
-visNetwork(gephi = 'WorldCup2014.json')
-```
-
 ## Clustering
 
 Some first (experimental) functions are available : 
@@ -242,3 +222,24 @@ You can also control :
 
 * physics of network : *visPhysics*
 * events : *visEvents*
+
+## Export
+
+```{r, eval = FALSE}
+network <- visNetwork(nodes, edges, width = "100%")
+htmlwidgets::saveWidget(network, "network.html")
+```
+
+## Use DOT language data 
+
+```{r}
+visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }', width = "100%")
+```
+
+## Use gephi json export file
+
+```{r, eval = FALSE}
+# don't run here
+visNetwork(gephi = 'WorldCup2014.json')
+```
+
