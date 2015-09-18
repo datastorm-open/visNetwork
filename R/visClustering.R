@@ -2,7 +2,10 @@
 #' 
 #' Network visualization clustering options - outliers
 #' 
-#'  
+#' @param graph : a visNetwork object
+#' @param clusterFactor : Number, from 0 to 1. 0.9 by default
+#' @param stabilize : Boolean, defaut to false
+#' 
 #' @examples
 #'  
 #' nodes <- data.frame(id = 1:10)
