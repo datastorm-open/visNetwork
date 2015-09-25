@@ -8,6 +8,7 @@ shinyServer(function(input, output) {
     isolate({
       nb = input$nb
       nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
+                          enjeux = sample(c("Faible", "Moyen","Fort"), 10, replace = TRUE),
                           group = sample(1:10, nb, replace = TRUE), value = 1:nb,
                           title = paste0("<p>", 1:nb,"<br>Tooltip !</p>"), stringsAsFactors = FALSE)
       
@@ -21,7 +22,7 @@ shinyServer(function(input, output) {
         visPhysics(stabilization = FALSE) %>%
         visInteraction(navigationButtons = TRUE) %>%
         visOptions(manipulation = TRUE,
-                   highlightNearest = TRUE, nodesIdSelection = TRUE)
+                   highlightNearest = TRUE, nodesIdSelection = TRUE, selectedBy = "enjeux")
     })
     
   })
@@ -55,7 +56,7 @@ shinyServer(function(input, output) {
   })
   
   output$test <- renderText({
-    input$network_selected
+    paste(input$network_selected, input$network_selectedBy)
   })
   
 })

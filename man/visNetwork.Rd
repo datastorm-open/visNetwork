@@ -89,6 +89,14 @@ visNetwork(nodes, edges, legend = TRUE)
 visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
+# or add a selection on another column
+visNetwork(nodes, edges) \%>\%
+ visOptions(selectedBy = "group")
+
+nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
+visNetwork(nodes, edges) \%>\%
+ visOptions(selectedBy = "sel")
+
 # directed network
 visNetwork(nodes, edges) \%>\%
  visEdges(arrow = 'from', scaling = list(min = 2, max = 2))

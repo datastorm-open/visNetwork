@@ -6,7 +6,7 @@
 \usage{
 visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
   nodesIdSelection = FALSE, autoResize = NULL, clickToUse = NULL,
-  manipulation = NULL)
+  manipulation = NULL, selectedBy = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -25,6 +25,8 @@ This options use click event. Not available for DOT and Gephi.}
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
 \item{manipulation}{: Just a Boolean}
+
+\item{selectedBy}{: Custom option. Column name of node data.frame on which you want to add a list selection. Defaut to NULL}
 }
 \description{
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.

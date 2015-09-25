@@ -11,6 +11,7 @@
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
 #'@param manipulation : Just a Boolean
+#'@param selectedBy : Custom option. Column name of node data.frame on which you want to add a list selection. Defaut to NULL
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...
@@ -23,7 +24,8 @@ visOptions <- function(graph,
                        nodesIdSelection = FALSE,
                        autoResize = NULL,
                        clickToUse = NULL,
-                       manipulation = NULL){
+                       manipulation = NULL, 
+                       selectedBy = NULL){
 
   options <- list()
 
@@ -46,6 +48,7 @@ visOptions <- function(graph,
   }
 
   x <- list(highlight = highlightNearest, idselection = nodesIdSelection)
+  x$selectedBy <- selectedBy
   
   if(highlightNearest){
     if(!"label"%in%colnames(graph$x$nodes)){
@@ -53,6 +56,21 @@ visOptions <- function(graph,
     }
     if(!"group"%in%colnames(graph$x$nodes)){
       graph$x$nodes$group <- 1
+    }
+  }
+  
+  if(!is.null(selectedBy)){
+    if(!selectedBy%in%colnames(graph$x$nodes)){
+      warning("Can't find '", selectedBy, "' in node data.frame")
+      x$selectedBy <- NULL
+    }else{
+      x$selectedValues <- unique(graph$x$nodes[, selectedBy])
+      if(!"label"%in%colnames(graph$x$nodes)){
+        graph$x$nodes$label <- ""
+      }
+      if(!"group"%in%colnames(graph$x$nodes)){
+        graph$x$nodes$group <- 1
+      }
     }
   }
   

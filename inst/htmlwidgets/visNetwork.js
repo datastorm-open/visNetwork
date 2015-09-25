@@ -51,11 +51,18 @@ HTMLWidgets.widget({
     var nodes;
     var edges;
     
-    // highlight nearest variables
+    // highlight nearest variables & selectedBy
     var allNodes;
     var highlightActive = false;
     var nodesDataset ;
     var edgesDataset ;
+    
+    // selectedBy
+    var allSelNodes;
+    var selectActive = false;
+    var nodesSelDataset ;
+    var edgesSelDataset ;
+    
     
     // clustergin by zoom variables
     var clusterIndex = 0;
@@ -67,17 +74,25 @@ HTMLWidgets.widget({
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
+    var changeInput = function(id, data) {
+            Shiny.onInputChange(el.id + '_' + id, data);
+    };
+          
     //*************************
     //idselection
     //*************************
     
     // id nodes selection : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
+    
     if(x.idselection && x.nodes){  
       var option;
       //Create and append select list
       var selnodes = HTMLWidgets.dataframeToD3(x.nodes);
       var selectList = document.createElement("select");
+      
+      selectList.setAttribute('class', 'dropdown');
+      selectList.setAttribute('style', 'width: 150px; height: 26px');
       
       selectList.id = "nodeSelect"+el.id;
       
@@ -85,25 +100,22 @@ HTMLWidgets.widget({
       
       option = document.createElement("option");
       option.value = "";
-      option.text = "";
+      option.text = "Selection by id";
       selectList.appendChild(option);
       
       //Create and append the options
       for (var i = 0; i < selnodes.length; i++) {
         option = document.createElement("option");
-        option.value = selnodes[i]['id'];
-        if(selnodes[i]['label']){
-          option.text = selnodes[i]['label'];
+        option.value = selnodes[i].id;
+        if(selnodes[i].label){
+          option.text = selnodes[i].label;
         }else{
-          option.text = selnodes[i]['id'];
+          option.text = selnodes[i].id;
         }
         selectList.appendChild(option);
       }
       
       if (window.Shiny){
-        var changeInput = function(id, data) {
-          Shiny.onInputChange(el.id + '_' + id, data);
-        };
         changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
       }
       
@@ -119,12 +131,75 @@ HTMLWidgets.widget({
           neighbourhoodHighlight(instance.network.getSelection());
         }
         if (window.Shiny){
-          var changeInput = function(id, data) {
-            Shiny.onInputChange(el.id + '_' + id, data);
-          };
           changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
         }
+        if(x.selectedBy !== undefined){
+          selectNode = document.getElementById('selectedBy'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            changeInput('selectedBy', "");
+          }
+        }
       };
+      var hr = document.createElement("hr");
+      hr.setAttribute('style', 'height:0px; visibility:hidden; margin-bottom:-1px;');
+      document.getElementById(el.id).appendChild(hr);  
+      
+    }
+    
+    //*************************
+    //selectedBy
+    //*************************
+    
+    // selectedBy : add a list on top left
+    // actually only with nodes + edges data (not dot and gephi)
+    if(x.selectedBy !== undefined){  
+      var option2;
+      
+      //Create and append select list
+      var selnodes2 = HTMLWidgets.dataframeToD3(x.nodes);
+      var selectList2 = document.createElement("select");
+      
+      selectList2.setAttribute('class', 'dropdown');
+      selectList2.setAttribute('style', 'width: 150px; height: 26px');
+      
+      selectList2.id = "selectedBy"+el.id;
+      
+      document.getElementById(el.id).appendChild(selectList2);
+      
+      option2 = document.createElement("option");
+      option2.value = "";
+      option2.text = "Selection by " + x.selectedBy;
+      selectList2.appendChild(option2);
+      
+      //Create and append the options
+      for (var i2 = 0; i2 < x.selectedValues.length; i2++) {
+        option2 = document.createElement("option");
+        option2.value = x.selectedValues[i2];
+        option2.text = x.selectedValues[i2];
+        selectList2.appendChild(option2);
+      }
+      
+      selectList2.onchange =  function(){
+        if(instance.network){
+          selectedBy = document.getElementById("selectedBy"+el.id).value;
+          selectedHighlight(selectedBy);
+        }
+        if (window.Shiny){
+          changeInput('selectedBy', document.getElementById("selectedBy"+el.id).value);
+        }
+        if(x.idselection){
+          selectNode = document.getElementById('nodeSelect'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            changeInput('selected', "");
+          }
+        }
+      };
+      
+      if (window.Shiny){
+        changeInput('selectedBy', document.getElementById("selectedBy"+el.id).value);
+      }
     }
     
     // divide page
@@ -300,6 +375,88 @@ HTMLWidgets.widget({
       instance.network.on(key, x.events[key]);
     }
     
+
+//*************************
+  // Selected Highlight
+//*************************
+  
+  function selectedHighlight(value) {
+    
+    var sel = x.selectedBy;
+          
+    if(sel == "label"){
+      sel = "hiddenLabel";
+    }
+    if(sel == "color"){
+      sel = "hiddenColor";
+    }
+    
+    if (value !== "") {
+      
+      selectActive = true;
+      var i,j;
+      var degrees = 2;
+      
+      // mark all nodes as hard to read.
+      for (var nodeId in allSelNodes) {
+        if (allSelNodes[nodeId].hiddenColor === undefined & allSelNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
+          allSelNodes[nodeId].hiddenColor = allSelNodes[nodeId].color;
+        }
+        allSelNodes[nodeId].color = 'rgba(200,200,200,0.5)';
+        if (allSelNodes[nodeId].hiddenLabel === undefined) {
+          allSelNodes[nodeId].hiddenLabel = allSelNodes[nodeId].label;
+          allSelNodes[nodeId].label = undefined;
+        }
+        
+        if(allSelNodes[nodeId][sel] === value){
+          if (allSelNodes[nodeId].hiddenColor !== undefined) {
+            allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
+          }else{
+            allSelNodes[nodeId].color = undefined;
+          }
+          if (allSelNodes[nodeId].hiddenLabel !== undefined) {
+            allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
+            allSelNodes[nodeId].hiddenLabel = undefined;
+          }
+        }
+
+      }
+    }
+    else if (selectActive === true) {
+      // reset all nodes
+      for (var nodeId in allSelNodes) {
+        if (allSelNodes[nodeId].hiddenColor !== undefined) {
+          allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
+          allSelNodes[nodeId].hiddenColor = undefined;
+        }else{
+          allSelNodes[nodeId].color = undefined;
+        }
+        if (allSelNodes[nodeId].hiddenLabel !== undefined) {
+          allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
+          allSelNodes[nodeId].hiddenLabel = undefined;
+        }
+      }
+      
+      selectActive = false
+    }
+    
+    // transform the object into an array
+    var updateArray = [];
+    for (nodeId in allSelNodes) {
+      if (allSelNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allSelNodes[nodeId]);
+      }
+    }
+    nodesSelDataset.update(updateArray);
+  } 
+  
+   // actually only with nodes + edges data (not dot and gephi)
+    if(x.selectedBy !== undefined && x.nodes){
+      nodesSelDataset = nodes; 
+      edgesSelDataset = edges;
+      allSelNodes = nodesSelDataset.get({returnType:"Object"});
+    }
+    
     //*************************
     //Highlight
     //*************************
@@ -388,6 +545,15 @@ HTMLWidgets.widget({
             changeInput('selected', "");
           }
         }
+        
+        if(x.selectedBy !== undefined){
+          selectNode = document.getElementById('selectedBy'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            changeInput('selectedBy', "");
+          }
+        }
+        
         // reset all nodes
 
         for (var nodeId in allNodes) {
@@ -405,6 +571,13 @@ HTMLWidgets.widget({
         
         highlightActive = false
       }
+      else if(x.selectedBy !== undefined){
+        selectNode = document.getElementById('selectedBy'+el.id);
+        selectNode.value = "";
+        if (window.Shiny){
+          changeInput('selectedBy', "");
+        }
+      }
       
       // transform the object into an array
       var updateArray = [];
@@ -416,23 +589,36 @@ HTMLWidgets.widget({
       nodesDataset.update(updateArray);
     }
     
-    function onClickIDSlection(selectedItems) {
+    function onClickIDSelection(selectedItems) {
       var selectNode;
       var changeInput = function(id, data) {
         Shiny.onInputChange(el.id + '_' + id, data);
       };
       
-      if (selectedItems.nodes.length !== 0) {
-        selectNode = document.getElementById('nodeSelect'+el.id);
-        selectNode.value = selectedItems.nodes;
-        if (window.Shiny){
-          changeInput('selected', selectNode.value);
-        }
-      }else{
-        selectNode = document.getElementById('nodeSelect'+el.id);
-        selectNode.value = "";
-        if (window.Shiny){
-          changeInput('selected', "");
+      if(x.idselection){
+        if (selectedItems.nodes.length !== 0) {
+          selectNode = document.getElementById('nodeSelect'+el.id);
+          selectNode.value = selectedItems.nodes;
+          if (window.Shiny){
+            changeInput('selected', selectNode.value);
+          }
+        }else{
+          selectNode = document.getElementById('nodeSelect'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            changeInput('selected', "");
+          }
+        } 
+      }
+      
+      if(x.selectedBy !== undefined){
+        if (selectedItems.nodes.length === 0) {
+          selectNode = document.getElementById('selectedBy'+el.id);
+          selectNode.value = "";
+          selectedHighlight("");
+          if (window.Shiny){
+            changeInput('selectedBy', "");
+          }
         }
       }
     }
@@ -443,8 +629,8 @@ HTMLWidgets.widget({
       edgesDataset = edges;
       allNodes = nodesDataset.get({returnType:"Object"});
       instance.network.on("click",neighbourhoodHighlight);
-    }else if(x.idselection && x.nodes){
-      instance.network.on("click",onClickIDSlection);
+    }else if((x.idselection || x.selectedBy !== undefined) && x.nodes){
+      instance.network.on("click",onClickIDSelection);
     }
     
     //*************************
