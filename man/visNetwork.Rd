@@ -82,9 +82,6 @@ edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
 
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = TRUE)
 
-# try a legend...
-visNetwork(nodes, edges, legend = TRUE)
-
 # try an id node selection
 visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
@@ -96,6 +93,9 @@ visNetwork(nodes, edges) \%>\%
 nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
 visNetwork(nodes, edges) \%>\%
  visOptions(selectedBy = "sel")
+
+# try a legend...
+visNetwork(nodes, edges, legend = TRUE)
 
 # directed network
 visNetwork(nodes, edges) \%>\%

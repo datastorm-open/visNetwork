@@ -11,7 +11,7 @@ visClusteringOutliers(graph, clusterFactor = 0.9, stabilize = FALSE)
 
 \item{clusterFactor}{: Number, from 0 to 1. 0.9 by default}
 
-\item{stabilize}{: Boolean, defaut to false}
+\item{stabilize}{: Boolean, default to false}
 }
 \description{
 Network visualization clustering options - outliers

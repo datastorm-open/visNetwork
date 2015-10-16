@@ -31,6 +31,28 @@ This options use click event. Not available for DOT and Gephi.}
 \description{
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
 }
+\examples{
+# highlight nearest
+nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
+ group = sample(LETTERS[1:3], 15, replace = TRUE))
+
+edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
+ to = trunc(runif(15)*(15-1))+1)
+
+visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = TRUE)
+
+# with an id node selection
+visNetwork(nodes, edges) \%>\%
+ visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+
+# or add a selection on another column
+visNetwork(nodes, edges) \%>\%
+ visOptions(selectedBy = "group")
+
+nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
+visNetwork(nodes, edges) \%>\%
+ visOptions(selectedBy = "sel")
+}
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
 \link{visLayout} & \link{visHierarchicalLayout} for layout, \link{visPhysics} for physics, \link{visInteraction} for interaction, ...

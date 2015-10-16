@@ -89,8 +89,9 @@
 #' @param shapeProperties : Named list. This object contains configuration for specific shapes. 
 #' \itemize{
 #'  \item{"borderDashes"}{ : Vector or Boolean. Default to	false. This property applies to all shapes that have borders. You set the dashes by supplying an Vector Vector formart: [dash length, gap length]. You can also use a Boolean, false is disable and true is default [5,15].}
-#'  \item{"borderRadius"}{ : Number. Defaut to	6. This property is used only for the box shape. It allows you to determine the roundness of the corners of the shape.}
-#'  \item{"useImageSize"}{ : Boolean. Defaut to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
+#'  \item{"borderRadius"}{ : Number. Default to	6. This property is used only for the box shape. It allows you to determine the roundness of the corners of the shape.}
+#'  \item{"useImageSize"}{ : Boolean. Default to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
+#'  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 #'}
 #'  
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

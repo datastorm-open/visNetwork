@@ -4,7 +4,7 @@
 #' 
 #' @param graph : a visNetwork object
 #' @param clusterFactor : Number, from 0 to 1. 0.9 by default
-#' @param stabilize : Boolean, defaut to false
+#' @param stabilize : Boolean, default to false
 #' 
 #' @examples
 #'  

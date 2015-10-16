@@ -67,7 +67,7 @@ visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
  \item{"fit"}{ : Boolean. Default to true. Toggle whether or not you want the view to zoom to fit all nodes when the stabilization is finished.}
 }}
 
-\item{adaptiveTimestep}{:    Boolean. Defaut to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.}
+\item{adaptiveTimestep}{:    Boolean. Default to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.}
 }
 \description{
 Network visualization Physics options. For full documentation, have a look at \link{visDocumentation}.

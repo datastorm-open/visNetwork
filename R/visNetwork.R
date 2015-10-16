@@ -74,9 +74,6 @@
 #'  
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
 #' 
-#' # try a legend...
-#' visNetwork(nodes, edges, legend = TRUE)
-#' 
 #' # try an id node selection 
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
@@ -89,6 +86,9 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = "sel")
 #'    
+#' # try a legend...
+#' visNetwork(nodes, edges, legend = TRUE)
+#'     
 #' # directed network
 #' visNetwork(nodes, edges) %>% 
 #'  visEdges(arrow = 'from', scaling = list(min = 2, max = 2))
