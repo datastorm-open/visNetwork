@@ -42,7 +42,7 @@ HTMLWidgets.widget({
   
   initialize: function(el, width, height) {
     return {
-    }
+    };
   },
   
   renderValue: function(el, x, instance) {
@@ -376,41 +376,56 @@ HTMLWidgets.widget({
     }
     
 
-//*************************
-  // Selected Highlight
-//*************************
+    //*************************
+    // Selected Highlight
+    //*************************
   
-  function selectedHighlight(value) {
+    function selectedHighlight(value) {
     
-    var sel = x.selectedBy;
+      var sel = x.selectedBy;
           
-    if(sel == "label"){
-      sel = "hiddenLabel";
-    }
-    if(sel == "color"){
-      sel = "hiddenColor";
-    }
+      if(sel == "label"){
+        sel = "hiddenLabel";
+      }
+      
+      if(sel == "color"){
+        sel = "hiddenColor";
+      }
     
-    if (value !== "") {
+      if (value !== "") {
       
-      selectActive = true;
-      var i,j;
-      var degrees = 2;
-      
-      // mark all nodes as hard to read.
-      for (var nodeId in allSelNodes) {
-        if (allSelNodes[nodeId].hiddenColor === undefined & allSelNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
-          allSelNodes[nodeId].hiddenColor = allSelNodes[nodeId].color;
-        }
-        allSelNodes[nodeId].color = 'rgba(200,200,200,0.5)';
-        if (allSelNodes[nodeId].hiddenLabel === undefined) {
-          allSelNodes[nodeId].hiddenLabel = allSelNodes[nodeId].label;
-          allSelNodes[nodeId].label = undefined;
-        }
+        selectActive = true;
         
-        if(allSelNodes[nodeId][sel] === value){
+        // mark all nodes as hard to read.
+        for (var nodeId in allSelNodes) {
+          if (allSelNodes[nodeId].hiddenColor === undefined & allSelNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
+            allSelNodes[nodeId].hiddenColor = allSelNodes[nodeId].color;
+          }
+          allSelNodes[nodeId].color = 'rgba(200,200,200,0.5)';
+          if (allSelNodes[nodeId].hiddenLabel === undefined) {
+            allSelNodes[nodeId].hiddenLabel = allSelNodes[nodeId].label;
+            allSelNodes[nodeId].label = undefined;
+          }
+        
+          if(allSelNodes[nodeId][sel] === value){
+            if (allSelNodes[nodeId].hiddenColor !== undefined) {
+              allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
+            }else{
+              allSelNodes[nodeId].color = undefined;
+            }
+            if (allSelNodes[nodeId].hiddenLabel !== undefined) {
+              allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
+              allSelNodes[nodeId].hiddenLabel = undefined;
+            }
+          }
+        }
+      }
+      else if (selectActive === true) {
+      // reset all nodes
+        for (var nodeId in allSelNodes) {
           if (allSelNodes[nodeId].hiddenColor !== undefined) {
             allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
+            allSelNodes[nodeId].hiddenColor = undefined;
           }else{
             allSelNodes[nodeId].color = undefined;
           }
@@ -419,36 +434,19 @@ HTMLWidgets.widget({
             allSelNodes[nodeId].hiddenLabel = undefined;
           }
         }
-
-      }
-    }
-    else if (selectActive === true) {
-      // reset all nodes
-      for (var nodeId in allSelNodes) {
-        if (allSelNodes[nodeId].hiddenColor !== undefined) {
-          allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
-          allSelNodes[nodeId].hiddenColor = undefined;
-        }else{
-          allSelNodes[nodeId].color = undefined;
-        }
-        if (allSelNodes[nodeId].hiddenLabel !== undefined) {
-          allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
-          allSelNodes[nodeId].hiddenLabel = undefined;
-        }
-      }
       
-      selectActive = false
-    }
-    
-    // transform the object into an array
-    var updateArray = [];
-    for (nodeId in allSelNodes) {
-      if (allSelNodes.hasOwnProperty(nodeId)) {
-        updateArray.push(allSelNodes[nodeId]);
+        selectActive = false
       }
-    }
-    nodesSelDataset.update(updateArray);
-  } 
+    
+      // transform the object into an array
+      var updateArray = [];
+      for (nodeId in allSelNodes) {
+        if (allSelNodes.hasOwnProperty(nodeId)) {
+          updateArray.push(allSelNodes[nodeId]);
+        }
+      }
+      nodesSelDataset.update(updateArray);
+    } 
   
    // actually only with nodes + edges data (not dot and gephi)
     if(x.selectedBy !== undefined && x.nodes){
@@ -479,7 +477,7 @@ HTMLWidgets.widget({
         highlightActive = true;
         var i,j;
         var selectedNode = params.nodes[0];
-        var degrees = 2;
+        var degrees = x.degree;
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
@@ -492,16 +490,29 @@ HTMLWidgets.widget({
             allNodes[nodeId].label = undefined;
           }
         }
-        var connectedNodes = instance.network.getConnectedNodes(selectedNode);
+        
+        if(degrees > 0){
+          var connectedNodes = instance.network.getConnectedNodes(selectedNode);
+        }else{
+          var connectedNodes = [selectedNode];
+        }
+        
         var allConnectedNodes = [];
         
-        // get the second degree nodes
-        for (i = 1; i < degrees; i++) {
-          for (j = 0; j < connectedNodes.length; j++) {
-            allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+        // get the nodes to color
+        if(degrees >= 2){
+          for (i = 2; i <= degrees; i++) {
+            var currentlength = connectedNodes.length;
+            for (j = 0; j < currentlength; j++) {
+              connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+            }
           }
         }
         
+        // nodes to just label
+        for (j = 0; j < connectedNodes.length; j++) {
+            allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+        }
 
         // all second degree nodes get a different color and their label back
         for (i = 0; i < allConnectedNodes.length; i++) {

@@ -15,8 +15,11 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 
 \item{height}{: String. Default to "100\%". The height of the network in pixels or as a percentage.}
 
-\item{highlightNearest}{: Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ?
-This options use click event. Not available for DOT and Gephi.}
+\item{highlightNearest}{: Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? This options use click event. Not available for DOT and Gephi.
+\itemize{
+ \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
+ \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
+}}
 
 \item{nodesIdSelection}{:  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection. This options use click event. Not available for DOT and Gephi.}
 
@@ -40,6 +43,7 @@ edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
  to = trunc(runif(15)*(15-1))+1)
 
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = TRUE)
+visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, degree = 2))
 
 # with an id node selection
 visNetwork(nodes, edges) \%>\%

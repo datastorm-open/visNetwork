@@ -5,8 +5,11 @@
 #'@param graph : a visNetwork object
 #'@param width : String. Default to "100\%". The width of the network in pixels or as a percentage.
 #'@param height : String. Default to "100\%". The height of the network in pixels or as a percentage.
-#'@param highlightNearest : Custom Option. Boolean. Default to false. Highlight nearest when clicking a node ?
-#' This options use click event. Not available for DOT and Gephi.
+#'@param highlightNearest : Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? This options use click event. Not available for DOT and Gephi.
+#'\itemize{
+#'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
+#'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
+#'}
 #'@param nodesIdSelection :  Custom Option. Boolean. Default to false. A little bit experimental. Add an id node selection. This options use click event. Not available for DOT and Gephi.
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -23,6 +26,7 @@
 #'  to = trunc(runif(15)*(15-1))+1)
 #'  
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
+#' visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, degree = 2))
 #' 
 #' # with an id node selection 
 #' visNetwork(nodes, edges) %>% 
@@ -70,7 +74,27 @@ visOptions <- function(graph,
     }
   }
 
-  x <- list(highlight = highlightNearest, idselection = nodesIdSelection)
+  degree <- 1
+  
+  if(is.list(highlightNearest)){
+    if(any(!names(highlightNearest)%in%c("enabled", "degree"))){
+      stop("Invalid 'highlightNearest' argument")
+    }
+    if("degree"%in%names(highlightNearest)){
+      degree <- highlightNearest$degree
+    }else{
+      degree <- 1
+    }
+    if("enabled"%in%names(highlightNearest)){
+      highlightNearest <- highlightNearest$enabled
+    }else{
+      highlightNearest <- TRUE
+    }
+  }else if(!is.logical(highlightNearest)){
+    stop("Invalid 'highlightNearest' argument")
+  }
+  
+  x <- list(highlight = highlightNearest, idselection = nodesIdSelection, degree = degree)
   x$selectedBy <- selectedBy
   
   if(highlightNearest){
