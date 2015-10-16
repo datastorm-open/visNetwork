@@ -108,6 +108,13 @@ You can highlight nearest nodes and edges clicking on a node with **highlightNea
 visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE)
 ```
 
+It's now possible to control the degree of depth (visNetwork >= 0.1.2) : 
+
+```{r}
+visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = list(enabled =TRUE,
+                                                        degree = 2))
+```
+
 
 ## Select by node id
 You can also select nodes by id/label with a list  with **nodesIdSelection** : 
