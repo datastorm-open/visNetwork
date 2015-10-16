@@ -26,7 +26,7 @@ This options use click event. Not available for DOT and Gephi.}
 
 \item{manipulation}{: Just a Boolean}
 
-\item{selectedBy}{: Custom option. Column name of node data.frame on which you want to add a list selection. Defaut to NULL}
+\item{selectedBy}{: Custom option. Column name of node data.frame on which you want to add a list selection. Default to NULL}
 }
 \description{
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
