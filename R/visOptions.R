@@ -11,7 +11,7 @@
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
 #'@param manipulation : Just a Boolean
-#'@param selectedBy : Custom option. Column name of node data.frame on which you want to add a list selection. Defaut to NULL
+#'@param selectedBy : Custom option. Column name of node data.frame on which you want to add a list selection. Default to NULL
 #'
 #'@examples
 #'
