@@ -71,7 +71,7 @@ visNetwork(nodes, edges, width = "100%")
 nodes <- data.frame(id = 1:5, group = c(rep("A", 2), rep("B", 3)))
 edges <- data.frame(from = c(2,5,3,3), to = c(1,2,4,2))
 
-visNetwork(nodes, edges) %>% 
+visNetwork(nodes, edges, width = "100%") %>% 
   visNodes(shape = "square") %>%                        # square for all nodes
   visEdges(arrow ="to") %>%                             # arrow "to" for all edges
   visGroups(groupname = "A", color = "darkblue") %>%    # darkblue for group "A"
@@ -94,22 +94,44 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
  title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
 ```
 
+## Add legend on groups
+Legend is, for moment, only available if you are using group configuration.
+
+```{r}
+visNetwork(nodes, edges, width = "100%",  legend = TRUE)
+```
+
 ## Highlight nearest
-Highlight nearest nodes and edges clicking on a node :
+You can highlight nearest nodes and edges clicking on a node with **highlightNearest** option :
 
 ```{r}
 visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE)
 ```
 
-## Add legend on groups
-```{r}
-visNetwork(nodes, edges, width = "100%",  legend = TRUE)
-```
 
 ## Select by node id
+You can also select nodes by id/label with a list  with **nodesIdSelection** : 
+
 ```{r}
 visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 ```
+
+## Select by a column
+New feature in __visNetwork_0.1.2__ : select some nodes by the values of a column using **selectedBy** option :
+
+```{r}
+# on "authorised" column
+visNetwork(nodes, edges, width = "100%") %>%
+ visOptions(selectedBy = "group")
+```
+
+```{r}
+# or new column
+nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
+visNetwork(nodes, edges, width = "100%") %>%
+ visOptions(selectedBy = "sel")
+```
+
 
 ## Directed Network
 ```{r, echo = FALSE}
@@ -215,6 +237,8 @@ With *visNetworkOutput* and *renderVisNetwork*. Using with shiny, and enabled op
 output$mynetwork <- renderVisNetwork({... visOptions(nodesIdSelection = TRUE)}) # created input$mynetwork_selected
 
 ```
+
+And with *selectedBy*, new input __input$mynetwork_selectedBy__.
 
 ## Physics, tooltip, events, 
 
