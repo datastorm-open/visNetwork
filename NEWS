@@ -4,6 +4,7 @@ visNetwork 0.1.2
   * new custom option : selectedBy, to add a selection on some nodes column
   * new option for highlightNearest : can now choose the degree of depth
   * to vis.js 4.9.0 Have a look to vis.js history !
+  * fix visDocumentation for use RStudio and RStudio server viewer
     
 visNetwork 0.1.1
 --------------------------------------------------------------------------------

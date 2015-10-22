@@ -15,6 +15,14 @@
 #' @export
 #' @importFrom  utils browseURL
 visDocumentation <- function(){
-  browseURL(system.file("doc/network/index.html", package = "visNetwork"))
+  viewer <- getOption("viewer")
+  if (!is.null(viewer)){
+    tempDir <- tempdir()
+    ctrl <- file.copy(from = system.file("doc", package = "visNetwork"), 
+              to = tempDir, overwrite = TRUE , recursive = TRUE)
+    viewer(paste0(tempDir, "/doc/network/index.html"))
+  }else{
+    browseURL(system.file("doc/network/index.html", package = "visNetwork"))
+  }
 }
 
