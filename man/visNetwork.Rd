@@ -5,7 +5,7 @@
 \title{Network visualization}
 \usage{
 visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-  legend = FALSE, legend.width = 0.2, width = NULL, height = NULL)
+  width = NULL, height = NULL, ...)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id". See \link{visNodes}
@@ -33,13 +33,11 @@ See See \link{visEdges}
 
 \item{gephi}{: Json export gephi path file.}
 
-\item{legend}{: Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.}
-
-\item{legend.width}{: Number, in [0,...,1]. Default to 0.2}
-
 \item{width}{: Width (optional, defaults to automatic sizing)}
 
 \item{height}{: Height (optional, defaults to automatic sizing)}
+
+\item{...}{: Don't use.}
 }
 \description{
 Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
@@ -95,7 +93,7 @@ visNetwork(nodes, edges) \%>\%
  visOptions(selectedBy = "sel")
 
 # try a legend...
-visNetwork(nodes, edges, legend = TRUE)
+visNetwork(nodes, edges) \%>\% visLegend()
 
 # directed network
 visNetwork(nodes, edges) \%>\%
@@ -136,9 +134,9 @@ visNetwork(nodes, edges) \%>\%
 
 # Save a network
 \dontrun{
-network <- visNetwork(nodes, edges, legend = TRUE) \%>\%
+network <- visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
- manipulation = TRUE)
+ manipulation = TRUE) \%>\% visLegend()
 
 htmlwidgets::saveWidget(network, "network.html")
 }
@@ -155,6 +153,6 @@ visNetwork(gephi = 'WorldCup2014.json') \%>\% visPhysics(stabilization = FALSE, 
 }
 }
 \seealso{
-\link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
+\link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, \link{visLegend}
 }
 

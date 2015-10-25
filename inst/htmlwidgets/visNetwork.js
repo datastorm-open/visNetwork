@@ -211,15 +211,19 @@ HTMLWidgets.widget({
     var graph = document.createElement('div');
     graph.id = "graph"+el.id;
     
-    if(x.groups && x.legend){
-      var legendwidth = x.legendWidth*100;
-      var legend = document.createElement('div');
-      legend.id = "legend"+el.id;
-      legend.setAttribute('style', 'float:left; width:'+legendwidth+'%;height:100%');
-      document.getElementById("maindiv"+el.id).appendChild(legend);
+    if(x.legend !== undefined){
+      if((x.groups && x.legend.nodes === undefined && x.legend.edges === undefined) || (x.legend.nodes !== undefined) || (x.legend.edges !== undefined)){
+        var legendwidth = x.legend.width*100;
+        var legend = document.createElement('div');
+        legend.id = "legend"+el.id;
+        legend.setAttribute('style', 'float:left; width:'+legendwidth+'%;height:100%');
+        document.getElementById("maindiv"+el.id).appendChild(legend);
       
-      graph.setAttribute('style', 'float:right; width:'+(100-legendwidth)+'%;height:100%');
+        graph.setAttribute('style', 'float:right; width:'+(100-legendwidth)+'%;height:100%');
       
+      }else{
+        graph.setAttribute('style', 'float:right; width:100%;height:100%');
+      }
     }else{
       graph.setAttribute('style', 'float:right; width:100%;height:100%');
     }
@@ -242,22 +246,10 @@ HTMLWidgets.widget({
     //*************************
     //legend
     //*************************
-    if(x.groups && x.legend){
+    if(x.legend !== undefined){
       
       var legendnodes = new vis.DataSet();
-      
-      var mynetwork = document.getElementById('legend'+el.id);
-      var lx = - mynetwork.clientWidth / 2 + 50;
-      var ly = - mynetwork.clientWidth / 2 + 50;
-      var step = 70;
-      for (g = 0; g < x.groups.length; g++){
-        legendnodes.add({id: g, x : lx, y : ly+g*step, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
-      }
-      
-      var datalegend = {
-        nodes: legendnodes, 
-        edges: null
-      };
+      var datalegend;
       
       var optionslegend = {
         interaction:{
@@ -271,17 +263,93 @@ HTMLWidgets.widget({
         }
       };
       
-      if(x.options.groups){
-        optionslegend.groups = clone(x.options.groups);
-        for (var grp in optionslegend.groups) {
-          if(optionslegend.groups[grp].shape === "icon"){
-            optionslegend.groups[grp].icon.size = 50;
+      var mynetwork = document.getElementById('legend'+el.id);
+      var lx = - mynetwork.clientWidth / 2 + 50;
+      var ly = - mynetwork.clientWidth / 2 + 50;
+      var step = 70;
+
+      if(x.groups && x.legend.nodes === undefined && x.legend.edges === undefined){
+    
+        for (var g = 0; g < x.groups.length; g++){
+          legendnodes.add({id: g, x : lx, y : ly+g*step, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
+        }
+      
+        datalegend = {
+          nodes: legendnodes, 
+          edges: null
+        };
+      
+        if(x.options.groups){
+          optionslegend.groups = clone(x.options.groups);
+          for (var grp in optionslegend.groups) {
+            if(optionslegend.groups[grp].shape === "icon"){
+              optionslegend.groups[grp].icon.size = 50;
+            }
           }
         }
+      }else if(x.legend.nodes !== undefined){
+        
+        var tmpnodes = HTMLWidgets.dataframeToD3(x.legend.nodes);
+        
+        for (var g = 0; g < tmpnodes.length; g++){
+          tmpnodes[g].x = lx;
+          tmpnodes[g].y = ly+g*step;
+          if(tmpnodes[g].value === undefined && tmpnodes[g].size === undefined){
+            tmpnodes[g].value = 1;
+          }
+          tmpnodes[g].mass = 0;
+        }
+        
+        legendnodes.add(tmpnodes);
+      
+        if(x.legend.dataedges !== undefined){
+          var tmpedges = HTMLWidgets.dataframeToD3(x.legend.dataedges);
+          
+          for (var g = 0; g < (tmpedges.length / 2); g++){
+            tmpedges[g*2].x = lx  - mynetwork.clientWidth/3;
+            tmpedges[g*2].y = ly+(g+tmpnodes.length)*step;
+            tmpedges[g*2].mass = 0;
+            
+            tmpedges[g*2+1].x = lx  + mynetwork.clientWidth/3;
+            tmpedges[g*2+1].y = ly+(g+tmpnodes.length)*step;
+            tmpedges[g*2+1].mass = 0;
+          }
+          legendnodes.add(tmpedges);
+          
+          datalegend = {
+            nodes: legendnodes, 
+            edges: HTMLWidgets.dataframeToD3(x.legend.edges)       
+          };
+        }else{
+          datalegend = {
+            nodes: legendnodes, 
+            edges: null        
+          };
+        }
+      }else if(x.legend.edges !== undefined){
+        
+        if(x.legend.dataedges !== undefined){
+          var tmpedges = HTMLWidgets.dataframeToD3(x.legend.dataedges);
+          
+          for (var g = 0; g < (tmpedges.length / 2); g++){
+            tmpedges[g*2].x = lx  - mynetwork.clientWidth/3;
+            tmpedges[g*2].y = ly+g*step;
+            tmpedges[g*2].mass = 0;
+            
+            tmpedges[g*2+1].x = lx  + mynetwork.clientWidth/3;
+            tmpedges[g*2+1].y = ly+g*step;
+            tmpedges[g*2+1].mass = 0;
+          }
+          
+          legendnodes.add(tmpedges);
+          
+          datalegend = {
+            nodes: legendnodes, 
+            edges: HTMLWidgets.dataframeToD3(x.legend.edges)       
+          };
+        }
       }
-      
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
-      
     }
     
     if(x.nodes){
@@ -371,10 +439,11 @@ HTMLWidgets.widget({
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
     
     // add Events
-    for (var key in x.events) {
-      instance.network.on(key, x.events[key]);
+    if(x.events !== undefined){
+      for (var key in x.events) {
+        instance.network.on(key, x.events[key]);
+      }
     }
-    
 
     //*************************
     // Selected Highlight
