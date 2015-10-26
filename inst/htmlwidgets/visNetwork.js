@@ -250,6 +250,7 @@ HTMLWidgets.widget({
       
       var legendnodes = new vis.DataSet();
       var datalegend;
+      var tmpnodes;
       
       var optionslegend = {
         interaction:{
@@ -270,8 +271,8 @@ HTMLWidgets.widget({
 
       if(x.groups && x.legend.nodes === undefined && x.legend.edges === undefined){
     
-        for (var g = 0; g < x.groups.length; g++){
-          legendnodes.add({id: g, x : lx, y : ly+g*step, label: x.groups[g], group: x.groups[g], value: 1, mass:0});
+        for (var g1 = 0; g1 < x.groups.length; g1++){
+          legendnodes.add({id: g1, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
         }
       
         datalegend = {
@@ -289,8 +290,21 @@ HTMLWidgets.widget({
         }
       }else if(x.legend.nodes !== undefined){
         
-        var tmpnodes = HTMLWidgets.dataframeToD3(x.legend.nodes);
-        
+        if(x.legend.nodesdataframe){
+          tmpnodes = HTMLWidgets.dataframeToD3(x.legend.nodes);
+        }else{
+          tmpnodes = x.legend.nodes;
+          if(tmpnodes.length !== undefined){
+            for (var nd in tmpnodes){
+              if(tmpnodes[nd].icon){
+                tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
+              }
+            }
+          }else{
+            tmpnodes.icon.code = JSON.parse( '"'+'\\u' + tmpnodes.icon.code + '"');
+          }
+        }
+
         for (var g = 0; g < tmpnodes.length; g++){
           tmpnodes[g].x = lx;
           tmpnodes[g].y = ly+g*step;

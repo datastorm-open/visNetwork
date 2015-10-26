@@ -21,7 +21,7 @@
 #' visNetwork(nodes, edges) %>%
 #'  visGroups(groupname = "A", color = "blue") %>%
 #'   visGroups(groupname = "B", color = "yellow") %>%
-#'   visLegend(width = 0.2)
+#'   visLegend(width = 0.05)
 #'   
 #' # passing custom nodes and/or edges
 #' nodesleg <- data.frame(label = c("Group A", "Group B"), shape = c( "ellipse"), color = c("yellow", "blue"),
@@ -32,7 +32,7 @@
 #'   visGroups(groupname = "B", color = "yellow") %>%
 #'   visLegend(nodes = nodesleg)
 #'   
-#' edgesled <- data.frame(color = c("blue", "yellow"), label = c("A", "B"), arrows =c("to", "from")) 
+#' edgesled <- data.frame(color = c("blue", "yellow"), label = c("Aefsfg", "Bqdgqdge"), arrows =c("to", "from")) 
 #'  
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "blue") %>%
@@ -44,6 +44,20 @@
 #'   visGroups(groupname = "B", color = "yellow") %>%
 #'   visLegend(edges = edgesled, nodes = nodesleg) 
 #'   
+#' # passing custom information by list
+#' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
+#' edges <- data.frame(from = c(1,2), to = c(2,3))
+#' 
+#' visNetwork(nodes, edges) %>%
+#'  visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
+#'  visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
+#'  addFontAwesome() %>%
+#'  visLegend(nodes = list(
+#'   list(label = "Group", shape = "icon", icon = list(code = "f0c0", size = 25)),
+#'   list(label = "User", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
+#'  ),
+#'  edges = data.frame(label = "link"))   
+#' 
 #' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
 #'
 #' @import htmlwidgets
@@ -76,7 +90,7 @@ visLegend <- function(graph,
       }
       
       if(!"width" %in% colnames(edges)){
-        edges$width <- 3
+        edges$width <- 1
       }
 
       dataedges <- data.frame(id = sort(unique(c(edges$from, edges$to))),
@@ -86,6 +100,15 @@ visLegend <- function(graph,
       legend$dataedges <- dataedges
     }
 
+ 
+    if(is.data.frame(nodes)){
+      legend$nodesdataframe <- TRUE
+    }else if(is.list(nodes)){
+      legend$nodesdataframe <- FALSE
+    }else{
+      stop("nodes must be a data.frame or a list")
+    }
+    
     legend$nodes <- nodes
     graph$x$legend <- legend
     
