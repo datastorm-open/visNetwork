@@ -220,12 +220,11 @@ shinyServer(function(input, output, session) {
 
     lcc$counter #for reactiveness, this counter will be incrementet every time a redraw and reload is necessary
 
-    visNetwork(nodes, edges) %>%
+    visNetwork(nodes, edges, legend = TRUE) %>%
       visPhysics(stabilization = FALSE) %>%
       visInteraction(navigationButtons = TRUE) %>%
       visOptions(manipulation = TRUE,
-                 highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-      visLayout(randomSeed=120)
+                 highlightNearest = TRUE, nodesIdSelection = TRUE) %>% visLayout(improvedLayout = input$improvedLayout)
 
   })
   output$labelMapping <- renderText({

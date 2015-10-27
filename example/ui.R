@@ -31,6 +31,7 @@ shinyUI(fluidPage(
          h5("Current label property mapping"),
          verbatimTextOutput("labelMapping"),
          verbatimTextOutput("modSteps"),
+         checkboxInput("improvedLayout", "Use improved layout", value=FALSE),
          actionButton("loadButton", "Load graph"),
          actionButton("updateButton", "Save graph"), width="3"
        ),
