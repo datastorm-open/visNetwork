@@ -84,7 +84,7 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = "sel")
 #'    
-#' # try a legend...
+#' # add legend
 #' visNetwork(nodes, edges) %>% visLegend()
 #'     
 #' # directed network
@@ -191,6 +191,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
       }else{
         legend$width <- 0.2
       }
+      legend$useGroups <- TRUE
+      legend$position <- "left"
     }
   }
   

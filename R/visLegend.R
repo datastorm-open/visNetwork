@@ -2,9 +2,13 @@
 #'
 #' Add a legend on a visNetwork object
 #' 
-#'@param graph : a visNetwork object
-#'@param dragNodes : Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.
-#'
+#' @param graph : a visNetwork object
+#' @param enabled : Boolean. Default to TRUE.
+#' @param useGroups : use groups options in legend ? Default to TRUE.
+#' @param addNodes : a data.frame or a list for adding custom node(s)
+#' @param addEdges : a data.frame or a list for adding custom edges(s)
+#' @param width : Number, in [0,...,1]. Default to 0.2
+#' @param position : one of "left" (Default) or "right"
 #' @examples
 #'
 #' # minimal example
@@ -13,38 +17,35 @@
 #' 
 #' # default, on group
 #' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "blue") %>%
-#'   visGroups(groupname = "B", color = "yellow") %>%
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
 #'   visLegend()
 #'   
-#' # default, on group, control width
+#' # default, on group, adjust width + change position
 #' visNetwork(nodes, edges) %>%
-#'  visGroups(groupname = "A", color = "blue") %>%
-#'   visGroups(groupname = "B", color = "yellow") %>%
-#'   visLegend(width = 0.05)
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(width = 0.05, position = "right")
 #'   
 #' # passing custom nodes and/or edges
-#' nodesleg <- data.frame(label = c("Group A", "Group B"), shape = c( "ellipse"), color = c("yellow", "blue"),
-#'  title = "Informations") 
+#' lnodes <- data.frame(label = c("Group A", "Group B"), 
+#'  shape = c( "ellipse"), color = c("red", "lightblue"),
+#'  title = "Informations", id = 1:2) 
 #'    
 #' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "blue") %>%
-#'   visGroups(groupname = "B", color = "yellow") %>%
-#'   visLegend(nodes = nodesleg)
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(addNodes = lnodes, useGroups = FALSE)
 #'   
-#' edgesled <- data.frame(color = c("blue", "yellow"), label = c("Aefsfg", "Bqdgqdge"), arrows =c("to", "from")) 
+#' ledges <- data.frame(color = c("lightblue", "red"), 
+#'  label = c("reverse", "depends"), arrows =c("to", "from")) 
 #'  
 #' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "blue") %>%
-#'   visGroups(groupname = "B", color = "yellow") %>%
-#'   visLegend(edges = edgesled)    
-#'
-#' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "blue") %>%
-#'   visGroups(groupname = "B", color = "yellow") %>%
-#'   visLegend(edges = edgesled, nodes = nodesleg) 
+#'   visGroups(groupname = "A", color = "lightblue") %>%
+#'   visGroups(groupname = "B", color = "red") %>%
+#'   visLegend(addEdges = ledges)    
 #'   
-#' # passing custom information by list
+#' # for more complex option, you can use a list(of list...)
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 #' edges <- data.frame(from = c(1,2), to = c(2,3))
 #' 
@@ -52,23 +53,25 @@
 #'  visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
 #'  visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
 #'  addFontAwesome() %>%
-#'  visLegend(nodes = list(
+#'  visLegend(addNodes = list(
 #'   list(label = "Group", shape = "icon", icon = list(code = "f0c0", size = 25)),
 #'   list(label = "User", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
 #'  ),
-#'  edges = data.frame(label = "link"))   
-#' 
+#'  addEdges = data.frame(label = "link"), useGroups = FALSE)   
+#'  
 #' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
 #'
 #' @import htmlwidgets
 #'
 #' @export
-#' @importFrom  utils browseURL
+#' 
 visLegend <- function(graph,
                       enabled = TRUE,
+                      useGroups = TRUE,
+                      addNodes = NULL,
+                      addEdges = NULL,
                       width =  0.2,
-                      nodes = NULL,
-                      edges = NULL){
+                      position = "left"){
   
   if(enabled){
     legend <- list()
@@ -77,41 +80,36 @@ visLegend <- function(graph,
     }
     legend$width <- width
     
-    if(!is.null(edges)){
-      
-      edges$from <- seq(1, length.out = nrow(edges), by = 2)
-      edges$to <- seq(2, length.out = nrow(edges), by = 2)
-      edges$physics <- FALSE
-      edges$smooth <- FALSE
-      edges$value <- NULL
-      
-      if(!"arrows" %in% colnames(edges)){
-        edges$arrows <- 'to'
-      }
-      
-      if(!"width" %in% colnames(edges)){
-        edges$width <- 1
-      }
-
-      dataedges <- data.frame(id = sort(unique(c(edges$from, edges$to))),
-                             size = 0.00001, hidden = FALSE, shape = "square")
-
-      legend$edges <- edges
-      legend$dataedges <- dataedges
+    if(!is.logical(useGroups)){
+      stop("useGroups must be logical (TRUE/FALSE)")
     }
-
- 
-    if(is.data.frame(nodes)){
-      legend$nodesdataframe <- TRUE
-    }else if(is.list(nodes)){
-      legend$nodesdataframe <- FALSE
-    }else{
-      stop("nodes must be a data.frame or a list")
+    legend$useGroups <- useGroups
+    
+    if(!position%in%c("left", "right")){
+      stop("position must be one of 'left' or 'right'")
+    }
+    legend$position <- position
+    
+    if(!is.null(addEdges)){
+      if(is.data.frame(addEdges)){
+        legend$edges <- toArrayList(addEdges)
+      }else if(is.list(addEdges)){
+        legend$edges <- addEdges
+      }else{
+        stop("addEdges must be a data.frame or a list")
+      }
     }
     
-    legend$nodes <- nodes
+    if(!is.null(addNodes)){
+      if(is.data.frame(addNodes)){
+        legend$nodes <- toArrayList(addNodes)
+      }else if(is.list(addNodes)){
+        legend$nodes <- addNodes
+      }else{
+        stop("addNodes must be a data.frame or a list")
+      }
+    }
     graph$x$legend <- legend
-    
   }
   graph
 }

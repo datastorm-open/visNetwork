@@ -53,11 +53,11 @@ shinyServer(function(input, output) {
       visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
       visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
       addFontAwesome() %>%
-      visLegend(nodes = list(
+      visLegend(addNodes = list(
         list(label = "A", shape = "icon", icon = list(code = "f0c0", size = 25)),
         list(label = "B", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
         ),
-        edges = data.frame(label = "link"))
+        addEdges = data.frame(label = "link"), useGroups = FALSE)
     
   })
   

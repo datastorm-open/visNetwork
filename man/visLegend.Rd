@@ -4,13 +4,23 @@
 \alias{visLegend}
 \title{Add a legend on a visNetwork object}
 \usage{
-visLegend(graph, enabled = TRUE, width = 0.2, nodes = NULL,
-  edges = NULL)
+visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
+  addEdges = NULL, width = 0.2, position = "left")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{dragNodes}{: Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.}
+\item{enabled}{: Boolean. Default to TRUE.}
+
+\item{useGroups}{: use groups options in legend ? Default to TRUE.}
+
+\item{addNodes}{: a data.frame or a list for adding custom node(s)}
+
+\item{addEdges}{: a data.frame or a list for adding custom edges(s)}
+
+\item{width}{: Number, in [0,...,1]. Default to 0.2}
+
+\item{position}{: one of "left" (Default) or "right"}
 }
 \description{
 Add a legend on a visNetwork object
@@ -22,38 +32,35 @@ edges <- data.frame(from = c(1,2), to = c(2,3))
 
 # default, on group
 visNetwork(nodes, edges) \%>\%
-  visGroups(groupname = "A", color = "blue") \%>\%
-  visGroups(groupname = "B", color = "yellow") \%>\%
+  visGroups(groupname = "A", color = "red") \%>\%
+  visGroups(groupname = "B", color = "lightblue") \%>\%
   visLegend()
 
-# default, on group, control width
+# default, on group, adjust width + change position
 visNetwork(nodes, edges) \%>\%
- visGroups(groupname = "A", color = "blue") \%>\%
-  visGroups(groupname = "B", color = "yellow") \%>\%
-  visLegend(width = 0.05)
+  visGroups(groupname = "A", color = "red") \%>\%
+  visGroups(groupname = "B", color = "lightblue") \%>\%
+  visLegend(width = 0.05, position = "right")
 
 # passing custom nodes and/or edges
-nodesleg <- data.frame(label = c("Group A", "Group B"), shape = c( "ellipse"), color = c("yellow", "blue"),
- title = "Informations")
+lnodes <- data.frame(label = c("Group A", "Group B"),
+ shape = c( "ellipse"), color = c("red", "lightblue"),
+ title = "Informations", id = 1:2)
 
 visNetwork(nodes, edges) \%>\%
-  visGroups(groupname = "A", color = "blue") \%>\%
-  visGroups(groupname = "B", color = "yellow") \%>\%
-  visLegend(nodes = nodesleg)
+  visGroups(groupname = "A", color = "red") \%>\%
+  visGroups(groupname = "B", color = "lightblue") \%>\%
+  visLegend(addNodes = lnodes, useGroups = FALSE)
 
-edgesled <- data.frame(color = c("blue", "yellow"), label = c("Aefsfg", "Bqdgqdge"), arrows =c("to", "from"))
-
-visNetwork(nodes, edges) \%>\%
-  visGroups(groupname = "A", color = "blue") \%>\%
-  visGroups(groupname = "B", color = "yellow") \%>\%
-  visLegend(edges = edgesled)
+ledges <- data.frame(color = c("lightblue", "red"),
+ label = c("reverse", "depends"), arrows =c("to", "from"))
 
 visNetwork(nodes, edges) \%>\%
-  visGroups(groupname = "A", color = "blue") \%>\%
-  visGroups(groupname = "B", color = "yellow") \%>\%
-  visLegend(edges = edgesled, nodes = nodesleg)
+  visGroups(groupname = "A", color = "lightblue") \%>\%
+  visGroups(groupname = "B", color = "red") \%>\%
+  visLegend(addEdges = ledges)
 
-# passing custom information by list
+# for more complex option, you can use a list(of list...)
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
@@ -61,11 +68,11 @@ visNetwork(nodes, edges) \%>\%
  visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) \%>\%
  visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) \%>\%
  addFontAwesome() \%>\%
- visLegend(nodes = list(
+ visLegend(addNodes = list(
   list(label = "Group", shape = "icon", icon = list(code = "f0c0", size = 25)),
   list(label = "User", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
  ),
- edges = data.frame(label = "link"))
+ addEdges = data.frame(label = "link"), useGroups = FALSE)
 }
 \seealso{
 \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}

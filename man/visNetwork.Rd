@@ -92,7 +92,7 @@ nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
 visNetwork(nodes, edges) \%>\%
  visOptions(selectedBy = "sel")
 
-# try a legend...
+# add legend
 visNetwork(nodes, edges) \%>\% visLegend()
 
 # directed network

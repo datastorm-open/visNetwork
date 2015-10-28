@@ -20,6 +20,16 @@ mergeLists <- function (base_list, overlay_list, recursive = TRUE) {
   }
 }
 
+toArrayList <- function(obj, names = TRUE){
+  value = lapply(1:nrow(obj), function(i) {
+    res <- as.list(obj[i, , drop = FALSE])
+    if (!names) names(res) <- NULL
+    res
+  })
+  names(value) <- NULL;
+  value
+}
+
 #' Export magrittr function
 #' 
 #' Export magrittr function

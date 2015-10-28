@@ -71,6 +71,9 @@ HTMLWidgets.widget({
     var clusterFactor;
     var ctrlwait = 0;
     
+    // legend control
+    var addlegend = false;
+    
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
@@ -212,20 +215,28 @@ HTMLWidgets.widget({
     graph.id = "graph"+el.id;
     
     if(x.legend !== undefined){
-      if((x.groups && x.legend.nodes === undefined && x.legend.edges === undefined) || (x.legend.nodes !== undefined) || (x.legend.edges !== undefined)){
-        var legendwidth = x.legend.width*100;
-        var legend = document.createElement('div');
-        legend.id = "legend"+el.id;
-        legend.setAttribute('style', 'float:left; width:'+legendwidth+'%;height:100%');
-        document.getElementById("maindiv"+el.id).appendChild(legend);
-      
-        graph.setAttribute('style', 'float:right; width:'+(100-legendwidth)+'%;height:100%');
-      
-      }else{
-        graph.setAttribute('style', 'float:right; width:100%;height:100%');
+      if((x.groups && x.legend.useGroups) || (x.legend.nodes !== undefined) || (x.legend.edges !== undefined)){
+        addlegend = true;
       }
+    }
+    
+    if(addlegend){
+      var legendwidth = x.legend.width*100;
+      var legend = document.createElement('div');
+      
+      var pos = x.legend.position;
+      var pos2 = "right";
+      if(pos == "right"){
+        pos2 = "left";
+      }
+      
+      legend.id = "legend"+el.id;
+      legend.setAttribute('style', 'float:' + pos + '; width:'+legendwidth+'%;height:100%');
+      document.getElementById("maindiv"+el.id).appendChild(legend);
+      
+      graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
     }else{
-      graph.setAttribute('style', 'float:right; width:100%;height:100%');
+      graph.setAttribute('style', 'float:' + pos2 + '; width:100%;height:100%');
     }
     
     // fontAwesome unicode
@@ -246,9 +257,10 @@ HTMLWidgets.widget({
     //*************************
     //legend
     //*************************
-    if(x.legend !== undefined){
+    if(addlegend){
       
       var legendnodes = new vis.DataSet();
+      var legendedges = null;
       var datalegend;
       var tmpnodes;
       
@@ -269,16 +281,11 @@ HTMLWidgets.widget({
       var ly = - mynetwork.clientWidth / 2 + 50;
       var step = 70;
 
-      if(x.groups && x.legend.nodes === undefined && x.legend.edges === undefined){
+      if(x.groups && x.legend.useGroups){
     
         for (var g1 = 0; g1 < x.groups.length; g1++){
-          legendnodes.add({id: g1, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
+          legendnodes.add({id: null, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
         }
-      
-        datalegend = {
-          nodes: legendnodes, 
-          edges: null
-        };
       
         if(x.options.groups){
           optionslegend.groups = clone(x.options.groups);
@@ -288,81 +295,70 @@ HTMLWidgets.widget({
             }
           }
         }
-      }else if(x.legend.nodes !== undefined){
+      }
+      
+      if(x.legend.nodes !== undefined){
         
-        if(x.legend.nodesdataframe){
-          tmpnodes = HTMLWidgets.dataframeToD3(x.legend.nodes);
-        }else{
-          tmpnodes = x.legend.nodes;
-          if(tmpnodes.length !== undefined){
-            for (var nd in tmpnodes){
-              if(tmpnodes[nd].icon){
-                tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
-              }
-            }
-          }else{
-            tmpnodes.icon.code = JSON.parse( '"'+'\\u' + tmpnodes.icon.code + '"');
+        tmpnodes = x.legend.nodes;
+        if(tmpnodes.length === undefined){
+          tmpnodes = new Array(tmpnodes);
+        }
+        
+        for (var nd in tmpnodes){
+          if(tmpnodes[nd].icon){
+            tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
           }
         }
 
         for (var g = 0; g < tmpnodes.length; g++){
           tmpnodes[g].x = lx;
-          tmpnodes[g].y = ly+g*step;
+          tmpnodes[g].y = ly+(g+legendnodes.length)*step;
           if(tmpnodes[g].value === undefined && tmpnodes[g].size === undefined){
             tmpnodes[g].value = 1;
           }
+          if(tmpnodes[g].id !== undefined){
+            tmpnodes[g].id = null;
+          }
           tmpnodes[g].mass = 0;
         }
-        
         legendnodes.add(tmpnodes);
+      }
       
-        if(x.legend.dataedges !== undefined){
-          var tmpedges = HTMLWidgets.dataframeToD3(x.legend.dataedges);
-          
-          for (var g = 0; g < (tmpedges.length / 2); g++){
-            tmpedges[g*2].x = lx  - mynetwork.clientWidth/3;
-            tmpedges[g*2].y = ly+(g+tmpnodes.length)*step;
-            tmpedges[g*2].mass = 0;
-            
-            tmpedges[g*2+1].x = lx  + mynetwork.clientWidth/3;
-            tmpedges[g*2+1].y = ly+(g+tmpnodes.length)*step;
-            tmpedges[g*2+1].mass = 0;
-          }
-          legendnodes.add(tmpedges);
-          
-          datalegend = {
-            nodes: legendnodes, 
-            edges: HTMLWidgets.dataframeToD3(x.legend.edges)       
-          };
-        }else{
-          datalegend = {
-            nodes: legendnodes, 
-            edges: null        
-          };
+      if(x.legend.edges !== undefined){
+        legendedges = x.legend.edges;
+        if(legendedges.length === undefined){
+          legendedges = new Array(legendedges);
         }
-      }else if(x.legend.edges !== undefined){
+
+        var ctrl = legendnodes.length;
         
-        if(x.legend.dataedges !== undefined){
-          var tmpedges = HTMLWidgets.dataframeToD3(x.legend.dataedges);
+        for (var edg = 0; edg < (legendedges.length); edg++){
           
-          for (var g = 0; g < (tmpedges.length / 2); g++){
-            tmpedges[g*2].x = lx  - mynetwork.clientWidth/3;
-            tmpedges[g*2].y = ly+g*step;
-            tmpedges[g*2].mass = 0;
-            
-            tmpedges[g*2+1].x = lx  + mynetwork.clientWidth/3;
-            tmpedges[g*2+1].y = ly+g*step;
-            tmpedges[g*2+1].mass = 0;
+          legendedges[edg].from = edg*2+1;
+          legendedges[edg].to = edg*2+2;
+          legendedges[edg].physics = false;
+          legendedges[edg].smooth = false;
+          legendedges[edg].value = undefined;
+
+          if(legendedges[edg].arrows === undefined){
+            legendedges[edg].arrows = 'to';
           }
           
-          legendnodes.add(tmpedges);
-          
-          datalegend = {
-            nodes: legendnodes, 
-            edges: HTMLWidgets.dataframeToD3(x.legend.edges)       
-          };
+          if(legendedges[edg].width === undefined){
+            legendedges[edg].width = 1;
+          }
+
+          legendnodes.add({id: edg*2+1, x : lx - mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : true, shape : "square", mass:0});
+          legendnodes.add({id: edg*2+2, x : lx + mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : true, shape : "square", mass:0});
+          ctrl = ctrl+1;
         }
       }
+      
+      datalegend = {
+        nodes: legendnodes, 
+        edges: legendedges       
+      };
+          
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
     }
     
