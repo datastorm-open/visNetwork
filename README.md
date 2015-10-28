@@ -2,6 +2,8 @@
 R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
 Have a look to multiple R examples, vis.js documentation (````visDocumentation````), and online help page http://dataknowledge.github.io/visNetwork
 
+# News : have a look to ````visLegend````
+
 ```` 
 install.packages("visNetwork")
 
