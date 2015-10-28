@@ -111,11 +111,11 @@ Network visualization edges options. For full documentation, have a look at \lin
 nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges) \%>\% visEdges(arrow = 'from')
+visNetwork(nodes, edges) \%>\% visEdges(arrows = 'from')
 
-visNetwork(nodes, edges) \%>\% visEdges(arrow = 'to, from')
+visNetwork(nodes, edges) \%>\% visEdges(arrows = 'to, from')
 
-visNetwork(nodes, edges) \%>\% visEdges(arrow =list(to = list(enabled = TRUE, scaleFactor = 2)))
+visNetwork(nodes, edges) \%>\% visEdges(arrows =list(to = list(enabled = TRUE, scaleFactor = 2)))
 
 visNetwork(nodes, edges) \%>\% visEdges(smooth = FALSE)
 

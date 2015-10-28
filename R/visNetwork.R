@@ -27,13 +27,11 @@
 #' 
 #' @param gephi : Json export gephi path file.
 #' 
-#' @param legend : Boolean. Default to FALSE. A little bit experimental. Put a legend in case of groups.
-#' 
-#' @param legend.width : Number, in [0,...,1]. Default to 0.2
-#' 
 #' @param width	: Width (optional, defaults to automatic sizing)
 #' 
 #' @param height	: Height (optional, defaults to automatic sizing)
+#' 
+#' @param ... : Don't use.
 #' 
 #' @examples
 #'
@@ -86,8 +84,8 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = "sel")
 #'    
-#' # try a legend...
-#' visNetwork(nodes, edges, legend = TRUE)
+#' # add legend
+#' visNetwork(nodes, edges) %>% visLegend()
 #'     
 #' # directed network
 #' visNetwork(nodes, edges) %>% 
@@ -128,9 +126,9 @@
 #'
 #' # Save a network
 #' \dontrun{
-#' network <- visNetwork(nodes, edges, legend = TRUE) %>% 
+#' network <- visNetwork(nodes, edges) %>% 
 #'  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
-#'  manipulation = TRUE)
+#'  manipulation = TRUE) %>% visLegend()
 #'  
 #' htmlwidgets::saveWidget(network, "network.html")
 #' }
@@ -146,7 +144,7 @@
 #'   ))
 #'}
 #' 
-#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}
+#' @seealso \link{visOptions}, \link{visNodes}, \link{visEdges}, \link{visGroups}, \link{visEvents}, \link{visLegend}
 #'
 #' @import htmlwidgets
 #' 
@@ -154,8 +152,8 @@
 #'
 #' @export
 #' 
-visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, legend = FALSE, legend.width = 0.2,
-                       width = NULL, height = NULL) {
+visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
+                       width = NULL, height = NULL, ...) {
 
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
@@ -164,11 +162,11 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
   if(!is.null(dot)){
     x <- list(dot = dot,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
+              groups = NULL, width = width, height = height)
   }else if(!is.null(gephi)){
     x <- list(gephi = rjson::fromJSON(file = gephi),
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = NULL, legend = legend, legendWidth = legend.width, width = width, height = height)
+              groups = NULL, width = width, height = height)
   }else{
     
     # forward options using x
@@ -178,9 +176,28 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL, leg
     }
     x <- list(nodes = nodes, edges = edges,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = groups, legend = legend, legendWidth = legend.width, width = width, height = height)
+              groups = groups, width = width, height = height)
   }
 
+  # previous legend control
+  ctrl <- list(...)
+  legend <- NULL
+  if("legend"%in%names(ctrl)){
+    warning("'legend' and 'legend.width' are deprecated (visNetwork >= 0.1.2). Please now prefer use visLegend function.")
+    if(ctrl$legend){
+      legend <- list()
+      if("legend.width"%in%names(ctrl)){
+        legend$width <- ctrl$legend.width
+      }else{
+        legend$width <- 0.2
+      }
+      legend$useGroups <- TRUE
+      legend$position <- "left"
+    }
+  }
+  
+  x$legend <- legend
+  
   # create widget
   htmlwidgets::createWidget(
     name = 'visNetwork',
