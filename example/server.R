@@ -51,22 +51,22 @@ shinyServer(function(input, output, session) {
         # handle nodes first  because neo4j provides new IDs
         # this IDs are different from the one provided by vis.js
         # sort for priority
-        sortedCommands <- commandList[order(commandList$prio),]
+        commandList <<- commandList[order(commandList$prio),]
         # print (sortedCommands)
         # now I can do all other commands, IDs in commandlist and graph are now corrected
-        for (i in  1:nrow(sortedCommands))
+        for (i in  1:nrow(commandList))
         {
-          c <- sortedCommands[i,]
+          c <- commandList[i,]
 
           if (c$cmd == "addNode")
           {
-            data <- addNode(graph, c, nodes, edges, lcc)
+            data <- addNode(graph, c, nodes, edges)
             nodes <<- data$nodes
             edges <<-data$edges
           }
           if (c$cmd == "changeNode")
           {
-           data <- updateNode(graph, c, nodes, edges)
+           data <- updateNode(graph, c, nodes, edges, propDesc)
            nodes <<- data$nodes
            edges <<-data$edges
           }
@@ -120,18 +120,20 @@ shinyServer(function(input, output, session) {
         selId <- input$network_graphChange$id
         selLabel <- input$network_graphChange$label
         aCmd <- input$network_graphChange
-        aCmd$map <- propertyOfType(input$labelPropertyMap, input$newType)
-        aCmd$type <- input$newType
 
         # check if it is a new node
         if (selId %in% nodes$id)
         {
           # print("changed node")
+          aCmd$map <- ""
+          aCmd$type <- ""
           nodes$label[nodes$id==selId] <<- selLabel
         }
         else
         {
-          newNode <- data.frame(id = selId, label = selLabel)
+          aCmd$type <- input$newType
+          aCmd$map <- propertyOfType(input$labelPropertyMap, input$newType)
+          newNode <- data.frame(id = selId, label = selLabel, group = aCmd$type)
           nodes <<- rbind(nodes,newNode)
           aCmd$cmd <- "addNode"
         }
@@ -221,6 +223,7 @@ shinyServer(function(input, output, session) {
     lcc$counter #for reactiveness, this counter will be incrementet every time a redraw and reload is necessary
 
     visNetwork(nodes, edges, legend = TRUE) %>%
+      visEdges(arrow="to") %>%
       visPhysics(stabilization = FALSE) %>%
       visInteraction(navigationButtons = TRUE) %>%
       visOptions(manipulation = TRUE,

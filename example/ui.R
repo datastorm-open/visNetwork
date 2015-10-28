@@ -18,16 +18,16 @@ shinyUI(fluidPage(
 
      sidebarLayout(
        sidebarPanel(
-         selectizeInput("selectNodeTypes", "Select node types",
+         selectizeInput("selectNodeTypes", "Select node types from DB",
          choices = list("Label", "Title", selected = "Label"), multiple = TRUE),
-         selectizeInput("selectEdgeTypes", "Select edge types",
+         selectizeInput("selectEdgeTypes", "Select edge types from DB",
                         choices = NULL, multiple = TRUE),
          selectizeInput("labelPropertyMap", "Mapping node properties to label",
-                        choices = list("", selected = "name"),multiple = TRUE),
+                        choices = list("", selected = "name"),multiple = TRUE,options = list(create = TRUE)),
          selectizeInput("newType", "Node type (=label in Neo4j) applied for new nodes",
-                        choices = list("", selected = "name"),multiple = FALSE),
+                        choices = list("", selected = "name"),multiple = FALSE, options = list(create = TRUE)),
          selectizeInput("newRelation", "Relationship applied for new edges",
-                        choices = list("", selected = "name"),multiple = FALSE),
+                        choices = list("", selected = "name"),multiple = FALSE, options = list(create = TRUE)),
          h5("Current label property mapping"),
          verbatimTextOutput("labelMapping"),
          verbatimTextOutput("modSteps"),

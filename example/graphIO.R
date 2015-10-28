@@ -50,6 +50,9 @@ loadGraph <- function (graph, nodeLabelFilter="", edgeTypesFilter="", labelPrope
   # uncomment this for removing nodes without edges
   # nodeKeys = data.frame(id=unique(c(edges$from, edges$to)))
   # nodes <- nodes[nodes$id %in% nodeKeys$id,]
+  #  print(nodes)
+  # print(edges)
+
   return (list( n = nodes, e = edges, numNodes = nrow(nodes), numEdges = nrow(edges)))
 }
 
@@ -125,20 +128,21 @@ addNode <- function(graph, aCommand, nodes, edges, lcc)
 }
 
 # updates node data in database
-updateNode <- function(graph, aCommand, nodes, edges, lcc)
+updateNode <- function(graph, aCommand, nodes, edges, propDesc)
 {
   print("update node in db")
   aNodeID <- aCommand$id
   aNodeContent <- aCommand$label
-  aProperty <- aCommand$map
-  aNewNodeLabel <- aCommand$type
 
-  #aQuery = paste0("match (n) where id(n)=", aNodeID, " return labels(n) as labels")
+  aQuery = paste0("match (n) where id(n)=", aNodeID, " return labels(n) as labels")
   # determine node label of selected node
-  #result <- cypher(graph, aQuery)
 
+  result <- cypher(graph, aQuery)
+  targetLabel = result$labels[1] # assumption: only one label per node
+  #search for the map
+  aProperty <- propDesc[targetLabel]
   query = paste0("match (n) where id(n)=", aNodeID, " set n.",aProperty, "='", aNodeContent, "'")
-  print (query)
+  print (paste ("update query", query))
 
   # perform update
   result <- cypher(graph, query)
@@ -150,7 +154,7 @@ updateNode <- function(graph, aCommand, nodes, edges, lcc)
 }
 
 #add edge
-addEdge <- function(graph, aCommand, nodes, edges, lcc)
+addEdge <- function(graph, aCommand, nodes, edges)
 {
   print("add new edge in db")
   aFromID <- aCommand$from
@@ -177,7 +181,7 @@ addEdge <- function(graph, aCommand, nodes, edges, lcc)
 }
 
 #add edge
-deleteEdge <- function(graph, aCommand, nodes, edges, lcc)
+deleteEdge <- function(graph, aCommand, nodes, edges)
 {
   print("delete edge in db")
   aID <- aCommand$id
@@ -192,7 +196,7 @@ deleteEdge <- function(graph, aCommand, nodes, edges, lcc)
 }
 
 #add edge
-deleteNode <- function(graph, aCommand, nodes, edges, lcc)
+deleteNode <- function(graph, aCommand, nodes, edges)
 {
   print("delete node in db")
   aID <- aCommand$id
@@ -213,7 +217,7 @@ buildNodeQuery <- function(nodeLabels="", aPropertyName)
   nodeExpr = "match (n)"
   clauseExpr = buildNodeLabelExpr(nodeLabels)
   query = paste(nodeExpr, clauseExpr ," return id(n) as id, n.? as label, labels(n) as group")
-
+  # query = paste(nodeExpr, clauseExpr ," return id(n) as id, n.? as label")
    if (!is.null(aPropertyName))
     query <- gsub("?", aPropertyName, query, fixed = TRUE)
   else
@@ -233,7 +237,7 @@ buildEdgeQuery <- function(edgeTypes, nodeLabels="")
   edgeExpr = gsub("?", subExpr, edgeExpr, fixed=TRUE)
   query = paste(edgeExpr, clauseExpr,  "return id(r) as id, id(n) as from, id(m) as to")
 
-   # print (paste("edge", query))
+  print (paste("edge", query))
 
   return (list("eQuery"= query, "edgeExpr" = subExpr))
 }
