@@ -348,8 +348,8 @@ HTMLWidgets.widget({
             legendedges[edg].width = 1;
           }
 
-          legendnodes.add({id: edg*2+1, x : lx - mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : true, shape : "square", mass:0});
-          legendnodes.add({id: edg*2+2, x : lx + mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : true, shape : "square", mass:0});
+          legendnodes.add({id: edg*2+1, x : lx - mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : false, shape : "square", mass:0});
+          legendnodes.add({id: edg*2+2, x : lx + mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : false, shape : "square", mass:0});
           ctrl = ctrl+1;
         }
       }
