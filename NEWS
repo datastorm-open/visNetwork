@@ -6,6 +6,7 @@ visNetwork 0.1.2
   * to vis.js 4.9.0 Have a look to vis.js history !
   * fix visDocumentation for use RStudio and RStudio server viewer
   * new function visLegend for more custom legend on nodes and edges
+  * use jsonlite rather rjson in case of gephi json file
     
 visNetwork 0.1.1
 --------------------------------------------------------------------------------
