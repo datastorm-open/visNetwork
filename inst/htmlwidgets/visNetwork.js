@@ -236,7 +236,7 @@ HTMLWidgets.widget({
       
       graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
     }else{
-      graph.setAttribute('style', 'float:' + pos2 + '; width:100%;height:100%');
+      graph.setAttribute('style', 'float:right; width:100%;height:100%');
     }
     
     // fontAwesome unicode
