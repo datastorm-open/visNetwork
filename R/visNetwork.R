@@ -148,7 +148,7 @@
 #'
 #' @import htmlwidgets
 #' 
-#' @importFrom rjson fromJSON
+#' @importFrom jsonlite fromJSON
 #'
 #' @export
 #' 
@@ -164,7 +164,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height)
   }else if(!is.null(gephi)){
-    x <- list(gephi = rjson::fromJSON(file = gephi),
+    x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height)
   }else{
