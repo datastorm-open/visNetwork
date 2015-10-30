@@ -35,6 +35,8 @@ visDocumentation()
 vignette("Introduction-to-visNetwork") # with CRAN version
 ```
 
+Or visit our online help page : http://dataknowledge.github.io/visNetwork/.
+
 ## Simple individual nodes and edges customization
 
 * Adding more variables on nodes data.frame. See **_visNodes_** for available options.
@@ -102,11 +104,19 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
  title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
 ```
 
-## Add legend on groups
-Legend is, for moment, only available if you are using group configuration.
+## Add legend
+New feature in __visNetwork_0.1.2__ : you can now add more custom legend on nodes / edges ! Default on groups (like in previous versions) : 
 
 ```{r}
-visNetwork(nodes, edges, width = "100%",  legend = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% visLegend()
+```
+
+Or passing data : 
+
+```{r}
+visNetwork(nodes, edges, width = "100%") %>% 
+  visLegend(useGroups = FALSE, addNodes = data.frame(label = "Nodes", shape = "circle"), 
+            addEdges = data.frame(label = "link", color = "black"))
 ```
 
 ## Highlight nearest
@@ -128,7 +138,8 @@ visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = list(
 You can also select nodes by id/label with a list  with **nodesIdSelection** : 
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 ```
 
 ## Select by a column
@@ -209,9 +220,10 @@ You can use **Font Awesome** icons using groups or nodes options. **Font Awesome
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
-visNetwork(nodes, edges, width = "100%", legend = TRUE) %>%
+visNetwork(nodes, edges, width = "100%") %>%
   visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
   visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
+  visLegend() %>%
   addFontAwesome()
 ```
 
