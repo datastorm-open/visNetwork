@@ -103,7 +103,7 @@ HTMLWidgets.widget({
       
       option = document.createElement("option");
       option.value = "";
-      option.text = "Selection by id";
+      option.text = "Select by id";
       selectList.appendChild(option);
       
       //Create and append the options
@@ -172,7 +172,7 @@ HTMLWidgets.widget({
       
       option2 = document.createElement("option");
       option2.value = "";
-      option2.text = "Selection by " + x.selectedBy;
+      option2.text = "Select by " + x.selectedBy;
       selectList2.appendChild(option2);
       
       //Create and append the options
