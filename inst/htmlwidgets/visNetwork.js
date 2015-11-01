@@ -486,7 +486,7 @@ HTMLWidgets.widget({
             allSelNodes[nodeId].label = undefined;
           }
         
-          if(allSelNodes[nodeId][sel] === value){
+          if((allSelNodes[nodeId][sel] + "") === value){
             if (allSelNodes[nodeId].hiddenColor !== undefined) {
               allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
             }else{
