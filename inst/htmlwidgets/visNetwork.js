@@ -85,10 +85,31 @@ HTMLWidgets.widget({
     //idselection
     //*************************
     
+    function onIdChange(id) {
+      if(id === ""){
+        instance.network.selectNodes([]);
+      }else{
+        instance.network.selectNodes([id]);
+      }
+      if(x.highlight){
+        neighbourhoodHighlight(instance.network.getSelection());
+      }
+      if (window.Shiny){
+        changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+      }
+      if(x.byselection.enabled){
+        selectNode = document.getElementById('selectedBy'+el.id);
+        selectNode.value = "";
+        if (window.Shiny){
+          changeInput('selectedBy', "");
+        }
+      }
+    }
+      
     // id nodes selection : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
     
-    if(x.idselection && x.nodes){  
+    if(x.idselection.enabled && x.nodes){  
       var option;
       //Create and append select list
       var selnodes = HTMLWidgets.dataframeToD3(x.nodes);
@@ -123,25 +144,8 @@ HTMLWidgets.widget({
       }
       
       selectList.onchange =  function(){
-        if(instance.network)
-          currentid = document.getElementById("nodeSelect"+el.id).value;
-        if(currentid === ""){
-          instance.network.selectNodes([]);
-        }else{
-          instance.network.selectNodes([currentid]);
-        }
-        if(x.highlight){
-          neighbourhoodHighlight(instance.network.getSelection());
-        }
-        if (window.Shiny){
-          changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
-        }
-        if(x.selectedBy !== undefined){
-          selectNode = document.getElementById('selectedBy'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selectedBy', "");
-          }
+        if(instance.network){
+          onIdChange(document.getElementById("nodeSelect"+el.id).value);
         }
       };
       var hr = document.createElement("hr");
@@ -154,13 +158,28 @@ HTMLWidgets.widget({
     //selectedBy
     //*************************
     
+    function onByChange(value) {
+        if(instance.network){
+          selectedHighlight(value);
+        }
+        if (window.Shiny){
+          changeInput('selectedBy', value);
+        }
+        if(x.idselection.enabled){
+          selectNode = document.getElementById('nodeSelect'+el.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            changeInput('selected', "");
+          }
+        }
+    }
+    
     // selectedBy : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
-    if(x.selectedBy !== undefined){  
+    if(x.byselection.enabled && x.nodes){  
       var option2;
       
       //Create and append select list
-      var selnodes2 = HTMLWidgets.dataframeToD3(x.nodes);
       var selectList2 = document.createElement("select");
       
       selectList2.setAttribute('class', 'dropdown');
@@ -172,32 +191,19 @@ HTMLWidgets.widget({
       
       option2 = document.createElement("option");
       option2.value = "";
-      option2.text = "Select by " + x.selectedBy;
+      option2.text = "Select by " + x.byselection.variable;
       selectList2.appendChild(option2);
       
       //Create and append the options
-      for (var i2 = 0; i2 < x.selectedValues.length; i2++) {
+      for (var i2 = 0; i2 < x.byselection.values.length; i2++) {
         option2 = document.createElement("option");
-        option2.value = x.selectedValues[i2];
-        option2.text = x.selectedValues[i2];
+        option2.value = x.byselection.values[i2];
+        option2.text = x.byselection.values[i2];
         selectList2.appendChild(option2);
       }
       
       selectList2.onchange =  function(){
-        if(instance.network){
-          selectedBy = document.getElementById("selectedBy"+el.id).value;
-          selectedHighlight(selectedBy);
-        }
-        if (window.Shiny){
-          changeInput('selectedBy', document.getElementById("selectedBy"+el.id).value);
-        }
-        if(x.idselection){
-          selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selected', "");
-          }
-        }
+        onByChange(document.getElementById("selectedBy"+el.id).value);
       };
       
       if (window.Shiny){
@@ -461,7 +467,7 @@ HTMLWidgets.widget({
   
     function selectedHighlight(value) {
     
-      var sel = x.selectedBy;
+      var sel = x.byselection.variable;
           
       if(sel == "label"){
         sel = "hiddenLabel";
@@ -528,7 +534,7 @@ HTMLWidgets.widget({
     } 
   
    // actually only with nodes + edges data (not dot and gephi)
-    if(x.selectedBy !== undefined && x.nodes){
+    if(x.byselection.enabled && x.nodes){
       nodesSelDataset = nodes; 
       edgesSelDataset = edges;
       allSelNodes = nodesSelDataset.get({returnType:"Object"});
@@ -545,7 +551,7 @@ HTMLWidgets.widget({
       };
       if (params.nodes.length > 0) {
         
-        if(x.idselection){
+        if(x.idselection.enabled){
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = params.nodes;
           if (window.Shiny){
@@ -628,7 +634,7 @@ HTMLWidgets.widget({
         }
       }
       else if (highlightActive === true) {
-        if(x.idselection){
+        if(x.idselection.enabled){
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = "";
           if (window.Shiny){
@@ -636,7 +642,7 @@ HTMLWidgets.widget({
           }
         }
         
-        if(x.selectedBy !== undefined){
+        if(x.byselection.enabled){
           selectNode = document.getElementById('selectedBy'+el.id);
           selectNode.value = "";
           if (window.Shiny){
@@ -661,7 +667,7 @@ HTMLWidgets.widget({
         
         highlightActive = false
       }
-      else if(x.selectedBy !== undefined){
+      else if(x.byselection.enabled){
         selectNode = document.getElementById('selectedBy'+el.id);
         selectNode.value = "";
         if (window.Shiny){
@@ -685,7 +691,7 @@ HTMLWidgets.widget({
         Shiny.onInputChange(el.id + '_' + id, data);
       };
       
-      if(x.idselection){
+      if(x.idselection.enabled){
         if (selectedItems.nodes.length !== 0) {
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = selectedItems.nodes;
@@ -701,7 +707,7 @@ HTMLWidgets.widget({
         } 
       }
       
-      if(x.selectedBy !== undefined){
+      if(x.byselection.enabled){
         if (selectedItems.nodes.length === 0) {
           selectNode = document.getElementById('selectedBy'+el.id);
           selectNode.value = "";
@@ -719,7 +725,7 @@ HTMLWidgets.widget({
       edgesDataset = edges;
       allNodes = nodesDataset.get({returnType:"Object"});
       instance.network.on("click",neighbourhoodHighlight);
-    }else if((x.idselection || x.selectedBy !== undefined) && x.nodes){
+    }else if((x.idselection.enabled || x.byselection.enabled) && x.nodes){
       instance.network.on("click",onClickIDSelection);
     }
     
@@ -999,18 +1005,18 @@ HTMLWidgets.widget({
         ctrlwait = 0;
     }
     
-    //*************************
-    //resize
-    //*************************
-    
-    /*window.onresize = function() {
-
-      if(instance.network)
-        instance.network.fit();
-      if(instance.legend)
-        instance.legend.fit();
-    } */
+    //******************
+    // init selection
+    //******************
+    if(x.idselection.enabled && x.nodes && x.idselection.selected !== undefined){ 
+      onIdChange(x.idselection.selected);
+    }
       
+    if(x.byselection.enabled && x.nodes && x.byselection.selected !== undefined){ 
+      onByChange(x.byselection.selected);
+      selectNode = document.getElementById('selectedBy'+el.id);
+      selectNode.value = x.byselection.selected;
+    }  
   },
   
   resize: function(el, width, height, instance) {
