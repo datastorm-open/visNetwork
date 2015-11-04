@@ -39,19 +39,40 @@ nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
 edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
                     to = trunc(runif(15)*(15-1))+1)
 
-visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
+###################
+# highlight nearest
+###################
 
-# try an id node selection
+visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
+visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, degree = 0))
+
+##########################
+# nodesIdSelection
+##########################
+
 visNetwork(nodes, edges) %>%
   visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
-# or add a selection on another column
+# add a default selected node ?
+visNetwork(nodes, edges) %>%
+  visOptions(highlightNearest = TRUE,
+             nodesIdSelection = list(enabled = TRUE, selected = "1"))
+
+##########################
+# selectedBy
+##########################
+
 visNetwork(nodes, edges) %>%
   visOptions(selectedBy = "group")
 
-nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
+# add a default value ?
 visNetwork(nodes, edges) %>%
-  visOptions(selectedBy = "sel")
+  visOptions(selectedBy = list(variable = "group", selected = "A"))
+
+# can also be on new column
+nodes$sample <- sample(c("sample 1", "sample 2"), nrow(nodes), replace = TRUE)
+visNetwork(nodes, edges) %>%
+  visOptions(selectedBy = "sample")
 
 # add legend
 visNetwork(nodes, edges) %>% visLegend()
