@@ -163,12 +163,19 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
   
   if(!is.null(dot)){
     x <- list(dot = dot,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = NULL, width = width, height = height)
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
+                             manipulation = list(enabled = FALSE)),
+              groups = NULL, width = width, height = height,
+              idselection = list(enabled = FALSE),
+              byselection = list(enabled = FALSE))
+    
   }else if(!is.null(gephi)){
     x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = NULL, width = width, height = height)
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
+                             manipulation = list(enabled = FALSE)),
+              groups = NULL, width = width, height = height,
+              idselection = list(enabled = FALSE),
+              byselection = list(enabled = FALSE))
   }else{
     
     # forward options using x
@@ -177,8 +184,11 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
       groups = NULL
     }
     x <- list(nodes = nodes, edges = edges,
-              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), manipulation = list(enabled = FALSE)),
-              groups = groups, width = width, height = height)
+              options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
+                             manipulation = list(enabled = FALSE)),
+              groups = groups, width = width, height = height,
+              idselection = list(enabled = FALSE),
+              byselection = list(enabled = FALSE))
   }
 
   # previous legend control

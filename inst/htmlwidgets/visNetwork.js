@@ -109,7 +109,7 @@ HTMLWidgets.widget({
     // id nodes selection : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
     
-    if(x.idselection.enabled && x.nodes){  
+    if(x.idselection.enabled){  
       var option;
       //Create and append select list
       var selnodes = HTMLWidgets.dataframeToD3(x.nodes);
@@ -176,7 +176,7 @@ HTMLWidgets.widget({
     
     // selectedBy : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
-    if(x.byselection.enabled && x.nodes){  
+    if(x.byselection.enabled){  
       var option2;
       
       //Create and append select list
@@ -534,7 +534,7 @@ HTMLWidgets.widget({
     } 
   
    // actually only with nodes + edges data (not dot and gephi)
-    if(x.byselection.enabled && x.nodes){
+    if(x.byselection.enabled){
       nodesSelDataset = nodes; 
       edgesSelDataset = edges;
       allSelNodes = nodesSelDataset.get({returnType:"Object"});
