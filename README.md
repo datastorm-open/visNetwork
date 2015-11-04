@@ -1,5 +1,6 @@
 # visNetwork
-R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
+
+### R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
 
 # News
 
