@@ -116,7 +116,7 @@ HTMLWidgets.widget({
       var selectList = document.createElement("select");
       
       selectList.setAttribute('class', 'dropdown');
-      selectList.setAttribute('style', 'width: 150px; height: 26px');
+      selectList.setAttribute('style', x.idselection.style);
       
       selectList.id = "nodeSelect"+el.id;
       
@@ -183,7 +183,7 @@ HTMLWidgets.widget({
       var selectList2 = document.createElement("select");
       
       selectList2.setAttribute('class', 'dropdown');
-      selectList2.setAttribute('style', 'width: 150px; height: 26px');
+      selectList2.setAttribute('style', x.byselection.style);
       
       selectList2.id = "selectedBy"+el.id;
       

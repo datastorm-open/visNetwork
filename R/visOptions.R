@@ -10,15 +10,17 @@
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
 #'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
 #'}
-#'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. A little bit experimental. Add an id node selection. This options use click event. Not available for DOT and Gephi.
+#'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
 #'  \item{"selected"}{ : Integer/Character. id of the selected node}
+#'  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
 #'}
-#'@param selectedBy : Custom option. Character or a named list. Add a multiple selection based on column of node data.frame. Not available for DOT and Gephi.
+#'@param selectedBy : Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"variable"}{ : Character. Column name of selection variable.}
 #'  \item{"selected"}{ : Integer/Character. Initial selection.}
+#'  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -49,7 +51,16 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(highlightNearest = TRUE, 
 #'  nodesIdSelection = list(enabled = TRUE, selected = "1"))
-#'      
+#'  
+#' # some style
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(highlightNearest = TRUE, 
+#'  nodesIdSelection = list(enabled = TRUE, style = 'width: 200px; height: 26px;
+#'    background: #f8f8f8;
+#'    color: darkblue;
+#'    border:none;
+#'    outline:none;'))   
+#'  
 #' ##########################
 #' # selectedBy
 #' ##########################
@@ -61,6 +72,14 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", selected = "A"))
 #' 
+#' # add some style
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(selectedBy = list(variable = "group", style = 'width: 200px; height: 26px;
+#'    background: #f8f8f8;
+#'    color: darkblue;
+#'    border:none;
+#'    outline:none;'))
+#'      
 #' # can also be on new column
 #' nodes$sample <- sample(c("sample 1", "sample 2"), nrow(nodes), replace = TRUE)
 #' visNetwork(nodes, edges) %>% 
@@ -139,9 +158,9 @@ visOptions <- function(graph,
     #############################
     # nodesIdSelection
     #############################
-    idselection <- list(enabled = FALSE)
+    idselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px')
     if(is.list(nodesIdSelection)){
-      if(any(!names(nodesIdSelection)%in%c("enabled", "selected"))){
+      if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style"))){
         stop("Invalid 'nodesIdSelection' argument")
       }
       if("selected"%in%names(nodesIdSelection)){
@@ -155,6 +174,11 @@ visOptions <- function(graph,
       }else{
         idselection$enabled <- TRUE
       }
+      
+      if("style"%in%names(nodesIdSelection)){
+        idselection$style <- nodesIdSelection$style
+      }
+      
     }else if(is.logical(nodesIdSelection)){
       idselection$enabled <- nodesIdSelection
     }else{
@@ -164,19 +188,26 @@ visOptions <- function(graph,
     #############################
     # selectedBy
     #############################
-    byselection <- list(enabled = FALSE)
+    byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px')
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected"))){
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style"))){
           stop("Invalid 'selectedBy' argument")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
         }
+        
         if(!"variable"%in%names(selectedBy)){
           stop("'selectedBy' need at least 'variable' information")
         }
+        
         byselection$variable <- selectedBy$variable
+        
+        if("style"%in%names(selectedBy)){
+          byselection$style <- selectedBy$style
+        }
+        
       }else if(is.character(selectedBy)){
         byselection$variable <- selectedBy
       }else{
