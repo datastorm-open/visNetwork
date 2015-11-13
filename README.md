@@ -3,14 +3,14 @@ with following modifications:
 
 - renderVisNetwork returns a JS object accessible as list in R indicating the changes applied to the graph
 
--- for add or change a node:
+- for add or change a node:
 {cmd:"changeNode", id:<node id>, label:<new label value>, map: "", type: "">}
 
--- for add a edge:
-{cmd: "addEdge", id: <edge id>, from: <node id>, to: <node id>
+- for add a edge:
+{cmd: "addEdge", id: <edge id>, from: <node id>, to: <node id>}
 
--- for deleting elements
-{cmd: "deleteElements", nodes: <node id list>, edges: <edge id list>
+- for deleting elements
+{cmd: "deleteElements", nodes: <node id list>, edges: <edge id list>}
 
 
 #############################################################################################
