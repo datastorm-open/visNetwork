@@ -74,7 +74,7 @@ visNetwork(nodes, edges) \%>\%
 
 # subset on id values ?
 visNetwork(nodes, edges) \%>\%
- visOptions(highlightNearest = FALSE,
+ visOptions(highlightNearest = TRUE,
  nodesIdSelection = list(enabled = TRUE,
    selected = "2",
    values = c(2:10)))
