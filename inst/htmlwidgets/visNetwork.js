@@ -25,6 +25,25 @@ if (!Function.prototype.bind) {
   };
 }
 
+var indexOf = function(needle, str) {
+        indexOf = function(needle, str) {
+            var i = -1, index = -1;
+
+            for(i = 0; i < this.length; i++) {
+                var val = this[i];
+                if(str){
+                  val = ''+val;
+                }
+                if(val === needle) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        };
+    return indexOf.call(this, needle, str);
+};
+
 function clone(obj) {
     if(obj === null || typeof(obj) != 'object')
         return obj;    
@@ -62,7 +81,6 @@ HTMLWidgets.widget({
     var selectActive = false;
     var nodesSelDataset ;
     var edgesSelDataset ;
-    
     
     // clustergin by zoom variables
     var clusterIndex = 0;
@@ -127,16 +145,25 @@ HTMLWidgets.widget({
       option.text = "Select by id";
       selectList.appendChild(option);
       
+      var addid;
       //Create and append the options
       for (var i = 0; i < selnodes.length; i++) {
-        option = document.createElement("option");
-        option.value = selnodes[i].id;
-        if(selnodes[i].label){
-          option.text = selnodes[i].label;
-        }else{
-          option.text = selnodes[i].id;
+        addid = true;
+        if(x.idselection.values !== undefined){
+          if(indexOf.call(x.idselection.values, selnodes[i].id) === -1, false){
+            addid = false;
+          }
         }
-        selectList.appendChild(option);
+        if(addid){
+          option = document.createElement("option");
+          option.value = selnodes[i].id;
+          if(selnodes[i].label){
+            option.text = selnodes[i].label;
+          }else{
+            option.text = selnodes[i].id;
+          }
+          selectList.appendChild(option);
+        }
       }
       
       if (window.Shiny){
@@ -553,7 +580,15 @@ HTMLWidgets.widget({
         
         if(x.idselection.enabled){
           selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = params.nodes;
+          if(x.idselection.values !== undefined){
+            if(indexOf.call(x.idselection.values, params.nodes[0], true) > -1){
+              selectNode.value = params.nodes;
+            }else{
+              selectNode.value = "";
+            }
+          }else{
+            selectNode.value = params.nodes;
+          }
           if (window.Shiny){
             changeInput('selected', selectNode.value);
           }
@@ -694,7 +729,15 @@ HTMLWidgets.widget({
       if(x.idselection.enabled){
         if (selectedItems.nodes.length !== 0) {
           selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = selectedItems.nodes;
+          if(x.idselection.values !== undefined){
+            if(indexOf.call(x.idselection.values, selectedItems.nodes[0], true) > -1){
+              selectNode.value = selectedItems.nodes;
+            }else{
+              selectNode.value = "";
+            }
+          }else{
+            selectNode.value = selectedItems.nodes;
+          }
           if (window.Shiny){
             changeInput('selected', selectNode.value);
           }

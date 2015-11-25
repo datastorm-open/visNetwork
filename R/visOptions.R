@@ -13,14 +13,16 @@
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
-#'  \item{"selected"}{ : Integer/Character. id of the selected node}
-#'  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
+#'  \item{"values}{ : Optional. Vector of possible values. Defaut to all id in nodes data.frame.}
+#'  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
+#'  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
 #'}
 #'@param selectedBy : Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"variable"}{ : Character. Column name of selection variable.}
-#'  \item{"selected"}{ : Integer/Character. Initial selection.}
-#'  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
+#'  \item{"values}{ : Optional. Vector of possible values. Defaut to all values in nodes data.frame.}
+#'  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
+#'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -52,6 +54,13 @@
 #'  visOptions(highlightNearest = TRUE, 
 #'  nodesIdSelection = list(enabled = TRUE, selected = "1"))
 #'  
+#' # subset on id values ?
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(highlightNearest = FALSE, 
+#'  nodesIdSelection = list(enabled = TRUE, 
+#'    selected = "2",
+#'    values = c(2:10)))
+#'  
 #' # some style
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(highlightNearest = TRUE, 
@@ -72,6 +81,12 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", selected = "A"))
 #' 
+#' # subset on values ?
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(selectedBy = list(variable = "group", 
+#'    selected = "C",
+#'    values = c("A", "C")))
+#'  
 #' # add some style
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", style = 'width: 200px; height: 26px;
@@ -127,6 +142,7 @@ visOptions <- function(graph,
     idselection <- list(enabled = FALSE)
     byselection <- list(enabled = FALSE)
   }else{
+    
     #############################
     # highlightNearest
     #############################
@@ -160,12 +176,12 @@ visOptions <- function(graph,
     #############################
     idselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px')
     if(is.list(nodesIdSelection)){
-      if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style"))){
-        stop("Invalid 'nodesIdSelection' argument")
+      if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style", "values"))){
+        stop("Invalid 'nodesIdSelection' argument. List can have 'enabled', 'selected', 'style', 'values'")
       }
       if("selected"%in%names(nodesIdSelection)){
         if(!nodesIdSelection$selected%in%graph$x$nodes$id){
-          stop("nodesIdSelection$selected must be a valid id, in nodes data")
+          stop(nodesIdSelection$selected, " not in data. nodesIdSelection$selected must be valid.")
         }
         idselection$selected <- nodesIdSelection$selected
       }
@@ -185,14 +201,26 @@ visOptions <- function(graph,
       stop("Invalid 'nodesIdSelection' argument")
     }
     
+    if(idselection$enabled){
+      if("values"%in%names(nodesIdSelection)){
+        idselection$values <- nodesIdSelection$values
+        if("selected"%in%names(nodesIdSelection)){
+          if(!idselection$selected%in%idselection$values){
+            stop(idselection$selected, " not in data/selection. nodesIdSelection$selected must be a valid value.")
+          }
+        }
+      }
+    }
+    
     #############################
     # selectedBy
     #############################
     byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px')
+    
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected", "style"))){
-          stop("Invalid 'selectedBy' argument")
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values"))){
+          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values'")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
@@ -211,7 +239,7 @@ visOptions <- function(graph,
       }else if(is.character(selectedBy)){
         byselection$variable <- selectedBy
       }else{
-        stop("Invalid 'selectedBy' argument")
+        stop("Invalid 'selectedBy' argument. Must a 'character' or a 'list'")
       }
       
       if(!byselection$variable%in%colnames(graph$x$nodes)){
@@ -219,12 +247,18 @@ visOptions <- function(graph,
       }else{
         byselection$enabled <- TRUE
         byselection$values <- sort(as.character(unique(graph$x$nodes[, byselection$variable])))
+        
+        if("values"%in%names(selectedBy)){
+          byselection$values <- intersect(byselection$values, selectedBy$values)
+        }
+        
         if("selected"%in%names(byselection)){
           if(!byselection$selected%in%byselection$values){
-            stop("selectedBy$selected must be a valid value, in node data")
+            stop(byselection$selected, " not in data/selection. selectedBy$selected must be a valid value.")
           }
           byselection$selected <- byselection$selected
         }
+        
         if(!"label"%in%colnames(graph$x$nodes)){
           graph$x$nodes$label <- ""
         }

@@ -3,7 +3,7 @@ visNetwork 0.1.3
   
   * fix bug placement for edges legend (sorry for that...!)
   * fix selectedBy with numeric values
-  * introduce new options : can select initial value using 'selectedBy' and 'nodesIdSelection' and set HTML style
+  * introduce new options : can select initial value using 'selectedBy' and 'nodesIdSelection' (selected), set HTML style (style) and add subset on data (values)
   
 visNetwork 0.1.2
 --------------------------------------------------------------------------------

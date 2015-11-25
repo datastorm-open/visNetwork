@@ -24,15 +24,17 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
- \item{"selected"}{ : Integer/Character. id of the selected node}
- \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
+ \item{"values}{ : Optional. Vector of possible values. Defaut to all id in nodes data.frame.}
+ \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
+ \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
 }}
 
 \item{selectedBy}{: Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
 \itemize{
  \item{"variable"}{ : Character. Column name of selection variable.}
- \item{"selected"}{ : Integer/Character. Initial selection.}
- \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'}
+ \item{"values}{ : Optional. Vector of possible values. Defaut to all values in nodes data.frame.}
+ \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
+ \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}
@@ -70,6 +72,13 @@ visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE,
  nodesIdSelection = list(enabled = TRUE, selected = "1"))
 
+# subset on id values ?
+visNetwork(nodes, edges) \%>\%
+ visOptions(highlightNearest = FALSE,
+ nodesIdSelection = list(enabled = TRUE,
+   selected = "2",
+   values = c(2:10)))
+
 # some style
 visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE,
@@ -89,6 +98,12 @@ visNetwork(nodes, edges) \%>\%
 # add a default value ?
 visNetwork(nodes, edges) \%>\%
  visOptions(selectedBy = list(variable = "group", selected = "A"))
+
+# subset on values ?
+visNetwork(nodes, edges) \%>\%
+ visOptions(selectedBy = list(variable = "group",
+   selected = "C",
+   values = c("A", "C")))
 
 # add some style
 visNetwork(nodes, edges) \%>\%
