@@ -163,7 +163,7 @@ HTMLWidgets.widget({
       for (var i = 0; i < selnodes.length; i++) {
         addid = true;
         if(x.idselection.values !== undefined){
-          if(indexOf.call(x.idselection.values, selnodes[i].id) === -1, false){
+          if(indexOf.call(x.idselection.values, selnodes[i].id, false) === -1){
             addid = false;
           }
         }
@@ -1065,7 +1065,7 @@ HTMLWidgets.widget({
     // init selection
     //******************
     if(x.idselection.enabled && x.nodes && x.idselection.selected !== undefined){ 
-      onIdChange(x.idselection.selected, true);
+      onIdChange(''+ x.idselection.selected, true);
     }
       
     if(x.byselection.enabled && x.nodes && x.byselection.selected !== undefined){ 
