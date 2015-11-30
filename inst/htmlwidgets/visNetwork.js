@@ -148,7 +148,7 @@ HTMLWidgets.widget({
     //idselection
     //*************************
     
-    function onIdChange(id) {
+    function onIdChange(id, init) {
       if(id === ""){
         instance.network.selectNodes([]);
       }else{
@@ -156,6 +156,19 @@ HTMLWidgets.widget({
       }
       if(x.highlight){
         neighbourhoodHighlight(instance.network.getSelection());
+      }else{
+        if(init){
+          selectNode = document.getElementById('nodeSelect'+el.id);
+          if(x.idselection.values !== undefined){
+            if(indexOf.call(x.idselection.values, id, true) > -1){
+              selectNode.value = id;
+            }else{
+              selectNode.value = "";
+            }
+          }else{
+            selectNode.value = id;
+          }
+        }
       }
       if (window.Shiny){
         changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
@@ -195,7 +208,7 @@ HTMLWidgets.widget({
       for (var i = 0; i < selnodes.length; i++) {
         addid = true;
         if(x.idselection.values !== undefined){
-          if(indexOf.call(x.idselection.values, selnodes[i].id) === -1, false){
+          if(indexOf.call(x.idselection.values, selnodes[i].id, false) === -1){
             addid = false;
           }
         }
@@ -217,7 +230,7 @@ HTMLWidgets.widget({
       
       selectList.onchange =  function(){
         if(instance.network){
-          onIdChange(document.getElementById("nodeSelect"+el.id).value);
+          onIdChange(document.getElementById("nodeSelect"+el.id).value, false);
         }
       };
       var hr = document.createElement("hr");
@@ -1101,7 +1114,7 @@ HTMLWidgets.widget({
     // init selection
     //******************
     if(x.idselection.enabled && x.nodes && x.idselection.selected !== undefined){ 
-      onIdChange(x.idselection.selected);
+      onIdChange(''+ x.idselection.selected, true);
     }
       
     if(x.byselection.enabled && x.nodes && x.byselection.selected !== undefined){ 
