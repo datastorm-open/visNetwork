@@ -53,6 +53,51 @@ function clone(obj) {
     return temp;
 }
 
+
+// updateOptions in the network
+Shiny.addCustomMessageHandler('Options', function(data){
+    
+    // merging options
+    function update(source, target) {
+      Object.keys(target).forEach(function (k) {
+        if (typeof target[k] === 'object') {
+            source[k] = source[k] || {};
+            update(source[k], target[k]);
+        } else {
+            source[k] = target[k];
+        }
+      });
+    }
+    
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get nodes object
+      var network = el.chart;
+      var options = el.options;
+      
+      console.info(data.options);
+      console.info(el.options);
+      console.info(options);
+      update(options, data.options);
+      network.setOptions(options);
+    }
+});
+
+// focus on a node in the network
+Shiny.addCustomMessageHandler('Focus', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get nodes object
+      var network = el.chart;
+      var options = {scale: 2,animation: {duration: 1500, easingFunction: "easeInOutQuad"} };
+      network.focus(data.focusId, options);
+    }
+});
+
 HTMLWidgets.widget({
   
   name: 'visNetwork',
@@ -480,6 +525,10 @@ HTMLWidgets.widget({
     
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
+    
+    //save data for re-use and update
+    document.getElementById("graph"+el.id).chart = instance.network;
+    document.getElementById("graph"+el.id).options = options;
     
     // add Events
     if(x.events !== undefined){
