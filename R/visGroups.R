@@ -13,7 +13,8 @@
 #'  group = sample(c("A", "B"), 10, replace = TRUE))
 #' edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 #'
-#' visNetwork(nodes, edges, legend = TRUE) %>%
+#' visNetwork(nodes, edges) %>%
+#'  visLegend() %>%
 #'  visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'  visGroups(groupname = "B", color = "yellow", shape = "triangle")
 #'  
@@ -26,26 +27,33 @@
 #'
 
 visGroups <- function(graph,
-                      useDefaultGroups = NULL,
+                      useDefaultGroups = TRUE,
                       groupname = NULL,
                       ...){
 
-  groups <- list()
-  groups$useDefaultGroups = useDefaultGroups
-  graph$x$options$groups <- mergeLists(graph$x$options$groups, groups)
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
   
+  groups <- list()
+  groups$useDefaultGroups <- useDefaultGroups
+
   params <- list(...)
   
   if(length(params) > 0){
     if(is.null(groupname)){
       stop("Must have a groupname to identify group")
     }
-    
-    groups <- list(list(...))
-    names(groups) <- groupname
-    
-    graph$x$options$groups <- mergeLists(graph$x$options$groups, groups)
+    tmp <- list(...)
+    groups[[groupname]] <- tmp
   }
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(groups = groups)
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("Options",data)
+  }else{
+    graph$x$options$groups <- mergeLists(graph$x$options$groups, groups)
+  }
   graph
 }

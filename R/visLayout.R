@@ -33,18 +33,26 @@ visLayout <- function(graph,
                       improvedLayout = NULL,
                       hierarchical = NULL){
   
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
+  
   layout <- list()
   
   layout$randomSeed <- randomSeed
   layout$improvedLayout <- improvedLayout
   layout$hierarchical <- hierarchical
 
-  if("layout"%in%names(graph$x$options)){
-    graph$x$options$layout <- mergeLists(graph$x$options$layout, layout)
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(layout = layout)
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("Options",data)
   }else{
-    graph$x$options$layout <- layout
+    if("layout"%in%names(graph$x$options)){
+      graph$x$options$layout <- mergeLists(graph$x$options$layout, layout)
+    }else{
+      graph$x$options$layout <- layout
+    }
   }
-  
-  
   graph
 }

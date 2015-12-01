@@ -1,6 +1,7 @@
-visNetwork 0.1.3
+visNetwork 0.2.0
 --------------------------------------------------------------------------------
   
+  * introduce visNetworkProxy object for update & call method from shiny
   * fix bug placement for edges legend (sorry for that...!)
   * fix selectedBy with numeric values
   * introduce new options : can select initial value using 'selectedBy' and 'nodesIdSelection' (selected), 

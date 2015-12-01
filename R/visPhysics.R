@@ -91,6 +91,10 @@ visPhysics <- function(graph,
                        stabilization = NULL, 
                        adaptiveTimestep = NULL){
 
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
+  
   if(!is.null(solver)){
     if(!solver%in%c("barnesHut", "repulsion", "hierarchicalRepulsion", "forceAtlas2Based")){
       stop('Invalid "solver". Must be one of "barnesHut", "repulsion", "hierarchicalRepulsion", "forceAtlas2Based"')
@@ -126,7 +130,12 @@ visPhysics <- function(graph,
     physics$forceAtlas2Based <- forceAtlas2Based
   }
   
-  graph$x$options$physics <- physics
-
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(physics = physics)
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("Options",data)
+  }else{
+    graph$x$options$physics <- physics
+  }
   graph
 }

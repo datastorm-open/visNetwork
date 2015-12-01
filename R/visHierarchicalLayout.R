@@ -31,15 +31,24 @@ visHierarchicalLayout <- function(graph,
                                   levelSeparation = NULL,
                                   direction = NULL,
                                   sortMethod = NULL){
-
+  
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
+  
   hierarchicalLayout <- list()
 
   hierarchicalLayout$enabled <- enabled
   hierarchicalLayout$levelSeparation <- levelSeparation
   hierarchicalLayout$direction <- direction
   hierarchicalLayout$sortMethod <- sortMethod
-
-  graph$x$options$layout$hierarchical <- hierarchicalLayout
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(layout = list(hierarchical = hierarchicalLayout))
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("Options",data)
+  }else{
+    graph$x$options$layout$hierarchical <- hierarchicalLayout
+  }
   graph
 }

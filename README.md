@@ -4,6 +4,10 @@
 
 # News
 
+### have a look to ````visNetworkProxy````
+
+Can now update and call method in shiny on a visNetwork object !
+
 ### have a look to ````visLegend````
 
 # Online documentation
@@ -30,4 +34,7 @@ vignette("Introduction-to-visNetwork")
 
 # full javascript documentation
 visDocumentation()
+
+# shiny example
+shiny::runApp(system.file("shiny", package = "visNetwork"))
 ````

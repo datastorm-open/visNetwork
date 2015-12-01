@@ -116,6 +116,14 @@ visOptions <- function(graph,
                        clickToUse = NULL,
                        manipulation = NULL){
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visOptions with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
   options <- list()
   
   options$autoResize <- autoResize

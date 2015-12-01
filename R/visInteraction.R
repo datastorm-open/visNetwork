@@ -77,6 +77,11 @@ visInteraction <- function(graph,
                        tooltipDelay = NULL,
                        zoomView = NULL){
 
+  
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
+  
   interaction <- list()
   interaction$dragNodes <- dragNodes
   interaction$dragView <- dragView
@@ -92,7 +97,12 @@ visInteraction <- function(graph,
   interaction$tooltipDelay <- tooltipDelay
   interaction$zoomView <-zoomView
 
-  graph$x$options$interaction <- interaction
-
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(interaction = interaction)
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("Options",data)
+  }else{
+    graph$x$options$interaction <- interaction
+  }
   graph
 }

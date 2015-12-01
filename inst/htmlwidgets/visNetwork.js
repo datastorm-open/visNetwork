@@ -53,8 +53,8 @@ function clone(obj) {
     return temp;
 }
 
-
-// updateOptions in the network
+if (HTMLWidgets.shinyMode){
+  // updateOptions in the network
 Shiny.addCustomMessageHandler('Options', function(data){
     
     // merging options
@@ -77,9 +77,6 @@ Shiny.addCustomMessageHandler('Options', function(data){
       var network = el.chart;
       var options = el.options;
       
-      console.info(data.options);
-      console.info(el.options);
-      console.info(options);
       update(options, data.options);
       network.setOptions(options);
     }
@@ -93,10 +90,23 @@ Shiny.addCustomMessageHandler('Focus', function(data){
     if(el){
       // get nodes object
       var network = el.chart;
-      var options = {scale: 2,animation: {duration: 1500, easingFunction: "easeInOutQuad"} };
-      network.focus(data.focusId, options);
+      network.focus(data.focusId, data.options);
     }
 });
+
+// fit on a node in the network
+Shiny.addCustomMessageHandler('Fit', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get nodes object
+      var network = el.chart;
+      network.fit(data.options);
+    }
+});
+}
+
 
 HTMLWidgets.widget({
   

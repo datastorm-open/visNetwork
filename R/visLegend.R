@@ -76,6 +76,14 @@ visLegend <- function(graph,
                       width =  0.2,
                       position = "left"){
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visLegend with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
   if(enabled){
     legend <- list()
     if(!(width >= 0 & width <= 1)){

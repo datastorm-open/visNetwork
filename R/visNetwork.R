@@ -235,7 +235,13 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
 #'   is useful if you want to save an expression in a variable.
 #'   
 #' @name visNetwork-shiny
+#' @examples 
+#'\dontrun{
 #'
+#' # have a look to : 
+#' shiny::runApp(system.file("shiny", package = "visNetwork"))
+#'
+#'}
 #' @export
 visNetworkOutput <- function(outputId, width = '100%', height = '400px'){
   shinyWidgetOutput(outputId, 'visNetwork', width, height, package = 'visNetwork')

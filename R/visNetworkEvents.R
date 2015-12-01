@@ -82,6 +82,14 @@ visEvents <- function(graph,
                       afterDrawing = NULL,
                       animationFinished = NULL){
 
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visEvents with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
   events <- list()
   events$click  <- JS(click)
   events$doubleClick  <- JS(doubleClick)

@@ -19,6 +19,14 @@
 #'  @export
 visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
  
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visClusteringOutliers with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
  clusteringOutliers <- list(clusterFactor = clusterFactor, stabilize = stabilize)
  
  graph$x$clusteringOutliers <- mergeLists(graph$x$clusteringOutliers, clusteringOutliers)
@@ -60,6 +68,14 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #' @export
 visClusteringByColor <- function(graph, colors){
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visClusteringByColor with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
   if(length(colors) == 1){
     colors <- list(colors)
   }
@@ -92,6 +108,14 @@ visClusteringByColor <- function(graph, colors){
 #'  
 #' @export
 visClusteringByHubsize <- function(graph, size = NULL){
+  
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visClusteringByHubsize with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
   
   if(is.null(size)){
     clusteringHubsize <- list(size = 0)
@@ -127,6 +151,14 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #' @export
 visClusteringByGroup <- function(graph, groups){
   
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visClusteringByGroup with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
+  
   if(length(groups) == 1){
     groups <- list(groups)
   }
@@ -156,6 +188,14 @@ visClusteringByGroup <- function(graph, groups){
 #'      
 #' @export
 visClusteringByConnection <- function(graph, nodes){
+  
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visClusteringByConnection with visNetworkProxy object")
+  }
+  
+  if(!any(class(graph) %in% "visNetwork")){
+    stop("graph must be a visNetwork object")
+  }
   
   if(length(nodes) == 1){
     nodes <- list(nodes)
