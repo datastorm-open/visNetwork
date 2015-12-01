@@ -4,10 +4,10 @@
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param id : a node id
-#'@param scale : Optionnal. Number. The scale is the target zoomlevel. Default value is 2.0. 
-#'@param offset : Optionnal. List. The offset (in DOM units) is how many pixels from the center the view is focussed. Default value is list(x = 0, y = 0). 
-#'@param locked : Optionnal. Boolean. Locked denotes whether or not the view remains locked to the node once the zoom-in animation is finished. Default value is true.
-#'@param animation : Optionnal. List. For animation you can define the duration (in milliseconds) and easing function manually. 
+#'@param scale : Optional. Number. The scale is the target zoomlevel. Default value is 2.0. 
+#'@param offset : Optional. List. The offset (in DOM units) is how many pixels from the center the view is focussed. Default value is list(x = 0, y = 0). 
+#'@param locked : Optional. Boolean. Locked denotes whether or not the view remains locked to the node once the zoom-in animation is finished. Default value is true.
+#'@param animation : Optional. List. For animation you can define the duration (in milliseconds) and easing function manually. 
 #'Available are: linear, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint.
 #'Default to list(duration = 1500, easingFunction = "easeInOutQuad") 
 #'

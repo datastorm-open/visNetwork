@@ -4,7 +4,7 @@
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param nodes : NULL for all nodes (Default), or a vector of nodes id
-#'@param animation : Optionnal. List. For animation you can define the duration (in milliseconds) and easing function manually. 
+#'@param animation : Optional. List. For animation you can define the duration (in milliseconds) and easing function manually. 
 #'Available are: linear, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint.
 #'Default to list(duration = 1500, easingFunction = "easeInOutQuad") 
 #'
