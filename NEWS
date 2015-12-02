@@ -6,6 +6,7 @@ visNetwork 0.2.0
   * fix selectedBy with numeric values
   * introduce new options : can select initial value using 'selectedBy' and 'nodesIdSelection' (selected), 
   set HTML style (style) and add subset on data (values)
+  * introduce new shiny return when using manipulation = TRUE
   
 visNetwork 0.1.2
 --------------------------------------------------------------------------------
