@@ -6,7 +6,7 @@
 #' With \code{visNetworkProxy}, you can use various methods like
 #' \code{\link{visOptions}}, \code{\link{visNodes}}, \code{\link{visEdges}},
 #' \code{\link{visPhysics}}, ... and more with special call for \code{visNetworkProxy} object like
-#' \code{\link{visFocus}}, \code{\link{visFit}}.
+#' \code{\link{visFocus}}, \code{\link{visFit}}, \code{\link{visRedraw}}.
 #' 
 #' @param shinyId single-element character vector indicating the shiny output ID of the
 #'   network to modify
