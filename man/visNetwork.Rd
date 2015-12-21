@@ -155,6 +155,7 @@ visNetwork(gephi = 'WorldCup2014.json') \%>\% visPhysics(stabilization = FALSE, 
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
 \link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout,
-\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
+\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 }
 

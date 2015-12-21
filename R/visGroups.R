@@ -11,7 +11,7 @@
 #'
 #' nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), 
 #'  group = sample(c("A", "B"), 10, replace = TRUE))
-#' edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
+#'  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 #'
 #' visNetwork(nodes, edges) %>%
 #'  visLegend() %>%
@@ -20,8 +20,8 @@
 #'  
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
-#'
+#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
+#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #' @export
 #'
