@@ -7,7 +7,7 @@ visNetwork 0.2.0
   * introduce new options : can select initial value using 'selectedBy' and 'nodesIdSelection' (selected), 
   set HTML style (style) and add subset on data (values)
   * introduce new shiny return when using manipulation = TRUE
-  * to vis.js 4.10.0
+  * to vis.js 4.11.0
   
 visNetwork 0.1.2
 --------------------------------------------------------------------------------
