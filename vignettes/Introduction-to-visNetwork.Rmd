@@ -33,6 +33,8 @@ Besides the help R functions, a vignette is available, and you can access and re
 ```{r, eval = FALSE}
 visDocumentation()
 vignette("Introduction-to-visNetwork") # with CRAN version
+# shiny ?
+shiny::runApp(system.file("shiny", package = "visNetwork"))
 ```
 
 Or visit our online help page : http://dataknowledge.github.io/visNetwork/.
