@@ -115,6 +115,39 @@ Shiny.addCustomMessageHandler('Focus', function(data){
     }
 });
 
+// stabilize the network
+Shiny.addCustomMessageHandler('Stabilize', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      var network = el.chart;
+      network.stabilize(data.options);
+    }
+});
+
+// startSimulation on network
+Shiny.addCustomMessageHandler('StartSimulation', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      var network = el.chart;
+      network.startSimulation();
+    }
+});
+
+// stopSimulation on network
+Shiny.addCustomMessageHandler('StopSimulation', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      var network = el.chart;
+      network.stopSimulation();
+    }
+});
+
 // get positions of the network
 Shiny.addCustomMessageHandler('GetPositions', function(data){
     // get container id
