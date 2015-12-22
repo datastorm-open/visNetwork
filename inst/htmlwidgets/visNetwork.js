@@ -73,7 +73,6 @@ Shiny.addCustomMessageHandler('Options', function(data){
     var el = document.getElementById("graph"+data.id);
     
     if(el){
-      // get nodes object
       var network = el.chart;
       var options = el.options;
       
@@ -88,10 +87,8 @@ Shiny.addCustomMessageHandler('SetData', function(data){
     var el = document.getElementById("graph"+data.id);
     
     if(el){
-      // get nodes object
       var network = el.chart;
       
-            // network
       var newnodes = new vis.DataSet();
       var newedges = new vis.DataSet();
       
@@ -113,11 +110,30 @@ Shiny.addCustomMessageHandler('Focus', function(data){
     var el = document.getElementById("graph"+data.id);
     
     if(el){
-      // get nodes object
       var network = el.chart;
       network.focus(data.focusId, data.options);
     }
 });
+
+// get positions of the network
+Shiny.addCustomMessageHandler('GetPositions', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      var network = el.chart;
+      var pos;
+      
+      if(data.nodes !== undefined){
+        pos = network.getPositions(data.nodes);
+      }else{
+        pos = network.getPositions();
+      }
+
+      Shiny.onInputChange(data.input, pos);
+    }
+});
+
 
 // fit on a node in the network
 Shiny.addCustomMessageHandler('Fit', function(data){
@@ -125,7 +141,6 @@ Shiny.addCustomMessageHandler('Fit', function(data){
     var el = document.getElementById("graph"+data.id);
     
     if(el){
-      // get nodes object
       var network = el.chart;
       network.fit(data.options);
     }
