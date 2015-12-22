@@ -82,6 +82,31 @@ Shiny.addCustomMessageHandler('Options', function(data){
     }
 });
 
+// setData the network
+Shiny.addCustomMessageHandler('SetData', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get nodes object
+      var network = el.chart;
+      
+            // network
+      var newnodes = new vis.DataSet();
+      var newedges = new vis.DataSet();
+      
+      newnodes.add(HTMLWidgets.dataframeToD3(data.nodes));
+      newedges.add(HTMLWidgets.dataframeToD3(data.edges));
+      
+      var newdata = {
+        nodes: newnodes,
+        edges: newedges
+      };
+      
+      network.setData(newdata);
+    }
+});
+
 // focus on a node in the network
 Shiny.addCustomMessageHandler('Focus', function(data){
     // get container id
