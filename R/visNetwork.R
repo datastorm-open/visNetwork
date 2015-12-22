@@ -12,8 +12,7 @@
 #'  \item{...}{}
 #'}
 #'
-#' @param edges : data.frame with edges informations. Needed at least columns "from" and "to".
-#' See See \link{visEdges}
+#' @param edges : data.frame with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
 #' \itemize{
 #'  \item{"from"}{ : node id of begin of the edge}
 #'  \item{"to"}{ : node id of end of the edge}

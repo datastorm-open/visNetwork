@@ -23,7 +23,7 @@ Available are: linear, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, ease
 Default to list(duration = 1500, easingFunction = "easeInOutQuad")}
 }
 \description{
-Network visualization focus method For use focus() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
+For use focus() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
 \dontrun{

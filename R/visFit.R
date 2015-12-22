@@ -1,6 +1,6 @@
 #' Network visualization fit method
 #'
-#' Network visualization fit method For use fit() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
+#' For use fit() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param nodes : NULL for all nodes (Default), or a vector of nodes id

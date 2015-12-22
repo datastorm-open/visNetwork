@@ -1,6 +1,6 @@
 #' Network visualization focus method
 #'
-#' Network visualization focus method For use focus() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
+#' For use focus() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param id : a node id
