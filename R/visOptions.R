@@ -255,8 +255,14 @@ visOptions <- function(graph,
         warning("Can't find '", byselection$variable, "' in node data.frame")
       }else{
         byselection$enabled <- TRUE
-        byselection$values <- sort(as.character(unique(graph$x$nodes[, byselection$variable])))
+        byselection$values <- unique(nodes[, byselection$variable])
         
+        if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
+          byselection$values <- sort(byselection$values)
+        }else{
+          byselection$values <- sort(as.character(byselection$values))
+        }
+          
         if("values"%in%names(selectedBy)){
           byselection$values <- intersect(byselection$values, selectedBy$values)
         }
