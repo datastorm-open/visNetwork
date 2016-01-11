@@ -550,11 +550,26 @@ HTMLWidgets.widget({
     
     if(x.nodes){
       
-      // network
+     // network
       nodes = new vis.DataSet();
       edges = new vis.DataSet();
       
-      nodes.add(HTMLWidgets.dataframeToD3(x.nodes));
+      var tmpnodes = HTMLWidgets.dataframeToD3(x.nodes);
+      
+      if(x.igraphlayout !== undefined){
+        var scalex = (document.getElementById("graph"+el.id).clientWidth / 2);
+        var scaley = scalex;
+        if(x.igraphlayout.type !== "square"){
+          scaley = (document.getElementById("graph"+el.id).clientHeight / 2);
+        }
+        
+        for (var nd in tmpnodes) {
+          tmpnodes[nd].x = tmpnodes[nd].x * scalex;
+          tmpnodes[nd].y = tmpnodes[nd].y * scaley;
+        }
+      }
+      
+      nodes.add(tmpnodes);
       edges.add(HTMLWidgets.dataframeToD3(x.edges));
       
       data = {
@@ -1263,8 +1278,9 @@ HTMLWidgets.widget({
       onByChange(x.byselection.selected);
       selectNode = document.getElementById('selectedBy'+el.id);
       selectNode.value = x.byselection.selected;
-    }  
+    }
   },
+  
   
   resize: function(el, width, height, instance) {
       if(instance.network)

@@ -1,6 +1,7 @@
 visNetwork 0.2.1
 --------------------------------------------------------------------------------
   
+  * new function visIgraphLayout to compute coordinates using igraph, and render faster !
   * adding new methods available for a use in shiny with visNetworkProxy : visSetData, visStabilize, visStartSimulation, visStopSimulation,visGetPositions
   
 visNetwork 0.2.0
