@@ -4,7 +4,8 @@
 \alias{visIgraphLayout}
 \title{Use a igraph layout for compute coordinates & fast rendering}
 \usage{
-visIgraphLayout(graph, layout = "layout_nicely", type = "square")
+visIgraphLayout(graph, layout = "layout_nicely", type = "square",
+  physics = FALSE, smooth = FALSE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -12,14 +13,18 @@ visIgraphLayout(graph, layout = "layout_nicely", type = "square")
 \item{layout}{: Character Name of igraph layout function to use. Default to "layout_nicely"}
 
 \item{type}{: Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.}
+
+\item{physics}{: Boolean. Default to FALSE. Enabled physics on nodes ?}
+
+\item{smooth}{: Boolean. Default to FALSE. Use smooth edges ?}
 }
 \description{
 Use a igraph layout for compute coordinates and fast rendering.
 This function affect x and y coordinates to nodes data.frame using a igraph layout,
 and then render network faster with no stabilization.
-We set some options as : visNodes(fixed = FALSE, physics = FALSE) &
+We set some options as : visNodes(physics = FALSE) &
 visEdges(smooth = FALSE) & visPhysics(stabilization= FALSE), but you can overwrite
-them by add another call after visIgraphLayout
+them using arguments or by add another call after visIgraphLayout
 }
 \examples{
 nnodes <- 200
@@ -44,6 +49,11 @@ visNetwork(nodes, edges) \%>\%
  visIgraphLayout(layout = "layout_in_circle") \%>\%
  visNodes(size = 10) \%>\%
  visOptions(highlightNearest = T, nodesIdSelection = T)
+
+# keep physics with smooth curves ?
+visNetwork(nodes, edges) \%>\%
+ visIgraphLayout(physics = TRUE, smooth = TRUE) \%>\%
+ visNodes(size = 10)
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,

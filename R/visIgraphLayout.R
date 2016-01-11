@@ -3,13 +3,15 @@
 #' Use a igraph layout for compute coordinates and fast rendering. 
 #' This function affect x and y coordinates to nodes data.frame using a igraph layout, 
 #' and then render network faster with no stabilization. 
-#' We set some options as : visNodes(fixed = FALSE, physics = FALSE) &
+#' We set some options as : visNodes(physics = FALSE) &
 #' visEdges(smooth = FALSE) & visPhysics(stabilization= FALSE), but you can overwrite
-#' them by add another call after visIgraphLayout
+#' them using arguments or by add another call after visIgraphLayout
 #'
 #'@param graph : a visNetwork object
 #'@param layout : Character Name of igraph layout function to use. Default to "layout_nicely"
 #'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
+#'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
+#'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
 #'
 #'@examples
 #'
@@ -35,6 +37,11 @@
 #'  visIgraphLayout(layout = "layout_in_circle") %>%
 #'  visNodes(size = 10) %>%
 #'  visOptions(highlightNearest = T, nodesIdSelection = T)
+#'  
+#'# keep physics with smooth curves ?
+#'visNetwork(nodes, edges) %>% 
+#'  visIgraphLayout(physics = TRUE, smooth = TRUE) %>%
+#'  visNodes(size = 10)
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -45,7 +52,9 @@
 
 visIgraphLayout <- function(graph,
                             layout = "layout_nicely",
-                            type = "square"){
+                            type = "square", 
+                            physics = FALSE, 
+                            smooth = FALSE){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringOutliers with visNetworkProxy object")
@@ -89,6 +98,6 @@ visIgraphLayout <- function(graph,
   
   graph$x$igraphlayout <- igraphlayout
   
-  graph %>% visNodes(fixed = FALSE, physics = FALSE) %>% 
-    visEdges(smooth = FALSE) %>% visPhysics(stabilization = FALSE)
+  graph %>% visNodes(physics = physics) %>% 
+    visEdges(smooth = smooth) %>% visPhysics(stabilization = FALSE)
 }
