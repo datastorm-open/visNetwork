@@ -2,6 +2,7 @@ visNetwork 0.2.1
 --------------------------------------------------------------------------------
   * fix selectedBy & highlightNearest redraw when nodes have coordinates
   * new function visIgraphLayout to compute coordinates using igraph, and render faster !
+  * init new function visIgraph to plot visNetwork object from igraph object
   * adding new methods available for a use in shiny with visNetworkProxy : visSetData, visStabilize, visStartSimulation, visStopSimulation,visGetPositions
   
 visNetwork 0.2.0

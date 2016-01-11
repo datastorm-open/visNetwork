@@ -8,6 +8,10 @@
 
 Better performance ? Use ````visIgraphLayout```` to compute coordinates using ``igraph`` package, and then render network faster. So you can also use all ``igraph`` layout function, like ``layout_in_circle``, ....
 
+* ### have a look to ````visIgraph````
+
+Little bit experimental function, to plot visNetwork object from igral object
+
 * ### have a look to ````visNetworkProxy````
 
 Can now update and call method in shiny on a visNetwork object !
