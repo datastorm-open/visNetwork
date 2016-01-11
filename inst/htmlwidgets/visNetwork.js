@@ -702,6 +702,8 @@ HTMLWidgets.widget({
         sel = "hiddenColor";
       }
     
+      var update = !(selectActive === false & value === "");
+      
       if (value !== "") {
       
         selectActive = true;
@@ -728,6 +730,8 @@ HTMLWidgets.widget({
               allSelNodes[nodeId].hiddenLabel = undefined;
             }
           }
+          allSelNodes[nodeId].x = undefined;
+          allSelNodes[nodeId].y = undefined;
         }
       }
       else if (selectActive === true) {
@@ -743,19 +747,23 @@ HTMLWidgets.widget({
             allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
             allSelNodes[nodeId].hiddenLabel = undefined;
           }
+          allSelNodes[nodeId].x = undefined;
+          allSelNodes[nodeId].y = undefined;
         }
       
         selectActive = false
       }
     
-      // transform the object into an array
-      var updateArray = [];
-      for (nodeId in allSelNodes) {
-        if (allSelNodes.hasOwnProperty(nodeId)) {
-          updateArray.push(allSelNodes[nodeId]);
+      if(update){
+        // transform the object into an array
+        var updateArray = [];
+        for (nodeId in allSelNodes) {
+          if (allSelNodes.hasOwnProperty(nodeId)) {
+            updateArray.push(allSelNodes[nodeId]);
+          }
         }
+        nodesSelDataset.update(updateArray);
       }
-      nodesSelDataset.update(updateArray);
     } 
   
    // actually only with nodes + edges data (not dot and gephi)
@@ -774,6 +782,9 @@ HTMLWidgets.widget({
       var changeInput = function(id, data) {
         Shiny.onInputChange(el.id + '_' + id, data);
       };
+      
+      var update = !(highlightActive === false & params.nodes.length === 0);
+      
       if (params.nodes.length > 0) {
         
         if(x.idselection.enabled){
@@ -807,6 +818,8 @@ HTMLWidgets.widget({
             allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
             allNodes[nodeId].label = undefined;
           }
+          allNodes[nodeId].x = undefined;
+          allNodes[nodeId].y = undefined;
         }
         
         if(degrees > 0){
@@ -896,9 +909,10 @@ HTMLWidgets.widget({
             allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
             allNodes[nodeId].hiddenLabel = undefined;
           }
+          allNodes[nodeId].x = undefined;
+          allNodes[nodeId].y = undefined;
         }
-        
-        highlightActive = false
+        highlightActive = false;
       }
       else if(x.byselection.enabled){
         selectNode = document.getElementById('selectedBy'+el.id);
@@ -908,14 +922,17 @@ HTMLWidgets.widget({
         }
       }
       
-      // transform the object into an array
-      var updateArray = [];
-      for (nodeId in allNodes) {
-        if (allNodes.hasOwnProperty(nodeId)) {
-          updateArray.push(allNodes[nodeId]);
+      if(update){
+        // transform the object into an array
+        var updateArray = [];
+        for (nodeId in allNodes) {
+          if (allNodes.hasOwnProperty(nodeId)) {
+            updateArray.push(allNodes[nodeId]);
+          }
         }
+        nodesDataset.update(updateArray);
       }
-      nodesDataset.update(updateArray);
+
     }
     
     function onClickIDSelection(selectedItems) {
