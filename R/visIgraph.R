@@ -106,6 +106,19 @@ visIgraph <- function(igraph,
   
   edges <- igraphdata$edges
 
-  visNetwork(nodes = nodes, edges = edges) %>%
+  directed <- FALSE
+  if(is.directed(igraph)){
+#     if(any(duplicated(edges[, c("from", "to")]))){
+#       
+#     }else{
+      directed <- TRUE
+    # }
+  }
+  
+  graph <- visNetwork(nodes = nodes, edges = edges) %>%
     visIgraphLayout(layout = layout, type = type, physics = physics, smooth = smooth)
+  if(directed){
+    graph <- visEdges(graph, arrows = "to")
+  }
+  graph
 }
