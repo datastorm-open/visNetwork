@@ -10,7 +10,7 @@ Better performance ? Use ````visIgraphLayout```` to compute coordinates using ``
 
 * ### have a look to ````visIgraph````
 
-Little bit experimental function, to plot visNetwork object from igral object
+Little bit experimental function, to plot visNetwork object from igraph object
 
 * ### have a look to ````visNetworkProxy````
 
