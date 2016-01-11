@@ -4,19 +4,19 @@
 \alias{visIgraphLayout}
 \title{Use a igraph layout for compute coordinates & fast rendering}
 \usage{
-visIgraphLayout(graph, layout = "layout_nicely", type = "square",
-  physics = FALSE, smooth = FALSE)
+visIgraphLayout(graph, layout = "layout_nicely", physics = FALSE,
+  smooth = FALSE, type = "square")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
 \item{layout}{: Character Name of igraph layout function to use. Default to "layout_nicely"}
 
-\item{type}{: Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.}
-
 \item{physics}{: Boolean. Default to FALSE. Enabled physics on nodes ?}
 
 \item{smooth}{: Boolean. Default to FALSE. Use smooth edges ?}
+
+\item{type}{: Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.}
 }
 \description{
 Use a igraph layout for compute coordinates and fast rendering.

@@ -9,9 +9,9 @@
 #'
 #'@param graph : a visNetwork object
 #'@param layout : Character Name of igraph layout function to use. Default to "layout_nicely"
-#'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
 #'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
+#'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
 #'
 #'@examples
 #'
@@ -52,9 +52,9 @@
 
 visIgraphLayout <- function(graph,
                             layout = "layout_nicely",
-                            type = "square", 
                             physics = FALSE, 
-                            smooth = FALSE){
+                            smooth = FALSE,
+                            type = "square"){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringOutliers with visNetworkProxy object")
