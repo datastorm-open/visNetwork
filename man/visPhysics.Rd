@@ -7,7 +7,7 @@
 visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
   timestep = NULL, barnesHut = NULL, forceAtlas2Based = NULL,
   repulsion = NULL, hierarchicalRepulsion = NULL, stabilization = NULL,
-  adaptiveTimestep = NULL)
+  adaptiveTimestep = NULL, enabled = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -68,6 +68,8 @@ visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
 }}
 
 \item{adaptiveTimestep}{:    Boolean. Default to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.}
+
+\item{enabled}{:    Boolean. Default to true. Toggle the physics system on or off. This property is optional. If you define any of the options below and enabled is undefined, this will be set to true.}
 }
 \description{
 Network visualization Physics options. For full documentation, have a look at \link{visDocumentation}.

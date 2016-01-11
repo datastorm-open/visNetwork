@@ -57,6 +57,8 @@
 #'
 #'@param adaptiveTimestep :	Boolean. Default to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.
 #'
+#'@param enabled :	Boolean. Default to true. Toggle the physics system on or off. This property is optional. If you define any of the options below and enabled is undefined, this will be set to true.
+#'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -89,7 +91,8 @@ visPhysics <- function(graph,
                        repulsion = NULL,
                        hierarchicalRepulsion = NULL, 
                        stabilization = NULL, 
-                       adaptiveTimestep = NULL){
+                       adaptiveTimestep = NULL, 
+                       enabled = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -113,6 +116,7 @@ visPhysics <- function(graph,
   physics$timestep <- timestep
   physics$stabilization <- stabilization
   physics$adaptiveTimestep <-  adaptiveTimestep
+  physics$enabled <- enabled
   
   if(!is.null(barnesHut)){
     physics$barnesHut <- barnesHut
@@ -129,7 +133,7 @@ visPhysics <- function(graph,
   if(!is.null(forceAtlas2Based)){
     physics$forceAtlas2Based <- forceAtlas2Based
   }
-  
+
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(physics = physics)
     data <- list(id = graph$id, options = options)
