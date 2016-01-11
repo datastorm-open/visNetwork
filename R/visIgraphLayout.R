@@ -5,7 +5,7 @@
 #' and then render network faster with no stabilization. 
 #' We set some options as : visNodes(fixed = FALSE, physics = FALSE) &
 #' visEdges(smooth = FALSE) & visPhysics(stabilization= FALSE), but you can overwrite
-#'them by add another call after visIgraphLayout
+#' them by add another call after visIgraphLayout
 #'
 #'@param graph : a visNetwork object
 #'@param layout : Character Name of igraph layout function to use. Default to "layout_nicely"
