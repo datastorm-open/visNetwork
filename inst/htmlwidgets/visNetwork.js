@@ -703,7 +703,7 @@ HTMLWidgets.widget({
       }
     
       var update = !(selectActive === false & value === "");
-      
+
       if (value !== "") {
       
         selectActive = true;
@@ -783,7 +783,7 @@ HTMLWidgets.widget({
         Shiny.onInputChange(el.id + '_' + id, data);
       };
       
-      var update = !(highlightActive === false & params.nodes.length === 0);
+      var update = !(highlightActive === false & params.nodes.length === 0) | (selectActive === true & params.nodes.length === 0);
       
       if (params.nodes.length > 0) {
         
@@ -914,7 +914,7 @@ HTMLWidgets.widget({
         }
         highlightActive = false;
       }
-      else if(x.byselection.enabled){
+     if(x.byselection.enabled){
         selectNode = document.getElementById('selectedBy'+el.id);
         selectNode.value = "";
         if (window.Shiny){

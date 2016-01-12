@@ -1,5 +1,6 @@
 visNetwork 0.2.1
 --------------------------------------------------------------------------------
+  * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together
   * fix selectedBy & highlightNearest redraw when nodes have coordinates
   * new function visIgraphLayout to compute coordinates using igraph, and render faster !
   * init new function visIgraph to plot visNetwork object from igraph object
