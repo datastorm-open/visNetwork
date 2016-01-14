@@ -784,7 +784,6 @@ HTMLWidgets.widget({
       };
       
       var update = !(highlightActive === false & params.nodes.length === 0) | (selectActive === true & params.nodes.length === 0);
-      
       if (params.nodes.length > 0) {
         
         if(x.idselection.enabled){
@@ -867,7 +866,6 @@ HTMLWidgets.widget({
           }
         }
         
-        
         // the main node gets its own color and its label back.
         if (allNodes[selectedNode].hiddenColor !== undefined) {
           allNodes[selectedNode].color = allNodes[selectedNode].hiddenColor;
@@ -879,7 +877,7 @@ HTMLWidgets.widget({
           allNodes[selectedNode].hiddenLabel = undefined;
         }
       }
-      else if (highlightActive === true) {
+      else if (highlightActive === true | selectActive === true) {
         if(x.idselection.enabled){
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = "";
@@ -888,16 +886,7 @@ HTMLWidgets.widget({
           }
         }
         
-        if(x.byselection.enabled){
-          selectNode = document.getElementById('selectedBy'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selectedBy', "");
-          }
-        }
-        
         // reset all nodes
-
         for (var nodeId in allNodes) {
           if (allNodes[nodeId].hiddenColor !== undefined) {
             allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
