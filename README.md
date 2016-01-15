@@ -4,6 +4,8 @@
 
 # News
 
+* ### new function ````visSave```` to save as html and ````visExport```` to save as png/jpeg (shiny and browser only)
+
 * ### have a look to ````visIgraphLayout````
 
 Better performance ? Use ````visIgraphLayout```` to compute coordinates using ``igraph`` package, and then render network faster. So you can also use all ``igraph`` layout function, like ``layout_in_circle``, ....
