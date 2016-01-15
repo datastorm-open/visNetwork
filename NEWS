@@ -1,10 +1,12 @@
 visNetwork 0.2.1
 --------------------------------------------------------------------------------
+  
   * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together
   * fix selectedBy & highlightNearest redraw when nodes have coordinates
   * new function visIgraphLayout to compute coordinates using igraph, and render faster !
   * init new function visIgraph to plot visNetwork object from igraph object
   * adding new methods available for a use in shiny with visNetworkProxy : visSetData, visStabilize, visStartSimulation, visStopSimulation,visGetPositions
+  * to vis.js 4.12.0 : new color option for shadows
   
 visNetwork 0.2.0
 --------------------------------------------------------------------------------

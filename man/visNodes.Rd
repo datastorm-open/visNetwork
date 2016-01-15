@@ -96,6 +96,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 \item{shadow}{: Boolean | named list. Default to false. When true, the node casts a shadow using the default settings. This can be further refined by supplying a list
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Toggle the casting of shadows. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+ \item{"color"}{    : String. Default to    'rgba(0,0,0,0.5)'.    The color of the shadow as a string. Supported formats are 'rgb(255,255,255)', 'rgba(255,255,255,1)' and '#FFFFFF'.}
  \item{"size"}{ : Number. Default to 10. The blur size of the shadow.}
  \item{"x"}{ : Number. Default to 5. The x offset.}
  \item{"y"}{ : Number. Default to 5. The y offset.}
