@@ -13,6 +13,7 @@
 #'@examples
 #'
 #'\dontrun{
+#'require(igraph)
 #'igraph_network <- graph.famous("Walther")
 #'visIgraph(igraph_network)
 #'

@@ -78,14 +78,16 @@ visIgraphLayout <- function(graph,
          install it before.")
   }
   
-  if(length(findFunction(layout)) == 0){
+  ctrl <- getAnywhere(layout)
+  if(length(ctrl$objs) == 0){
     stop("Can't find '", layout, "' function. Please verify it")
   }
   
   igraphlayout <- list(type = type)
   
-  ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, vertices = graph$x$nodes)
-  coord <- get(layout)(ig)
+  ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, 
+                                      vertices = graph$x$nodes)
+  coord <- ctrl$objs[[1]](ig)
   
   graph$x$nodes$x <- coord[, 1]
   graph$x$nodes$y <- coord[, 2]
