@@ -1,6 +1,7 @@
 visNetwork 0.2.1
 --------------------------------------------------------------------------------
   
+  * add visSave for html file, and visExport to save as png/jpeg (shiny or browser only)
   * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together
   * fix selectedBy & highlightNearest redraw when nodes have coordinates
   * new function visIgraphLayout to compute coordinates using igraph, and render faster !
