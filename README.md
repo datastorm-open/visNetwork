@@ -4,21 +4,20 @@
 
 # News
 
-* ### new function ````visSave```` to save as html and ````visExport```` to save as png/jpeg (shiny and browser only)
+* #### new function ````visSave```` to save as html and ````visExport```` to save as png/jpeg (shiny and browser only)
 
-* ### have a look to ````visIgraphLayout````
+* #### have a look to ````visIgraphLayout```` for better performance
 
-Better performance ? Use ````visIgraphLayout```` to compute coordinates using ``igraph`` package, and then render network faster. So you can also use all ``igraph`` layout function, like ``layout_in_circle``, ....
+Use ````visIgraphLayout```` to compute coordinates using ``igraph`` package, and then render network faster. So you can also use all ``igraph`` layout function, like ``layout_in_circle``, ....
 
-* ### have a look to ````visIgraph````
+* #### have a look to ````visIgraph```` to plot visNetwork object from igraph object (Little bit)
 
-Little bit experimental function, to plot visNetwork object from igraph object
 
-* ### have a look to ````visNetworkProxy````
+* #### have a look to ````visNetworkProxy````, for shiny update
 
 Can now update and call method in shiny on a visNetwork object !
 
-* ### have a look to ````visLegend````
+* #### Use ````visLegend```` for custom legend
 
 # Online documentation
 
