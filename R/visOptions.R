@@ -255,7 +255,7 @@ visOptions <- function(graph,
         warning("Can't find '", byselection$variable, "' in node data.frame")
       }else{
         byselection$enabled <- TRUE
-        byselection$values <- unique(nodes[, byselection$variable])
+        byselection$values <- unique(graph$x$nodes[, byselection$variable])
         
         if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
           byselection$values <- sort(byselection$values)
