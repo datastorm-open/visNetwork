@@ -977,8 +977,40 @@ HTMLWidgets.widget({
     }
     
     //*************************
-    //manipulation
+    // export
     //*************************
+    
+    console.info(x.export);
+    if(x.export !== undefined){
+      
+      var downloaddiv = document.createElement('div');
+      downloaddiv.setAttribute('style', 'float:right; width:100%');
+      
+      var downloadbutton = document.createElement("button");
+      downloadbutton.setAttribute('style', x.export.css);
+      downloadbutton.id = "download"+el.id;
+      downloadbutton.appendChild(document.createTextNode(x.export.label)); 
+      downloaddiv.appendChild(downloadbutton);
+      
+      var hr = document.createElement("hr");
+      hr.setAttribute('style', 'height:5px; visibility:hidden; margin-bottom:-1px;');
+      downloaddiv.appendChild(hr);  
+      
+      document.getElementById("maindiv"+el.id).appendChild(downloaddiv);
+      
+      document.getElementById("download"+el.id).onclick = function() {
+           
+           html2canvas(document.getElementById("maindiv"+el.id), {
+             background: x.export.background,
+              onrendered: function(canvas) {
+                canvas.toBlob(function(blob) {
+                            saveAs(blob, x.export.name);
+                                    }, "image/"+x.export.type);
+            }
+        });
+    };
+    }
+
     function clearPopUp() {
       document.getElementById('saveButton').onclick = null;
       document.getElementById('cancelButton').onclick = null;

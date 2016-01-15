@@ -53,3 +53,48 @@ addFontAwesome <- function(graph){
   
   graph
 }
+
+addExport <- function(graph){
+  if(!inherits(graph,"htmlwidget")){
+    stop("graph should be a htmlwidget.", call.=F)
+  } 
+  
+  fileSaver_dep <- htmltools::htmlDependency(
+    name = "FileSaver",
+    version = "1.1.20151003",
+    src = c(file=system.file("htmlwidgets/lib/export/FileSaver", package="visNetwork")),
+    script = "FileSaver.min.js"
+  )
+  
+  Blob_dep <- htmltools::htmlDependency(
+    name = "Blob",
+    version = "1.0",
+    src = c(file=system.file("htmlwidgets/lib/export/Blob", package="visNetwork")),
+    script = "Blob.js"
+  )
+  
+  canvastoBlob_dep <- htmltools::htmlDependency(
+    name = "canvas-toBlob",
+    version = "1.0",
+    src = c(file=system.file("htmlwidgets/lib/export/canvas-toBlob", package="visNetwork")),
+    script = "canvas-toBlob.js"
+  )
+  
+  html2canvas_dep <- htmltools::htmlDependency(
+    name = "html2canvas",
+    version = "0.5.0",
+    src = c(file=system.file("htmlwidgets/lib/export/html2canvas", package="visNetwork")),
+    script = "html2canvas.js"
+  )
+
+  if(length(graph$dependencies) == 0){
+    graph$dependencies = list()
+  }
+  
+  graph$dependencies[[length(graph$dependencies)+1]] <- fileSaver_dep
+  graph$dependencies[[length(graph$dependencies)+1]] <- Blob_dep
+  graph$dependencies[[length(graph$dependencies)+1]] <- canvastoBlob_dep
+  graph$dependencies[[length(graph$dependencies)+1]] <- html2canvas_dep
+  
+  graph
+}
