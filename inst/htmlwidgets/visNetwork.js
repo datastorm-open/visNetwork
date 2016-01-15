@@ -979,8 +979,6 @@ HTMLWidgets.widget({
     //*************************
     // export
     //*************************
-    
-    console.info(x.export);
     if(x.export !== undefined){
       
       var downloaddiv = document.createElement('div');
@@ -1008,9 +1006,12 @@ HTMLWidgets.widget({
                                     }, "image/"+x.export.type);
             }
         });
-    };
+      };
     }
 
+    //*************************
+    // dataManipulation
+    //*************************
     function clearPopUp() {
       document.getElementById('saveButton').onclick = null;
       document.getElementById('cancelButton').onclick = null;
