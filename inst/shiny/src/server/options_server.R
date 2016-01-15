@@ -6,6 +6,7 @@ output$network_id <- renderVisNetwork({
                       to = trunc(runif(15)*(15-1))+1)
   
   visNetwork(nodes, edges) %>%
+    visExport() %>%
     visOptions(highlightNearest = TRUE, 
                nodesIdSelection = list(enabled = TRUE, selected = "1"))
 })
