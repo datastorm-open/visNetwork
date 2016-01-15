@@ -25,6 +25,7 @@ Render a visNetwork object from an igraph object. This function call also \link{
 We actually try to keep color, size and label from igraph to visNetwork
 }
 \examples{
+\dontrun{
 igraph_network <- graph.famous("Walther")
 visIgraph(igraph_network)
 
@@ -64,6 +65,7 @@ V(g)$color <- "blue"
 V(g)[giant_v]$color <- "orange"
 plot(g)
 visIgraph(g)
+}
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,

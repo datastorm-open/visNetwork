@@ -15,6 +15,7 @@
 #'
 #'@examples
 #'
+#'\dontrun{
 #'nnodes <- 200
 #'nnedges <- 400
 #'
@@ -42,7 +43,7 @@
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(physics = TRUE, smooth = TRUE) %>%
 #'  visNodes(size = 10)
-#'
+#'}
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -72,7 +73,7 @@ visIgraphLayout <- function(graph,
     stop("type must be one of 'square' or 'full'")
   }
   
-  if(!require(igraph)){
+  if(!requireNamespace("igraph", quietly = TRUE)){
     stop("This function need 'igraph' package to compute layout. Please 
          install it before.")
   }
@@ -83,7 +84,7 @@ visIgraphLayout <- function(graph,
   
   igraphlayout <- list(type = type)
   
-  ig <- graph_from_data_frame(graph$x$edges, directed = TRUE, vertices = graph$x$nodes)
+  ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, vertices = graph$x$nodes)
   coord <- get(layout)(ig)
   
   graph$x$nodes$x <- coord[, 1]

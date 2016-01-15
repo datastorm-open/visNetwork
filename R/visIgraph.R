@@ -12,6 +12,7 @@
 #'
 #'@examples
 #'
+#'\dontrun{
 #'igraph_network <- graph.famous("Walther")
 #'visIgraph(igraph_network)
 #'
@@ -51,7 +52,7 @@
 #'V(g)[giant_v]$color <- "orange"
 #'plot(g)
 #'visIgraph(g)
-#'
+#'}
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -74,7 +75,7 @@ visIgraph <- function(igraph,
     stop("type must be one of 'square' or 'full'")
   }
   
-  if(!require(igraph)){
+  if(!requireNamespace("igraph", quietly = TRUE)){
     stop("This function need 'igraph'. Please 
          install it before.")
   }
@@ -83,7 +84,7 @@ visIgraph <- function(igraph,
     stop("Can't find '", layout, "' function. Please verify it")
   }
   
-  igraphdata <- get.data.frame(igraph, what = "both")
+  igraphdata <- igraph::get.data.frame(igraph, what = "both")
   
   nodes <- igraphdata$vertices
   if(!"name" %in% colnames(nodes)){
@@ -107,7 +108,7 @@ visIgraph <- function(igraph,
   edges <- igraphdata$edges
 
   directed <- FALSE
-  if(is.directed(igraph)){
+  if(igraph::is.directed(igraph)){
 #     if(any(duplicated(edges[, c("from", "to")]))){
 #       
 #     }else{

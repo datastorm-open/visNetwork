@@ -27,6 +27,7 @@ visEdges(smooth = FALSE) & visPhysics(stabilization= FALSE), but you can overwri
 them using arguments or by add another call after visIgraphLayout
 }
 \examples{
+\dontrun{
 nnodes <- 200
 nnedges <- 400
 
@@ -54,6 +55,7 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\%
  visIgraphLayout(physics = TRUE, smooth = TRUE) \%>\%
  visNodes(size = 10)
+}
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options,
