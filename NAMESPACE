@@ -3,6 +3,7 @@
 export("%>%")
 export(addFontAwesome)
 export(renderVisNetwork)
+export(toVisNetworkData)
 export(visClusteringByColor)
 export(visClusteringByConnection)
 export(visClusteringByGroup)

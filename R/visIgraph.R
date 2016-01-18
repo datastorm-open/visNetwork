@@ -1,20 +1,31 @@
 #' Render a visNetwork object from an igraph object
 #'
-#' Render a visNetwork object from an igraph object. This function call also \link{visIgraphLayout}. 
-#' We actually try to keep color, size and label from igraph to visNetwork
+#' Render a visNetwork object from an igraph object. \link{toVisNetworkData} transfrom igraph data to visNetwork data.
+#' We actually try to keep color, size and label from igraph to visNetwork.
+#' \link{visIgraph} plot directly an igraph object in visNetwork, using \link{toVisNetworkData} to extract data, and
+#' \link{visIgraphLayout} to compute layout and coordinates before rendering.
+#' 
 #'
 #'@param igraph : a igraph object
-#'@param idToLabel : Boolean. Default to TRUE. Use nodes's id as label ?
+#'@param idToLabel : Boolean. Default to TRUE. Use id of nodes as label ?
 #'@param layout : Character Name of igraph layout function to use. Default to "layout_nicely"
 #'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
 #'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
 #'
+#'@name visNetwork-igraph
+#' 
 #'@examples
 #'
 #'\dontrun{
 #'require(igraph)
 #'igraph_network <- graph.famous("Walther")
+#'
+#'# get data and plot :
+#'data <- toVisNetworkData(igraph_network)
+#'visNetwork(nodes = data$nodes, edges = data$edges)
+#'
+#'# or plot directly
 #'visIgraph(igraph_network)
 #'
 #'# change layout
@@ -85,6 +96,38 @@ visIgraph <- function(igraph,
     stop("Can't find '", layout, "' function. Please verify it")
   }
   
+  visdata <- toVisNetworkData(igraph, idToLabel)
+  
+  directed <- FALSE
+  if(igraph::is.directed(igraph)){
+#     if(any(duplicated(edges[, c("from", "to")]))){
+#       
+#     }else{
+      directed <- TRUE
+    # }
+  }
+  
+  graph <- visNetwork(nodes = visdata$nodes, edges = visdata$edges) %>%
+    visIgraphLayout(layout = layout, type = type, physics = physics, smooth = smooth)
+  if(directed){
+    graph <- visEdges(graph, arrows = "to")
+  }
+  graph
+}
+
+#'@rdname visNetwork-igraph
+#'@export
+toVisNetworkData <- function(igraph,
+                             idToLabel = TRUE){
+  if(!any(class(igraph) %in% "igraph")){
+    stop("igraph must be a igraph object")
+  }
+
+  if(!requireNamespace("igraph", quietly = TRUE)){
+    stop("This function need 'igraph'. Please 
+         install it before.")
+  }
+  
   igraphdata <- igraph::get.data.frame(igraph, what = "both")
   
   nodes <- igraphdata$vertices
@@ -107,20 +150,6 @@ visIgraph <- function(igraph,
   }
   
   edges <- igraphdata$edges
-
-  directed <- FALSE
-  if(igraph::is.directed(igraph)){
-#     if(any(duplicated(edges[, c("from", "to")]))){
-#       
-#     }else{
-      directed <- TRUE
-    # }
-  }
   
-  graph <- visNetwork(nodes = nodes, edges = edges) %>%
-    visIgraphLayout(layout = layout, type = type, physics = physics, smooth = smooth)
-  if(directed){
-    graph <- visEdges(graph, arrows = "to")
-  }
-  graph
+  list(nodes= nodes, edges = edges)
 }
