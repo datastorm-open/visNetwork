@@ -137,8 +137,17 @@ network <- visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
  manipulation = TRUE) \%>\% visLegend()
 
-htmlwidgets::saveWidget(network, "network.html")
+network \%>\% visSave(file = "network.html")
+# same as
+visSave(network, file = "network.html")
 }
+
+# Export as png/jpeg (shiny or browser only)
+\dontrun{
+visNetwork(nodes, edges) \%>\%
+ visExport()
+}
+
 # DOT language
 visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 
