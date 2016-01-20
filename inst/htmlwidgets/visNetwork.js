@@ -44,6 +44,83 @@ var indexOf = function(needle, str) {
     return indexOf.call(this, needle, str);
 };
 
+visNetworkdataframeToD3 = function(df, type) {
+
+  var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
+  var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling"];
+  
+  var names = [];
+  var colnames = [];
+  var length;
+  var toctrl;
+  var ctrlname;
+  
+  for (var name in df) {
+    if (df.hasOwnProperty(name))
+      colnames.push(name);
+      ctrlname = name.split(".");
+      if(ctrlname.length === 1){
+        names.push( new Array(name));
+      } else {
+        if(type === "nodes"){
+         toctrl = indexOf.call(nodesctrl, ctrlname[0], true);
+        } else if(type === "edges"){
+         toctrl = indexOf.call(edgesctrl, ctrlname[0], true);
+        }
+        if(toctrl > -1){
+          names.push(ctrlname);
+        } else {
+          names.push(new Array(name));
+        }
+      }
+      if (typeof(df[name]) !== "object" || typeof(df[name].length) === "undefined") {
+          throw new Error("All fields must be arrays");
+      } else if (typeof(length) !== "undefined" && length !== df[name].length) {
+          throw new Error("All fields must be arrays of the same length");
+      }
+      length = df[name].length;
+  }
+  
+  var results = [];
+  var item;
+    for (var row = 0; row < length; row++) {
+      item = {};
+      for (var col = 0; col < names.length; col++) {
+        if(df[colnames[col]][row] !== null){
+          if(names[col].length === 1){
+            item[names[col]] = df[colnames[col]][row];
+          } else if(names[col].length === 2){
+            if(item[names[col][0]] === undefined){
+              item[names[col][0]] = {};
+            }
+            item[names[col][0]][names[col][1]] = df[colnames[col]][row];
+          } else if(names[col].length === 3){
+            if(item[names[col][0]] === undefined){
+              item[names[col][0]] = {};
+            }
+            if(item[names[col][0]][names[col][1]] === undefined){
+              item[names[col][0]][names[col][1]] = {};
+            }
+            item[names[col][0]][names[col][1]][names[col][2]] = df[colnames[col]][row];
+          } else if(names[col].length === 4){
+            if(item[names[col][0]] === undefined){
+              item[names[col][0]] = {};
+            }
+            if(item[names[col][0]][names[col][1]] === undefined){
+              item[names[col][0]][names[col][1]] = {};
+            }
+            if(item[names[col][0]][names[col][1]][names[col][2]] === undefined){
+              item[names[col][0]][names[col][1]][names[col][2]] = {};
+            }
+            item[names[col][0]][names[col][1]][names[col][2]][names[col][3]] = df[colnames[col]][row];
+          }
+        }
+      }
+      results.push(item);
+    }
+  return results;
+};
+  
 function clone(obj) {
     if(obj === null || typeof(obj) != 'object')
         return obj;    
@@ -92,8 +169,8 @@ Shiny.addCustomMessageHandler('SetData', function(data){
       var newnodes = new vis.DataSet();
       var newedges = new vis.DataSet();
       
-      newnodes.add(HTMLWidgets.dataframeToD3(data.nodes));
-      newedges.add(HTMLWidgets.dataframeToD3(data.edges));
+      newnodes.add(visNetworkdataframeToD3(data.nodes, "nodes"));
+      newedges.add(visNetworkdataframeToD3(data.edges, "edges"));
       
       var newdata = {
         nodes: newnodes,
@@ -283,7 +360,7 @@ HTMLWidgets.widget({
     if(x.idselection.enabled){  
       var option;
       //Create and append select list
-      var selnodes = HTMLWidgets.dataframeToD3(x.nodes);
+      var selnodes = visNetworkdataframeToD3(x.nodes, "nodes");
       var selectList = document.createElement("select");
       
       selectList.setAttribute('class', 'dropdown');
@@ -418,6 +495,16 @@ HTMLWidgets.widget({
       
       legend.id = "legend"+el.id;
       legend.setAttribute('style', 'float:' + pos + '; width:'+legendwidth+'%;height:100%');
+      
+      /*var legendtitle = document.createElement('h2');
+      legendtitle.setAttribute('align', 'center');
+      legendtitle.appendChild(document.createTextNode("Legen titleeee")); 
+      legend.appendChild(legendtitle);
+      
+      var legendgraph = document.createElement('div');
+      legendgraph.id = "legendgraph"+el.id;
+      legend.appendChild(legendgraph);*/
+      
       document.getElementById("maindiv"+el.id).appendChild(legend);
       
       graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
@@ -485,7 +572,12 @@ HTMLWidgets.widget({
       
       if(x.legend.nodes !== undefined){
         
-        tmpnodes = x.legend.nodes;
+        if(x.legend.nodesToDataframe){
+          tmpnodes = visNetworkdataframeToD3(x.legend.nodes, "nodes")
+        } else {
+          tmpnodes = x.legend.nodes;
+        }
+        
         if(tmpnodes.length === undefined){
           tmpnodes = new Array(tmpnodes);
         }
@@ -511,7 +603,11 @@ HTMLWidgets.widget({
       }
       
       if(x.legend.edges !== undefined){
-        legendedges = x.legend.edges;
+        if(x.legend.edgesToDataframe){
+          legendedges = visNetworkdataframeToD3(x.legend.edges, "edges")
+        } else {
+          legendedges = x.legend.edges;
+        }
         if(legendedges.length === undefined){
           legendedges = new Array(legendedges);
         }
@@ -554,7 +650,7 @@ HTMLWidgets.widget({
       nodes = new vis.DataSet();
       edges = new vis.DataSet();
       
-      var tmpnodes = HTMLWidgets.dataframeToD3(x.nodes);
+      var tmpnodes = visNetworkdataframeToD3(x.nodes, "nodes");
       
       if(x.igraphlayout !== undefined){
         var scalex = (document.getElementById("graph"+el.id).clientWidth / 2);
@@ -570,7 +666,7 @@ HTMLWidgets.widget({
       }
       
       nodes.add(tmpnodes);
-      edges.add(HTMLWidgets.dataframeToD3(x.edges));
+      edges.add(visNetworkdataframeToD3(x.edges, "edges"));
       
       data = {
         nodes: nodes,

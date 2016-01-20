@@ -1,6 +1,7 @@
 visNetwork 0.2.1
 --------------------------------------------------------------------------------
   
+  * can now passing "list" options directly with data.frame with specific notation
   * add visSave for html file, and visExport to save as png/jpeg (shiny or browser only)
   * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together
   * fix selectedBy & highlightNearest redraw when nodes have coordinates
