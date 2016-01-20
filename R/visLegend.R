@@ -46,9 +46,12 @@
 #'   visLegend(addEdges = ledges)    
 #'   
 #' # for more complex option, you can use a list(of list...)
+#'  # or a data.frame with specific notaion
+#'
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 #' edges <- data.frame(from = c(1,2), to = c(2,3))
 #' 
+#' # using a list
 #' visNetwork(nodes, edges) %>%
 #'  visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
 #'  visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
@@ -59,6 +62,17 @@
 #'  ),
 #'  addEdges = data.frame(label = "link"), useGroups = FALSE)   
 #'  
+#' # using a data.frame
+#' addNodes <- data.frame(label = c("Group", "User"), shape = "icon",
+#'  icon.code = c("f0c0", "f007"), icon.size = c(25, 50), icon.color = c(NA, "red"))
+#'  
+#' visNetwork(nodes, edges) %>%
+#'  visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
+#'  visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
+#'  addFontAwesome() %>%
+#'  visLegend(addNodes = addNodes,
+#'    addEdges = data.frame(label = "link"), useGroups = FALSE)   
+#'    
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -102,20 +116,22 @@ visLegend <- function(graph,
     legend$position <- position
     
     if(!is.null(addEdges)){
+      legend$edges <- addEdges
       if(is.data.frame(addEdges)){
-        legend$edges <- toArrayList(addEdges)
+        legend$edgesToDataframe <- TRUE
       }else if(is.list(addEdges)){
-        legend$edges <- addEdges
+        legend$edgesToDataframe <- TRUE
       }else{
         stop("addEdges must be a data.frame or a list")
       }
     }
     
     if(!is.null(addNodes)){
+      legend$nodes <- addNodes
       if(is.data.frame(addNodes)){
-        legend$nodes <- toArrayList(addNodes)
+        legend$nodesToDataframe <- TRUE
       }else if(is.list(addNodes)){
-        legend$nodes <- addNodes
+        legend$nodesToDataframe <- FALSE
       }else{
         stop("addNodes must be a data.frame or a list")
       }

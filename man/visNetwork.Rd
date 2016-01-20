@@ -70,6 +70,16 @@ edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
 
 visNetwork(nodes, edges)
 
+# use more complex configuration :
+# when it's a list, you can use data.frame with specific notation like this
+nodes <- data.frame(id = 1:3, color.background = c("red", "blue", "green"),
+ color.highlight.background = c("red", NA, "red"), shadow.size = c(5, 10, 15))
+edges <- data.frame(from = c(1,2), to = c(1,3),
+ label = LETTERS[1:2], font.color =c ("red", "blue"), font.size = c(10,20))
+
+visNetwork(nodes, edges)
+
+
 # highlight nearest
 nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
  group = sample(LETTERS[1:3], 15, replace = TRUE))
