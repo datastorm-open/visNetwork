@@ -28,7 +28,9 @@ if (!Function.prototype.bind) {
 var indexOf = function(needle, str) {
         indexOf = function(needle, str) {
             var i = -1, index = -1;
-
+            if(str){
+                  needle = ''+needle;
+            }
             for(i = 0; i < this.length; i++) {
                 var val = this[i];
                 if(str){
