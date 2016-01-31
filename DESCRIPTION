@@ -17,7 +17,8 @@ Imports: htmlwidgets,
   htmltools,
   jsonlite,
   magrittr,
-  utils
+  utils,
+  methods
 License: MIT + file LICENSE
 Suggests: knitr,
   igraph

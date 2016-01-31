@@ -70,6 +70,8 @@
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
+#' @importFrom  methods findFunction
+#' 
 #'@export
 
 visIgraph <- function(igraph,

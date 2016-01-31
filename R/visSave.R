@@ -10,6 +10,7 @@
 #' 
 #' @examples
 #' 
+#'\dontrun{
 #'nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 #'edges <- data.frame(from = c(1,2), to = c(2,3))
 #'
@@ -20,6 +21,7 @@
 #'# same as
 #'visSave(network, file = "network.html")
 #'
+#'}
 #' @export
 visSave <- function(graph, file, selfcontained = TRUE) {
   htmlwidgets::saveWidget(graph, file, selfcontained)

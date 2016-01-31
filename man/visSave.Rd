@@ -21,6 +21,7 @@ include it's dependencies in an adjacent directory or can bundle all
 dependencies into the HTML file (via base64 encoding).
 }
 \examples{
+\dontrun{
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
@@ -30,5 +31,7 @@ network
 network \%>\% visSave(file = "network.html")
 # same as
 visSave(network, file = "network.html")
+
+}
 }
 
