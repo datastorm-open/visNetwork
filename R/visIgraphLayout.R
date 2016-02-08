@@ -12,6 +12,7 @@
 #'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
 #'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
+#'@param randomSeed : Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.
 #'
 #'@examples
 #'
@@ -43,6 +44,15 @@
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(physics = TRUE, smooth = TRUE) %>%
 #'  visNodes(size = 10)
+#'
+#'# fix radomSeed to keep position
+#'visNetwork(nodes, edges) %>% 
+#'  visIgraphLayout(randomSeed = 123) %>%
+#'  visNodes(size = 10)
+#'  
+#'visNetwork(nodes, edges) %>% 
+#'  visIgraphLayout(randomSeed = 123) %>%
+#'  visNodes(size = 10)
 #'}
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -57,7 +67,8 @@ visIgraphLayout <- function(graph,
                             layout = "layout_nicely",
                             physics = FALSE, 
                             smooth = FALSE,
-                            type = "square"){
+                            type = "square", 
+                            randomSeed = NULL){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringOutliers with visNetworkProxy object")
@@ -89,6 +100,10 @@ visIgraphLayout <- function(graph,
   
   ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, 
                                       vertices = graph$x$nodes)
+  
+  if(!is.null(randomSeed)){
+    set.seed(randomSeed)
+  }
   coord <- ctrl$objs[[1]](ig)
   
   graph$x$nodes$x <- coord[, 1]

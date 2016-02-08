@@ -12,6 +12,7 @@
 #'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
 #'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
+#'@param randomSeed : Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.
 #'
 #'@name visNetwork-igraph
 #' 
@@ -79,7 +80,8 @@ visIgraph <- function(igraph,
                       layout = "layout_nicely",
                       physics = FALSE, 
                       smooth = FALSE,
-                      type = "square"){
+                      type = "square",
+                      randomSeed = NULL){
   
   if(!any(class(igraph) %in% "igraph")){
     stop("igraph must be a igraph object")
@@ -110,7 +112,8 @@ visIgraph <- function(igraph,
   }
   
   graph <- visNetwork(nodes = visdata$nodes, edges = visdata$edges) %>%
-    visIgraphLayout(layout = layout, type = type, physics = physics, smooth = smooth)
+    visIgraphLayout(layout = layout, type = type, physics = physics, 
+                    smooth = smooth, randomSeed = randomSeed)
   if(directed){
     graph <- visEdges(graph, arrows = "to")
   }
