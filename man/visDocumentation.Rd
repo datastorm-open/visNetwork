@@ -4,7 +4,10 @@
 \alias{visDocumentation}
 \title{View full documentation of vis.js on network}
 \usage{
-visDocumentation()
+visDocumentation(viewer = getOption("viewer"))
+}
+\arguments{
+\item{viewer}{: Set to NULL to open in a browser}
 }
 \description{
 View full documentation of vis.js on network
@@ -13,6 +16,7 @@ View full documentation of vis.js on network
 # minimal example
 \dontrun{
 visDocumentation()
+visDocumentation(NULL)
 }
 }
 \seealso{
