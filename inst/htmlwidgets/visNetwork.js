@@ -269,6 +269,30 @@ Shiny.addCustomMessageHandler('Redraw', function(data){
       network.redraw();
     }
 });
+
+// udpate nodes data
+Shiny.addCustomMessageHandler('UpdateNodes', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get nodes object
+      var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
+      el.nodes.update(tmpnodes);
+    }
+});
+
+// udpate edges data
+Shiny.addCustomMessageHandler('UpdateEdges', function(data){
+    // get container id
+    var el = document.getElementById("graph"+data.id);
+    
+    if(el){
+      // get edges object
+      var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
+      el.edges.update(tmpedges);
+    }
+});
 }
 
 
@@ -675,6 +699,10 @@ HTMLWidgets.widget({
         edges: edges
       };
       
+    //save data for re-use and update
+    document.getElementById("graph"+el.id).nodes = nodes;
+    document.getElementById("graph"+el.id).edges = edges;
+    
     }else if(x.dot){
       data = {
         dot: x.dot

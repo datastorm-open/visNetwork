@@ -1,6 +1,6 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
-  
+  * new visUpdateNodes & visUpdateEdges to update data in shiny
   * add randomSeed to visIgraphLayout
   * to vis.js 4.15.0
   
