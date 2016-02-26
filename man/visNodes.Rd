@@ -45,7 +45,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 
 \item{borderWidth}{: Number. Default to 1. The width of the border of the node when it is not selected, automatically limited by the width of the node.}
 
-\item{borderWidthSelected}{: Number. Undefined. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.}
+\item{borderWidthSelected}{: Number. Default to 2. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.}
 
 \item{brokenImage}{: String. Undefined. When the shape is set to image or circularImage, this option can be an URL to a backup image in case the URL supplied in the image option cannot be resolved}
 
@@ -122,6 +122,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 \itemize{
  \item{"borderDashes"}{ : Vector or Boolean. Default to    false. This property applies to all shapes that have borders. You set the dashes by supplying an Vector Vector formart: [dash length, gap length]. You can also use a Boolean, false is disable and true is default [5,15].}
  \item{"borderRadius"}{ : Number. Default to    6. This property is used only for the box shape. It allows you to determine the roundness of the corners of the shape.}
+ \item{"interpolation"}{ :     Boolean. Default to    true. This property only applies to the image and circularImage shapes. When true, the image is resampled when scaled down, resulting in a nicer image at the cost of computional time.}
  \item{"useImageSize"}{ : Boolean. Default to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 }}

@@ -49,6 +49,8 @@
 #'  \item{"from "}{ : Named list or Boolean. Default to Named list. Exactly the same as the to object but with an arrowhead at the from node of the edge.}
 #'}
 #'
+#' @param arrowStrikethrough :	Boolean. Default to True. 	When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.
+#'
 #' @param smooth : Boolean | named list. Default to named list. When true, the edge is drawn as a dynamic quadratic bezier curve. The drawing of these curves takes longer than that of straight curves but it looks better.
 #' \itemize{
 #'  \item{"enabled"}{ : Boolean. Default to true. Toggle smooth curves on and off. This is an optional option. If any of the other properties in this object are set, this option will be set to true.}
@@ -133,6 +135,7 @@ visEdges <- function(graph,
                      color = NULL,
                      font = NULL, 
                      arrows = NULL, 
+                     arrowStrikethrough = NULL,
                      smooth = NULL,
                      shadow = NULL, 
                      scaling = NULL){
@@ -157,6 +160,7 @@ visEdges <- function(graph,
   edges$selfReferenceSize <- selfReferenceSize
   edges$labelHighlightBold <- labelHighlightBold 
   edges$arrows <- arrows
+  edges$arrowStrikethrough <- arrowStrikethrough
   edges$color <- color
   edges$font <- font
   edges$smooth <- smooth

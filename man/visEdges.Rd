@@ -8,8 +8,8 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
   width = NULL, dashes = NULL, hidden = NULL, hoverWidth = NULL,
   id = NULL, physics = NULL, selectionWidth = NULL,
   selfReferenceSize = NULL, labelHighlightBold = NULL, color = NULL,
-  font = NULL, arrows = NULL, smooth = NULL, shadow = NULL,
-  scaling = NULL)
+  font = NULL, arrows = NULL, arrowStrikethrough = NULL, smooth = NULL,
+  shadow = NULL, scaling = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -71,6 +71,8 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
  \item{"middle"}{ : Named list or Boolean. Default to Named list. Exactly the same as the to object but with an arrowhead in the center node of the edge.}
  \item{"from "}{ : Named list or Boolean. Default to Named list. Exactly the same as the to object but with an arrowhead at the from node of the edge.}
 }}
+
+\item{arrowStrikethrough}{:    Boolean. Default to True.     When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.}
 
 \item{smooth}{: Boolean | named list. Default to named list. When true, the edge is drawn as a dynamic quadratic bezier curve. The drawing of these curves takes longer than that of straight curves but it looks better.
 \itemize{

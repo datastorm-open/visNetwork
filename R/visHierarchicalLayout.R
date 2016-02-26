@@ -5,6 +5,11 @@
 #'@param graph : a visNetwork object 
 #'@param enabled : Boolean. Default to TRUE when calling this function.	Enable or disable the hierarchical layout.
 #'@param levelSeparation : Number. Default to 150.  The distance between the different levels.
+#'@param nodeSpacing : Number. Default to 100. Minimum distance between nodes on the free axis. This is only for the initial layout. If you enable physics, the node distance there will be the effective node distance.
+#'@param treeSpacing : Number. Default to 200. Distance between different trees (independent networks). This is only for the initial layout. If you enable physics, the repulsion model will denote the distance between the trees.
+#'@param blockShifting : Boolean. Default to true. Method for reducing whitespace. Can be used alone or together with edge minimization. Each node will check for whitespace and will shift it's branch along with it for as far as it can, respecting the nodeSpacing on any level. This is mainly for the initial layout. If you enable physics, they layout will be determined by the physics. This will greatly speed up the stabilization time though!
+#'@param edgeMinimization : Boolean. Default to true. Method for reducing whitespace. Can be used alone or together with block shifting. Enabling block shifting will usually speed up the layout process. Each node will try to move along its free axis to reduce the total length of it's edges. This is mainly for the initial layout. If you enable physics, they layout will be determined by the physics. This will greatly speed up the stabilization time though!
+#'@param parentCentralization	: Boolean. Default to true. When true, the parents nodes will be centered again after the the layout algorithm has been finished.
 #'@param direction : String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.
 #'@param sortMethod : String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.
 #'
@@ -29,6 +34,11 @@
 visHierarchicalLayout <- function(graph,
                                   enabled = TRUE,
                                   levelSeparation = NULL,
+                                  nodeSpacing = NULL,
+                                  treeSpacing = NULL,
+                                  blockShifting = NULL,
+                                  edgeMinimization = NULL,
+                                  parentCentralization = NULL,
                                   direction = NULL,
                                   sortMethod = NULL){
   
@@ -40,6 +50,11 @@ visHierarchicalLayout <- function(graph,
 
   hierarchicalLayout$enabled <- enabled
   hierarchicalLayout$levelSeparation <- levelSeparation
+  hierarchicalLayout$nodeSpacing <- nodeSpacing
+  hierarchicalLayout$treeSpacing <- treeSpacing
+  hierarchicalLayout$blockShifting <- blockShifting
+  hierarchicalLayout$edgeMinimization <- edgeMinimization
+  hierarchicalLayout$parentCentralization <- parentCentralization
   hierarchicalLayout$direction <- direction
   hierarchicalLayout$sortMethod <- sortMethod
   
