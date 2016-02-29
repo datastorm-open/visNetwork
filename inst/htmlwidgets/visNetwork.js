@@ -274,6 +274,7 @@ Shiny.addCustomMessageHandler('Redraw', function(data){
 Shiny.addCustomMessageHandler('UpdateNodes', function(data){
     // get container id
     var el = document.getElementById("graph"+data.id);
+    var main_el = document.getElementById(data.id);
     
     if(el){
       // get nodes object
@@ -319,6 +320,21 @@ Shiny.addCustomMessageHandler('UpdateNodes', function(data){
           }
         }
       }
+      
+      if(main_el.byselection === true){
+        var selectList2 = document.getElementById("selectedBy"+data.id)
+        var option2;
+        for (var nodeId in tmpnodes) {
+          if(indexOf.call(main_el.byselection_values, tmpnodes[nodeId][main_el.byselection_variable], false) === -1){
+            option2 = document.createElement("option");
+            option2.value = tmpnodes[nodeId][main_el.byselection_variable];
+            option2.text = tmpnodes[nodeId][main_el.byselection_variable];
+            selectList2.appendChild(option2);
+            main_el.byselection_values.push(tmpnodes[nodeId][main_el.byselection_variable]);
+          }
+        }
+      }
+      
       el.nodes.update(tmpnodes);
       el.updateNodes = true;
 
@@ -495,7 +511,12 @@ HTMLWidgets.widget({
     
     // selectedBy : add a list on top left
     // actually only with nodes + edges data (not dot and gephi)
-    if(x.byselection.enabled){  
+    
+    document.getElementById(el.id).byselection = false;
+    if(x.byselection.enabled){
+      document.getElementById(el.id).byselection = true;
+      document.getElementById(el.id).byselection_values = x.byselection.values;
+      document.getElementById(el.id).byselection_variable = x.byselection.variable;
       var option2;
       
       //Create and append select list
