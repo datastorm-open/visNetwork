@@ -278,7 +278,50 @@ Shiny.addCustomMessageHandler('UpdateNodes', function(data){
     if(el){
       // get nodes object
       var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
+      
+      if (el.selectActive === true | el.highlightActive === true) {
+        var allNodes = el.nodes.get({returnType:"Object"});
+        for (var nodeId in allNodes) {
+          if (allNodes[nodeId].hiddenColor !== undefined) {
+            allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
+            allNodes[nodeId].hiddenColor = undefined;
+          }else{
+            allNodes[nodeId].color = undefined;
+          }
+          if (allNodes[nodeId].hiddenLabel !== undefined) {
+            allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+            allNodes[nodeId].hiddenLabel = undefined;
+          }
+          allNodes[nodeId].x = undefined;
+          allNodes[nodeId].y = undefined;
+        }
+        var updateArray = [];
+        for (nodeId in allNodes) {
+          if (allNodes.hasOwnProperty(nodeId)) {
+            updateArray.push(allNodes[nodeId]);
+          }
+        }
+        el.nodes.update(updateArray);
+        if (el.selectActive === true){
+          el.selectActive = false;
+          selectNode = document.getElementById('selectedBy'+data.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            Shiny.onInputChange(el.id + '_' + 'selectedBy', "");
+          }
+        }
+        if (el.highlightActive === true){
+          el.highlightActive = false;
+          selectNode = document.getElementById('selectedBy'+data.id);
+          selectNode.value = "";
+          if (window.Shiny){
+            Shiny.onInputChange(el.id + '_' + 'selected', "");
+          }
+        }
+      }
       el.nodes.update(tmpnodes);
+      el.updateNodes = true;
+
     }
 });
 
@@ -315,15 +358,8 @@ HTMLWidgets.widget({
     
     // highlight nearest variables & selectedBy
     var allNodes;
-    var highlightActive = false;
     var nodesDataset ;
     var edgesDataset ;
-    
-    // selectedBy
-    var allSelNodes;
-    var selectActive = false;
-    var nodesSelDataset ;
-    var edgesSelDataset ;
     
     // clustergin by zoom variables
     var clusterIndex = 0;
@@ -702,6 +738,9 @@ HTMLWidgets.widget({
     //save data for re-use and update
     document.getElementById("graph"+el.id).nodes = nodes;
     document.getElementById("graph"+el.id).edges = edges;
+    document.getElementById("graph"+el.id).highlightActive = false;
+    document.getElementById("graph"+el.id).selectActive = false;
+    document.getElementById("graph"+el.id).updateNodes = false;
     
     }else if(x.dot){
       data = {
@@ -818,6 +857,11 @@ HTMLWidgets.widget({
   
     function selectedHighlight(value) {
     
+      if(document.getElementById("graph"+el.id).updateNodes){
+        document.getElementById("graph"+el.id).updateNodes = false;
+        allNodes = nodesDataset.get({returnType:"Object"});
+      }
+    
       var sel = x.byselection.variable;
           
       if(sel == "label"){
@@ -828,76 +872,76 @@ HTMLWidgets.widget({
         sel = "hiddenColor";
       }
     
-      var update = !(selectActive === false & value === "");
+      var update = !(document.getElementById("graph"+el.id).selectActive === false & value === "");
 
       if (value !== "") {
       
-        selectActive = true;
+        document.getElementById("graph"+el.id).selectActive = true;
         
         // mark all nodes as hard to read.
-        for (var nodeId in allSelNodes) {
-          if (allSelNodes[nodeId].hiddenColor === undefined & allSelNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
-            allSelNodes[nodeId].hiddenColor = allSelNodes[nodeId].color;
+        for (var nodeId in allNodes) {
+          if (allNodes[nodeId].hiddenColor === undefined & allNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
+            allNodes[nodeId].hiddenColor = allNodes[nodeId].color;
           }
-          allSelNodes[nodeId].color = 'rgba(200,200,200,0.5)';
-          if (allSelNodes[nodeId].hiddenLabel === undefined) {
-            allSelNodes[nodeId].hiddenLabel = allSelNodes[nodeId].label;
-            allSelNodes[nodeId].label = undefined;
+          allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
+          if (allNodes[nodeId].hiddenLabel === undefined) {
+            allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+            allNodes[nodeId].label = undefined;
           }
         
-          if((allSelNodes[nodeId][sel] + "") === value){
-            if (allSelNodes[nodeId].hiddenColor !== undefined) {
-              allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
+          if((allNodes[nodeId][sel] + "") === value){
+            if (allNodes[nodeId].hiddenColor !== undefined) {
+              allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
             }else{
-              allSelNodes[nodeId].color = undefined;
+              allNodes[nodeId].color = undefined;
             }
-            if (allSelNodes[nodeId].hiddenLabel !== undefined) {
-              allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
-              allSelNodes[nodeId].hiddenLabel = undefined;
+            if (allNodes[nodeId].hiddenLabel !== undefined) {
+              allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+              allNodes[nodeId].hiddenLabel = undefined;
             }
           }
-          allSelNodes[nodeId].x = undefined;
-          allSelNodes[nodeId].y = undefined;
+          allNodes[nodeId].x = undefined;
+          allNodes[nodeId].y = undefined;
         }
       }
-      else if (selectActive === true) {
+      else if (document.getElementById("graph"+el.id).selectActive === true) {
       // reset all nodes
-        for (var nodeId in allSelNodes) {
-          if (allSelNodes[nodeId].hiddenColor !== undefined) {
-            allSelNodes[nodeId].color = allSelNodes[nodeId].hiddenColor;
-            allSelNodes[nodeId].hiddenColor = undefined;
+        for (var nodeId in allNodes) {
+          if (allNodes[nodeId].hiddenColor !== undefined) {
+            allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
+            allNodes[nodeId].hiddenColor = undefined;
           }else{
-            allSelNodes[nodeId].color = undefined;
+            allNodes[nodeId].color = undefined;
           }
-          if (allSelNodes[nodeId].hiddenLabel !== undefined) {
-            allSelNodes[nodeId].label = allSelNodes[nodeId].hiddenLabel;
-            allSelNodes[nodeId].hiddenLabel = undefined;
+          if (allNodes[nodeId].hiddenLabel !== undefined) {
+            allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+            allNodes[nodeId].hiddenLabel = undefined;
           }
-          allSelNodes[nodeId].x = undefined;
-          allSelNodes[nodeId].y = undefined;
+          allNodes[nodeId].x = undefined;
+          allNodes[nodeId].y = undefined;
         }
       
-        selectActive = false
+        document.getElementById("graph"+el.id).selectActive = false
       }
     
       if(update){
         // transform the object into an array
         var updateArray = [];
-        for (nodeId in allSelNodes) {
-          if (allSelNodes.hasOwnProperty(nodeId)) {
-            updateArray.push(allSelNodes[nodeId]);
+        for (nodeId in allNodes) {
+          if (allNodes.hasOwnProperty(nodeId)) {
+            updateArray.push(allNodes[nodeId]);
           }
         }
-        nodesSelDataset.update(updateArray);
+        nodesDataset.update(updateArray);
       }
     } 
   
    // actually only with nodes + edges data (not dot and gephi)
-    if(x.byselection.enabled){
-      nodesSelDataset = nodes; 
-      edgesSelDataset = edges;
-      allSelNodes = nodesSelDataset.get({returnType:"Object"});
-    }
+    //if(x.byselection.enabled){
+    //  nodesDataset = nodes; 
+    //  edgesDataset = edges;
+    //  allNodes = nodesDataset.get({returnType:"Object"});
+    //}
     
     //*************************
     //Highlight
@@ -909,7 +953,13 @@ HTMLWidgets.widget({
         Shiny.onInputChange(el.id + '_' + id, data);
       };
       
-      var update = !(highlightActive === false & params.nodes.length === 0) | (selectActive === true & params.nodes.length === 0);
+      if(document.getElementById("graph"+el.id).updateNodes){
+        document.getElementById("graph"+el.id).updateNodes = false;
+        allNodes = nodesDataset.get({returnType:"Object"});
+      };
+      
+      var update = !(document.getElementById("graph"+el.id).highlightActive === false & params.nodes.length === 0) | (document.getElementById("graph"+el.id).selectActive === true & params.nodes.length === 0);
+
       if (params.nodes.length > 0) {
         
         if(x.idselection.enabled){
@@ -928,7 +978,7 @@ HTMLWidgets.widget({
           }
         }
         
-        highlightActive = true;
+        document.getElementById("graph"+el.id).highlightActive = true;
         var i,j;
         var selectedNode = params.nodes[0];
         var degrees = x.degree;
@@ -1003,7 +1053,7 @@ HTMLWidgets.widget({
           allNodes[selectedNode].hiddenLabel = undefined;
         }
       }
-      else if (highlightActive === true | selectActive === true) {
+      else if (document.getElementById("graph"+el.id).highlightActive === true | document.getElementById("graph"+el.id).selectActive === true) {
         if(x.idselection.enabled){
           selectNode = document.getElementById('nodeSelect'+el.id);
           selectNode.value = "";
@@ -1011,7 +1061,7 @@ HTMLWidgets.widget({
             changeInput('selected', "");
           }
         }
-        
+
         // reset all nodes
         for (var nodeId in allNodes) {
           if (allNodes[nodeId].hiddenColor !== undefined) {
@@ -1027,11 +1077,12 @@ HTMLWidgets.widget({
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
         }
-        highlightActive = false;
+        document.getElementById("graph"+el.id).highlightActive = false;
       }
      if(x.byselection.enabled){
         selectNode = document.getElementById('selectedBy'+el.id);
         selectNode.value = "";
+        document.getElementById("graph"+el.id).selectActive = false;
         if (window.Shiny){
           changeInput('selectedBy', "");
         }
@@ -1092,15 +1143,19 @@ HTMLWidgets.widget({
       }
     }
     
-    // actually only with nodes + edges data (not dot and gephi)
-    if(x.highlight && x.nodes){
+    if((x.byselection.enabled || x.highlight) && x.nodes){
       nodesDataset = nodes; 
       edgesDataset = edges;
       allNodes = nodesDataset.get({returnType:"Object"});
+    }
+    // actually only with nodes + edges data (not dot and gephi)
+    if(x.highlight && x.nodes){
       instance.network.on("click",neighbourhoodHighlight);
     }else if((x.idselection.enabled || x.byselection.enabled) && x.nodes){
       instance.network.on("click",onClickIDSelection);
     }
+    
+    
     
     //*************************
     // export

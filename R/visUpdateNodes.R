@@ -33,7 +33,7 @@ visUpdateNodes <- function(graph, nodes){
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visFocus with visNetwork object. Only within shiny & using visNetworkProxy")
   }
-  
+
   data <- list(id = graph$id, nodes = nodes)
   
   graph$session$sendCustomMessage("UpdateNodes", data)
