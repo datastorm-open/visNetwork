@@ -1,5 +1,5 @@
 shiny::tabPanel(
-  title = "Update nodes/edges data",
+  title = "Update options",
   fluidRow(
     column(
       width = 4,
