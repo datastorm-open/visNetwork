@@ -30,7 +30,7 @@ visGetPositions <- function(graph, nodes = NULL, input = paste0(graph$id, "_posi
   data <- list(id = graph$id, input = input)
   data$nodes <- nodes
   
-  graph$session$sendCustomMessage("GetPositions", data)
+  graph$session$sendCustomMessage("visShinyGetPositions", data)
   
   graph
 }

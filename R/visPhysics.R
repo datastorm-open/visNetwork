@@ -137,7 +137,7 @@ visPhysics <- function(graph,
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(physics = physics)
     data <- list(id = graph$id, options = options)
-    graph$session$sendCustomMessage("Options",data)
+    graph$session$sendCustomMessage("visShinyOptions",data)
   }else{
     graph$x$options$physics <- physics
   }

@@ -101,7 +101,7 @@ visInteraction <- function(graph,
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(interaction = interaction)
     data <- list(id = graph$id, options = options)
-    graph$session$sendCustomMessage("Options",data)
+    graph$session$sendCustomMessage("visShinyOptions",data)
   }else{
     graph$x$options$interaction <- interaction
   }

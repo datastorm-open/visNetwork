@@ -27,7 +27,7 @@ visRedraw <- function(graph){
   
   data <- list(id = graph$id)
   
-  graph$session$sendCustomMessage("Redraw", data)
+  graph$session$sendCustomMessage("visShinyRedraw", data)
   
   graph
 }

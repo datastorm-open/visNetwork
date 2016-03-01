@@ -36,7 +36,7 @@ visUpdateNodes <- function(graph, nodes){
 
   data <- list(id = graph$id, nodes = nodes)
   
-  graph$session$sendCustomMessage("UpdateNodes", data)
+  graph$session$sendCustomMessage("visShinyUpdateNodes", data)
 
   graph
 }

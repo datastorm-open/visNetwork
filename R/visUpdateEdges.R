@@ -37,7 +37,7 @@ visUpdateEdges <- function(graph, edges){
   
   data <- list(id = graph$id, edges = edges)
   
-  graph$session$sendCustomMessage("UpdateEdges", data)
+  graph$session$sendCustomMessage("visShinyUpdateEdges", data)
 
   graph
 }

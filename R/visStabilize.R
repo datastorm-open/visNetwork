@@ -31,7 +31,7 @@ visStabilize <- function(graph, iterations = NULL){
   
   data <- list(id = graph$id, options = options)
   
-  graph$session$sendCustomMessage("Stabilize", data)
+  graph$session$sendCustomMessage("visShinyStabilize", data)
   
   graph
 }

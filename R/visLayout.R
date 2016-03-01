@@ -46,7 +46,7 @@ visLayout <- function(graph,
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(layout = layout)
     data <- list(id = graph$id, options = options)
-    graph$session$sendCustomMessage("Options",data)
+    graph$session$sendCustomMessage("visShinyOptions",data)
   }else{
     if("layout"%in%names(graph$x$options)){
       graph$x$options$layout <- mergeLists(graph$x$options$layout, layout)

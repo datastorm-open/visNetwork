@@ -35,7 +35,7 @@ visFit <- function(graph, nodes = NULL,
   
   data <- list(id = graph$id, options = options)
   
-  graph$session$sendCustomMessage("Fit", data)
+  graph$session$sendCustomMessage("visShinyFit", data)
   
   graph
 }

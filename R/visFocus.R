@@ -40,7 +40,7 @@ visFocus <- function(graph, id, scale =  2,
   options <- list(scale = scale, offset = offset, locked = locked, animation = animation)
   data <- list(id = graph$id, focusId = id, options = options)
   
-  graph$session$sendCustomMessage("Focus", data)
+  graph$session$sendCustomMessage("visShinyFocus", data)
 
   graph
 }

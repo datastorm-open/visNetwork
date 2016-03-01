@@ -29,7 +29,7 @@ visSetData <- function(graph, nodes = NULL, edges = NULL){
   
   data <- list(id = graph$id, nodes = nodes, edges = edges)
   
-  graph$session$sendCustomMessage("SetData", data)
+  graph$session$sendCustomMessage("visShinySetData", data)
   
   graph
 }
