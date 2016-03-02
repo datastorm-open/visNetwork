@@ -1,6 +1,7 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
   * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together, and using visUpdateNodes
+  * new visRemoveNodes & visRemoveEdges to remove data in shiny
   * new visUpdateNodes & visUpdateEdges to update data in shiny
   * enable visOptions with visNetworkProxy
   * add randomSeed to visIgraphLayout

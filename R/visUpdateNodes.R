@@ -1,6 +1,7 @@
 #' Function to update nodes information, with shiny only.
 #'
-#' Function to update nodes information, with shiny only. 
+#' Function to update nodes information, with shiny only. You can also use this function passing new nodes.
+#' The link is based on id.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
@@ -31,7 +32,7 @@
 visUpdateNodes <- function(graph, nodes){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
-    stop("Can't use visFocus with visNetwork object. Only within shiny & using visNetworkProxy")
+    stop("Can't use visUpdateNodes with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
   data <- list(id = graph$id, nodes = nodes)

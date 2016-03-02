@@ -335,6 +335,26 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+  // remove nodes
+  Shiny.addCustomMessageHandler('visShinyRemoveNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      
+      if(el){
+        el.nodes.remove(data.rmid);
+      }
+  });
+  
+  // remove edges
+  Shiny.addCustomMessageHandler('visShinyRemoveEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      
+      if(el){
+        el.edges.remove(data.rmid);
+      }
+  });
+  
   Shiny.addCustomMessageHandler('visShinyCustomOptions', function(data){
         // get container id
         var graph = document.getElementById("graph"+data.id);

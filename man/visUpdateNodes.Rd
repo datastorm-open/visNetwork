@@ -20,7 +20,8 @@ visUpdateNodes(graph, nodes)
 }}
 }
 \description{
-Function to update nodes information, with shiny only.
+Function to update nodes information, with shiny only. You can also use this function passing new nodes.
+The link is based on id.
 }
 \examples{
 \dontrun{

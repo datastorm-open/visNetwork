@@ -3,7 +3,8 @@ shiny::tabPanel(
   fluidRow(
     column(
       width = 4,
-      actionButton("goButton", "Update data")
+      actionButton("goUpdate", "Update data"),
+      actionButton("goRemove", "Remove data")
     ),
     column(
       width = 8,

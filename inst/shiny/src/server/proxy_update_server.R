@@ -13,30 +13,44 @@ output$network_proxy_update <- renderVisNetwork({
 })
 
 observe({
-  input$goButton
+  input$goUpdate
   nodes <- data.frame(id = 1:15, 
                       group = sample(LETTERS[1:3], 15, replace = TRUE))
-  
-  edges <- data.frame(id = 1:15, color = sample(c("red", "blue"), 15, replace = TRUE))
+  edges <- data()$edges
+  edges$color <- sample(c("red", "blue", "yellow"), 1)
   
   visNetworkProxy("network_proxy_update") %>%
     visUpdateNodes(nodes = nodes) %>%
     visUpdateEdges(edges = edges)
 })
 
+observe({
+  input$goRemove
+  visNetworkProxy("network_proxy_update") %>%
+    visRemoveNodes(id = c(1:5)) %>%
+    visRemoveEdges(id = c(1:5))
+})
+
 
 output$code_proxy_update  <- renderText({
   '
 observe({
-  input$goButton
+  input$goUpdate
   nodes <- data.frame(id = 1:15, 
-                      group = sample(LETTERS[1:3], 15, replace = TRUE))
-  
-  edges <- data.frame(id = 1:15, color = sample(c("red", "blue"), 15, replace = TRUE))
+  group = sample(LETTERS[1:3], 15, replace = TRUE))
+  edges <- data()$edges
+  edges$color <- sample(c("red", "blue", "yellow"), 1)
   
   visNetworkProxy("network_proxy_update") %>%
-    visUpdateNodes(nodes = nodes) %>%
-    visUpdateEdges(edges = edges)
+  visUpdateNodes(nodes = nodes) %>%
+  visUpdateEdges(edges = edges)
+})
+  
+observe({
+  input$goRemove
+  visNetworkProxy("network_proxy_update") %>%
+  visRemoveNodes(id = c(1:5)) %>%
+  visRemoveEdges(id = c(1:5))
 })
  '
 })
