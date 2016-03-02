@@ -3,7 +3,7 @@
 #' Function to remove nodes from network, with shiny only. 
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
-#'@param id : vector of id, nodes we want to remove
+#'@param id : vector of id, nodes to remove
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 

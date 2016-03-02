@@ -9,7 +9,7 @@ visRemoveNodes(graph, id)
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
-\item{id}{: vector of id, nodes we want to remove}
+\item{id}{: vector of id, nodes to remove}
 }
 \description{
 Function to remove nodes from network, with shiny only.

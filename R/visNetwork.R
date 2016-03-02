@@ -238,38 +238,3 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     package = 'visNetwork'
   )
 }
-
-#' Shiny bindings for visNetwork
-#' 
-#' Output and render functions for using visNetwork within Shiny 
-#' applications and interactive Rmd documents.
-#' 
-#' @param outputId : output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{"100\%"},
-#'   \code{"400px"}, \code{"auto"}) or a number, which will be coerced to a
-#'   string and have \code{"px"} appended.
-#' @param expr An expression that generates a visNetwork
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This 
-#'   is useful if you want to save an expression in a variable.
-#'   
-#' @name visNetwork-shiny
-#' @examples 
-#'\dontrun{
-#'
-#' # have a look to : 
-#' shiny::runApp(system.file("shiny", package = "visNetwork"))
-#'
-#'}
-#' @export
-visNetworkOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'visNetwork', width, height, package = 'visNetwork')
-}
-
-#' @rdname visNetwork-shiny
-#' @export
-renderVisNetwork <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, visNetworkOutput, env, quoted = TRUE)
-}
-

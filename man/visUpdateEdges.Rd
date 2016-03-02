@@ -9,7 +9,7 @@ visUpdateEdges(graph, edges)
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
-\item{edges}{: data.frame with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
+\item{edges}{: data.frame with edges informations. See \link{visEdges}
 \itemize{
  \item{"id"}{ : edge id, for update}
  \item{"from"}{ : node id of begin of the edge}

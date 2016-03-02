@@ -9,7 +9,7 @@ visRemoveEdges(graph, id)
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
-\item{id}{: vector of id, edges we want to remove}
+\item{id}{: vector of id, edges to remove}
 }
 \description{
 Function to remove edges from network, with shiny only.

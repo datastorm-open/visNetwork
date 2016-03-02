@@ -4,7 +4,7 @@
 #' The link is based on id.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
-#' @param edges : data.frame with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
+#' @param edges : data.frame with edges informations. See \link{visEdges}
 #' \itemize{
 #'  \item{"id"}{ : edge id, for update}
 #'  \item{"from"}{ : node id of begin of the edge}
