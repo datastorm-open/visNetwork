@@ -1,9 +1,10 @@
 #' Use fontAwesome icons in visNetwork \code{graph}
 #'
 #' Add \href{http://fortawesome.github.io/Font-Awesome/}{Font-Awesome} for styling
-#'   our \code{graph} with beautiful, professional icons.  Please note
-#'   that you'll already have these icons if using Shiny.
-#'   
+#' our \code{graph} with beautiful, professional icons.  Please note
+#' that you'll already have these icons if using Shiny.
+#' Can also use \link{addIonicons}   
+#' 
 #' @param  graph : a visNetwork object
 #' 
 #' @return \code{graph} htmlwidget with Font-Awesome dependencies attached.
@@ -40,9 +41,57 @@ addFontAwesome <- function(graph){
   
   font_dep <- htmltools::htmlDependency(
     name = "font-awesome",
-    version = "4.3.0",
+    version = "4.5.0",
     src = c(file=system.file("htmlwidgets/lib/font-awesome", package="visNetwork")),
-    stylesheet = "font-awesome.min.css"
+    stylesheet = "css/font-awesome.min.css"
+  )
+  
+  if(length(graph$dependencies) == 0){
+    graph$dependencies = list()
+  }
+  
+  graph$dependencies[[length(graph$dependencies)+1]] <- font_dep
+  
+  graph
+}
+
+#' Use Ionicons in visNetwork \code{graph}
+#'
+#' Add \href{http://ionicons.com/}{Ionicons} for styling
+#' our \code{graph} with beautiful, professional icons.
+#' See \href{http://ionicons.com/cheatsheet.html}{Cheatsheet} to get CSS content code.
+#' Can also use \link{addFontAwesome}
+#'   
+#' @param  graph : a visNetwork object
+#' 
+#' @return \code{graph} htmlwidget with Ionicons dependencies attached.
+#' 
+#' @examples
+#' 
+#' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
+#' edges <- data.frame(from = c(1,2), to = c(2,3))
+#' 
+#' visNetwork(nodes, edges) %>%
+#'   visGroups(groupname = "A", shape = "icon", 
+#'    icon = list(face ='Ionicons', code = "f101", size = 75)) %>%
+#'   visGroups(groupname = "B", shape = "icon", 
+#'    icon = list(face ='Ionicons', code = "f100", color = "red")) %>%
+#'   addIonicons()
+#' 
+#' @import htmltools
+#'
+#' @export
+
+addIonicons <- function(graph){
+  if(!inherits(graph,"htmlwidget")){
+    stop("graph should be a htmlwidget.", call.=F)
+  } 
+  
+  font_dep <- htmltools::htmlDependency(
+    name = "ionicons",
+    version = "2.0.1",
+    src = c(file=system.file("htmlwidgets/lib/ionicons", package="visNetwork")),
+    stylesheet = "css/ionicons.min.css"
   )
   
   if(length(graph$dependencies) == 0){
