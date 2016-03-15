@@ -51,7 +51,7 @@ addFontAwesome <- function(graph){
   }
   
   graph$dependencies[[length(graph$dependencies)+1]] <- font_dep
-  
+  graph$x$iconsRedraw <- TRUE
   graph
 }
 
@@ -99,7 +99,7 @@ addIonicons <- function(graph){
   }
   
   graph$dependencies[[length(graph$dependencies)+1]] <- font_dep
-  
+  graph$x$iconsRedraw <- TRUE
   graph
 }
 

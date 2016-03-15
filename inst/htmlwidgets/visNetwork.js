@@ -475,7 +475,7 @@ HTMLWidgets.widget({
   },
   
   renderValue: function(el, x, instance) {
-    
+
     var data;
     var nodes;
     var edges;
@@ -1640,8 +1640,17 @@ HTMLWidgets.widget({
       selectNode.value = x.byselection.selected;
     }
     
+    // try to fix icons loading css bug...
+    function iconsRedraw() {
+      setTimeout(function(){
+        if(instance.network)
+          instance.network.redraw();
+      }, 200);
+    }
+    if(x.iconsRedraw !== undefined){
+      instance.network.once("stabilized", function(){iconsRedraw();})
+    }
   },
-  
   
   resize: function(el, width, height, instance) {
       if(instance.network)
