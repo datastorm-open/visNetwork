@@ -13,6 +13,7 @@
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
 #'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
 #'@param randomSeed : Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.
+#'@param ... : Adding arguments to layout function
 #'
 #'@examples
 #'
@@ -68,7 +69,7 @@ visIgraphLayout <- function(graph,
                             physics = FALSE, 
                             smooth = FALSE,
                             type = "square", 
-                            randomSeed = NULL){
+                            randomSeed = NULL, ...){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringOutliers with visNetworkProxy object")
@@ -104,7 +105,7 @@ visIgraphLayout <- function(graph,
   if(!is.null(randomSeed)){
     set.seed(randomSeed)
   }
-  coord <- ctrl$objs[[1]](ig)
+  coord <- ctrl$objs[[1]](ig, ...)
   
   graph$x$nodes$x <- coord[, 1]
   graph$x$nodes$y <- coord[, 2]
