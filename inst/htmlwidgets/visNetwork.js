@@ -82,7 +82,7 @@ visNetworkdataframeToD3 = function(df, type) {
       }
       length = df[name].length;
   }
-  
+
   var results = [];
   var item;
     for (var row = 0; row < length; row++) {
@@ -95,7 +95,11 @@ visNetworkdataframeToD3 = function(df, type) {
             if(item[names[col][0]] === undefined){
               item[names[col][0]] = {};
             }
-            item[names[col][0]][names[col][1]] = df[colnames[col]][row];
+            if(names[col][0] === "icon" && names[col][1] === "code"){
+              item[names[col][0]][names[col][1]] = JSON.parse( '"'+'\\u' + df[colnames[col]][row] + '"');
+            }else{
+              item[names[col][0]][names[col][1]] = df[colnames[col]][row];
+            }
           } else if(names[col].length === 3){
             if(item[names[col][0]] === undefined){
               item[names[col][0]] = {};
