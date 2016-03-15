@@ -1645,6 +1645,8 @@ HTMLWidgets.widget({
       setTimeout(function(){
         if(instance.network)
           instance.network.redraw();
+        if(instance.legend)
+          instance.legend.redraw();
       }, 200);
     }
     if(x.iconsRedraw !== undefined){
