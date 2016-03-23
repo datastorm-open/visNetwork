@@ -16,14 +16,14 @@
 
 # Online documentation
 
-### http://dataknowledge.github.io/visNetwork
+### http://datastorm-open.github.io/visNetwork
 
 And have a look to multiple R examples, vis.js documentation (````visDocumentation````). 
 
 ```` 
 install.packages("visNetwork")
 
-# devtools::install_github("dataknowledge/visNetwork") for developpement version
+# devtools::install_github("datastorm-open/visNetwork") for developpement version
 
 require(visNetwork)
 ?visNetwork
