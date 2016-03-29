@@ -6,12 +6,12 @@ Authors@R: c(
     person(family = "Almende B.V.", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
     person("Benoit", "Thieurmel", role = c("aut", "cre"),
-       comment = "R interface", email = "bt@datak.fr")
+       comment = "R interface", email = "benoit.thieurmel@datastorm.fr")
     )
-Maintainer: Benoit Thieurmel <bt@datak.fr>
+Maintainer: Benoit Thieurmel <benoit.thieurmel@datastorm.fr>
 Description: Provides an R interface to the 'vis.js' JavaScript charting library. It allows an interactive visualization of networks.
-BugReports: https://github.com/DataKnowledge/visNetwork/issues
-URL: https://github.com/DataKnowledge/visNetwork
+BugReports: https://github.com/datastorm-open/visNetwork/issues
+URL: https://github.com/datastorm-open/visNetwork
 Depends: R (>= 3.0)
 Imports: htmlwidgets,
   htmltools,

@@ -1,6 +1,6 @@
 ---
 title: "Introduction to visNetwork"
-author: "B. Thieurmel - DataKnowledge"
+author: "B. Thieurmel - DataStorm"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-**visNetwork** is a R package for network visualization, using **vis.js** javascript library (http://visjs.org). All the remarks and bugs returns are welcome on github : https://github.com/DataKnowledge/visNetwork.
+**visNetwork** is a R package for network visualization, using **vis.js** javascript library (http://visjs.org). All the remarks and bugs returns are welcome on github : https://github.com/datastorm-open/visNetwork.
 
 ## Minimal example
 
@@ -37,7 +37,7 @@ vignette("Introduction-to-visNetwork") # with CRAN version
 shiny::runApp(system.file("shiny", package = "visNetwork"))
 ```
 
-Or visit our online help page : http://dataknowledge.github.io/visNetwork/.
+Or visit our online help page : http://datastorm-open.github.io/visNetwork/.
 
 ## Simple individual nodes and edges customization
 
