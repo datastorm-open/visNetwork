@@ -85,7 +85,7 @@ edges <- data.frame(from = c(2,5,3,3), to = c(1,2,4,2))
 
 visNetwork(nodes, edges, width = "100%") %>% 
   visNodes(shape = "square") %>%                        # square for all nodes
-  visEdges(arrow ="to") %>%                             # arrow "to" for all edges
+  visEdges(arrows ="to") %>%                             # arrow "to" for all edges
   visGroups(groupname = "A", color = "darkblue") %>%    # darkblue for group "A"
   visGroups(groupname = "B", color = "red")             # red for group "B"
 ```
@@ -173,7 +173,7 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
 ```
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrow = 'from')
+visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = 'from')
 ```
 
 ## Custom navigation
@@ -201,10 +201,10 @@ edges <- data.frame(from = c(1,2,2,2,3,3),
 ```
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrow = "from") %>% 
+visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
   visHierarchicalLayout() # same as   visLayout(hierarchical = TRUE) 
 
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrow = "from") %>% 
+visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
   visHierarchicalLayout(direction = "LR")
 ```
 

@@ -98,7 +98,7 @@
 #'     
 #' # directed network
 #' visNetwork(nodes, edges) %>% 
-#'  visEdges(arrow = 'from', scaling = list(min = 2, max = 2))
+#'  visEdges(arrows = 'from', scaling = list(min = 2, max = 2))
 #'
 #' # custom navigation
 #' visNetwork(nodes, edges) %>%
