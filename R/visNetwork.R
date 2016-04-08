@@ -47,9 +47,6 @@
 #' visNetwork(nodes, edges)
 #'
 #' # add a title
-#' nodes <- data.frame(id = 1:3)
-#' edges <- data.frame(from = c(1,2), to = c(1,3))
-#'
 #' visNetwork(nodes, edges, main = "visNetwork minimal example")
 #' visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
 #'  style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"))
