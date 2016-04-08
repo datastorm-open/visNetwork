@@ -512,6 +512,16 @@ HTMLWidgets.widget({
     };
           
     //*************************
+    //title
+    //*************************
+    if(x.main !== null){
+      var div_title = document.createElement('div');
+      div_title.innerHTML = x.main.text;
+      div_title.setAttribute('style',  x.main.style);
+      document.getElementById(el.id).appendChild(div_title);  
+    }
+ 
+    //*************************
     //idselection
     //*************************
     

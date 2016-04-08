@@ -5,7 +5,7 @@
 \title{Network visualization}
 \usage{
 visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-  width = NULL, height = NULL, ...)
+  width = NULL, height = NULL, main = NULL, ...)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id". See \link{visNodes}
@@ -36,6 +36,12 @@ visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
 
 \item{height}{: Height (optional, defaults to automatic sizing)}
 
+\item{main}{: For add a title. Character or a named list.
+\itemize{
+ \item{"text"}{ : Character. Title.}
+ \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.}
+}}
+
 \item{...}{: Don't use.}
 }
 \description{
@@ -47,6 +53,14 @@ nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
 visNetwork(nodes, edges)
+
+# add a title
+nodes <- data.frame(id = 1:3)
+edges <- data.frame(from = c(1,2), to = c(1,3))
+
+visNetwork(nodes, edges, main = "visNetwork minimal example")
+visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
+ style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"))
 
 # customization adding more variables (see visNodes and visEdges)
 nodes <- data.frame(id = 1:10,

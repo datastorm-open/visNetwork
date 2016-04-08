@@ -30,6 +30,12 @@
 #' 
 #' @param height	: Height (optional, defaults to automatic sizing)
 #' 
+#'@param main : For add a title. Character or a named list.
+#'\itemize{
+#'  \item{"text"}{ : Character. Title.}
+#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.}
+#'}
+#'
 #' @param ... : Don't use.
 #' 
 #' @examples
@@ -40,6 +46,14 @@
 #'
 #' visNetwork(nodes, edges)
 #'
+#' # add a title
+#' nodes <- data.frame(id = 1:3)
+#' edges <- data.frame(from = c(1,2), to = c(1,3))
+#'
+#' visNetwork(nodes, edges, main = "visNetwork minimal example")
+#' visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
+#'  style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"))
+#'  
 #' # customization adding more variables (see visNodes and visEdges)
 #' nodes <- data.frame(id = 1:10, 
 #'                     label = paste("Node", 1:10),                                 # labels
@@ -174,19 +188,39 @@
 #' @export
 #' 
 visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-                       width = NULL, height = NULL, ...) {
+                       width = NULL, height = NULL, main = NULL, ...) {
 
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
   }
-  
+
+  # main
+  if(!is.null(main)){
+    if(is.list(main)){
+      if(any(!names(main)%in%c("text", "style"))){
+        stop("Invalid 'main' argument")
+      }
+      if(!"text"%in%names(main)){
+        stop("Needed a 'text' value using a list for 'main'")
+      }
+      if(!"style"%in%names(main)){
+        main$style <- 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'
+      }
+    }else if(!inherits(main, "character")){
+      stop("Invalid 'main' argument. Not a character")
+    }else {
+      main <- list(text = main, 
+                   style = 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;')
+    }
+  }
+ 
   if(!is.null(dot)){
     x <- list(dot = dot,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE))
+              byselection = list(enabled = FALSE), main = main)
     
   }else if(!is.null(gephi)){
     x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
@@ -194,7 +228,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE))
+              byselection = list(enabled = FALSE), main = main)
   }else{
     
     # forward options using x
@@ -207,7 +241,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = groups, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE))
+              byselection = list(enabled = FALSE), main = main)
   }
 
   # previous legend control
