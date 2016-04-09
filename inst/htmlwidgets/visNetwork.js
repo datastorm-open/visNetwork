@@ -708,14 +708,21 @@ HTMLWidgets.widget({
       legend.id = "legend"+el.id;
       legend.setAttribute('style', 'float:' + pos + '; width:'+legendwidth+'%;height:100%');
       
-      /*var legendtitle = document.createElement('h2');
-      legendtitle.setAttribute('align', 'center');
-      legendtitle.appendChild(document.createTextNode("Legen titleeee")); 
-      legend.appendChild(legendtitle);
-      
-      var legendgraph = document.createElement('div');
-      legendgraph.id = "legendgraph"+el.id;
-      legend.appendChild(legendgraph);*/
+      //*************************
+      //legend title
+      //*************************
+      if(x.legend.main !== undefined){
+        var legend_title = document.createElement('div');
+        legend_title.innerHTML = x.legend.main.text;
+        legend_title.setAttribute('style',  x.legend.main.style);
+        legend.appendChild(legend_title);  
+        
+        legend.id = "legend_main"+el.id;
+        var legend_network = document.createElement('div');
+        legend_network.id = "legend"+el.id;
+        legend_network.setAttribute('style', 'height:100%');
+        legend.appendChild(legend_network); 
+      }
       
       document.getElementById("maindiv"+el.id).appendChild(legend);
       

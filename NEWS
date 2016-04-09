@@ -1,6 +1,6 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
-  * can now add a title to network with main in visNetwork function
+  * can now add a title to network & legend (main argument in visNetwork/visLegend function)
   * fix passing directly icon in nodes data.frame
   * add ionicons icons possibilities. See ?addIonicons
   * update font-awesome to 4.5.0

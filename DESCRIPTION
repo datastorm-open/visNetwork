@@ -9,17 +9,22 @@ Authors@R: c(
        comment = "R interface", email = "benoit.thieurmel@datastorm.fr")
     )
 Maintainer: Benoit Thieurmel <benoit.thieurmel@datastorm.fr>
-Description: Provides an R interface to the 'vis.js' JavaScript charting library. It allows an interactive visualization of networks.
+Description: Provides an R interface to the 'vis.js' JavaScript charting
+    library. It allows an interactive visualization of networks.
 BugReports: https://github.com/datastorm-open/visNetwork/issues
 URL: https://github.com/datastorm-open/visNetwork
-Depends: R (>= 3.0)
-Imports: htmlwidgets,
-  htmltools,
-  jsonlite,
-  magrittr,
-  utils,
-  methods
+Depends:
+    R (>= 3.0)
+Imports:
+    htmlwidgets,
+    htmltools,
+    jsonlite,
+    magrittr,
+    utils,
+    methods
 License: MIT + file LICENSE
-Suggests: knitr,
-  igraph
+Suggests:
+    knitr,
+    igraph
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

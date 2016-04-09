@@ -9,6 +9,12 @@
 #' @param addEdges : a data.frame or a list for adding custom edges(s)
 #' @param width : Number, in [0,...,1]. Default to 0.2
 #' @param position : one of "left" (Default) or "right"
+#' @param main : For add a title. Character or a named list.
+#' \itemize{
+#'  \item{"text"}{ : Character. Title.}
+#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'.}
+#' }
+#'
 #' @examples
 #'
 #' # minimal example
@@ -26,7 +32,19 @@
 #'   visGroups(groupname = "A", color = "red") %>%
 #'   visGroups(groupname = "B", color = "lightblue") %>%
 #'   visLegend(width = 0.05, position = "right")
+#' 
+#' # add a title
+#' visNetwork(nodes, edges) %>%
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(main = "Legend")
 #'   
+#' visNetwork(nodes, edges) %>%
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(main = list(text = "Custom Legend",
+#'  style = "font-family:Comic Sans MS;color:#ff0000;font-size:12px;text-align:center;"))
+#'    
 #' # passing custom nodes and/or edges
 #' lnodes <- data.frame(label = c("Group A", "Group B"), 
 #'  shape = c( "ellipse"), color = c("red", "lightblue"),
@@ -88,7 +106,8 @@ visLegend <- function(graph,
                       addNodes = NULL,
                       addEdges = NULL,
                       width =  0.2,
-                      position = "left"){
+                      position = "left",
+                      main = NULL){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visLegend with visNetworkProxy object")
@@ -135,6 +154,27 @@ visLegend <- function(graph,
       }else{
         stop("addNodes must be a data.frame or a list")
       }
+    }
+    
+    # main
+    if(!is.null(main)){
+      if(is.list(main)){
+        if(any(!names(main)%in%c("text", "style"))){
+          stop("Invalid 'main' argument")
+        }
+        if(!"text"%in%names(main)){
+          stop("Needed a 'text' value using a list for 'main'")
+        }
+        if(!"style"%in%names(main)){
+          main$style <- 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'
+        }
+      }else if(!inherits(main, "character")){
+        stop("Invalid 'main' argument. Not a character")
+      }else {
+        main <- list(text = main, 
+                     style = 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;')
+      }
+      legend$main <- main
     }
     graph$x$legend <- legend
   }
