@@ -16,7 +16,7 @@
 #'  visClusteringOutliers(1)
 #' 
 #'  
-#'  @export
+#' @export
 visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE){
  
   if(any(class(graph) %in% "visNetwork_Proxy")){
