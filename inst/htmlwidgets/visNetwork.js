@@ -1045,7 +1045,15 @@ HTMLWidgets.widget({
             allNodes[nodeId].label = undefined;
           }
         
-          if((allNodes[nodeId][sel] + "") === value){
+          var value_in = false;
+          if(x.byselection.multiple === false){
+            value_in = (allNodes[nodeId][sel] + "") === value;
+          }else{
+            var current_value = allNodes[nodeId][sel] + "";
+            var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+            value_in = value_split.indexOf(value) !== -1;
+          }
+          if(value_in){
             if (allNodes[nodeId].hiddenColor !== undefined) {
               allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
             }else{

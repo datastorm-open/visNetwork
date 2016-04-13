@@ -35,6 +35,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"values}{ : Optional. Vector of possible values. Defaut to all values in nodes data.frame.}
  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
+ \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}
@@ -118,6 +119,11 @@ nodes$sample <- sample(c("sample 1", "sample 2"), nrow(nodes), replace = TRUE)
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = "sample")
 
+# and with multiple groups ?
+nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"), nrow(nodes), replace = TRUE)
+visNetwork(nodes, edges) \%>\% 
+ visOptions(selectedBy = list(variable = "group", multiple = TRUE))
+  
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

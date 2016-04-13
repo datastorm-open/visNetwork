@@ -1,5 +1,7 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
+
+  * enabled multiple groups selection
   * can now add a title to network & legend (main argument in visNetwork/visLegend function)
   * fix passing directly icon in nodes data.frame
   * add ionicons icons possibilities. See ?addIonicons
