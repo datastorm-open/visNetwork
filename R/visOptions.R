@@ -269,7 +269,7 @@ visOptions <- function(graph,
           byselection$enabled <- TRUE
           byselection$values <- unique(graph$x$nodes[, byselection$variable])
           if(byselection$multiple){
-            byselection$values <- unique(gsub("^[[:space:]]*|[[:space:]]$", "",
+            byselection$values <- unique(gsub("^[[:space:]]*|[[:space:]]*$", "",
                                        do.call("c",strsplit(as.character(byselection$values), split = ","))))
           }
           if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
