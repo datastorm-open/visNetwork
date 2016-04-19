@@ -359,6 +359,39 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+  // select nodes
+  Shiny.addCustomMessageHandler('visShinySelectNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      
+      if(el){
+        var network = el.chart;
+        network.selectNodes(data.selid, data.highlightEdges);
+      }
+  });
+  
+  // select edges
+  Shiny.addCustomMessageHandler('visShinySelectEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      
+      if(el){
+        var network = el.chart;
+        network.selectEdges(data.selid);
+      }
+  });
+  
+  // set selection
+  Shiny.addCustomMessageHandler('visShinySetSelection', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      
+      if(el){
+        var network = el.chart;
+        network.setSelection(data.selection, data.options);
+      }
+  });
+  
   Shiny.addCustomMessageHandler('visShinyCustomOptions', function(data){
         // get container id
         var graph = document.getElementById("graph"+data.id);
