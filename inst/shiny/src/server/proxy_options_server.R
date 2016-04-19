@@ -19,7 +19,7 @@ observe({
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
-    visOptions(nodesIdSelection = input$nodesIdSelection)
+    visOptions(nodesIdSelection = list(enabled = input$nodesIdSelection, selected = 5))
 })
 
 observe({

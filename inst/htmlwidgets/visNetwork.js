@@ -490,6 +490,18 @@ if (HTMLWidgets.shinyMode){
             document.getElementById(el.id).highlight = data.options.highlight;
             document.getElementById(el.id).degree = data.options.degree;
           }
+          
+          // init selection
+          if(data.options.idselection !== undefined){
+            if(data.options.idselection.enabled === true && data.options.idselection.selected !== undefined){
+              //console.info(data.options.idselection)
+              //console.info("ok")
+              document.getElementById("nodeSelect"+data.id).value = data.options.idselection.selected;
+              document.getElementById("nodeSelect"+data.id).onchange();
+            }
+          }
+          
+          // TO DO BY SELECTION & VIEW BAD INTERACTION
           el.updateNodes = true;
         }
       });

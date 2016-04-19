@@ -1,12 +1,13 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
 
+  * new visSelectNodes, visSelectEdges & visSetSelection to select data in shiny
   * enabled multiple groups selection
   * can now add a title to network & legend (main argument in visNetwork/visLegend function)
   * fix passing directly icon in nodes data.frame
   * add ionicons icons possibilities. See ?addIonicons
   * update font-awesome to 4.5.0
-  * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together, and using visUpdateNodes
+  * fix some bad interactions when highlightNearest/selectedBy/nodesIdSelection are set together, and using visUpdateNodes / visOptions with proxy
   * new visRemoveNodes & visRemoveEdges to remove data in shiny
   * new visUpdateNodes & visUpdateEdges to update data in shiny
   * enable visOptions with visNetworkProxy
