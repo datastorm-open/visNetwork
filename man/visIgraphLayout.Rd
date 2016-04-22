@@ -5,7 +5,8 @@
 \title{Use a igraph layout for compute coordinates & fast rendering}
 \usage{
 visIgraphLayout(graph, layout = "layout_nicely", physics = FALSE,
-  smooth = FALSE, type = "square", randomSeed = NULL, ...)
+  smooth = FALSE, type = "square", randomSeed = NULL,
+  layoutMatrix = NULL, ...)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -19,6 +20,8 @@ visIgraphLayout(graph, layout = "layout_nicely", physics = FALSE,
 \item{type}{: Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.}
 
 \item{randomSeed}{: Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.}
+
+\item{layoutMatrix}{: in case of layout = 'layout.norm'. the 'layout' argument (A matrix with two or three columns, the layout to normalize)}
 
 \item{...}{: Adding arguments to layout function}
 }
