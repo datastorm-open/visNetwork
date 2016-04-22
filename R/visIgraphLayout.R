@@ -105,8 +105,12 @@ visIgraphLayout <- function(graph,
   if(!is.null(randomSeed)){
     set.seed(randomSeed)
   }
-  coord <- ctrl$objs[[1]](ig, ...)
-  
+  if(!"layout.norm" %in% layout){
+    coord <- ctrl$objs[[1]](graph = ig, ...)
+  } else {
+    coord <- ctrl$objs[[1]](...)
+  }
+
   graph$x$nodes$x <- coord[, 1]
   graph$x$nodes$y <- coord[, 2]
   
