@@ -402,9 +402,12 @@ if (HTMLWidgets.shinyMode){
         var option2;
         var selectList2;
         var selectList;
+        var reset = false;
         
         if(graph){
 
+          el.updateNodes = true;
+          
           if(data.options.byselection !== undefined){
             selectList2 = document.getElementById("selectedBy"+data.id)
             selectList2.options.length = 0;
@@ -426,12 +429,24 @@ if (HTMLWidgets.shinyMode){
               }
 
               el.byselection_variable = data.options.byselection.variable;
+              el.byselection_multiple = data.options.byselection.multiple;
               selectList2.style.display = 'inline';
               selectList2.setAttribute('style', data.options.byselection.style);
               el.byselection = true;
             } else {
               selectList2.style.display = 'none';
               el.byselection = false;
+              // reset selection
+              if(el.selectActive = true){
+                document.getElementById("selectedBy"+data.id).value = "";
+                document.getElementById("selectedBy"+data.id).onchange();
+              }
+            }
+          }else{
+            // reset selection
+            if(el.selectActive = true){
+              document.getElementById("selectedBy"+data.id).value = "";
+              document.getElementById("selectedBy"+data.id).onchange();
             }
           }
           
@@ -458,12 +473,20 @@ if (HTMLWidgets.shinyMode){
               var byselection_values = [];
               for (var nodeId in allNodes) {
                 if(do_loop_by){
-                  if(indexOf.call(byselection_values, allNodes[nodeId][data.options.byselection.variable], false) === -1){
-                    option2 = document.createElement("option");
-                    option2.value = allNodes[nodeId][data.options.byselection.variable];
-                    option2.text = allNodes[nodeId][data.options.byselection.variable];
-                    selectList2.appendChild(option2);
-                    byselection_values.push(allNodes[nodeId][data.options.byselection.variable]);
+                  var current_sel_value = allNodes[nodeId][data.options.byselection.variable];
+                  if(data.options.byselection.multiple){
+                    current_sel_value = current_sel_value.split(",").map(Function.prototype.call, String.prototype.trim);
+                  }else{
+                    current_sel_value = [current_sel_value];
+                  }
+                  for(var ind_c in current_sel_value){
+                    if(indexOf.call(byselection_values, current_sel_value[ind_c], false) === -1){
+                      option2 = document.createElement("option");
+                      option2.value = current_sel_value[ind_c];
+                      option2.text = current_sel_value[ind_c];
+                      selectList2.appendChild(option2);
+                      byselection_values.push(current_sel_value[ind_c]);
+                    }
                   }
                 }
                 if(do_loop_id){
@@ -487,11 +510,24 @@ if (HTMLWidgets.shinyMode){
               } 
           }
           if(data.options.highlight !== undefined){
+            if(document.getElementById(el.id).highlight && !data.options.highlight){
+              // need reset nodes
+              if(document.getElementById(el.id).highlightActive === true){
+                reset = true;
+              }
+            }
             document.getElementById(el.id).highlight = data.options.highlight;
             document.getElementById(el.id).degree = data.options.degree;
           }
           
           // init selection
+          if(data.options.byselection !== undefined){
+            if(data.options.byselection.selected !== undefined){
+              document.getElementById("selectedBy"+data.id).value = data.options.byselection.selected;
+              document.getElementById("selectedBy"+data.id).onchange();
+            }
+          }
+          
           if(data.options.idselection !== undefined){
             if(data.options.idselection.enabled === true && data.options.idselection.selected !== undefined){
               //console.info(data.options.idselection)
@@ -501,8 +537,11 @@ if (HTMLWidgets.shinyMode){
             }
           }
           
-          // TO DO BY SELECTION & VIEW BAD INTERACTION
-          el.updateNodes = true;
+          if(reset){
+            //console.info("reset nodes");
+            document.getElementById("nodeSelect"+data.id).value = "";
+            document.getElementById("nodeSelect"+data.id).onchange();
+          }
         }
       });
 }
@@ -700,6 +739,7 @@ HTMLWidgets.widget({
 
       document.getElementById(el.id).byselection_values = x.byselection.values;
       document.getElementById(el.id).byselection_variable = x.byselection.variable;
+      document.getElementById(el.id).byselection_multiple = x.byselection.multiple;
       var option2;
       
       //Create and append select list
@@ -1057,12 +1097,12 @@ HTMLWidgets.widget({
     //*************************
   
     function selectedHighlight(value) {
-    
+
       if(document.getElementById(el.id).updateNodes){
         document.getElementById(el.id).updateNodes = false;
         allNodes = nodesDataset.get({returnType:"Object"});
       }
-    
+      
       var sel = document.getElementById(el.id).byselection_variable;
           
       if(sel == "label"){
@@ -1091,7 +1131,7 @@ HTMLWidgets.widget({
           }
         
           var value_in = false;
-          if(x.byselection.multiple === false){
+          if(document.getElementById(el.id).byselection_multiple === false){
             value_in = (allNodes[nodeId][sel] + "") === value;
           }else{
             var current_value = allNodes[nodeId][sel] + "";
