@@ -175,7 +175,7 @@ visClusteringByGroup <- function(graph, groups){
 #' Network visualization clustering options - by node id
 #' 
 #' @param graph : a visNetwork object
-#' @param nodes : Character/vector. gid of nodes we want to cluster
+#' @param nodes : Character/vector. id of nodes we want to cluster
 #' 
 #' @examples
 #'
