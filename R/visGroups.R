@@ -45,6 +45,11 @@ visGroups <- function(graph,
       stop("Must have a groupname to identify group")
     }
     tmp <- list(...)
+    if("icon" %in% names(tmp)){
+      if(!"color" %in% names(tmp$icon)){
+        tmp$icon$color <- '#2B7CE9'
+      }
+    }
     groups[[groupname]] <- tmp
   }
   

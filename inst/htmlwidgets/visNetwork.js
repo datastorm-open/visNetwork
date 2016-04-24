@@ -46,20 +46,57 @@ var indexOf = function(needle, str) {
     return indexOf.call(this, needle, str);
 };
 
-resetNodes = function(allNodes, update, nodes, groups){
+simpleResetNode = function(node){
+  if (node.hiddenColor !== undefined) {
+    node.color = node.hiddenColor;
+    node.hiddenColor = undefined;
+  }else{
+    node.color = undefined;
+  }
+};
+
+simpleIconResetNode = function(node){
+  if(node.iconDefined){
+    if (node.hiddenColor !== undefined) {
+      node.icon.color = node.hiddenColor;
+      node.hiddenColor = undefined;
+    }
+  }else{
+    delete node.icon;
+  }
+};
+
+resetOneNode = function(node, groups){
+  /*console.info(groups);
+  console.info(node);*/
+  if(node.group === undefined){
+    simpleResetNode(node);
+  }else{
+    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+       simpleResetNode(node);
+    }else{
+      // icons defined in node
+      if(node.shape === "icon"){
+        simpleIconResetNode(node);
+      // icons defined in group...
+      }else if(groups.groups[node.group].shape === "icon"){
+        simpleIconResetNode(node);
+      }
+    }
+  }
+  if (node.hiddenLabel !== undefined) {
+    node.label = node.hiddenLabel;
+    node.hiddenLabel = undefined;
+  }
+};
+
+resetAllNodes = function(allNodes, update, nodes, groups){
   var updateArray = [];
   //console.info(allNodes);
   for (var nodeId in allNodes) {
-    if (allNodes[nodeId].hiddenColor !== undefined) {
-      allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
-      allNodes[nodeId].hiddenColor = undefined;
-    }else{
-      allNodes[nodeId].color = undefined;
-    }
-    if (allNodes[nodeId].hiddenLabel !== undefined) {
-      allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
-      allNodes[nodeId].hiddenLabel = undefined;
-      }
+
+    resetOneNode(allNodes[nodeId], groups);
+    
     allNodes[nodeId].x = undefined;
     allNodes[nodeId].y = undefined;
     if (allNodes.hasOwnProperty(nodeId) && update) {
@@ -82,26 +119,91 @@ simpleNodeAsHardToRead = function(node){
   }
 };
 
-nodeAsHardToRead = function(node, groups){
-  simpleNodeAsHardToRead(node);
+iconsNodeAsHardToRead = function(node){
+  if(node.icon !== undefined){
+    node.iconDefined = true;
+    if (node.hiddenColor === undefined & node.icon.color !== 'rgba(200,200,200,0.5)') {
+      node.hiddenColor = node.icon.color;
+    }
+  } else {
+    node.icon = {};
+    node.iconDefined = false;
+  }
+  node.icon.color = 'rgba(200,200,200,0.5)';
+  if (node.hiddenLabel === undefined) {
+    node.hiddenLabel = node.label;
+    node.label = undefined;
+  }
 };
 
-/*nodeAsHardToRead = function(node, groups){
-  console.info(node);
-  console.info(groups);
-  console.info(node.group);
-  if(node.group === undefined){
-    simpleNodeAsHardToRead(node)
-  }else{
-    console.info(groups.groups[node.group]);
-    if(node.shape !== "image" & ){
-      if()
-    }
-    console.info("la") ;
-  }
 
+/*nodeAsHardToRead = function(node, groups){
+  simpleNodeAsHardToRead(node);
 };*/
 
+nodeAsHardToRead = function(node, groups){
+  /*console.info(node);
+  console.info(groups);
+  console.info(node.group);*/
+  if(node.group === undefined){
+    simpleNodeAsHardToRead(node);
+  }else{
+    //console.info(groups.groups[node.group]);
+    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+       simpleNodeAsHardToRead(node);
+    }else{
+      // icons defined in node
+      if(node.shape === "icon"){
+        iconsNodeAsHardToRead(node);
+      // icons defined in group...
+      }else if(groups.groups[node.group].shape === "icon"){
+        iconsNodeAsHardToRead(node);
+      }
+    }
+  }
+};
+
+simpleReinitNode = function(node){
+    if (node.hiddenColor !== undefined) {
+    node.color = node.hiddenColor;
+  }else{
+    node.color = undefined;
+  }
+  if (node.hiddenLabel !== undefined) {
+    node.label = node.hiddenLabel;
+    node.hiddenLabel = undefined;
+  }
+};
+
+iconsReinitNode = function(node){
+    if (node.hiddenColor !== undefined) {
+    node.color = node.hiddenColor;
+  }else{
+    node.color = undefined;
+  }
+  if (node.hiddenLabel !== undefined) {
+    node.label = node.hiddenLabel;
+    node.hiddenLabel = undefined;
+  }
+};
+
+reinitNode = function(node){
+  if(node.group === undefined){
+    simpleReinitNode(node);
+  }else{
+    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+       simpleReinitNode(node);
+    }else{
+      // icons defined in node
+      if(node.shape === "icon"){
+        simpleIconResetNode(node);
+      // icons defined in group...
+      }else if(groups.groups[node.group].shape === "icon"){
+        simpleIconResetNode(node);
+      }
+    }
+  }
+};      
           
 visNetworkdataframeToD3 = function(df, type) {
 
@@ -344,7 +446,7 @@ if (HTMLWidgets.shinyMode){
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
-          resetNodes(allNodes, true, el.nodes, el.groups);
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -392,7 +494,7 @@ if (HTMLWidgets.shinyMode){
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
-          resetNodes(allNodes, true, el.nodes, el.groups);
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -1201,15 +1303,7 @@ HTMLWidgets.widget({
             value_in = value_split.indexOf(value) !== -1;
           }
           if(value_in){
-            if (allNodes[nodeId].hiddenColor !== undefined) {
-              allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
-            }else{
-              allNodes[nodeId].color = undefined;
-            }
-            if (allNodes[nodeId].hiddenLabel !== undefined) {
-              allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
-              allNodes[nodeId].hiddenLabel = undefined;
-            }
+            resetOneNode(allNodes[nodeId], instance.network.groups);
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
@@ -1225,7 +1319,7 @@ HTMLWidgets.widget({
       }
       else if (document.getElementById(el.id).selectActive === true) {
         //reset nodes
-        resetNodes(allNodes, update, nodesDataset, instance.network.groups)
+        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups)
         document.getElementById(el.id).selectActive = false
       }
     } 
@@ -1324,15 +1418,7 @@ HTMLWidgets.widget({
         }
         
         // the main node gets its own color and its label back.
-        if (allNodes[selectedNode].hiddenColor !== undefined) {
-          allNodes[selectedNode].color = allNodes[selectedNode].hiddenColor;
-        }else{
-          allNodes[selectedNode].color = undefined;
-        }
-        if (allNodes[selectedNode].hiddenLabel !== undefined) {
-          allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
-          allNodes[selectedNode].hiddenLabel = undefined;
-        }
+        resetOneNode(allNodes[selectedNode], instance.network.groups);
         
         if(update){
           // transform the object into an array
@@ -1356,7 +1442,7 @@ HTMLWidgets.widget({
         }
         
         //reset nodes
-        resetNodes(allNodes, update, nodesDataset, instance.network.groups)
+        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups)
         document.getElementById(el.id).highlightActive = false;
       }
       if(document.getElementById(el.id).byselection){
