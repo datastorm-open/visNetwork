@@ -46,6 +46,63 @@ var indexOf = function(needle, str) {
     return indexOf.call(this, needle, str);
 };
 
+resetNodes = function(allNodes, update, nodes, groups){
+  var updateArray = [];
+  //console.info(allNodes);
+  for (var nodeId in allNodes) {
+    if (allNodes[nodeId].hiddenColor !== undefined) {
+      allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
+      allNodes[nodeId].hiddenColor = undefined;
+    }else{
+      allNodes[nodeId].color = undefined;
+    }
+    if (allNodes[nodeId].hiddenLabel !== undefined) {
+      allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+      allNodes[nodeId].hiddenLabel = undefined;
+      }
+    allNodes[nodeId].x = undefined;
+    allNodes[nodeId].y = undefined;
+    if (allNodes.hasOwnProperty(nodeId) && update) {
+      updateArray.push(allNodes[nodeId]);
+    }
+  }
+  if(update){
+    nodes.update(updateArray);
+  }
+};
+
+simpleNodeAsHardToRead = function(node){
+  if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+    node.hiddenColor = node.color;
+  }
+  node.color = 'rgba(200,200,200,0.5)';
+  if (node.hiddenLabel === undefined) {
+    node.hiddenLabel = node.label;
+    node.label = undefined;
+  }
+};
+
+nodeAsHardToRead = function(node, groups){
+  simpleNodeAsHardToRead(node);
+};
+
+/*nodeAsHardToRead = function(node, groups){
+  console.info(node);
+  console.info(groups);
+  console.info(node.group);
+  if(node.group === undefined){
+    simpleNodeAsHardToRead(node)
+  }else{
+    console.info(groups.groups[node.group]);
+    if(node.shape !== "image" & ){
+      if()
+    }
+    console.info("la") ;
+  }
+
+};*/
+
+          
 visNetworkdataframeToD3 = function(df, type) {
 
   var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
@@ -283,27 +340,11 @@ if (HTMLWidgets.shinyMode){
         // get nodes object
         var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
         
+        // reset some parameters / date before
         if (main_el.selectActive === true | main_el.highlightActive === true) {
+          //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
-          var updateArray = [];
-          for (var nodeId in allNodes) {
-            if (allNodes[nodeId].hiddenColor !== undefined) {
-              allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
-              allNodes[nodeId].hiddenColor = undefined;
-            }else{
-              allNodes[nodeId].color = undefined;
-            }
-            if (allNodes[nodeId].hiddenLabel !== undefined) {
-              allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
-              allNodes[nodeId].hiddenLabel = undefined;
-            }
-            allNodes[nodeId].x = undefined;
-            allNodes[nodeId].y = undefined;
-            if (allNodes.hasOwnProperty(nodeId)) {
-              updateArray.push(allNodes[nodeId]);
-            }
-          }
-          el.nodes.update(updateArray);
+          resetNodes(allNodes, true, el.nodes, el.groups);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -315,13 +356,14 @@ if (HTMLWidgets.shinyMode){
           }
           if (main_el.highlightActive === true){
             main_el.highlightActive = false;
-            selectNode = document.getElementById('selectedBy'+data.id);
+            selectNode = document.getElementById('nodeSelect'+data.id);
             selectNode.value = "";
             if (window.Shiny){
               Shiny.onInputChange(el.id + '_' + 'selected', "");
             }
           }
         }
+        // update nodes
         el.nodes.update(tmpnodes);
         main_el.updateNodes = true;
       }
@@ -343,9 +385,35 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyRemoveNodes', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
+      var main_el = document.getElementById(data.id);
       
       if(el){
+        // reset some parameters / date before
+        if (main_el.selectActive === true | main_el.highlightActive === true) {
+          //reset nodes
+          var allNodes = el.nodes.get({returnType:"Object"});
+          resetNodes(allNodes, true, el.nodes, el.groups);
+          
+          if (main_el.selectActive === true){
+            main_el.selectActive = false;
+            selectNode = document.getElementById('selectedBy'+data.id);
+            selectNode.value = "";
+            if (window.Shiny){
+              Shiny.onInputChange(el.id + '_' + 'selectedBy', "");
+            }
+          }
+          if (main_el.highlightActive === true){
+            main_el.highlightActive = false;
+            selectNode = document.getElementById('nodeSelect'+data.id);
+            selectNode.value = "";
+            if (window.Shiny){
+              Shiny.onInputChange(el.id + '_' + 'selected', "");
+            }
+          }
+        }
+        // remove nodes
         el.nodes.remove(data.rmid);
+        main_el.updateNodes = true;
       }
   });
   
@@ -1116,20 +1184,14 @@ HTMLWidgets.widget({
       var update = !(document.getElementById(el.id).selectActive === false & value === "");
 
       if (value !== "") {
-      
+        var updateArray = [];
         document.getElementById(el.id).selectActive = true;
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
-          if (allNodes[nodeId].hiddenColor === undefined & allNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
-            allNodes[nodeId].hiddenColor = allNodes[nodeId].color;
-          }
-          allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
-          if (allNodes[nodeId].hiddenLabel === undefined) {
-            allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
-            allNodes[nodeId].label = undefined;
-          }
-        
+          
+          nodeAsHardToRead(allNodes[nodeId], instance.network.groups);
+  
           var value_in = false;
           if(document.getElementById(el.id).byselection_multiple === false){
             value_in = (allNodes[nodeId][sel] + "") === value;
@@ -1151,37 +1213,20 @@ HTMLWidgets.widget({
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
-        }
-      }
-      else if (document.getElementById(el.id).selectActive === true) {
-      // reset all nodes
-        for (var nodeId in allNodes) {
-          if (allNodes[nodeId].hiddenColor !== undefined) {
-            allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
-            allNodes[nodeId].hiddenColor = undefined;
-          }else{
-            allNodes[nodeId].color = undefined;
-          }
-          if (allNodes[nodeId].hiddenLabel !== undefined) {
-            allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
-            allNodes[nodeId].hiddenLabel = undefined;
-          }
-          allNodes[nodeId].x = undefined;
-          allNodes[nodeId].y = undefined;
-        }
-      
-        document.getElementById(el.id).selectActive = false
-      }
-    
-      if(update){
-        // transform the object into an array
-        var updateArray = [];
-        for (nodeId in allNodes) {
-          if (allNodes.hasOwnProperty(nodeId)) {
+          
+          if (allNodes.hasOwnProperty(nodeId) && update) {
             updateArray.push(allNodes[nodeId]);
           }
         }
-        nodesDataset.update(updateArray);
+        
+        if(update){
+          nodesDataset.update(updateArray);
+        }
+      }
+      else if (document.getElementById(el.id).selectActive === true) {
+        //reset nodes
+        resetNodes(allNodes, update, nodesDataset, instance.network.groups)
+        document.getElementById(el.id).selectActive = false
       }
     } 
   
@@ -1204,6 +1249,7 @@ HTMLWidgets.widget({
 
       if (params.nodes.length > 0) {
         
+        var updateArray = [];
         if(document.getElementById(el.id).idselection){
           selectNode = document.getElementById('nodeSelect'+el.id);
           if(x.idselection.values !== undefined){
@@ -1227,14 +1273,7 @@ HTMLWidgets.widget({
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
-          if (allNodes[nodeId].hiddenColor === undefined & allNodes[nodeId].color !== 'rgba(200,200,200,0.5)') {
-            allNodes[nodeId].hiddenColor = allNodes[nodeId].color;
-          }
-          allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
-          if (allNodes[nodeId].hiddenLabel === undefined) {
-            allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
-            allNodes[nodeId].label = undefined;
-          }
+          nodeAsHardToRead(allNodes[nodeId], instance.network.groups);
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
         }
@@ -1294,6 +1333,18 @@ HTMLWidgets.widget({
           allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
           allNodes[selectedNode].hiddenLabel = undefined;
         }
+        
+        if(update){
+          // transform the object into an array
+          var updateArray = [];
+          for (nodeId in allNodes) {
+            if (allNodes.hasOwnProperty(nodeId)) {
+              updateArray.push(allNodes[nodeId]);
+            }
+          }
+          nodesDataset.update(updateArray);
+        }
+      
       }
       else if (document.getElementById(el.id).highlightActive === true | document.getElementById(el.id).selectActive === true) {
         if(document.getElementById(el.id).idselection){
@@ -1303,25 +1354,12 @@ HTMLWidgets.widget({
             changeInput('selected', "");
           }
         }
-
-        // reset all nodes
-        for (var nodeId in allNodes) {
-          if (allNodes[nodeId].hiddenColor !== undefined) {
-            allNodes[nodeId].color = allNodes[nodeId].hiddenColor;
-            allNodes[nodeId].hiddenColor = undefined;
-          }else{
-            allNodes[nodeId].color = undefined;
-          }
-          if (allNodes[nodeId].hiddenLabel !== undefined) {
-            allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
-            allNodes[nodeId].hiddenLabel = undefined;
-          }
-          allNodes[nodeId].x = undefined;
-          allNodes[nodeId].y = undefined;
-        }
+        
+        //reset nodes
+        resetNodes(allNodes, update, nodesDataset, instance.network.groups)
         document.getElementById(el.id).highlightActive = false;
       }
-     if(document.getElementById(el.id).byselection){
+      if(document.getElementById(el.id).byselection){
         selectNode = document.getElementById('selectedBy'+el.id);
         selectNode.value = "";
         document.getElementById(el.id).selectActive = false;
@@ -1329,18 +1367,6 @@ HTMLWidgets.widget({
           changeInput('selectedBy', "");
         }
       }
-      
-      if(update){
-        // transform the object into an array
-        var updateArray = [];
-        for (nodeId in allNodes) {
-          if (allNodes.hasOwnProperty(nodeId)) {
-            updateArray.push(allNodes[nodeId]);
-          }
-        }
-        nodesDataset.update(updateArray);
-      }
-
     }
     
     function onClickIDSelection(selectedItems) {
