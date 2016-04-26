@@ -1,4 +1,4 @@
-data <- reactive({
+datass <- reactive({
   set.seed(2)
   nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
                       group = sample(LETTERS[1:3], 15, replace = TRUE))
@@ -9,7 +9,7 @@ data <- reactive({
 })
 
 output$network_proxy_select <- renderVisNetwork({
-  visNetwork(data()$nodes, data()$edges) %>% visLegend() %>%
+  visNetwork(datass()$nodes, datass()$edges) %>% visLegend() %>%
     visOptions(highlightNearest = TRUE)
 })
 

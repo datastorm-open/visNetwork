@@ -1,7 +1,8 @@
-data <- reactive({
+dataos <- reactive({
   set.seed(2)
   nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
-                      group = sample(LETTERS[1:3], 15, replace = TRUE))
+                      group = sample(LETTERS[1:3], 15, replace = TRUE), 
+                      group2 = paste(sample(LETTERS[1:3], 15, replace = TRUE), sample(LETTERS[1:3], 15, replace = TRUE), sep= ","))
   
   edges <- data.frame(id = 1:15, from = trunc(runif(15)*(15-1))+1,
                       to = trunc(runif(15)*(15-1))+1)
@@ -9,7 +10,7 @@ data <- reactive({
 })
 
 output$network_proxy_options <- renderVisNetwork({
-  visNetwork(data()$nodes, data()$edges) %>% visLegend()
+  visNetwork(dataos()$nodes, dataos()$edges) %>% visLegend()
 })
 
 observe({
@@ -23,15 +24,23 @@ observe({
 })
 
 observe({
-  if(length(input$selectedby) > 0){
-    visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group", values = input$selectedby))
-  }else{
-    visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = NULL)
-  }
 
+    visNetworkProxy("network_proxy_options") %>%
+      visOptions(selectedBy = list(variable = "group2", multiple = input$selectedby ))
+
+  
 })
+
+# observe({
+#   if(length(input$selectedby) > 0){
+#     visNetworkProxy("network_proxy_options") %>%
+#       visOptions(selectedBy = list(variable = "group", values = input$selectedby, selected = input$selectedby[1]))
+#   }else{
+#     visNetworkProxy("network_proxy_options") %>%
+#       visOptions(selectedBy = NULL)
+#   }
+# 
+# })
 
 output$code_proxy_options  <- renderText({
   '

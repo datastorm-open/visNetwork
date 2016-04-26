@@ -5,8 +5,9 @@ shiny::tabPanel(
       width = 4,
       checkboxInput("highlightNearest", "highlight Nearest", FALSE),
       checkboxInput("nodesIdSelection", "nodes Selection", FALSE),
-      selectInput("selectedby", "Group selection :",
-                  c("A", "B", "C"), multiple = TRUE, selected = NULL)
+      checkboxInput("selectedby", "Groups Selection", FALSE)
+      # selectInput("selectedby", "Group selection :",
+      #             c("A", "B", "C"), multiple = TRUE, selected = NULL)
     ),
     column(
       width = 8,
