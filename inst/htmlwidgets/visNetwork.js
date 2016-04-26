@@ -72,15 +72,26 @@ resetOneNode = function(node, groups){
   if(node.group === undefined){
     simpleResetNode(node);
   }else{
-    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-       simpleResetNode(node);
+    if(groups.groups[node.group] === undefined){
+      if(node.shape !== "image" && node.shape !== "icon"){
+        simpleResetNode(node);
+      }else{
+        // icons defined in node
+        if(node.shape === "icon"){
+          simpleIconResetNode(node);
+        }
+      }
     }else{
+      if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+       simpleResetNode(node);
+      }else{
       // icons defined in node
-      if(node.shape === "icon"){
-        simpleIconResetNode(node);
-      // icons defined in group...
-      }else if(groups.groups[node.group].shape === "icon"){
-        simpleIconResetNode(node);
+        if(node.shape === "icon"){
+          simpleIconResetNode(node);
+        // icons defined in group...
+        }else if(groups.groups[node.group].shape === "icon"){
+          simpleIconResetNode(node);
+        }
       }
     }
   }
@@ -148,16 +159,26 @@ nodeAsHardToRead = function(node, groups){
   if(node.group === undefined){
     simpleNodeAsHardToRead(node);
   }else{
-    //console.info(groups.groups[node.group]);
-    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-       simpleNodeAsHardToRead(node);
+    if(groups.groups[node.group] === undefined){
+      if(node.shape !== "image" && node.shape !== "icon"){
+        simpleNodeAsHardToRead(node);
+      }else{
+        // icons defined in node
+        if(node.shape === "icon"){
+          iconsNodeAsHardToRead(node);
+        }
+      }
     }else{
+      if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+       simpleNodeAsHardToRead(node);
+      }else{
       // icons defined in node
-      if(node.shape === "icon"){
-        iconsNodeAsHardToRead(node);
-      // icons defined in group...
-      }else if(groups.groups[node.group].shape === "icon"){
-        iconsNodeAsHardToRead(node);
+        if(node.shape === "icon"){
+          iconsNodeAsHardToRead(node);
+        // icons defined in group...
+        }else if(groups.groups[node.group].shape === "icon"){
+          iconsNodeAsHardToRead(node);
+        }
       }
     }
   }
@@ -194,12 +215,27 @@ reinitNode = function(node){
     if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
        simpleReinitNode(node);
     }else{
-      // icons defined in node
-      if(node.shape === "icon"){
-        simpleIconResetNode(node);
-      // icons defined in group...
-      }else if(groups.groups[node.group].shape === "icon"){
-        simpleIconResetNode(node);
+      if(groups.groups[node.group] === undefined){
+        if(node.shape !== "image" && node.shape !== "icon"){
+          simpleResetNode(node);
+        }else{
+          // icons defined in node
+          if(node.shape === "icon"){
+            simpleIconResetNode(node);
+          }
+        }
+      }else{
+        if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
+          simpleResetNode(node);
+        }else{
+        // icons defined in node
+          if(node.shape === "icon"){
+            simpleIconResetNode(node);
+          // icons defined in group...
+          }else if(groups.groups[node.group].shape === "icon"){
+            simpleIconResetNode(node);
+          }
+        }
       }
     }
   }
@@ -938,7 +974,7 @@ HTMLWidgets.widget({
     // divide page
     var maindiv  = document.createElement('div');
     maindiv.id = "maindiv"+el.id;
-    maindiv.setAttribute('style', 'height:100%');
+    maindiv.setAttribute('style', 'height:95%');
     document.getElementById(el.id).appendChild(maindiv);
     
     var graph = document.createElement('div');
@@ -1541,7 +1577,7 @@ HTMLWidgets.widget({
       
       document.getElementById("download"+el.id).onclick = function() {
            
-           html2canvas(document.getElementById("maindiv"+el.id), {
+           html2canvas(document.getElementById(el.id), {
              background: x.export.background,
               onrendered: function(canvas) {
                 canvas.toBlob(function(blob) {
