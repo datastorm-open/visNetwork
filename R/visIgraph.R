@@ -43,6 +43,8 @@
 #'V(g)$color <- c("green", "grey")
 #'V(g)$size <- 1:8 *5
 #'V(g)$label <- LETTERS[1:8]
+#'V(g)$label.cex = seq(1, 2,length.out = 8)
+#'V(g)$label.color = "red"
 #'visIgraph(g, layout = "layout.circle", idToLabel = FALSE)  
 #'
 #'g <- graph.full(5)
@@ -51,6 +53,9 @@
 #'E(g)$color <- "red"
 #'E(g)[ weight < 0.5 ]$width <- 4
 #'E(g)[ weight < 0.5 ]$color <- "green"
+#'E(g)$label <- LETTERS[1:10]
+#'E(g)$label.cex = seq(1, 2,length.out = 10)
+#'E(g)$label.color = "red"
 #'visIgraph(g)
 #'
 #'# color vertices of the largest component
@@ -152,6 +157,15 @@ toVisNetworkData <- function(igraph,
     }
   }
   
+  if("label.cex" %in% colnames(nodes)){
+      colnames(nodes) <- gsub("^label.cex$", "font.size", colnames(nodes))
+      nodes$font.size <- nodes$font.size*40
+  }
+  
+  if("label.color" %in% colnames(nodes)){
+    colnames(nodes) <- gsub("^label.color$", "font.color", colnames(nodes))
+  }
+  
   nodes <- nodes[, c("id", setdiff(colnames(nodes), "id")), drop = FALSE]
   
   if(idToLabel){
@@ -159,6 +173,15 @@ toVisNetworkData <- function(igraph,
   }
   
   edges <- igraphdata$edges
+  
+  if("label.cex" %in% colnames(edges)){
+    colnames(edges) <- gsub("^label.cex$", "font.size", colnames(edges))
+    edges$font.size <- edges$font.size*40
+  }
+  
+  if("label.color" %in% colnames(edges)){
+    colnames(edges) <- gsub("^label.color$", "font.color", colnames(edges))
+  }
   
   list(nodes= nodes, edges = edges)
 }

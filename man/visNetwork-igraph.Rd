@@ -62,6 +62,8 @@ g <- graph.star(8)
 V(g)$color <- c("green", "grey")
 V(g)$size <- 1:8 *5
 V(g)$label <- LETTERS[1:8]
+V(g)$label.cex = seq(1, 2,length.out = 8)
+V(g)$label.color = "red"
 visIgraph(g, layout = "layout.circle", idToLabel = FALSE)  
 
 g <- graph.full(5)
@@ -70,6 +72,9 @@ E(g)$width <- 1
 E(g)$color <- "red"
 E(g)[ weight < 0.5 ]$width <- 4
 E(g)[ weight < 0.5 ]$color <- "green"
+E(g)$label <- LETTERS[1:10]
+E(g)$label.cex = seq(1, 2,length.out = 10)
+E(g)$label.color = "red"
 visIgraph(g)
 
 # color vertices of the largest component

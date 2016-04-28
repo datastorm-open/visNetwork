@@ -14,6 +14,7 @@ visNetwork 0.2.2
   * new visUpdateNodes & visUpdateEdges to update data in shiny
   * enable visOptions with visNetworkProxy
   * add randomSeed to visIgraphLayout
+  * add quick support for label.cex and label.color with ``visIgraph``
   * to vis.js 4.15.0
   
 visNetwork 0.2.1
