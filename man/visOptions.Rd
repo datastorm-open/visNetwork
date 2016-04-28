@@ -19,6 +19,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
+ \item{"hover"}{ : Boolean. Enabled highlightNearest alos hovering a node ? Default to FALSE}
 }}
 
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
@@ -60,6 +61,9 @@ edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
 
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = TRUE)
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, degree = 2))
+
+# also when hover a node ?
+visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE))
 
 ##########################
 # nodesIdSelection

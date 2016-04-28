@@ -9,6 +9,7 @@
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
 #'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
+#'  \item{"hover"}{ : Boolean. Enabled highlightNearest alos hovering a node ? Default to FALSE}
 #'}
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
@@ -42,6 +43,9 @@
 #' 
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE)
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, degree = 2))
+#' 
+#' # also when hover a node ?
+#' visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE))
 #' 
 #' ##########################
 #' # nodesIdSelection
@@ -152,6 +156,7 @@ visOptions <- function(graph,
   }
   
   degree <- 1
+  hoverNearest <- FALSE
   if(any(class(graph) %in% "visNetwork")){
     
     if(!"nodes"%in%names(graph$x)){
@@ -164,12 +169,17 @@ visOptions <- function(graph,
       # highlightNearest
       #############################
       if(is.list(highlightNearest)){
-        if(any(!names(highlightNearest)%in%c("enabled", "degree"))){
+        if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover"))){
           stop("Invalid 'highlightNearest' argument")
         }
         if("degree"%in%names(highlightNearest)){
           degree <- highlightNearest$degree
         }
+        
+        if("hover"%in%names(highlightNearest)){
+          hoverNearest <- highlightNearest$hover
+        }
+        
         if("enabled"%in%names(highlightNearest)){
           highlightNearest <- highlightNearest$enabled
         }else{
@@ -306,17 +316,23 @@ visOptions <- function(graph,
     # highlightNearest
     #############################
     if(is.list(highlightNearest)){
-      if(any(!names(highlightNearest)%in%c("enabled", "degree"))){
+      if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover"))){
         stop("Invalid 'highlightNearest' argument")
       }
       if("degree"%in%names(highlightNearest)){
         degree <- highlightNearest$degree
       }
+      
+      if("hover"%in%names(highlightNearest)){
+        hoverNearest <- highlightNearest$hover
+      }
+      
       if("enabled"%in%names(highlightNearest)){
         highlightNearest <- highlightNearest$enabled
       }else{
         highlightNearest <- TRUE
       }
+
     }else if(!is.logical(highlightNearest)){
       stop("Invalid 'highlightNearest' argument")
     }
@@ -407,10 +423,15 @@ visOptions <- function(graph,
       }
     }
   }
-  x <- list(highlight = highlightNearest, degree = degree, idselection = idselection, 
-            byselection = byselection)
+  x <- list(highlight = highlightNearest, hoverNearest = hoverNearest, degree = degree, 
+            idselection = idselection, byselection = byselection)
+  
+  if(hoverNearest){
+    graph <- visInteraction(graph, hover = TRUE)
+  }
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
+
     data <- list(id = graph$id, options = options)
     graph$session$sendCustomMessage("visShinyOptions",data)
 

@@ -46,6 +46,8 @@ var indexOf = function(needle, str) {
     return indexOf.call(this, needle, str);
 };
 
+
+// functions to reset nodes after hard to read
 simpleResetNode = function(node){
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
@@ -55,59 +57,95 @@ simpleResetNode = function(node){
   }
 };
 
-simpleIconResetNode = function(node){
+simpleIconResetNode = function(node, group_color){
   if(node.iconDefined){
     if (node.hiddenColor !== undefined) {
       node.icon.color = node.hiddenColor;
       node.hiddenColor = undefined;
+    } else {
+      if(group_color){
+        delete node.icon.color;
+      }else{
+        node.icon.color = "#2B7CE9";
+      }
     }
   }else{
     delete node.icon;
   }
 };
 
-resetOneNode = function(node, groups){
-  /*console.info(groups);
-  console.info(node);*/
-  if(node.group === undefined){
-    simpleResetNode(node);
+simpleImageResetNode = function(node, type){
+  if (node.hiddenColor !== undefined) {
+    node.color = node.hiddenColor;
+    node.hiddenColor = undefined;
   }else{
-    if(groups.groups[node.group] === undefined){
-      if(node.shape !== "image" && node.shape !== "icon"){
-        simpleResetNode(node);
-      }else{
-        // icons defined in node
-        if(node.shape === "icon"){
-          simpleIconResetNode(node);
-        }
-      }
-    }else{
-      if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-       simpleResetNode(node);
-      }else{
-      // icons defined in node
-        if(node.shape === "icon"){
-          simpleIconResetNode(node);
-        // icons defined in group...
-        }else if(groups.groups[node.group].shape === "icon"){
-          simpleIconResetNode(node);
-        }
-      }
-    }
+    node.color = undefined;
   }
-  if (node.hiddenLabel !== undefined) {
-    node.label = node.hiddenLabel;
-    node.hiddenLabel = undefined;
+  node.shape = type;
+};
+
+resetOneNode = function(node, groups, options){
+  if(node.isHardToRead !== undefined){
+    if(node.isHardToRead){
+      var final_shape;
+      var shape_group = false;
+      var is_group = false;
+      if(node.group !== undefined){
+        if(groups.groups[node.group] !== undefined){
+          is_group = true;
+          if(groups.groups[node.group].shape !== undefined){
+            shape_group = true;
+          }
+        }
+      }
+      
+      var shape_options = false;
+      if(options.nodes !== undefined){
+        if(options.nodes.shape !== undefined){
+          shape_options = true;
+        }
+      }
+    
+      if(node.hiddenImage !== undefined){
+        final_shape = node.hiddenImage;
+      } else if(node.shape !== undefined){
+        final_shape = node.shape;
+      } else if(shape_group){
+        final_shape = groups.groups[node.group].shape;
+      } else if(shape_options){
+        final_shape = options.nodes.shape;
+      }
+      
+      if(final_shape === "icon"){
+        group_color = false;
+        if(is_group){
+          if(groups.groups[node.group].icon){
+            if(groups.groups[node.group].icon.color){
+              group_color = true;
+            }
+          }
+        }
+        simpleIconResetNode(node, group_color);
+      } else if(final_shape === "image"){
+        simpleImageResetNode(node, "image");
+      } else if(final_shape === "circularImage"){
+        simpleImageResetNode(node, "circularImage");
+      } else {
+        simpleResetNode(node);
+      }
+      if (node.hiddenLabel !== undefined) {
+        node.label = node.hiddenLabel;
+        node.hiddenLabel = undefined;
+      }
+      node.isHardToRead = false;
+    }
   }
 };
 
-resetAllNodes = function(allNodes, update, nodes, groups){
+resetAllNodes = function(allNodes, update, nodes, groups, options){
   var updateArray = [];
-  //console.info(allNodes);
   for (var nodeId in allNodes) {
-
-    resetOneNode(allNodes[nodeId], groups);
-    
+    resetOneNode(allNodes[nodeId], groups, options);
     allNodes[nodeId].x = undefined;
     allNodes[nodeId].y = undefined;
     if (allNodes.hasOwnProperty(nodeId) && update) {
@@ -147,100 +185,60 @@ iconsNodeAsHardToRead = function(node){
   }
 };
 
+imageNodeAsHardToRead = function(node, type){
+  node.color = 'rgba(200,200,200,0.5)';
+  if (node.hiddenLabel === undefined) {
+    node.hiddenLabel = node.label;
+    node.label = undefined;
+  }
+  if(type === "image"){
+    node.hiddenImage = type;
+    node.shape = "square";
+  }else if(type === "circularImage"){
+    node.hiddenImage = type;
+    node.shape = "dot";
+  }
+};
 
-/*nodeAsHardToRead = function(node, groups){
-  simpleNodeAsHardToRead(node);
-};*/
 
-nodeAsHardToRead = function(node, groups){
-  /*console.info(node);
-  console.info(groups);
-  console.info(node.group);*/
-  if(node.group === undefined){
+nodeAsHardToRead = function(node, groups, options){
+  var final_shape;
+  var shape_group = false;
+  if(node.group !== undefined){
+    if(groups.groups[node.group] !== undefined){
+      if(groups.groups[node.group].shape !== undefined){
+        shape_group = true;
+      }
+    }
+  }
+  
+  var shape_options = false;
+  if(options.nodes !== undefined){
+    if(options.nodes.shape !== undefined){
+      shape_options = true;
+    }
+  }
+
+  if(node.shape !== undefined){
+    final_shape = node.shape;
+  } else if(shape_group){
+    final_shape = groups.groups[node.group].shape;
+  } else if(shape_options){
+    final_shape = options.nodes.shape;
+  }
+  
+  if(final_shape === "icon"){
+    iconsNodeAsHardToRead(node);
+  } else if(final_shape === "image"){
+    imageNodeAsHardToRead(node, "image");
+  } else if(final_shape === "circularImage"){
+    imageNodeAsHardToRead(node, "circularImage");
+  } else {
     simpleNodeAsHardToRead(node);
-  }else{
-    if(groups.groups[node.group] === undefined){
-      if(node.shape !== "image" && node.shape !== "icon"){
-        simpleNodeAsHardToRead(node);
-      }else{
-        // icons defined in node
-        if(node.shape === "icon"){
-          iconsNodeAsHardToRead(node);
-        }
-      }
-    }else{
-      if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-       simpleNodeAsHardToRead(node);
-      }else{
-      // icons defined in node
-        if(node.shape === "icon"){
-          iconsNodeAsHardToRead(node);
-        // icons defined in group...
-        }else if(groups.groups[node.group].shape === "icon"){
-          iconsNodeAsHardToRead(node);
-        }
-      }
-    }
   }
+  node.isHardToRead = true;
 };
 
-simpleReinitNode = function(node){
-    if (node.hiddenColor !== undefined) {
-    node.color = node.hiddenColor;
-  }else{
-    node.color = undefined;
-  }
-  if (node.hiddenLabel !== undefined) {
-    node.label = node.hiddenLabel;
-    node.hiddenLabel = undefined;
-  }
-};
-
-iconsReinitNode = function(node){
-    if (node.hiddenColor !== undefined) {
-    node.color = node.hiddenColor;
-  }else{
-    node.color = undefined;
-  }
-  if (node.hiddenLabel !== undefined) {
-    node.label = node.hiddenLabel;
-    node.hiddenLabel = undefined;
-  }
-};
-
-reinitNode = function(node){
-  if(node.group === undefined){
-    simpleReinitNode(node);
-  }else{
-    if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-       simpleReinitNode(node);
-    }else{
-      if(groups.groups[node.group] === undefined){
-        if(node.shape !== "image" && node.shape !== "icon"){
-          simpleResetNode(node);
-        }else{
-          // icons defined in node
-          if(node.shape === "icon"){
-            simpleIconResetNode(node);
-          }
-        }
-      }else{
-        if(node.shape !== "image" && node.shape !== "icon" && groups.groups[node.group].shape !== "image" && groups.groups[node.group].shape !== "icon"){
-          simpleResetNode(node);
-        }else{
-        // icons defined in node
-          if(node.shape === "icon"){
-            simpleIconResetNode(node);
-          // icons defined in group...
-          }else if(groups.groups[node.group].shape === "icon"){
-            simpleIconResetNode(node);
-          }
-        }
-      }
-    }
-  }
-};      
-          
 visNetworkdataframeToD3 = function(df, type) {
 
   var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
@@ -482,7 +480,7 @@ if (HTMLWidgets.shinyMode){
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups);
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -530,7 +528,7 @@ if (HTMLWidgets.shinyMode){
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups);
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -726,6 +724,10 @@ if (HTMLWidgets.shinyMode){
             document.getElementById(el.id).degree = data.options.degree;
           }
           
+          if(data.options.hoverNearest !== undefined){
+            document.getElementById(el.id).hoverNearest = data.options.hoverNearest;
+          }
+          
           // init selection
           if(data.options.byselection !== undefined){
             if(data.options.byselection.selected !== undefined){
@@ -795,6 +797,7 @@ HTMLWidgets.widget({
     document.getElementById(el.id).idselection = x.idselection.enabled;
     document.getElementById(el.id).byselection = x.byselection.enabled;
     document.getElementById(el.id).highlight = x.highlight;
+    document.getElementById(el.id).hoverNearest = x.hoverNearest;
     document.getElementById(el.id).degree = x.degree;
     
     var changeInput = function(id, data) {
@@ -822,7 +825,7 @@ HTMLWidgets.widget({
         instance.network.selectNodes([id]);
       }
       if(document.getElementById(el.id).highlight){
-        neighbourhoodHighlight(instance.network.getSelection());
+        neighbourhoodHighlight(instance.network.getSelection().nodes, "click");
       }else{
         if(init){
           selectNode = document.getElementById('nodeSelect'+el.id);
@@ -1026,13 +1029,17 @@ HTMLWidgets.widget({
     if(x.options.groups){
       for (var gr in x.options.groups){
         if(x.options.groups[gr].icon){
-          x.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + x.options.groups[gr].icon.code + '"');
+          if(x.options.groups[gr].icon.code){
+            x.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + x.options.groups[gr].icon.code + '"');
+          }
         }
       }
     }
     
     if(x.options.nodes.icon){
-        x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
+        if(x.options.nodes.icon.code){
+          x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
+        }
     }
 
     document.getElementById("maindiv"+el.id).appendChild(graph);
@@ -1178,6 +1185,9 @@ HTMLWidgets.widget({
       nodes.add(tmpnodes);
       edges.add(visNetworkdataframeToD3(x.edges, "edges"));
       
+      // reset tmpnodes
+      tmpnodes = null;
+      
       data = {
         nodes: nodes,
         edges: edges
@@ -1197,7 +1207,6 @@ HTMLWidgets.widget({
       };
     } 
     
-
     var options = x.options;
     
     //*************************
@@ -1288,7 +1297,7 @@ HTMLWidgets.widget({
     //save data for re-use and update
     document.getElementById("graph"+el.id).chart = instance.network;
     document.getElementById("graph"+el.id).options = options;
-    
+
     // add Events
     if(x.events !== undefined){
       for (var key in x.events) {
@@ -1313,12 +1322,10 @@ HTMLWidgets.widget({
           
       if(sel == "label"){
         sel = "hiddenLabel";
-      }
-      
-      if(sel == "color"){
+      }else if(sel == "color"){
         sel = "hiddenColor";
       }
-    
+  
       var update = !(document.getElementById(el.id).selectActive === false & value === "");
 
       if (value !== "") {
@@ -1327,9 +1334,6 @@ HTMLWidgets.widget({
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
-          
-          nodeAsHardToRead(allNodes[nodeId], instance.network.groups);
-  
           var value_in = false;
           if(document.getElementById(el.id).byselection_multiple === false){
             value_in = (allNodes[nodeId][sel] + "") === value;
@@ -1338,8 +1342,10 @@ HTMLWidgets.widget({
             var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
             value_in = value_split.indexOf(value) !== -1;
           }
-          if(value_in){
-            resetOneNode(allNodes[nodeId], instance.network.groups);
+          if(value_in === false){
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options);
+          } else {
+            resetOneNode(allNodes[nodeId], instance.network.groups, options);
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
@@ -1352,10 +1358,11 @@ HTMLWidgets.widget({
         if(update){
           nodesDataset.update(updateArray);
         }
+        
       }
       else if (document.getElementById(el.id).selectActive === true) {
         //reset nodes
-        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups)
+        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
         document.getElementById(el.id).selectActive = false
       }
     } 
@@ -1363,8 +1370,10 @@ HTMLWidgets.widget({
     //*************************
     //Highlight
     //*************************
+    var is_hovered = false;
+    var is_clicked = false;
     
-    function neighbourhoodHighlight(params) {
+    function neighbourhoodHighlight(params, type) {
       var selectNode;
       var changeInput = function(id, data) {
         Shiny.onInputChange(el.id + '_' + id, data);
@@ -1375,112 +1384,112 @@ HTMLWidgets.widget({
         allNodes = nodesDataset.get({returnType:"Object"});
       };
       
-      var update = !(document.getElementById(el.id).highlightActive === false & params.nodes.length === 0) | (document.getElementById(el.id).selectActive === true & params.nodes.length === 0);
+      var update = !(document.getElementById(el.id).highlightActive === false & params.length === 0) | (document.getElementById(el.id).selectActive === true & params.length === 0);
 
-      if (params.nodes.length > 0) {
+      if(!(type == "hover" && is_clicked)){
+        if (params.length > 0) {
         
-        var updateArray = [];
-        if(document.getElementById(el.id).idselection){
-          selectNode = document.getElementById('nodeSelect'+el.id);
-          if(x.idselection.values !== undefined){
-            if(indexOf.call(x.idselection.values, params.nodes[0], true) > -1){
-              selectNode.value = params.nodes;
-            }else{
-              selectNode.value = "";
-            }
-          }else{
-            selectNode.value = params.nodes;
-          }
-          if (window.Shiny){
-            changeInput('selected', selectNode.value);
-          }
-        }
-        
-        document.getElementById(el.id).highlightActive = true;
-        var i,j;
-        var selectedNode = params.nodes[0];
-        var degrees = document.getElementById(el.id).degree;
-        
-        // mark all nodes as hard to read.
-        for (var nodeId in allNodes) {
-          nodeAsHardToRead(allNodes[nodeId], instance.network.groups);
-          allNodes[nodeId].x = undefined;
-          allNodes[nodeId].y = undefined;
-        }
-        
-        if(degrees > 0){
-          var connectedNodes = instance.network.getConnectedNodes(selectedNode);
-        }else{
-          var connectedNodes = [selectedNode];
-        }
-        
-        var allConnectedNodes = [];
-        
-        // get the nodes to color
-        if(degrees >= 2){
-          for (i = 2; i <= degrees; i++) {
-            var currentlength = connectedNodes.length;
-            for (j = 0; j < currentlength; j++) {
-              connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
-            }
-          }
-        }
-        
-        // nodes to just label
-        for (j = 0; j < connectedNodes.length; j++) {
-            allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
-        }
-
-        // all second degree nodes get a different color and their label back
-        for (i = 0; i < allConnectedNodes.length; i++) {
-          //allNodes[allConnectedNodes[i]].color = 'rgba(150,150,150,0.75)';
-          if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
-            allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
-            allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
-          }
-        }
-        
-        // all first degree nodes get their own color and their label back
-        for (i = 0; i < connectedNodes.length; i++) {
-          if (allNodes[connectedNodes[i]].hiddenColor !== undefined) {
-            allNodes[connectedNodes[i]].color = allNodes[connectedNodes[i]].hiddenColor;
-          }else{
-            allNodes[connectedNodes[i]].color = undefined;
-          }
-          if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
-            allNodes[connectedNodes[i]].label = allNodes[connectedNodes[i]].hiddenLabel;
-            allNodes[connectedNodes[i]].hiddenLabel = undefined;
-          }
-        }
-        
-        // the main node gets its own color and its label back.
-        resetOneNode(allNodes[selectedNode], instance.network.groups);
-        
-        if(update){
-          // transform the object into an array
           var updateArray = [];
-          for (nodeId in allNodes) {
-            if (allNodes.hasOwnProperty(nodeId)) {
-              updateArray.push(allNodes[nodeId]);
+          if(document.getElementById(el.id).idselection){
+            selectNode = document.getElementById('nodeSelect'+el.id);
+            if(x.idselection.values !== undefined){
+              if(indexOf.call(x.idselection.values, params[0], true) > -1){
+                selectNode.value = params[0];
+              }else{
+                selectNode.value = "";
+              }
+            }else{
+              selectNode.value = params[0];
+            }
+            if (window.Shiny){
+              changeInput('selected', selectNode.value);
             }
           }
-          nodesDataset.update(updateArray);
-        }
-      
-      }
-      else if (document.getElementById(el.id).highlightActive === true | document.getElementById(el.id).selectActive === true) {
-        if(document.getElementById(el.id).idselection){
-          selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selected', "");
+          
+          document.getElementById(el.id).highlightActive = true;
+          var i,j;
+          var selectedNode = params[0];
+          var degrees = document.getElementById(el.id).degree;
+          
+          // mark all nodes as hard to read.
+          for (var nodeId in allNodes) {
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options);
+            allNodes[nodeId].x = undefined;
+            allNodes[nodeId].y = undefined;
           }
-        }
+          
+          if(degrees > 0){
+            var connectedNodes = instance.network.getConnectedNodes(selectedNode);
+          }else{
+            var connectedNodes = [selectedNode];
+          }
+          
+          var allConnectedNodes = [];
+          
+          // get the nodes to color
+          if(degrees >= 2){
+            for (i = 2; i <= degrees; i++) {
+              var currentlength = connectedNodes.length;
+              for (j = 0; j < currentlength; j++) {
+                connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+              }
+            }
+          }
+          
+          // nodes to just label
+          for (j = 0; j < connectedNodes.length; j++) {
+              allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+          }
+  
+          // all second degree nodes get a different color and their label back
+          for (i = 0; i < allConnectedNodes.length; i++) {
+            if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+              allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
+              allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+            }
+          }
+          
+          // all first degree nodes get their own color and their label back
+          for (i = 0; i < connectedNodes.length; i++) {
+            resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options);
+          }
+          
+          // the main node gets its own color and its label back.
+          resetOneNode(allNodes[selectedNode], instance.network.groups, options);
+          
+          if(update){
+            if(!(type == "hover")){
+               is_clicked = true;
+            }
+            // transform the object into an array
+            var updateArray = [];
+            for (nodeId in allNodes) {
+              if (allNodes.hasOwnProperty(nodeId)) {
+                updateArray.push(allNodes[nodeId]);
+              }
+            }
+            nodesDataset.update(updateArray);
+          }else{
+            is_clicked = false;
+          }
         
-        //reset nodes
-        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups)
-        document.getElementById(el.id).highlightActive = false;
+        }
+        else if (document.getElementById(el.id).highlightActive === true | document.getElementById(el.id).selectActive === true) {
+          if(document.getElementById(el.id).idselection){
+            selectNode = document.getElementById('nodeSelect'+el.id);
+            selectNode.value = "";
+            if (window.Shiny){
+              changeInput('selected', "");
+            }
+          }
+          
+          //reset nodes
+          resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
+          document.getElementById(el.id).highlightActive = false;
+          is_clicked = false;
+        }
       }
+
       if(document.getElementById(el.id).byselection){
         selectNode = document.getElementById('selectedBy'+el.id);
         selectNode.value = "";
@@ -1540,7 +1549,7 @@ HTMLWidgets.widget({
 
     instance.network.on("click", function(params){
       if(document.getElementById(el.id).highlight && x.nodes){
-        neighbourhoodHighlight(params)
+        neighbourhoodHighlight(params.nodes, "click");
       }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
         onClickIDSelection(params)
       } else {
@@ -1554,7 +1563,37 @@ HTMLWidgets.widget({
         }
       }
     });
+    
+    instance.network.on("hoverNode", function(params){
+      if(document.getElementById(el.id).hoverNearest && x.nodes){
+        neighbourhoodHighlight([params.node], "hover");
+      } else {
+        if(x.events !== undefined){
+          for (var key in x.events) {
+            if(key === "hoverNode"){
+              var fclick = x.events[key];
+              fclick(params);
+            }
+          }
+        }
+      }
+    });
 
+    instance.network.on("blurNode", function(params){
+      if(document.getElementById(el.id).hoverNearest && x.nodes){
+        neighbourhoodHighlight([], "hover");
+      } else {
+        if(x.events !== undefined){
+          for (var key in x.events) {
+            if(key === "blurNode"){
+              var fclick = x.events[key];
+              fclick(params);
+            }
+          }
+        }
+      }
+    });
+    
     //*************************
     // export
     //*************************

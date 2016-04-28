@@ -1,7 +1,8 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
 
-  * enabled highlightNearesy with icons
+  * can now set highlightNearest when hover a node
+  * enabled highlightNearest with icons && image, and all combinaisons !
   * new visSelectNodes, visSelectEdges & visSetSelection to select data in shiny
   * enabled multiple groups selection
   * can now add a title to network & legend (main argument in visNetwork/visLegend function)

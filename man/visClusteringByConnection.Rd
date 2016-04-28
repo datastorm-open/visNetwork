@@ -9,7 +9,7 @@ visClusteringByConnection(graph, nodes)
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{nodes}{: Character/vector. gid of nodes we want to cluster}
+\item{nodes}{: Character/vector. id of nodes we want to cluster}
 }
 \description{
 Network visualization clustering options - by node id
