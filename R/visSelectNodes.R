@@ -5,6 +5,7 @@
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param id : vector of id, node(s) to select
 #'@param highlightEdges : Boolean. highlight Edges also ? Default to TRUE
+#'@param clickEvent : Boolean. Launch click event ? (highlightNearest for example) Default to TRUE
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -21,13 +22,16 @@
 #'
 #'@export
 
-visSelectNodes <- function(graph, id, highlightEdges = TRUE){
+visSelectNodes <- function(graph, id, highlightEdges = TRUE, clickEvent = TRUE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visSelectNodes with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
-  data <- list(id = graph$id, selid = id, highlightEdges = highlightEdges)
+  stopifnot(is.logical(highlightEdges))
+  stopifnot(is.logical(clickEvent))
+  
+  data <- list(id = graph$id, selid = id, highlightEdges = highlightEdges, clickEvent = clickEvent)
   
   graph$session$sendCustomMessage("visShinySelectNodes", data)
 

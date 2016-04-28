@@ -4,7 +4,7 @@
 \alias{visSelectNodes}
 \title{Function to select node(s) from network, with shiny only.}
 \usage{
-visSelectNodes(graph, id, highlightEdges = TRUE)
+visSelectNodes(graph, id, highlightEdges = TRUE, clickEvent = TRUE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
@@ -12,6 +12,8 @@ visSelectNodes(graph, id, highlightEdges = TRUE)
 \item{id}{: vector of id, node(s) to select}
 
 \item{highlightEdges}{: Boolean. highlight Edges also ? Default to TRUE}
+
+\item{clickEvent}{: Boolean. Launch click event ? (highlightNearest for example) Default to TRUE}
 }
 \description{
 Function to select node(s) from network, with shiny only.

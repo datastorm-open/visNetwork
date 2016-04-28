@@ -570,7 +570,17 @@ if (HTMLWidgets.shinyMode){
       
       if(el){
         var network = el.chart;
-        network.selectNodes(data.selid, data.highlightEdges);
+        if(data.selid !== null){
+          network.selectNodes(data.selid, data.highlightEdges);
+          if(data.clickEvent){
+            el.myclick({nodes : data.selid});
+          }
+        }else{
+          if(data.clickEvent){
+            el.myclick({nodes : []});
+          }
+        }
+        
       }
   });
   
@@ -1557,6 +1567,18 @@ HTMLWidgets.widget({
       allNodes = nodesDataset.get({returnType:"Object"});
     }
 
+    // shared click function (selectedNodes)
+    document.getElementById("graph"+el.id).myclick = function(params){
+      if(document.getElementById(el.id).highlight && x.nodes){
+        neighbourhoodHighlight(params.nodes, "click");
+      }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
+        onClickIDSelection(params)
+      } 
+      if(is_click_event){
+        x.events["click"](params);
+      }
+    };
+    
     // Set event in relation with highlightNearest      
     instance.network.on("click", function(params){
       if(document.getElementById(el.id).highlight && x.nodes){
