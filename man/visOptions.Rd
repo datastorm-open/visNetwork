@@ -15,7 +15,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 
 \item{height}{: String. Default to "100\%". The height of the network in pixels or as a percentage.}
 
-\item{highlightNearest}{: Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? This options use click event. Not available for DOT and Gephi.
+\item{highlightNearest}{: Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? Not available for DOT and Gephi.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
