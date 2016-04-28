@@ -48,6 +48,9 @@ With \code{visNetworkProxy}, you can update your network and use various methods
  \item{\code{\link{visUpdateEdges}}}{ : Update and add edges}
  \item{\code{\link{visRemoveNodes}}}{ :Remove nodes}
  \item{\code{\link{visRemoveEdges}}}{ : Remove edges}
+ \item{\code{\link{visSelectNodes}}}{ :Select nodes}
+ \item{\code{\link{visSelectEdges}}}{ : Select edges}
+ \item{\code{\link{visSetSelection}}}{ : Select edges/nodes}
  \item{and also...}{ : \code{\link{visRedraw}}, \code{\link{visStabilize}}, \code{\link{visSetData}}, \code{\link{visGetPositions}}}
 }
 }
