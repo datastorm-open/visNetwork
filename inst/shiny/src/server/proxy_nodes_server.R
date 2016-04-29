@@ -13,6 +13,12 @@ observe({
     visEdges(dashes = input$dashes, smooth = input$smooth)
 })
 
+# observe({
+#   visNetworkProxy("network_proxy_nodes") %>%
+#     visSetOptions(options = list(nodes = list(color = input$color, size = input$size, shadow = input$shadow),
+#     edges = list(dashes = input$dashes, smooth = input$smooth)))
+# })
+
 output$code_proxy_nodes  <- renderText({
   '
 output$network_proxy_nodes <- renderVisNetwork({
@@ -27,6 +33,13 @@ observe({
   visNetworkProxy("network_proxy_nodes") %>%
   visNodes(color = input$color, size = input$size, shadow = input$shadow) %>%
   visEdges(dashes = input$dashes, smooth = input$smooth)
+})
+
+# same directly with visSetOptions :
+observe({
+  visNetworkProxy("network_proxy_nodes") %>%
+  visSetOptions(options = list(nodes = list(color = input$color, size = input$size, shadow = input$shadow),
+  edges = list(dashes = input$dashes, smooth = input$smooth)))
 })
  '
 })
