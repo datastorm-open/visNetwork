@@ -7,6 +7,7 @@
 #'@param edgesId : vector of id, edges(s) to select
 #'@param unselectAll : Boolean. Unselect all nodes & edges before current selection ? Default to TRUE
 #'@param highlightEdges : Boolean. highlight Edges also ? Default to TRUE
+#'@param clickEvent : Boolean. Launch click event ? (highlightNearest for example) Default to TRUE
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -23,14 +24,15 @@
 #'
 #'@export
 
-visSetSelection <- function(graph, nodesId = NULL, edgesId = NULL, unselectAll = TRUE, highlightEdges = TRUE){
+visSetSelection <- function(graph, nodesId = NULL, edgesId = NULL, unselectAll = TRUE, 
+                            highlightEdges = TRUE, clickEvent = TRUE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visSetSelection with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
   data <- list(id = graph$id, selection = list(nodes = nodesId, edges = edgesId), 
-               options = list(unselectAll = unselectAll, highlightEdges = highlightEdges))
+               options = list(unselectAll = unselectAll, highlightEdges = highlightEdges), clickEvent = clickEvent)
   
   graph$session$sendCustomMessage("visShinySetSelection", data)
 

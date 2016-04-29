@@ -1,5 +1,5 @@
 // Add shim for Function.prototype.bind() from:
-  // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
+// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
 // for fix some RStudio viewer bug (Desktop / windows)
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {
@@ -25,30 +25,13 @@ if (!Function.prototype.bind) {
   };
 }
 
-var indexOf = function(needle, str) {
-        indexOf = function(needle, str) {
-            var i = -1, index = -1;
-            if(str){
-                  needle = ''+needle;
-            }
-            for(i = 0; i < this.length; i++) {
-                var val = this[i];
-                if(str){
-                  val = ''+val;
-                }
-                if(val === needle) {
-                    index = i;
-                    break;
-                }
-            }
-            return index;
-        };
-    return indexOf.call(this, needle, str);
-};
-
-
+//--------------------------------------------
 // functions to reset nodes after hard to read
+//--------------------------------------------
+
+// for classic node
 simpleResetNode = function(node){
+  // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
     node.hiddenColor = undefined;
@@ -57,39 +40,47 @@ simpleResetNode = function(node){
   }
 };
 
+// for icon node
 simpleIconResetNode = function(node, group_color){
-  if(node.iconDefined){
+  if(node.iconDefined){ // icon defined in individual node data
     if (node.hiddenColor !== undefined) {
       node.icon.color = node.hiddenColor;
       node.hiddenColor = undefined;
     } else {
+	  // but color in group
       if(group_color){
         delete node.icon.color;
-      }else{
+      }else{ // else set default color
         node.icon.color = "#2B7CE9";
       }
     }
-  }else{
+  }else{ 
+  // just a group definition, so delete individual information
     delete node.icon;
   }
 };
 
+// for image node
 simpleImageResetNode = function(node, type){
+  // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
     node.hiddenColor = undefined;
   }else{
     node.color = undefined;
   }
+  // and set shape as image/circularImage
   node.shape = type;
 };
 
+// Global function to reset one node
 resetOneNode = function(node, groups, options){
-  if(node.isHardToRead !== undefined){
+  if(node.isHardToRead !== undefined){ // we have to reset this node
     if(node.isHardToRead){
       var final_shape;
       var shape_group = false;
       var is_group = false;
+	  // have a group information & a shape defined in group ?
       if(node.group !== undefined){
         if(groups.groups[node.group] !== undefined){
           is_group = true;
@@ -98,14 +89,14 @@ resetOneNode = function(node, groups, options){
           }
         }
       }
-      
+      // have a global shape in nodes options ?
       var shape_options = false;
       if(options.nodes !== undefined){
         if(options.nodes.shape !== undefined){
           shape_options = true;
         }
       }
-    
+      // set final shape (individual > group > global)
       if(node.hiddenImage !== undefined){
         final_shape = node.hiddenImage;
       } else if(node.shape !== undefined){
@@ -115,10 +106,10 @@ resetOneNode = function(node, groups, options){
       } else if(shape_options){
         final_shape = options.nodes.shape;
       }
-      
+      // and call good reset function
       if(final_shape === "icon"){
         group_color = false;
-        if(is_group){
+        if(is_group){ // have icon color in group ?
           if(groups.groups[node.group].icon){
             if(groups.groups[node.group].icon.color){
               group_color = true;
@@ -133,6 +124,7 @@ resetOneNode = function(node, groups, options){
       } else {
         simpleResetNode(node);
       }
+	  // finally, get back label
       if (node.hiddenLabel !== undefined) {
         node.label = node.hiddenLabel;
         node.hiddenLabel = undefined;
@@ -142,10 +134,12 @@ resetOneNode = function(node, groups, options){
   }
 };
 
+// Global function to reset all node
 resetAllNodes = function(allNodes, update, nodes, groups, options){
   var updateArray = [];
   for (var nodeId in allNodes) {
     resetOneNode(allNodes[nodeId], groups, options);
+	// reset coordinates
     allNodes[nodeId].x = undefined;
     allNodes[nodeId].y = undefined;
     if (allNodes.hasOwnProperty(nodeId) && update) {
@@ -157,40 +151,61 @@ resetAllNodes = function(allNodes, update, nodes, groups, options){
   }
 };
 
+//--------------------------------------------
+// functions to set nodes as hard to read
+//--------------------------------------------
+
+// for classic node
 simpleNodeAsHardToRead = function(node){
+  // saving color information (if we have)
   if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
     node.hiddenColor = node.color;
   }
+  // set "hard to read" color
   node.color = 'rgba(200,200,200,0.5)';
+  // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
     node.label = undefined;
   }
 };
 
+// for icon node
 iconsNodeAsHardToRead = function(node){
+  // individual information
   if(node.icon !== undefined){
     node.iconDefined = true;
+	// saving color information (if we have)
     if (node.hiddenColor === undefined & node.icon.color !== 'rgba(200,200,200,0.5)') {
       node.hiddenColor = node.icon.color;
     }
-  } else {
+  } else { // information in group : have to as individual
     node.icon = {};
     node.iconDefined = false;
   }
+  // set "hard to read" color
   node.icon.color = 'rgba(200,200,200,0.5)';
+  // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
     node.label = undefined;
   }
 };
 
+// for image node
 imageNodeAsHardToRead = function(node, type){
+  // saving color information (if we have)
+  if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+    node.hiddenColor = node.color;
+  }
+  // set "hard to read" color
   node.color = 'rgba(200,200,200,0.5)';
+  // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
     node.label = undefined;
   }
+  // keep shape information, and set a new
   if(type === "image"){
     node.hiddenImage = type;
     node.shape = "square";
@@ -200,10 +215,11 @@ imageNodeAsHardToRead = function(node, type){
   }
 };
 
-
+// Global function to set one node as hard to read
 nodeAsHardToRead = function(node, groups, options){
   var final_shape;
   var shape_group = false;
+  // have a group information & a shape defined in group ?
   if(node.group !== undefined){
     if(groups.groups[node.group] !== undefined){
       if(groups.groups[node.group].shape !== undefined){
@@ -211,14 +227,14 @@ nodeAsHardToRead = function(node, groups, options){
       }
     }
   }
-  
+  // have a group information & a shape defined in group ?
   var shape_options = false;
   if(options.nodes !== undefined){
     if(options.nodes.shape !== undefined){
       shape_options = true;
     }
   }
-
+  // set final shape (individual > group > global)
   if(node.shape !== undefined){
     final_shape = node.shape;
   } else if(shape_group){
@@ -226,7 +242,7 @@ nodeAsHardToRead = function(node, groups, options){
   } else if(shape_options){
     final_shape = options.nodes.shape;
   }
-  
+  // and call good function
   if(final_shape === "icon"){
     iconsNodeAsHardToRead(node);
   } else if(final_shape === "image"){
@@ -236,11 +252,17 @@ nodeAsHardToRead = function(node, groups, options){
   } else {
     simpleNodeAsHardToRead(node);
   }
+  // finally set isHardToRead
   node.isHardToRead = true;
 };
 
+//----------------------------------------------------------------
+// Revrite HTMLWidgets.dataframeToD3() for passing custom
+// properties directly in data.frame (color.background for example
+//----------------------------------------------------------------
 visNetworkdataframeToD3 = function(df, type) {
 
+  // variables we have specially to control
   var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
   var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling"];
   
@@ -319,7 +341,11 @@ visNetworkdataframeToD3 = function(df, type) {
     }
   return results;
 };
-  
+ 
+//----------------------------------------------------------------
+// Some utils functions
+//---------------------------------------------------------------- 
+// clone an object
 function clone(obj) {
     if(obj === null || typeof(obj) != 'object')
         return obj;    
@@ -328,60 +354,84 @@ function clone(obj) {
         temp[key] = clone(obj[key]);    
     return temp;
 }
+// update a list
+function update(source, target) {
+	Object.keys(target).forEach(function (k) {
+		if (typeof target[k] === 'object') {
+			source[k] = source[k] || {};
+			update(source[k], target[k]);
+		} else {
+			source[k] = target[k];
+		}
+	});
+}
+// for find element
+var indexOf = function(needle, str) {
+        indexOf = function(needle, str) {
+            var i = -1, index = -1;
+            if(str){
+                  needle = ''+needle;
+            }
+            for(i = 0; i < this.length; i++) {
+                var val = this[i];
+                if(str){
+                  val = ''+val;
+                }
+                if(val === needle) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        };
+    return indexOf.call(this, needle, str);
+};
 
+function resetList(list_name, id, shiny_input_name) {
+  var list = document.getElementById(list_name + id);
+  list.value = "";
+  if (window.Shiny){
+    Shiny.onInputChange(id + '_' + shiny_input_name, "");
+  }
+}
+
+            
+//----------------------------------------------------------------
+// All available functions/methods with visNetworkProxy
+//--------------------------------------------------------------- 
 if (HTMLWidgets.shinyMode){
-  
   // updateOptions in the network
   Shiny.addCustomMessageHandler('visShinyOptions', function(data){
-      
-      // merging options
-      function update(source, target) {
-        Object.keys(target).forEach(function (k) {
-          if (typeof target[k] === 'object') {
-              source[k] = source[k] || {};
-              update(source[k], target[k]);
-          } else {
-              source[k] = target[k];
-          }
-        });
-      }
-      
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         var options = el.options;
-        
         update(options, data.options);
         network.setOptions(options);
       }
   });
-
-
+  
   // setData the network
   Shiny.addCustomMessageHandler('visShinySetData', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
-        
         var newnodes = new vis.DataSet();
         var newedges = new vis.DataSet();
-        
+		
         newnodes.add(visNetworkdataframeToD3(data.nodes, "nodes"));
         newedges.add(visNetworkdataframeToD3(data.edges, "edges"));
-        
         var newdata = {
           nodes: newnodes,
           edges: newedges
         };
-        
         network.setData(newdata);
       }
   });
-
+  
+  // fit to a specific node
   Shiny.addCustomMessageHandler('visShinyFit', function(data){
     // get container id
     var el = document.getElementById("graph"+data.id);
@@ -390,12 +440,11 @@ if (HTMLWidgets.shinyMode){
         network.fit(data.options);
       }
   });
-      
+  
   // focus on a node in the network
   Shiny.addCustomMessageHandler('visShinyFocus', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         network.focus(data.focusId, data.options);
@@ -406,7 +455,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyStabilize', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         network.stabilize(data.options);
@@ -417,7 +465,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyStartSimulation', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         network.startSimulation();
@@ -428,7 +475,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyStopSimulation', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         network.stopSimulation();
@@ -439,7 +485,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyGetPositions', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         var pos;
@@ -449,18 +494,16 @@ if (HTMLWidgets.shinyMode){
         }else{
           pos = network.getPositions();
         }
-  
+		// return positions in shiny
         Shiny.onInputChange(data.input, pos);
       }
   });
   
-  // fit on a node in the network
+  // Redraw the network
   Shiny.addCustomMessageHandler('visShinyRedraw', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
-        // get nodes object
         var network = el.chart;
         network.redraw();
       }
@@ -473,10 +516,10 @@ if (HTMLWidgets.shinyMode){
       var main_el = document.getElementById(data.id);
       
       if(el){
-        // get nodes object
+        // get & transform nodes object
         var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
         
-        // reset some parameters / date before
+        // reset some parameters / data before
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
           var allNodes = el.nodes.get({returnType:"Object"});
@@ -484,19 +527,11 @@ if (HTMLWidgets.shinyMode){
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
-            selectNode = document.getElementById('selectedBy'+data.id);
-            selectNode.value = "";
-            if (window.Shiny){
-              Shiny.onInputChange(el.id + '_' + 'selectedBy', "");
-            }
+            resetList('selectedBy', data.id, 'selectedBy');
           }
           if (main_el.highlightActive === true){
             main_el.highlightActive = false;
-            selectNode = document.getElementById('nodeSelect'+data.id);
-            selectNode.value = "";
-            if (window.Shiny){
-              Shiny.onInputChange(el.id + '_' + 'selected', "");
-            }
+            resetList('nodeSelect', data.id, 'selected');
           }
         }
         // update nodes
@@ -509,7 +544,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyUpdateEdges', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         // get edges object
         var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
@@ -522,7 +556,6 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       var main_el = document.getElementById(data.id);
-      
       if(el){
         // reset some parameters / date before
         if (main_el.selectActive === true | main_el.highlightActive === true) {
@@ -532,19 +565,11 @@ if (HTMLWidgets.shinyMode){
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
-            selectNode = document.getElementById('selectedBy'+data.id);
-            selectNode.value = "";
-            if (window.Shiny){
-              Shiny.onInputChange(el.id + '_' + 'selectedBy', "");
-            }
+            resetList('selectedBy', data.id, 'selectedBy');
           }
           if (main_el.highlightActive === true){
             main_el.highlightActive = false;
-            selectNode = document.getElementById('nodeSelect'+data.id);
-            selectNode.value = "";
-            if (window.Shiny){
-              Shiny.onInputChange(el.id + '_' + 'selected', "");
-            }
+            resetList('nodeSelect', data.id, 'selected');
           }
         }
         // remove nodes
@@ -557,7 +582,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyRemoveEdges', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         el.edges.remove(data.rmid);
       }
@@ -567,7 +591,6 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinySelectNodes', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
         if(data.selid !== null){
@@ -580,7 +603,6 @@ if (HTMLWidgets.shinyMode){
             el.myclick({nodes : []});
           }
         }
-        
       }
   });
   
@@ -588,10 +610,11 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinySelectEdges', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
-        network.selectEdges(data.selid);
+        if(data.selid !== null){
+          network.selectEdges(data.selid);
+        }
       }
   });
   
@@ -599,10 +622,18 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinySetSelection', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
-      
       if(el){
         var network = el.chart;
-        network.setSelection(data.selection, data.options);
+        if(data.selection.nodes !== null || data.selection.edges !== null){
+          network.setSelection(data.selection, data.options);
+        }
+        if(data.clickEvent){
+          if(data.selection.nodes !== null){
+            el.myclick({nodes : data.selection.nodes});
+          } else {
+           el.myclick({nodes : []}); 
+          }
+        }
       }
   });
   
@@ -764,7 +795,9 @@ if (HTMLWidgets.shinyMode){
       });
 }
 
-
+//----------------------------------------------------------------
+// HTMLWidgets.widget Definition
+//--------------------------------------------------------------- 
 HTMLWidgets.widget({
   
   name: 'visNetwork',
@@ -784,8 +817,7 @@ HTMLWidgets.widget({
     
     // highlight nearest variables & selectedBy
     var allNodes;
-    var nodesDataset ;
-    var edgesDataset ;
+    var nodesDataset;
     
     // clustergin by zoom variables
     var clusterIndex = 0;
@@ -800,7 +832,7 @@ HTMLWidgets.widget({
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
-    // shared control 
+    // shared control with proxy function (is there a better way ?)
     document.getElementById(el.id).highlightActive = false;
     document.getElementById(el.id).selectActive = false;
     document.getElementById(el.id).updateNodes = false;
@@ -854,11 +886,7 @@ HTMLWidgets.widget({
         changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
       }
       if(document.getElementById(el.id).byselection){
-        selectNode = document.getElementById('selectedBy'+el.id);
-        selectNode.value = "";
-        if (window.Shiny){
-          changeInput('selectedBy', "");
-        }
+        resetList('selectedBy', el.id, 'selectedBy');
       }
     }
       
@@ -932,11 +960,7 @@ HTMLWidgets.widget({
           changeInput('selectedBy', value);
         }
         if(document.getElementById(el.id).idselection){
-          selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selected', "");
-          }
+          resetList('nodeSelect', el.id, 'selected');
         }
     }
     
@@ -984,58 +1008,9 @@ HTMLWidgets.widget({
       }
     }
     
-    // divide page
-    var maindiv  = document.createElement('div');
-    maindiv.id = "maindiv"+el.id;
-    maindiv.setAttribute('style', 'height:95%');
-    document.getElementById(el.id).appendChild(maindiv);
-    
-    var graph = document.createElement('div');
-    graph.id = "graph"+el.id;
-    
-    if(x.legend !== undefined){
-      if((x.groups && x.legend.useGroups) || (x.legend.nodes !== undefined) || (x.legend.edges !== undefined)){
-        addlegend = true;
-      }
-    }
-    
-    if(addlegend){
-      var legendwidth = x.legend.width*100;
-      var legend = document.createElement('div');
-      
-      var pos = x.legend.position;
-      var pos2 = "right";
-      if(pos == "right"){
-        pos2 = "left";
-      }
-      
-      legend.id = "legend"+el.id;
-      legend.setAttribute('style', 'float:' + pos + '; width:'+legendwidth+'%;height:100%');
-      
-      //*************************
-      //legend title
-      //*************************
-      if(x.legend.main !== undefined){
-        var legend_title = document.createElement('div');
-        legend_title.innerHTML = x.legend.main.text;
-        legend_title.setAttribute('style',  x.legend.main.style);
-        legend.appendChild(legend_title);  
-        
-        legend.id = "legend_main"+el.id;
-        var legend_network = document.createElement('div');
-        legend_network.id = "legend"+el.id;
-        legend_network.setAttribute('style', 'height:100%');
-        legend.appendChild(legend_network); 
-      }
-      
-      document.getElementById("maindiv"+el.id).appendChild(legend);
-      
-      graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
-    }else{
-      graph.setAttribute('style', 'float:right; width:100%;height:100%');
-    }
-    
-    // fontAwesome unicode
+    //*************************
+    // pre-treatment for icons (unicode)
+    //*************************
     if(x.options.groups){
       for (var gr in x.options.groups){
         if(x.options.groups[gr].icon){
@@ -1051,11 +1026,64 @@ HTMLWidgets.widget({
           x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
         }
     }
-
+    
+    //*************************
+    //page structure
+    //*************************
+    
+    // divide page
+    var maindiv  = document.createElement('div');
+    maindiv.id = "maindiv"+el.id;
+    maindiv.setAttribute('style', 'height:95%');
+    document.getElementById(el.id).appendChild(maindiv);
+    
+    var graph = document.createElement('div');
+    graph.id = "graph"+el.id;
+    
+    if(x.legend !== undefined){
+      if((x.groups && x.legend.useGroups) || (x.legend.nodes !== undefined) || (x.legend.edges !== undefined)){
+        addlegend = true;
+      }
+    }
+    
+    //legend
+    if(addlegend){
+      var legendwidth = x.legend.width*100;
+      var legend = document.createElement('div');
+      
+      var pos = x.legend.position;
+      var pos2 = "right";
+      if(pos == "right"){
+        pos2 = "left";
+      }
+      
+      legend.id = "legend"+el.id;
+      legend.setAttribute('style', 'float:' + pos + '; width:'+legendwidth+'%;height:100%');
+      
+      //legend title
+      if(x.legend.main !== undefined){
+        var legend_title = document.createElement('div');
+        legend_title.innerHTML = x.legend.main.text;
+        legend_title.setAttribute('style',  x.legend.main.style);
+        legend.appendChild(legend_title);  
+        
+        legend.id = "legend_main"+el.id;
+        var legend_network = document.createElement('div');
+        legend_network.id = "legend"+el.id;
+        legend_network.setAttribute('style', 'height:100%');
+        legend.appendChild(legend_network); 
+      }
+      
+      document.getElementById("maindiv"+el.id).appendChild(legend);
+      graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
+    }else{
+      graph.setAttribute('style', 'float:right; width:100%;height:100%');
+    }
+    
     document.getElementById("maindiv"+el.id).appendChild(graph);
     
     //*************************
-    //legend
+    //legend definition
     //*************************
     if(addlegend){
       
@@ -1064,6 +1092,7 @@ HTMLWidgets.widget({
       var datalegend;
       var tmpnodes;
       
+      // set some options
       var optionslegend = {
         interaction:{
           dragNodes: false,
@@ -1080,13 +1109,13 @@ HTMLWidgets.widget({
       var lx = - mynetwork.clientWidth / 2 + 50;
       var ly = - mynetwork.clientWidth / 2 + 50;
       var step = 70;
-
+      // want to view groups in legend
       if(x.groups && x.legend.useGroups){
-    
+        // create data
         for (var g1 = 0; g1 < x.groups.length; g1++){
           legendnodes.add({id: null, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
         }
-      
+        // control icon size
         if(x.options.groups){
           optionslegend.groups = clone(x.options.groups);
           for (var grp in optionslegend.groups) {
@@ -1096,25 +1125,24 @@ HTMLWidgets.widget({
           }
         }
       }
-      
+      // want to add custom nodes
       if(x.legend.nodes !== undefined){
-        
-        if(x.legend.nodesToDataframe){
+        if(x.legend.nodesToDataframe){ // data in data.frame
           tmpnodes = visNetworkdataframeToD3(x.legend.nodes, "nodes")
-        } else {
+        } else { // data in list
           tmpnodes = x.legend.nodes;
         }
-        
+        // only one element   
         if(tmpnodes.length === undefined){
           tmpnodes = new Array(tmpnodes);
         }
-        
+        // control icon
         for (var nd in tmpnodes){
           if(tmpnodes[nd].icon){
             tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
           }
         }
-
+        // set coordinates
         for (var g = 0; g < tmpnodes.length; g++){
           tmpnodes[g].x = lx;
           tmpnodes[g].y = ly+(g+legendnodes.length)*step;
@@ -1128,19 +1156,20 @@ HTMLWidgets.widget({
         }
         legendnodes.add(tmpnodes);
       }
-      
+      // want to add custom edges
       if(x.legend.edges !== undefined){
-        if(x.legend.edgesToDataframe){
+        if(x.legend.edgesToDataframe){ // data in data.frame
           legendedges = visNetworkdataframeToD3(x.legend.edges, "edges")
-        } else {
+        } else {  // data in list
           legendedges = x.legend.edges;
         }
+        // only one element 
         if(legendedges.length === undefined){
           legendedges = new Array(legendedges);
         }
 
         var ctrl = legendnodes.length;
-        
+        // set coordinates and options
         for (var edg = 0; edg < (legendedges.length); edg++){
           
           legendedges[edg].from = edg*2+1;
@@ -1163,6 +1192,7 @@ HTMLWidgets.widget({
         }
       }
       
+      // render legend network
       datalegend = {
         nodes: legendnodes, 
         edges: legendedges       
@@ -1171,21 +1201,24 @@ HTMLWidgets.widget({
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
     }
     
+    //*************************
+    // Main Network rendering
+    //*************************
     if(x.nodes){
       
-     // network
+      // network
       nodes = new vis.DataSet();
       edges = new vis.DataSet();
       
       var tmpnodes = visNetworkdataframeToD3(x.nodes, "nodes");
       
+      // update coordinates if igraph
       if(x.igraphlayout !== undefined){
         var scalex = (document.getElementById("graph"+el.id).clientWidth / 2);
         var scaley = scalex;
         if(x.igraphlayout.type !== "square"){
           scaley = (document.getElementById("graph"+el.id).clientHeight / 2);
         }
-        
         for (var nd in tmpnodes) {
           tmpnodes[nd].x = tmpnodes[nd].x * scalex;
           tmpnodes[nd].y = tmpnodes[nd].y * scaley;
@@ -1203,9 +1236,9 @@ HTMLWidgets.widget({
         edges: edges
       };
       
-    //save data for re-use and update
-    document.getElementById("graph"+el.id).nodes = nodes;
-    document.getElementById("graph"+el.id).edges = edges;
+      //save data for re-use and update
+      document.getElementById("graph"+el.id).nodes = nodes;
+      document.getElementById("graph"+el.id).edges = edges;
 
     }else if(x.dot){
       data = {
@@ -1262,7 +1295,7 @@ HTMLWidgets.widget({
         document.getElementById('network-popUp').style.display = 'block';
       };
 
-       options.manipulation.deleteNode = function(data, callback) {
+      options.manipulation.deleteNode = function(data, callback) {
           var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
           if (r === true) {
             deleteSubGraph(data, callback);
@@ -1332,20 +1365,14 @@ HTMLWidgets.widget({
     //*************************
   
     function selectedHighlight(value) {
-
+      // need to update nodes before ?
       if(document.getElementById(el.id).updateNodes){
         document.getElementById(el.id).updateNodes = false;
         allNodes = nodesDataset.get({returnType:"Object"});
       }
-      
+      // get variable
       var sel = document.getElementById(el.id).byselection_variable;
-          
-      if(sel == "label"){
-        sel = "hiddenLabel";
-      }else if(sel == "color"){
-        sel = "hiddenColor";
-      }
-  
+      // need to make an update?
       var update = !(document.getElementById(el.id).selectActive === false & value === "");
 
       if (value !== "") {
@@ -1355,30 +1382,49 @@ HTMLWidgets.widget({
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
           var value_in = false;
+          // unique selection
           if(document.getElementById(el.id).byselection_multiple === false){
-            value_in = (allNodes[nodeId][sel] + "") === value;
-          }else{
-            var current_value = allNodes[nodeId][sel] + "";
-            var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
-            value_in = value_split.indexOf(value) !== -1;
+            if(sel == "label"){
+              value_in = ((allNodes[nodeId]["label"] + "") === value) || ((allNodes[nodeId]["hiddenLabel"] + "") === value);
+            }else if(sel == "color"){
+              value_in = ((allNodes[nodeId]["color"] + "") === value) || ((allNodes[nodeId]["hiddenColor"] + "") === value);
+            }else {
+              value_in = (allNodes[nodeId][sel] + "") === value;
+            }
+          }else{ // multiple selection
+            if(sel == "label"){
+              var current_value = allNodes[nodeId]["label"] + "";
+              var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              var current_value2 = allNodes[nodeId]["hiddenLabel"] + "";
+              var value_spli2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              value_in = (value_split.indexOf(value) !== -1) || (value_split2.indexOf(value) !== -1);
+            }else if(sel == "color"){
+              var current_value = allNodes[nodeId]["color"] + "";
+              var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              var current_value2 = allNodes[nodeId]["hiddenColor"] + "";
+              var value_spli2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              value_in = (value_split.indexOf(value) !== -1) || (value_split2.indexOf(value) !== -1);
+            }else {
+              var current_value = allNodes[nodeId][sel] + "";
+              var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              value_in = value_split.indexOf(value) !== -1;
+            }
           }
-          if(value_in === false){
+          if(value_in === false){ // not in selection, so as hard to read
             nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options);
-          } else {
+          } else { // in selection, so reset if needed
             resetOneNode(allNodes[nodeId], instance.network.groups, options);
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
-          
+          // update data
           if (allNodes.hasOwnProperty(nodeId) && update) {
             updateArray.push(allNodes[nodeId]);
           }
         }
-        
         if(update){
           nodesDataset.update(updateArray);
         }
-        
       }
       else if (document.getElementById(el.id).selectActive === true) {
         //reset nodes
@@ -1395,15 +1441,13 @@ HTMLWidgets.widget({
     
     function neighbourhoodHighlight(params, type) {
       var selectNode;
-      var changeInput = function(id, data) {
-        Shiny.onInputChange(el.id + '_' + id, data);
-      };
-      
+      // need to update nodes before ?
       if(document.getElementById(el.id).updateNodes){
         document.getElementById(el.id).updateNodes = false;
         allNodes = nodesDataset.get({returnType:"Object"});
       };
       
+      // update 
       var update = !(document.getElementById(el.id).highlightActive === false & params.length === 0) | (document.getElementById(el.id).selectActive === true & params.length === 0);
 
       if(!(type == "hover" && is_clicked)){
@@ -1445,7 +1489,6 @@ HTMLWidgets.widget({
           }
           
           var allConnectedNodes = [];
-          
           // get the nodes to color
           if(degrees >= 2){
             for (i = 2; i <= degrees; i++) {
@@ -1455,12 +1498,10 @@ HTMLWidgets.widget({
               }
             }
           }
-          
           // nodes to just label
           for (j = 0; j < connectedNodes.length; j++) {
               allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
           }
-  
           // all second degree nodes get a different color and their label back
           for (i = 0; i < allConnectedNodes.length; i++) {
             if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
@@ -1468,12 +1509,10 @@ HTMLWidgets.widget({
               allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
             }
           }
-          
           // all first degree nodes get their own color and their label back
           for (i = 0; i < connectedNodes.length; i++) {
             resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options);
           }
-          
           // the main node gets its own color and its label back.
           resetOneNode(allNodes[selectedNode], instance.network.groups, options);
           
@@ -1495,37 +1534,24 @@ HTMLWidgets.widget({
         
         }
         else if (document.getElementById(el.id).highlightActive === true | document.getElementById(el.id).selectActive === true) {
+          // reset nodeSelect list if actived
           if(document.getElementById(el.id).idselection){
-            selectNode = document.getElementById('nodeSelect'+el.id);
-            selectNode.value = "";
-            if (window.Shiny){
-              changeInput('selected', "");
-            }
+            resetList("nodeSelect", el.id, 'selected');
           }
-          
           //reset nodes
           resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
           document.getElementById(el.id).highlightActive = false;
           is_clicked = false;
         }
       }
-
+      // reset selectedBy list if actived
       if(document.getElementById(el.id).byselection){
-        selectNode = document.getElementById('selectedBy'+el.id);
-        selectNode.value = "";
-        document.getElementById(el.id).selectActive = false;
-        if (window.Shiny){
-          changeInput('selectedBy', "");
-        }
+        resetList("selectedBy", el.id, 'selectedBy');
       }
     }
     
     function onClickIDSelection(selectedItems) {
       var selectNode;
-      var changeInput = function(id, data) {
-        Shiny.onInputChange(el.id + '_' + id, data);
-      };
-      
       if(document.getElementById(el.id).idselection){
         if (selectedItems.nodes.length !== 0) {
           selectNode = document.getElementById('nodeSelect'+el.id);
@@ -1542,27 +1568,20 @@ HTMLWidgets.widget({
             changeInput('selected', selectNode.value);
           }
         }else{
-          selectNode = document.getElementById('nodeSelect'+el.id);
-          selectNode.value = "";
-          if (window.Shiny){
-            changeInput('selected', "");
-          }
+          resetList("nodeSelect", el.id, 'selected');
         } 
       }
       if(document.getElementById(el.id).byselection){
+        // reset selectedBy list if actived
         if (selectedItems.nodes.length === 0) {
-          selectNode = document.getElementById('selectedBy'+el.id);
-          selectNode.value = "";
-          selectedHighlight("");
-          if (window.Shiny){
-            changeInput('selectedBy', "");
-          }
+          resetList("selectedBy", el.id, 'selectedBy');
+          //selectedHighlight("");
         }
       }
     }
     
+    // get a copy of nodes for all highlight / selection process
     nodesDataset = nodes; 
-    edgesDataset = edges;
     if((document.getElementById(el.id).byselection || document.getElementById(el.id).highlight) && x.nodes){
       allNodes = nodesDataset.get({returnType:"Object"});
     }
@@ -1687,7 +1706,6 @@ HTMLWidgets.widget({
     //*************************
     // CLUSTERING
     //*************************
-    
     if(x.clusteringGroup || x.clusteringColor || x.clusteringHubsize || x.clusteringConnection){
       
       var clusterbutton = document.createElement("input");
@@ -1729,7 +1747,6 @@ HTMLWidgets.widget({
     //*************************
     //clustering Connection
     //*************************
-    
     if(x.clusteringConnection){
       
       function clusterByConnection() {
@@ -1743,7 +1760,6 @@ HTMLWidgets.widget({
     //*************************
     //clustering hubsize
     //*************************
-    
     if(x.clusteringHubsize){
       
       function clusterByHubsize() {
@@ -1783,8 +1799,7 @@ HTMLWidgets.widget({
     //*************************
     //clustering color
     //*************************
-    
-      function clusterByColor() {
+    function clusterByColor() {
         var colors = x.clusteringColor.colors
         var clusterOptionsByData;
         for (var i = 0; i < colors.length; i++) {
@@ -1820,7 +1835,6 @@ HTMLWidgets.widget({
     //*************************
     //clustering groups
     //*************************
-    
     if(x.clusteringGroup){
       
       function clusterByGroup() {
@@ -1863,7 +1877,6 @@ HTMLWidgets.widget({
     //*************************
     //clustering by zoom
     //*************************
-    
     if(x.clusteringOutliers){
       
       clusterFactor = x.clusteringOutliers.clusterFactor;
