@@ -400,6 +400,27 @@ function resetList(list_name, id, shiny_input_name) {
 // All available functions/methods with visNetworkProxy
 //--------------------------------------------------------------- 
 if (HTMLWidgets.shinyMode){
+  
+  // moveNode method
+  Shiny.addCustomMessageHandler('visShinyMoveNode', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        network.moveNode(data.nodeId, data.x, data.y);
+      }
+  });
+  
+  // unselectAll method
+  Shiny.addCustomMessageHandler('visShinyUnselectAll', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        network.unselectAll();
+      }
+  });
+  
   // updateOptions in the network
   Shiny.addCustomMessageHandler('visShinyOptions', function(data){
       // get container id
