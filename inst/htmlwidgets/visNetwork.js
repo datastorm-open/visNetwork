@@ -1165,7 +1165,7 @@ HTMLWidgets.widget({
         }
         // control icon
         for (var nd in tmpnodes){
-          if(tmpnodes[nd].icon){
+          if(tmpnodes[nd].icon  && !x.legend.nodesToDataframe){
             tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
           }
         }
