@@ -131,10 +131,6 @@ visOptions <- function(graph,
     stop("graph must be a visNetwork or a visNetworkProxy object")
   }
   
-  proxy_highlightNearest <- missing(highlightNearest)
-  proxy_nodesIdSelection <- missing(nodesIdSelection)
-  proxy_selectedBy <- missing(selectedBy)
-
   options <- list()
   
   options$autoResize <- autoResize
@@ -157,160 +153,12 @@ visOptions <- function(graph,
   
   degree <- 1
   hoverNearest <- FALSE
-  if(any(class(graph) %in% "visNetwork")){
-    
-    if(!"nodes"%in%names(graph$x)){
-      highlightNearest <- FALSE
-      idselection <- list(enabled = FALSE)
-      byselection <- list(enabled = FALSE)
-    }else{
-      
-      #############################
-      # highlightNearest
-      #############################
-      if(is.list(highlightNearest)){
-        if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover"))){
-          stop("Invalid 'highlightNearest' argument")
-        }
-        if("degree"%in%names(highlightNearest)){
-          degree <- highlightNearest$degree
-        }
-        
-        if("hover"%in%names(highlightNearest)){
-          hoverNearest <- highlightNearest$hover
-        }
-        
-        if("enabled"%in%names(highlightNearest)){
-          highlightNearest <- highlightNearest$enabled
-        }else{
-          highlightNearest <- TRUE
-        }
-      }else if(!is.logical(highlightNearest)){
-        stop("Invalid 'highlightNearest' argument")
-      }
-      
-      if(highlightNearest){
-        if(!"label"%in%colnames(graph$x$nodes)){
-          graph$x$nodes$label <- as.character(graph$x$nodes$id)
-        }
-        if(!"group"%in%colnames(graph$x$nodes)){
-          graph$x$nodes$group <- 1
-        }
-      }
-      
-      #############################
-      # nodesIdSelection
-      #############################
-      idselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px')
-      if(is.list(nodesIdSelection)){
-        if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style", "values"))){
-          stop("Invalid 'nodesIdSelection' argument. List can have 'enabled', 'selected', 'style', 'values'")
-        }
-        if("selected"%in%names(nodesIdSelection)){
-          if(!nodesIdSelection$selected%in%graph$x$nodes$id){
-            stop(nodesIdSelection$selected, " not in data. nodesIdSelection$selected must be valid.")
-          }
-          idselection$selected <- nodesIdSelection$selected
-        }
-        if("enabled"%in%names(nodesIdSelection)){
-          idselection$enabled <- nodesIdSelection$enabled
-        }else{
-          idselection$enabled <- TRUE
-        }
-        
-        if("style"%in%names(nodesIdSelection)){
-          idselection$style <- nodesIdSelection$style
-        }
-        
-      }else if(is.logical(nodesIdSelection)){
-        idselection$enabled <- nodesIdSelection
-      }else{
-        stop("Invalid 'nodesIdSelection' argument")
-      }
-      
-      if(idselection$enabled){
-        if("values"%in%names(nodesIdSelection)){
-          idselection$values <- nodesIdSelection$values
-          if("selected"%in%names(nodesIdSelection)){
-            if(!idselection$selected%in%idselection$values){
-              stop(idselection$selected, " not in data/selection. nodesIdSelection$selected must be a valid value.")
-            }
-          }
-        }
-      }
-      
-      #############################
-      # selectedBy
-      #############################
-      byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', multiple = FALSE)
-      
-      if(!is.null(selectedBy)){
-        if(is.list(selectedBy)){
-          if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple"))){
-            stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple'")
-          }
-          if("selected"%in%names(selectedBy)){
-            byselection$selected <- as.character(selectedBy$selected)
-          }
-          
-          if(!"variable"%in%names(selectedBy)){
-            stop("'selectedBy' need at least 'variable' information")
-          }
-          
-          byselection$variable <- selectedBy$variable
-          
-          if("style"%in%names(selectedBy)){
-            byselection$style <- selectedBy$style
-          }
-          
-          if("multiple"%in%names(selectedBy)){
-            byselection$multiple <- selectedBy$multiple
-          }
-          
-        }else if(is.character(selectedBy)){
-          byselection$variable <- selectedBy
-        }else{
-          stop("Invalid 'selectedBy' argument. Must a 'character' or a 'list'")
-        }
-        
-        if(!byselection$variable%in%colnames(graph$x$nodes)){
-          warning("Can't find '", byselection$variable, "' in node data.frame")
-        }else{
-          byselection$enabled <- TRUE
-          byselection$values <- unique(graph$x$nodes[, byselection$variable])
-          if(byselection$multiple){
-            byselection$values <- unique(gsub("^[[:space:]]*|[[:space:]]*$", "",
-                                       do.call("c",strsplit(as.character(byselection$values), split = ","))))
-          }
-          if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
-            byselection$values <- sort(byselection$values)
-          }else{
-            byselection$values <- sort(as.character(byselection$values))
-          }
-          
-          if("values"%in%names(selectedBy)){
-            # byselection$values <- intersect(byselection$values, selectedBy$values)
-            byselection$values <- selectedBy$values
-          }
-          
-          if("selected"%in%names(byselection)){
-            if(!byselection$selected%in%byselection$values){
-              stop(byselection$selected, " not in data/selection. selectedBy$selected must be a valid value.")
-            }
-            byselection$selected <- byselection$selected
-          }
-          
-          if(!"label"%in%colnames(graph$x$nodes)){
-            graph$x$nodes$label <- ""
-          }
-          if(!"group"%in%colnames(graph$x$nodes)){
-            graph$x$nodes$group <- 1
-          }
-        }
-      }
-    }
-  } else if(any(class(graph) %in% "visNetwork_Proxy")){
-    
+  
+  if(!"nodes"%in%names(graph$x) && any(class(graph) %in% "visNetwork")){
+    highlightNearest <- FALSE
+    idselection <- list(enabled = FALSE)
+    byselection <- list(enabled = FALSE)
+  }else{
     
     #############################
     # highlightNearest
@@ -332,9 +180,17 @@ visOptions <- function(graph,
       }else{
         highlightNearest <- TRUE
       }
-
     }else if(!is.logical(highlightNearest)){
       stop("Invalid 'highlightNearest' argument")
+    }
+    
+    if(highlightNearest && any(class(graph) %in% "visNetwork")){
+      if(!"label"%in%colnames(graph$x$nodes)){
+        graph$x$nodes$label <- as.character(graph$x$nodes$id)
+      }
+      if(!"group"%in%colnames(graph$x$nodes)){
+        graph$x$nodes$group <- 1
+      }
     }
     
     #############################
@@ -346,6 +202,11 @@ visOptions <- function(graph,
         stop("Invalid 'nodesIdSelection' argument. List can have 'enabled', 'selected', 'style', 'values'")
       }
       if("selected"%in%names(nodesIdSelection)){
+        if(any(class(graph) %in% "visNetwork")){
+          if(!nodesIdSelection$selected%in%graph$x$nodes$id ){
+            stop(nodesIdSelection$selected, " not in data. nodesIdSelection$selected must be valid.")
+          }
+        }
         idselection$selected <- nodesIdSelection$selected
       }
       if("enabled"%in%names(nodesIdSelection)){
@@ -412,17 +273,55 @@ visOptions <- function(graph,
         stop("Invalid 'selectedBy' argument. Must a 'character' or a 'list'")
       }
       
-      byselection$enabled <- TRUE
-      
-      if("values"%in%names(selectedBy)){
-        byselection$values <- selectedBy$values
-      }
-      
-      if("selected"%in%names(byselection)){
-        byselection$selected <- byselection$selected
+      if(any(class(graph) %in% "visNetwork_Proxy")){
+        byselection$enabled <- TRUE
+        
+        if("values"%in%names(selectedBy)){
+          byselection$values <- selectedBy$values
+        }
+        
+        if("selected"%in%names(byselection)){
+          byselection$selected <- byselection$selected
+        }
+      }else{
+        if(!byselection$variable%in%colnames(graph$x$nodes)){
+          warning("Can't find '", byselection$variable, "' in node data.frame")
+        }else{
+          byselection$enabled <- TRUE
+          byselection$values <- unique(graph$x$nodes[, byselection$variable])
+          if(byselection$multiple){
+            byselection$values <- unique(gsub("^[[:space:]]*|[[:space:]]*$", "",
+                                              do.call("c",strsplit(as.character(byselection$values), split = ","))))
+          }
+          if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
+            byselection$values <- sort(byselection$values)
+          }else{
+            byselection$values <- sort(as.character(byselection$values))
+          }
+          
+          if("values"%in%names(selectedBy)){
+            # byselection$values <- intersect(byselection$values, selectedBy$values)
+            byselection$values <- selectedBy$values
+          }
+          
+          if("selected"%in%names(byselection)){
+            if(!byselection$selected%in%byselection$values){
+              stop(byselection$selected, " not in data/selection. selectedBy$selected must be a valid value.")
+            }
+            byselection$selected <- byselection$selected
+          }
+          
+          if(!"label"%in%colnames(graph$x$nodes)){
+            graph$x$nodes$label <- ""
+          }
+          if(!"group"%in%colnames(graph$x$nodes)){
+            graph$x$nodes$group <- 1
+          }
+        }
       }
     }
   }
+  
   x <- list(highlight = highlightNearest, hoverNearest = hoverNearest, degree = degree, 
             idselection = idselection, byselection = byselection)
   
@@ -431,10 +330,10 @@ visOptions <- function(graph,
   }
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
-
+    
     data <- list(id = graph$id, options = options)
     graph$session$sendCustomMessage("visShinyOptions",data)
-
+    
     if(missing(highlightNearest)){
       x$highlight <- NULL
     }
@@ -444,7 +343,7 @@ visOptions <- function(graph,
     if(missing(selectedBy)){
       x$byselection <- NULL
     }
-
+    
     data <- list(id = graph$id, options = x)
     graph$session$sendCustomMessage("visShinyCustomOptions",data)
     
