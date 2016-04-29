@@ -1396,13 +1396,13 @@ HTMLWidgets.widget({
               var current_value = allNodes[nodeId]["label"] + "";
               var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
               var current_value2 = allNodes[nodeId]["hiddenLabel"] + "";
-              var value_spli2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              var value_split2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
               value_in = (value_split.indexOf(value) !== -1) || (value_split2.indexOf(value) !== -1);
             }else if(sel == "color"){
               var current_value = allNodes[nodeId]["color"] + "";
               var value_split = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
               var current_value2 = allNodes[nodeId]["hiddenColor"] + "";
-              var value_spli2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
+              var value_split2 = current_value.split(",").map(Function.prototype.call, String.prototype.trim);
               value_in = (value_split.indexOf(value) !== -1) || (value_split2.indexOf(value) !== -1);
             }else {
               var current_value = allNodes[nodeId][sel] + "";
