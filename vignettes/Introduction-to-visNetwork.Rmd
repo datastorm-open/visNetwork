@@ -148,18 +148,11 @@ visNetwork(nodes, edges, width = "100%") %>%
 New feature in __visNetwork_0.1.2__ : select some nodes by the values of a column using **selectedBy** option :
 
 ```{r}
-# on "authorised" column
-visNetwork(nodes, edges, width = "100%") %>%
- visOptions(selectedBy = "group")
-```
-
-```{r}
-# or new column
+# can be the column you want
 nodes$sel <- sample(c("sel1", "sel2"), nrow(nodes), replace = TRUE)
 visNetwork(nodes, edges, width = "100%") %>%
  visOptions(selectedBy = "sel")
 ```
-
 
 ## Directed Network
 ```{r, echo = FALSE}
@@ -260,7 +253,7 @@ visNetwork(nodes, edges, legend = TRUE, width = "100%") %>%
 
 ## Use in Shiny
 
-With *visNetworkOutput* and *renderVisNetwork*. Using with shiny, and enabled options *nodesIdSelection*, you can access to new input with current selection value :
+With *visNetworkOutput* and *renderVisNetwork*. Using with shiny, and enabled options *nodesIdSelection*, you can access to new input with current selection value. Morevoer, you can do a lot of things with *visNetworkProxy*
 
 ```{r, eval = FALSE}
 output$mynetwork <- renderVisNetwork({... visOptions(nodesIdSelection = TRUE)}) # created input$mynetwork_selected
@@ -280,7 +273,7 @@ You can also control :
 
 ```{r, eval = FALSE}
 network <- visNetwork(nodes, edges, width = "100%")
-htmlwidgets::saveWidget(network, "network.html")
+visSave(network, file = "network.html")
 ```
 
 ## Use DOT language data 
