@@ -8,7 +8,7 @@
 
 * #### Enabled ``highlightNearest`` & ``selectedBy`` with ``icons`` and / or ``image``
 
-* #### Enabled hover for``highlightNearest``
+* #### Enabled hover for``highlightNearest`` and fix/improve performance with high ``degree``
 
 * ####   multiple groups selection / title to network & legend / ionicons icons possibilities. See ?addIonicons
 

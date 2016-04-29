@@ -1,6 +1,7 @@
 visNetwork 0.2.2
 --------------------------------------------------------------------------------
 
+  * fix / improve highlightNearest with high degree (can now have the entire sub-network)
   * can now set highlightNearest when hover a node, and also use another click / hover event
   * enabled highlightNearest with icons && image, and all combinaisons !
   * new visSelectNodes, visSelectEdges & visSetSelection to select data in shiny
