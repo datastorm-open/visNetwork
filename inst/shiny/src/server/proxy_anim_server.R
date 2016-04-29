@@ -1,4 +1,4 @@
-data <- reactive({
+dataan <- reactive({
   set.seed(2)
   nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
                       group = sample(LETTERS[1:3], 15, replace = TRUE))
@@ -9,7 +9,7 @@ data <- reactive({
 })
 
 output$network_proxy_focus <- renderVisNetwork({
-  visNetwork(data()$nodes, data()$edges) %>% visLegend()
+  visNetwork(dataan()$nodes, dataan()$edges) %>% visLegend()
 })
 
 observe({
@@ -21,7 +21,7 @@ observe({
   gr <- input$Group
   isolate({
     if(gr != "ALL"){
-      nodes <- data()$nodes
+      nodes <- dataan()$nodes
       id <- nodes$id[nodes$group%in%gr]
     }else{
       id <- NULL
@@ -42,7 +42,7 @@ observe({
   gr <- input$Group
   isolate({
     if(gr != "ALL"){
-      nodes <- data()$nodes
+      nodes <- dataan()$nodes
       id <- nodes$id[nodes$group%in%gr]
     }else{
       id <- NULL

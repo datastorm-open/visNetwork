@@ -26,7 +26,7 @@ observe({
 observe({
 
     visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group2", multiple = input$selectedby ))
+      visOptions(selectedBy = list(variable = "group", multiple = input$selectedby ))
 
   
 })

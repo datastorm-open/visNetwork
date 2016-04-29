@@ -1,22 +1,24 @@
-data <- reactive({
+n = 20
+dataup <- reactive({
   set.seed(2)
-  nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
-                      group = sample(LETTERS[1:3], 15, replace = TRUE))
+  nodes <- data.frame(id = 1:n, label = paste("Label", 1:n),
+                      group = sample(LETTERS[1:3], n, replace = TRUE))
   
-  edges <- data.frame(id = 1:15, from = trunc(runif(15)*(15-1))+1,
-                      to = trunc(runif(15)*(15-1))+1)
+  edges <- data.frame(id = 1:n, from = trunc(runif(n)*(n-1))+1,
+                      to = trunc(runif(n)*(n-1))+1)
   list(nodes = nodes, edges = edges)
 })
 
 output$network_proxy_update <- renderVisNetwork({
-  visNetwork(data()$nodes, data()$edges) %>% visLegend() %>% visOptions(highlightNearest = TRUE)
+  visNetwork(dataup()$nodes, dataup()$edges) %>% visLegend() %>% 
+    visOptions(selectedBy = "group", highlightNearest = T) 
 })
 
 observe({
   input$goUpdate
-  nodes <- data.frame(id = 1:15, 
-                      group = sample(LETTERS[1:3], 15, replace = TRUE))
-  edges <- data()$edges
+  nodes <- data.frame(id = 1:(n+10), 
+                      group = sample(LETTERS[1:3], n+10, replace = TRUE))
+  edges <- dataup()$edges
   edges$color <- sample(c("red", "blue", "yellow"), 1)
   
   visNetworkProxy("network_proxy_update") %>%

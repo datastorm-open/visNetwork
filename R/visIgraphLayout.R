@@ -40,7 +40,8 @@
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(layout = "layout_in_circle") %>%
 #'  visNodes(size = 10) %>%
-#'  visOptions(highlightNearest = T, nodesIdSelection = T)
+#'  visOptions(highlightNearest = list(enabled = T, hover = T), 
+#'    nodesIdSelection = T)
 #'  
 #'# keep physics with smooth curves ?
 #'visNetwork(nodes, edges) %>% 
@@ -119,7 +120,7 @@ visIgraphLayout <- function(graph,
   graph$x$nodes$x <- coord[, 1]
   graph$x$nodes$y <- coord[, 2]
   
-  to <- c(-2, 2)
+  to <- c(-1, 1)
   from <- range(graph$x$nodes$x, na.rm = TRUE, finite = TRUE)
   graph$x$nodes$x <- (graph$x$nodes$x - from[1])/diff(from) * diff(to) + to[1]
   
