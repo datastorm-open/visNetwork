@@ -8,7 +8,7 @@
 #'@param highlightNearest : Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
-#'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1}
+#'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network}
 #'  \item{"hover"}{ : Boolean. Enabled highlightNearest alos hovering a node ? Default to FALSE}
 #'}
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.

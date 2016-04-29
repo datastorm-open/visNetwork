@@ -30,7 +30,7 @@ if (!Function.prototype.bind) {
 //--------------------------------------------
 
 // for classic node
-simpleResetNode = function(node){
+function simpleResetNode(node){
   // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
@@ -38,10 +38,10 @@ simpleResetNode = function(node){
   }else{
     node.color = undefined;
   }
-};
+}
 
 // for icon node
-simpleIconResetNode = function(node, group_color){
+function simpleIconResetNode(node, group_color){
   if(node.iconDefined){ // icon defined in individual node data
     if (node.hiddenColor !== undefined) {
       node.icon.color = node.hiddenColor;
@@ -58,10 +58,10 @@ simpleIconResetNode = function(node, group_color){
   // just a group definition, so delete individual information
     delete node.icon;
   }
-};
+}
 
 // for image node
-simpleImageResetNode = function(node, type){
+function simpleImageResetNode(node, type){
   // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
@@ -71,10 +71,10 @@ simpleImageResetNode = function(node, type){
   }
   // and set shape as image/circularImage
   node.shape = type;
-};
+}
 
 // Global function to reset one node
-resetOneNode = function(node, groups, options){
+function resetOneNode(node, groups, options){
   if(node.isHardToRead !== undefined){ // we have to reset this node
     if(node.isHardToRead){
       var final_shape;
@@ -132,10 +132,10 @@ resetOneNode = function(node, groups, options){
       node.isHardToRead = false;
     }
   }
-};
+}
 
 // Global function to reset all node
-resetAllNodes = function(allNodes, update, nodes, groups, options){
+function resetAllNodes(allNodes, update, nodes, groups, options){
   var updateArray = [];
   for (var nodeId in allNodes) {
     resetOneNode(allNodes[nodeId], groups, options);
@@ -149,14 +149,14 @@ resetAllNodes = function(allNodes, update, nodes, groups, options){
   if(update){
     nodes.update(updateArray);
   }
-};
+}
 
 //--------------------------------------------
 // functions to set nodes as hard to read
 //--------------------------------------------
 
 // for classic node
-simpleNodeAsHardToRead = function(node){
+function simpleNodeAsHardToRead(node){
   // saving color information (if we have)
   if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
     node.hiddenColor = node.color;
@@ -168,10 +168,10 @@ simpleNodeAsHardToRead = function(node){
     node.hiddenLabel = node.label;
     node.label = undefined;
   }
-};
+}
 
 // for icon node
-iconsNodeAsHardToRead = function(node){
+function iconsNodeAsHardToRead(node){
   // individual information
   if(node.icon !== undefined){
     node.iconDefined = true;
@@ -190,10 +190,10 @@ iconsNodeAsHardToRead = function(node){
     node.hiddenLabel = node.label;
     node.label = undefined;
   }
-};
+}
 
 // for image node
-imageNodeAsHardToRead = function(node, type){
+function imageNodeAsHardToRead(node, type){
   // saving color information (if we have)
   if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
     node.hiddenColor = node.color;
@@ -213,10 +213,10 @@ imageNodeAsHardToRead = function(node, type){
     node.hiddenImage = type;
     node.shape = "dot";
   }
-};
+}
 
 // Global function to set one node as hard to read
-nodeAsHardToRead = function(node, groups, options){
+function nodeAsHardToRead(node, groups, options){
   var final_shape;
   var shape_group = false;
   // have a group information & a shape defined in group ?
@@ -254,13 +254,13 @@ nodeAsHardToRead = function(node, groups, options){
   }
   // finally set isHardToRead
   node.isHardToRead = true;
-};
+}
 
 //----------------------------------------------------------------
 // Revrite HTMLWidgets.dataframeToD3() for passing custom
 // properties directly in data.frame (color.background for example
 //----------------------------------------------------------------
-visNetworkdataframeToD3 = function(df, type) {
+function visNetworkdataframeToD3(df, type) {
 
   // variables we have specially to control
   var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
@@ -340,7 +340,7 @@ visNetworkdataframeToD3 = function(df, type) {
       results.push(item);
     }
   return results;
-};
+}
  
 //----------------------------------------------------------------
 // Some utils functions
@@ -366,7 +366,7 @@ function update(source, target) {
 	});
 }
 // for find element
-var indexOf = function(needle, str) {
+function indexOf(needle, str) {
         indexOf = function(needle, str) {
             var i = -1, index = -1;
             if(str){
@@ -386,7 +386,7 @@ var indexOf = function(needle, str) {
         };
     return indexOf.call(this, needle, str);
 };
-
+// reset a html list
 function resetList(list_name, id, shiny_input_name) {
   var list = document.getElementById(list_name + id);
   list.value = "";
@@ -394,7 +394,14 @@ function resetList(list_name, id, shiny_input_name) {
     Shiny.onInputChange(id + '_' + shiny_input_name, "");
   }
 }
-
+//unique element in array
+function uniqueArray(arr) {
+    var a = [];
+    for (var i=0, l=arr.length; i<l; i++)
+        if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
+            a.push(arr[i]);
+    return a;
+}
             
 //----------------------------------------------------------------
 // All available functions/methods with visNetworkProxy
@@ -672,6 +679,44 @@ if (HTMLWidgets.shinyMode){
         
         if(graph){
 
+          if(data.options.highlight !== undefined){
+            if(document.getElementById(el.id).highlight && !data.options.highlight){
+              // need reset nodes
+              if(document.getElementById(el.id).highlightActive === true){
+                reset = true;
+              }
+            }
+            document.getElementById(el.id).highlight = data.options.highlight;
+            document.getElementById(el.id).degree = data.options.degree;
+          }
+          
+          if(data.options.hoverNearest !== undefined){
+            document.getElementById(el.id).hoverNearest = data.options.hoverNearest;
+          }
+          
+          // init selection
+          if(data.options.byselection !== undefined){
+            if(data.options.byselection.selected !== undefined){
+              document.getElementById("selectedBy"+data.id).value = data.options.byselection.selected;
+              document.getElementById("selectedBy"+data.id).onchange();
+            }
+          }
+          
+          if(data.options.idselection !== undefined){
+            if(data.options.idselection.enabled === true && data.options.idselection.selected !== undefined){
+              //console.info(data.options.idselection)
+              //console.info("ok")
+              document.getElementById("nodeSelect"+data.id).value = data.options.idselection.selected;
+              document.getElementById("nodeSelect"+data.id).onchange();
+            }
+          }
+          
+          if(reset){
+            //console.info("reset nodes");
+            document.getElementById("nodeSelect"+data.id).value = "";
+            document.getElementById("nodeSelect"+data.id).onchange();
+          }
+          
           el.updateNodes = true;
           
           if(data.options.byselection !== undefined){
@@ -703,14 +748,14 @@ if (HTMLWidgets.shinyMode){
               selectList2.style.display = 'none';
               el.byselection = false;
               // reset selection
-              if(el.selectActive = true){
+              if(el.selectActive === true){
                 document.getElementById("selectedBy"+data.id).value = "";
                 document.getElementById("selectedBy"+data.id).onchange();
               }
             }
           }else{
             // reset selection
-            if(el.selectActive = true){
+            if(el.selectActive === true){
               document.getElementById("selectedBy"+data.id).value = "";
               document.getElementById("selectedBy"+data.id).onchange();
             }
@@ -774,43 +819,6 @@ if (HTMLWidgets.shinyMode){
                   }
                 }
               } 
-          }
-          if(data.options.highlight !== undefined){
-            if(document.getElementById(el.id).highlight && !data.options.highlight){
-              // need reset nodes
-              if(document.getElementById(el.id).highlightActive === true){
-                reset = true;
-              }
-            }
-            document.getElementById(el.id).highlight = data.options.highlight;
-            document.getElementById(el.id).degree = data.options.degree;
-          }
-          
-          if(data.options.hoverNearest !== undefined){
-            document.getElementById(el.id).hoverNearest = data.options.hoverNearest;
-          }
-          
-          // init selection
-          if(data.options.byselection !== undefined){
-            if(data.options.byselection.selected !== undefined){
-              document.getElementById("selectedBy"+data.id).value = data.options.byselection.selected;
-              document.getElementById("selectedBy"+data.id).onchange();
-            }
-          }
-          
-          if(data.options.idselection !== undefined){
-            if(data.options.idselection.enabled === true && data.options.idselection.selected !== undefined){
-              //console.info(data.options.idselection)
-              //console.info("ok")
-              document.getElementById("nodeSelect"+data.id).value = data.options.idselection.selected;
-              document.getElementById("nodeSelect"+data.id).onchange();
-            }
-          }
-          
-          if(reset){
-            //console.info("reset nodes");
-            document.getElementById("nodeSelect"+data.id).value = "";
-            document.getElementById("nodeSelect"+data.id).onchange();
           }
         }
       });
@@ -880,7 +888,6 @@ HTMLWidgets.widget({
     //*************************
     //idselection
     //*************************
-    
     function onIdChange(id, init) {
       if(id === ""){
         instance.network.selectNodes([]);
@@ -972,7 +979,6 @@ HTMLWidgets.widget({
     //*************************
     //selectedBy
     //*************************
-    
     function onByChange(value) {
         if(instance.network){
           selectedHighlight(value);
@@ -1513,10 +1519,12 @@ HTMLWidgets.widget({
           // get the nodes to color
           if(degrees >= 2){
             for (i = 2; i <= degrees; i++) {
+              var previous_connectedNodes = connectedNodes;
               var currentlength = connectedNodes.length;
               for (j = 0; j < currentlength; j++) {
-                connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
+                connectedNodes = uniqueArray(connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j])));
               }
+              if (connectedNodes.length === previous_connectedNodes.length) { break; }
             }
           }
           // nodes to just label
@@ -1996,7 +2004,9 @@ HTMLWidgets.widget({
       }, 200);
     }
     if(x.iconsRedraw !== undefined){
-      instance.network.once("stabilized", function(){iconsRedraw();})
+      if(x.iconsRedraw){
+        instance.network.once("stabilized", function(){iconsRedraw();})
+      }
     }
   },
   
