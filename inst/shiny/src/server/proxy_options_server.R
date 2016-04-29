@@ -24,11 +24,13 @@ observe({
 })
 
 observe({
-
+  if(input$selectedby){
     visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group", multiple = input$selectedby ))
-
-  
+      visOptions(selectedBy = list(variable = "group"))
+  }else{
+    visNetworkProxy("network_proxy_options") %>%
+      visOptions(selectedBy = NULL)
+  }
 })
 
 # observe({
@@ -55,14 +57,13 @@ observe({
 })
 
 observe({
-  if(length(input$selectedby) > 0){
-    visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group", values = input$selectedby))
-  }else{
-    visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = NULL)
-  }
-
-})
+  if(input$selectedby){
+  visNetworkProxy("network_proxy_options") %>%
+  visOptions(selectedBy = list(variable = "group"))
+}else{
+  visNetworkProxy("network_proxy_options") %>%
+  visOptions(selectedBy = NULL)
+}
+  })
  '
 })
