@@ -57,7 +57,8 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\% 
  visIgraphLayout(layout = "layout_in_circle") \%>\%
  visNodes(size = 10) \%>\%
- visOptions(highlightNearest = T, nodesIdSelection = T)
+ visOptions(highlightNearest = list(enabled = T, hover = T), 
+   nodesIdSelection = T)
  
 # keep physics with smooth curves ?
 visNetwork(nodes, edges) \%>\% 
