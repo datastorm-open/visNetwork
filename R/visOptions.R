@@ -106,7 +106,9 @@
 #'  visOptions(selectedBy = "sample")
 #' 
 #' # and with multiple groups ?
-#' nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"), nrow(nodes), replace = TRUE)
+#' nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"), 
+#'  nrow(nodes), replace = TRUE)
+#'  
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", multiple = TRUE))
 #'   
