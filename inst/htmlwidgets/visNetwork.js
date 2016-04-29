@@ -1575,7 +1575,7 @@ HTMLWidgets.widget({
         // reset selectedBy list if actived
         if (selectedItems.nodes.length === 0) {
           resetList("selectedBy", el.id, 'selectedBy');
-          //selectedHighlight("");
+          selectedHighlight("");
         }
       }
     }
