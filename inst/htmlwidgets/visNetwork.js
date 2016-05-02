@@ -58,6 +58,13 @@ function simpleIconResetNode(node, group_color){
   // just a group definition, so delete individual information
     delete node.icon;
   }
+  // get back color
+  if (node.hiddenColorForLabel !== undefined) {
+    node.color = node.hiddenColorForLabel;
+    node.hiddenColorForLabel = undefined;
+  }else{
+    node.color = undefined;
+  }
 }
 
 // for image node
@@ -185,6 +192,12 @@ function iconsNodeAsHardToRead(node){
   }
   // set "hard to read" color
   node.icon.color = 'rgba(200,200,200,0.5)';
+  // for edges....saving color information (if we have)
+  if (node.hiddenColorForLabel === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+    node.hiddenColorForLabel = node.color;
+  }
+  // set "hard to read" color
+  node.color = 'rgba(200,200,200,0.5)';
   // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
@@ -312,7 +325,10 @@ function visNetworkdataframeToD3(df, type) {
             }
             if(names[col][0] === "icon" && names[col][1] === "code"){
               item[names[col][0]][names[col][1]] = JSON.parse( '"'+'\\u' + df[colnames[col]][row] + '"');
-            }else{
+            } else if(names[col][0] === "icon" && names[col][1] === "color"){
+              item.color = df[colnames[col]][row];
+              item[names[col][0]][names[col][1]] = df[colnames[col]][row];
+            } else{
               item[names[col][0]][names[col][1]] = df[colnames[col]][row];
             }
           } else if(names[col].length === 3){
@@ -1044,6 +1060,9 @@ HTMLWidgets.widget({
           if(x.options.groups[gr].icon.code){
             x.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + x.options.groups[gr].icon.code + '"');
           }
+          if(x.options.groups[gr].icon.color){
+            x.options.groups[gr].color = x.options.groups[gr].icon.color;
+          }
         }
       }
     }
@@ -1051,6 +1070,9 @@ HTMLWidgets.widget({
     if(x.options.nodes.icon){
         if(x.options.nodes.icon.code){
           x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
+        }
+        if(x.options.nodes.icon.color){
+          x.options.nodes.color = x.options.nodes.icon.color;
         }
     }
     
