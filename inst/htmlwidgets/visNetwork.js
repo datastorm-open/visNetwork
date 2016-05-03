@@ -26,6 +26,27 @@ if (!Function.prototype.bind) {
 }
 
 //--------------------------------------------
+// functions to reset edges after hard to read
+//--------------------------------------------
+
+// for edges
+function resetEdges(edges){
+  var edgesHardToRead = edges.get({
+    fields: ['id', 'color'],
+    filter: function (item) {
+      return item.color === 'rgba(200,200,200,0.5)';
+    },
+    returnType :'Array'
+  });
+            
+  // all in degree nodes get their own color and their label back
+  for (i = 0; i < edgesHardToRead.length; i++) {
+      edgesHardToRead[i].color = null;
+  }
+  edges.update(edgesHardToRead);
+}
+
+//--------------------------------------------
 // functions to reset nodes after hard to read
 //--------------------------------------------
 
@@ -1576,6 +1597,9 @@ HTMLWidgets.widget({
             
           } else if(algorithm === "hierarchical"){
             
+            // first resetEdges
+            resetEdges(edges);
+            
             var degree_from = degrees.from;
             var degree_to = degrees.to;
             degrees = Math.max(degree_from, degree_to);
@@ -1654,7 +1678,8 @@ HTMLWidgets.widget({
               }
             }
             
-            allConnectedNodes = uniqueArray(allConnectedNodes);
+            allConnectedNodes = uniqueArray(allConnectedNodes).concat([selectedNode]);
+            
             var nodesWithLabel = [];
             if(degrees > 0){
               // nodes to just label
@@ -1666,11 +1691,6 @@ HTMLWidgets.widget({
                   nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedFromNodes[j]));
               }
               nodesWithLabel = uniqueArray(nodesWithLabel);
-
-              // all in degree nodes get their own color and their label back
-              for (i = 0; i < allConnectedNodes.length; i++) {
-                resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options);
-              }
             } else{
               nodesWithLabel = currentConnectedToNodes;
               nodesWithLabel = nodesWithLabel.concat(currentConnectedFromNodes);
@@ -1685,8 +1705,27 @@ HTMLWidgets.widget({
               }
             }
               
-            // the main node gets its own color and its label back.
-            resetOneNode(allNodes[selectedNode], instance.network.groups, options);
+            // all in degree nodes get their own color and their label back
+            for (i = 0; i < allConnectedNodes.length; i++) {
+              resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options);
+            }
+            
+            // set som edges as hard to read
+            var edgesHardToRead = edges.get({
+              fields: ['id', 'color'],
+              filter: function (item) {
+                return ((indexOf.call(allConnectedNodes, item.from, true) === -1) && (indexOf.call(allConnectedNodes, item.to, true) > -1)) || ((indexOf.call(allConnectedNodes, item.from, true) > -1) && (indexOf.call(allConnectedNodes, item.to, true) === -1)) ;
+              },
+              returnType :'Array'
+            });
+            
+            // all in degree nodes get their own color and their label back
+            for (i = 0; i < edgesHardToRead.length; i++) {
+              edgesHardToRead[i].color = 'rgba(200,200,200,0.5)';
+            }
+            
+            edges.update(edgesHardToRead);
+            
           }
 
           if(update){
@@ -1713,6 +1752,10 @@ HTMLWidgets.widget({
           }
           //reset nodes
           resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
+          if(algorithm === "hierarchical"){
+            // resetEdges
+            resetEdges(edges);
+          }
           document.getElementById(el.id).highlightActive = false;
           is_clicked = false;
         }
