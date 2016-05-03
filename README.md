@@ -1,3 +1,5 @@
+## ``1.0.0`` available and submit to the CRAN
+
 # visNetwork
 
 ### R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
