@@ -3,7 +3,9 @@ shiny::tabPanel(
   fluidRow(
     column(
       width = 4,
-      checkboxInput("highlightNearest", "highlight Nearest", FALSE),
+      checkboxInput("highlightNearest", "highlight ?", FALSE),
+      selectInput("algorithm", "highlight algoritm ", c("all", "hierarchical")),
+      checkboxInput("hover", "highlight when hover ?", FALSE),
       checkboxInput("nodesIdSelection", "nodes Selection", FALSE),
       checkboxInput("selectedby", "Groups Selection", FALSE)
       # selectInput("selectedby", "Group selection :",

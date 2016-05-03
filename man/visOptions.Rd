@@ -18,8 +18,9 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \item{highlightNearest}{: Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? Not available for DOT and Gephi.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
- \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network}
- \item{"hover"}{ : Boolean. Enabled highlightNearest alos hovering a node ? Default to FALSE}
+ \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
+ \item{"hover"}{ : Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
+ \item{"algorithm"}{ : String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
 }}
 
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
@@ -65,6 +66,17 @@ visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE
 # also when hover a node ?
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE))
 
+# Using hierarchical information
+nodes = data.frame(id = 1:6, level = c(1, 2, 3, 3, 4, 2))
+edges = data.frame(from = c(1, 2, 2, 4, 6), to = c(2, 3, 4, 5, 4))
+
+visNetwork(nodes, edges) \%>\% visHierarchicalLayout() \%>\% visEdges(arrows = "to") \%>\% 
+ visOptions(highlightNearest = list(enabled = T, algorithm = "hierarchical"))
+ 
+visNetwork(nodes, edges) \%>\% visHierarchicalLayout() \%>\% visEdges(arrows = "to") \%>\% 
+ visOptions(highlightNearest = list(enabled = T, algorithm = "hierarchical", 
+   degree = list(from = 0, to = 2)))
+   
 ##########################
 # nodesIdSelection
 ##########################

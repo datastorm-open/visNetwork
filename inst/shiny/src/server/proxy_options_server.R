@@ -10,12 +10,13 @@ dataos <- reactive({
 })
 
 output$network_proxy_options <- renderVisNetwork({
-  visNetwork(dataos()$nodes, dataos()$edges) %>% visLegend()
+  visNetwork(dataos()$nodes, dataos()$edges) %>% visEdges(arrows = "to") %>% visLegend()
 })
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
-    visOptions(highlightNearest = input$highlightNearest)
+    visOptions(highlightNearest = list(enabled = input$highlightNearest, hover = input$hover,
+                                       algorithm = input$algorithm))
 })
 
 observe({

@@ -696,20 +696,18 @@ if (HTMLWidgets.shinyMode){
         if(graph){
 
           if(data.options.highlight !== undefined){
-            if(document.getElementById(el.id).highlight && !data.options.highlight){
+            if(document.getElementById(el.id).highlight && !data.options.highlight.enabled){
               // need reset nodes
               if(document.getElementById(el.id).highlightActive === true){
                 reset = true;
               }
             }
-            document.getElementById(el.id).highlight = data.options.highlight;
-            document.getElementById(el.id).degree = data.options.degree;
+            document.getElementById(el.id).highlight = data.options.highlight.enabled;
+            document.getElementById(el.id).degree = data.options.highlight.degree;
+            document.getElementById(el.id).hoverNearest = data.options.highlight.hoverNearest;
+            document.getElementById(el.id).highlightAlgorithm = data.options.highlight.algorithm;
           }
-          
-          if(data.options.hoverNearest !== undefined){
-            document.getElementById(el.id).hoverNearest = data.options.hoverNearest;
-          }
-          
+
           // init selection
           if(data.options.byselection !== undefined){
             if(data.options.byselection.selected !== undefined){
@@ -883,9 +881,18 @@ HTMLWidgets.widget({
     document.getElementById(el.id).updateNodes = false;
     document.getElementById(el.id).idselection = x.idselection.enabled;
     document.getElementById(el.id).byselection = x.byselection.enabled;
-    document.getElementById(el.id).highlight = x.highlight;
-    document.getElementById(el.id).hoverNearest = x.hoverNearest;
-    document.getElementById(el.id).degree = x.degree;
+    if(x.highlight !== undefined){
+      document.getElementById(el.id).highlight = x.highlight.enabled;
+      document.getElementById(el.id).hoverNearest = x.highlight.hoverNearest;
+      document.getElementById(el.id).degree = x.highlight.degree;
+      document.getElementById(el.id).highlightAlgorithm = x.highlight.algorithm;
+    } else {
+      document.getElementById(el.id).highlight = false;
+      document.getElementById(el.id).hoverNearest = false;
+      document.getElementById(el.id).degree = 1;
+      document.getElementById(el.id).highlightAlgorithm = "all";
+    }
+
     
     var changeInput = function(id, data) {
             Shiny.onInputChange(el.id + '_' + id, data);
@@ -911,7 +918,7 @@ HTMLWidgets.widget({
         instance.network.selectNodes([id]);
       }
       if(document.getElementById(el.id).highlight){
-        neighbourhoodHighlight(instance.network.getSelection().nodes, "click");
+        neighbourhoodHighlight(instance.network.getSelection().nodes, "click", document.getElementById(el.id).highlightAlgorithm);
       }else{
         if(init){
           selectNode = document.getElementById('nodeSelect'+el.id);
@@ -1488,7 +1495,7 @@ HTMLWidgets.widget({
     var is_hovered = false;
     var is_clicked = false;
     
-    function neighbourhoodHighlight(params, type) {
+    function neighbourhoodHighlight(params, action_type, algorithm) {
       var selectNode;
       // need to update nodes before ?
       if(document.getElementById(el.id).updateNodes){
@@ -1499,7 +1506,7 @@ HTMLWidgets.widget({
       // update 
       var update = !(document.getElementById(el.id).highlightActive === false & params.length === 0) | (document.getElementById(el.id).selectActive === true & params.length === 0);
 
-      if(!(type == "hover" && is_clicked)){
+      if(!(action_type == "hover" && is_clicked)){
         if (params.length > 0) {
         
           var updateArray = [];
@@ -1530,45 +1537,160 @@ HTMLWidgets.widget({
             allNodes[nodeId].x = undefined;
             allNodes[nodeId].y = undefined;
           }
-          
-          if(degrees > 0){
-            var connectedNodes = instance.network.getConnectedNodes(selectedNode);
-          }else{
-            var connectedNodes = [selectedNode];
-          }
-          
-          var allConnectedNodes = [];
-          // get the nodes to color
-          if(degrees >= 2){
-            for (i = 2; i <= degrees; i++) {
-              var previous_connectedNodes = connectedNodes;
-              var currentlength = connectedNodes.length;
-              for (j = 0; j < currentlength; j++) {
-                connectedNodes = uniqueArray(connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j])));
+          if(algorithm === "all"){
+            if(degrees > 0){
+              var connectedNodes = instance.network.getConnectedNodes(selectedNode);
+            }else{
+              var connectedNodes = [selectedNode];
+            }
+            
+            var allConnectedNodes = [];
+            // get the nodes to color
+            if(degrees >= 2){
+              for (i = 2; i <= degrees; i++) {
+                var previous_connectedNodes = connectedNodes;
+                var currentlength = connectedNodes.length;
+                for (j = 0; j < currentlength; j++) {
+                  connectedNodes = uniqueArray(connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j])));
+                }
+                if (connectedNodes.length === previous_connectedNodes.length) { break; }
               }
-              if (connectedNodes.length === previous_connectedNodes.length) { break; }
             }
-          }
-          // nodes to just label
-          for (j = 0; j < connectedNodes.length; j++) {
-              allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
-          }
-          // all second degree nodes get a different color and their label back
-          for (i = 0; i < allConnectedNodes.length; i++) {
-            if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
-              allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
-              allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+            // nodes to just label
+            for (j = 0; j < connectedNodes.length; j++) {
+                allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
             }
+            // all higher degree nodes get a different color and their label back
+            for (i = 0; i < allConnectedNodes.length; i++) {
+              if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+                allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
+                allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+              }
+            }
+            // all in degree nodes get their own color and their label back
+            for (i = 0; i < connectedNodes.length; i++) {
+              resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options);
+            }
+            // the main node gets its own color and its label back.
+            resetOneNode(allNodes[selectedNode], instance.network.groups, options);
+            
+          } else if(algorithm === "hierarchical"){
+            
+            var degree_from = degrees.from;
+            var degree_to = degrees.to;
+            degrees = Math.max(degree_from, degree_to);
+            
+            var allConnectedNodes = [];
+            var currentConnectedFromNodes = [];
+            var currentConnectedToNodes = [];
+            var connectedFromNodes = [];
+            var connectedToNodes = [];
+            
+            if(degree_from > 0){
+              connectedFromNodes = edges.get({
+                fields: ['from'],
+                filter: function (item) {
+                  return item.to == selectedNode;
+                },
+                returnType :'Array'
+              });
+            }
+
+            if(degree_to > 0){
+              connectedToNodes = edges.get({
+                fields: ['to'],
+                filter: function (item) {
+                  return item.from == selectedNode;
+                },
+                returnType :'Array'
+              });
+            }
+            for (j = 0; j < connectedFromNodes.length; j++) {
+                allConnectedNodes = allConnectedNodes.concat(connectedFromNodes[j].from);
+                currentConnectedFromNodes = currentConnectedFromNodes.concat(connectedFromNodes[j].from);
+            }
+            
+            for (j = 0; j < connectedToNodes.length; j++) {
+                allConnectedNodes = allConnectedNodes.concat(connectedToNodes[j].to);
+                currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
+            }
+            
+            if(degrees > 1){
+              for (i = 2; i <= degrees; i++) {
+                if(currentConnectedFromNodes.length > 0 && degrees <= degree_from){
+                  connectedFromNodes = edges.get({
+                    fields: ['from'],
+                    filter: function (item) {
+                      return indexOf.call(currentConnectedFromNodes, item.to, true) > -1;
+                    },
+                    returnType :'Array'
+                  });
+                }
+
+                if(currentConnectedToNodes.length > 0 && degrees <= degree_to){
+                  connectedToNodes = edges.get({
+                    fields: ['to'],
+                    filter: function (item) {
+                      return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
+                    },
+                    returnType :'Array'
+                  });
+                }
+                
+                currentConnectedFromNodes = [];
+                currentConnectedToNodes = [];
+                
+                for (j = 0; j < connectedFromNodes.length; j++) {
+                    allConnectedNodes = allConnectedNodes.concat(connectedFromNodes[j].from);
+                    currentConnectedFromNodes = currentConnectedFromNodes.concat(connectedFromNodes[j].from);
+                }
+                
+                for (j = 0; j < connectedToNodes.length; j++) {
+                    allConnectedNodes = allConnectedNodes.concat(connectedToNodes[j].to);
+                    currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
+                }
+                
+                if (currentConnectedToNodes.length === 0 &&  currentConnectedFromNodes.length === 0) { break; }
+              }
+            }
+            
+            allConnectedNodes = uniqueArray(allConnectedNodes);
+            var nodesWithLabel = [];
+            if(degrees > 0){
+              // nodes to just label
+              for (j = 0; j < currentConnectedToNodes.length; j++) {
+                  nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedToNodes[j]));
+              }
+              
+              for (j = 0; j < currentConnectedFromNodes.length; j++) {
+                  nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedFromNodes[j]));
+              }
+              nodesWithLabel = uniqueArray(nodesWithLabel);
+
+              // all in degree nodes get their own color and their label back
+              for (i = 0; i < allConnectedNodes.length; i++) {
+                resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options);
+              }
+            } else{
+              nodesWithLabel = currentConnectedToNodes;
+              nodesWithLabel = nodesWithLabel.concat(currentConnectedFromNodes);
+              nodesWithLabel = uniqueArray(nodesWithLabel);
+            }
+
+            // all higher degree nodes get a different color and their label back
+            for (i = 0; i < nodesWithLabel.length; i++) {
+              if (allNodes[nodesWithLabel[i]].hiddenLabel !== undefined) {
+                allNodes[nodesWithLabel[i]].label = allNodes[nodesWithLabel[i]].hiddenLabel;
+                allNodes[nodesWithLabel[i]].hiddenLabel = undefined;
+              }
+            }
+              
+            // the main node gets its own color and its label back.
+            resetOneNode(allNodes[selectedNode], instance.network.groups, options);
           }
-          // all first degree nodes get their own color and their label back
-          for (i = 0; i < connectedNodes.length; i++) {
-            resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options);
-          }
-          // the main node gets its own color and its label back.
-          resetOneNode(allNodes[selectedNode], instance.network.groups, options);
-          
+
           if(update){
-            if(!(type == "hover")){
+            if(!(action_type == "hover")){
                is_clicked = true;
             }
             // transform the object into an array
@@ -1640,7 +1762,7 @@ HTMLWidgets.widget({
     // shared click function (selectedNodes)
     document.getElementById("graph"+el.id).myclick = function(params){
       if(document.getElementById(el.id).highlight && x.nodes){
-        neighbourhoodHighlight(params.nodes, "click");
+        neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
       }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
         onClickIDSelection(params)
       } 
@@ -1652,7 +1774,7 @@ HTMLWidgets.widget({
     // Set event in relation with highlightNearest      
     instance.network.on("click", function(params){
       if(document.getElementById(el.id).highlight && x.nodes){
-        neighbourhoodHighlight(params.nodes, "click");
+        neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
       }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
         onClickIDSelection(params)
       } 
@@ -1663,7 +1785,7 @@ HTMLWidgets.widget({
     
     instance.network.on("hoverNode", function(params){
       if(document.getElementById(el.id).hoverNearest && x.nodes){
-        neighbourhoodHighlight([params.node], "hover");
+        neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
       } 
       if(is_hoverNode_event){
         x.events["hoverNode"](params);
@@ -1672,7 +1794,7 @@ HTMLWidgets.widget({
 
     instance.network.on("blurNode", function(params){
       if(document.getElementById(el.id).hoverNearest && x.nodes){
-        neighbourhoodHighlight([], "hover");
+        neighbourhoodHighlight([], "hover", document.getElementById(el.id).highlightAlgorithm);
       }      
       if(is_blurNode_event){
         x.events["blurNode"](params);
@@ -2030,6 +2152,9 @@ HTMLWidgets.widget({
         instance.network.once("stabilized", function(){iconsRedraw();})
       }
     }
+    
+    console.info(instance.network);
+    console.info(instance.network.getScale());
   },
   
   resize: function(el, width, height, instance) {
