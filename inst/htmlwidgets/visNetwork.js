@@ -1291,10 +1291,15 @@ HTMLWidgets.widget({
       
       // update coordinates if igraph
       if(x.igraphlayout !== undefined){
-        var scalex = (document.getElementById("graph"+el.id).clientWidth / 2);
+        // to improved
+        var zoomLevel = -232.622349 / (tmpnodes.length + 91.165919)  +2.516861;
+        var factor = document.getElementById("graph"+el.id).clientWidth / 1890;
+        zoomLevel = zoomLevel/factor;
+        
+        var scalex = (document.getElementById("graph"+el.id).clientWidth / 2) * zoomLevel;
         var scaley = scalex;
         if(x.igraphlayout.type !== "square"){
-          scaley = (document.getElementById("graph"+el.id).clientHeight / 2);
+          scaley = (document.getElementById("graph"+el.id).clientHeight / 2) * zoomLevel;
         }
         for (var nd in tmpnodes) {
           tmpnodes[nd].x = tmpnodes[nd].x * scalex;
@@ -2196,9 +2201,15 @@ HTMLWidgets.widget({
       }
     }
     
+    /*console.info("clientWidth");
+    console.info(document.getElementById("graph"+el.id).clientWidth);
+
+    console.info("clientHeight");
+    console.info(document.getElementById("graph"+el.id).clientHeight);
+
     console.info(instance.network);
-    console.info(instance.network.getScale());
-  },
+    console.info(instance.network.getScale());*/
+  }, 
   
   resize: function(el, width, height, instance) {
       if(instance.network)
