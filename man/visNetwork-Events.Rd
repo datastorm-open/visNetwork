@@ -2,9 +2,20 @@
 % Please edit documentation in R/visNetworkEvents.R
 \name{visEvents}
 \alias{visEvents}
+\alias{visEventsOnce}
 \title{Network visualization events}
 \usage{
 visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
+  hold = NULL, release = NULL, select = NULL, selectNode = NULL,
+  selectEdge = NULL, deselectNode = NULL, deselectEdge = NULL,
+  dragStart = NULL, dragging = NULL, dragEnd = NULL, hoverNode = NULL,
+  blurNode = NULL, hoverEdge = NULL, blurEdge = NULL, zoom = NULL,
+  showPopup = NULL, hidePopup = NULL, startStabilizing = NULL,
+  stabilizationProgress = NULL, stabilizationIterationsDone = NULL,
+  stabilized = NULL, resize = NULL, initRedraw = NULL,
+  beforeDrawing = NULL, afterDrawing = NULL, animationFinished = NULL)
+
+visEventsOnce(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
   hold = NULL, release = NULL, select = NULL, selectNode = NULL,
   selectEdge = NULL, deselectNode = NULL, deselectEdge = NULL,
   dragStart = NULL, dragging = NULL, dragEnd = NULL, hoverNode = NULL,
@@ -77,6 +88,7 @@ visEvents(graph, click = NULL, doubleClick = NULL, oncontext = NULL,
 }
 \description{
 Network visualization events. For full documentation, have a look at \link{visDocumentation}.
+Use \code{visEventsOnce} to set an event listener only once.
 }
 \examples{
 
@@ -88,7 +100,6 @@ visNetwork(nodes, edges) \%>\%
      alert('selected nodes: ' + properties.nodes);}", 
      dragEnd = "function(properties) {
      alert('finsih to drag');}")
-
 
 }
 \seealso{

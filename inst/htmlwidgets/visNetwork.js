@@ -1442,6 +1442,11 @@ HTMLWidgets.widget({
       }
     }
 
+    if(x.eventsOnce !== undefined){
+      for (var key in x.eventsOnce) {
+          instance.network.once(key, x.eventsOnce[key]);
+      }
+    }
     //*************************
     // Selected Highlight
     //*************************

@@ -2,6 +2,7 @@ visNetwork 1.0.1
 --------------------------------------------------------------------------------
 
   * New options for highlightNearest : can use hierarchical information
+  * Add visEventsOnce to set an event listener only once
   
 visNetwork 1.0.0
 --------------------------------------------------------------------------------
