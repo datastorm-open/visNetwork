@@ -41,7 +41,7 @@
 #' @param fixed : Boolean | named list. Default to false. When true, the node will not move but IS part of the physics simulation. When defined as an list, movement in either X or Y direction can be disabled.
 #' \itemize{
 #'  \item{"x"}{ : Boolean. When true, the node will not move in the X direction.}
-#'  \item{"y"}{ : Boolean. When false, the node will not move in the X direction.}
+#'  \item{"y"}{ : Boolean. When true, the node will not move in the Y direction.}
 #'}
 #'
 #' @param font : Named list or String. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
