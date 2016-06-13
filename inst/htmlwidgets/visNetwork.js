@@ -1210,17 +1210,21 @@ HTMLWidgets.widget({
       var lx = - mynetwork.clientWidth / 2 + 50;
       var ly = - mynetwork.clientHeight / 2 + 50;
       var step = 70;
+      var tmp_ly;
+      var tmp_lx = lx;
+      var tmp_lx2;
+      if(tmp_lx === 0){
+        tmp_lx = 1
+      }
       // want to view groups in legend
-      /*console.info("lx");
-      console.info(lx);
-      console.info("ly");
-      console.info(ly);*/
       if(x.groups && x.legend.useGroups){
         // create data
         for (var g1 = 0; g1 < x.groups.length; g1++){
-          /*console.info("ly+g1*step");
-          console.info(ly+g1*step);*/
-          legendnodes.add({id: null, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
+          tmp_ly =ly+g1*step;
+          if(tmp_ly === 0){
+            tmp_ly = 1
+          }
+          legendnodes.add({id: null, x : tmp_lx, y : tmp_ly, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
         }
         // control icon size
         if(x.options.groups){
@@ -1251,8 +1255,12 @@ HTMLWidgets.widget({
         }
         // set coordinates
         for (var g = 0; g < tmpnodes.length; g++){
-          tmpnodes[g].x = lx;
-          tmpnodes[g].y = ly+(g+legendnodes.length)*step;
+          tmpnodes[g].x = tmp_lx;
+          tmp_ly = ly+(g+legendnodes.length)*step;
+          if(tmp_ly === 0){
+            tmp_ly = 1
+          }
+          tmpnodes[g].y = tmp_ly;
           if(tmpnodes[g].value === undefined && tmpnodes[g].size === undefined){
             tmpnodes[g].value = 1;
           }
@@ -1293,14 +1301,27 @@ HTMLWidgets.widget({
             legendedges[edg].width = 1;
           }
 
-          legendnodes.add({id: edg*2+1, x : lx - mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : false, shape : "square", mass:0});
-          legendnodes.add({id: edg*2+2, x : lx + mynetwork.clientWidth/3, y : ly+ctrl*step, size : 0.0001, hidden : false, shape : "square", mass:0});
+          tmp_ly = ly+ctrl*step;
+          if(tmp_ly === 0){
+            tmp_ly = 1
+          }
+          
+          tmp_lx = lx - mynetwork.clientWidth/3;
+          if(tmp_lx === 0){
+            tmp_lx = 1
+          }
+          
+          tmp_lx2 = lx + mynetwork.clientWidth/3;
+          if(tmp_lx2 === 0){
+            tmp_lx2 = 1
+          }
+          
+          legendnodes.add({id: edg*2+1, x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
+          legendnodes.add({id: edg*2+2, x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
           ctrl = ctrl+1;
         }
       }
       
-      /*console.info("legendnodes");
-      console.info(legendnodes);*/
       // render legend network
       datalegend = {
         nodes: legendnodes, 
