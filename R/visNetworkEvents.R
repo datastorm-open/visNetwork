@@ -1,9 +1,10 @@
 #' Network visualization events
 #'
 #' Network visualization events. For full documentation, have a look at \link{visDocumentation}.
-#' Use \code{visEventsOnce} to set an event listener only once.
+#' Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable.
 #'
 #' @param graph : a visNetwork object
+#' @param type : Character. "on" (Default) to full listener, "once" to set an event listener only once, or "off" to disable a listener.
 #' @param click : Fired when the user clicks the mouse or taps on a touchscreen device.
 #' @param doubleClick : Fired when the user double clicks the mouse or double taps on a touchscreen device. Since a double click is in fact 2 clicks, 2 click events are fired, followed by a double click event. If you do not want to use the click events if a double click event is fired, just check the time between click events before processing them.
 #' @param oncontext : Fired when the user click on the canvas with the right mouse button. The right mouse button does not select by default. You can use the method getNodeAt to select the node if you want.
@@ -45,7 +46,15 @@
 #'      dragEnd = "function(properties) {
 #'      alert('finsih to drag');}")
 #'
-#' @rdname visNetwork-Events
+#' # set one 
+#' visNetwork(nodes, edges) %>%
+#'  visEvents(type = "once", select = "function() {
+#'      alert('first selection');}") %>%
+#'  visEvents(select = "function(properties) {
+#'      alert('selected nodes: ' + properties.nodes);}", 
+#'      dragEnd = "function(properties) {
+#'      alert('finsih to drag');}")
+#'      
 #' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -54,6 +63,7 @@
 #'
 #' @export
 visEvents <- function(graph,
+                      type = "on",
                       click = NULL,
                       doubleClick = NULL,
                       oncontext = NULL,
@@ -92,83 +102,7 @@ visEvents <- function(graph,
     stop("graph must be a visNetwork object")
   }
   
-  events <- list()
-  events$click  <- JS(click)
-  events$doubleClick  <- JS(doubleClick)
-  events$oncontext  <- JS(oncontext)
-  events$hold  <- JS(hold)
-  events$release  <- JS(release)
-  events$select  <- JS(select)
-  events$selectNode  <- JS(selectNode)
-  events$selectEdge  <- JS(selectEdge)
-  events$deselectNode  <- JS(deselectNode)
-  events$deselectEdge  <- JS(deselectEdge)
-  events$dragStart  <- JS(dragStart)
-  events$dragging  <- JS(dragging)
-  events$dragEnd  <- JS(dragEnd)
-  events$hoverNode  <- JS(hoverNode)
-  events$blurNode  <- JS(blurNode)
-  events$hoverEdge  <- JS(hoverEdge)
-  events$blurEdge  <- JS(blurEdge)
-  events$zoom  <- JS(zoom)
-  events$showPopup  <- JS(showPopup)
-  events$hidePopup  <- JS(hidePopup)
-  events$startStabilizing  <- JS(startStabilizing)
-  events$stabilizationProgress  <- JS(stabilizationProgress)
-  events$stabilizationIterationsDone  <- JS(stabilizationIterationsDone)
-  events$stabilized  <- JS(stabilized)
-  events$resize  <- JS(resize)
-  events$initRedraw  <- JS(initRedraw)
-  events$beforeDrawing  <- JS(beforeDrawing)
-  events$afterDrawing  <- JS(afterDrawing)
-  events$animationFinished <- JS(animationFinished)
-
-  graph$x$events <- mergeLists(graph$x$events, events)
-
-  graph
-
-}
-
-#' @rdname visNetwork-Events
-#' @export
-visEventsOnce <- function(graph,
-                      click = NULL,
-                      doubleClick = NULL,
-                      oncontext = NULL,
-                      hold = NULL,
-                      release = NULL,
-                      select = NULL,
-                      selectNode = NULL,
-                      selectEdge = NULL,
-                      deselectNode = NULL,
-                      deselectEdge = NULL,
-                      dragStart = NULL,
-                      dragging = NULL,
-                      dragEnd = NULL,
-                      hoverNode = NULL,
-                      blurNode = NULL,
-                      hoverEdge = NULL,
-                      blurEdge = NULL,
-                      zoom = NULL,
-                      showPopup = NULL,
-                      hidePopup = NULL,
-                      startStabilizing = NULL,
-                      stabilizationProgress = NULL,
-                      stabilizationIterationsDone = NULL,
-                      stabilized = NULL,
-                      resize = NULL,
-                      initRedraw = NULL,
-                      beforeDrawing = NULL,
-                      afterDrawing = NULL,
-                      animationFinished = NULL){
-  
-  if(any(class(graph) %in% "visNetwork_Proxy")){
-    stop("Can't use visEvents with visNetworkProxy object")
-  }
-  
-  if(!any(class(graph) %in% "visNetwork")){
-    stop("graph must be a visNetwork object")
-  }
+  stopifnot(type %in% c("on", "once", "off"))
   
   events <- list()
   events$click  <- JS(click)
@@ -200,9 +134,15 @@ visEventsOnce <- function(graph,
   events$beforeDrawing  <- JS(beforeDrawing)
   events$afterDrawing  <- JS(afterDrawing)
   events$animationFinished <- JS(animationFinished)
-  
-  graph$x$eventsOnce <- mergeLists(graph$x$eventsOnce, events)
-  
+
+  if(type %in% "on"){
+    graph$x$events <- mergeLists(graph$x$events, events)
+  } else if (type %in% "once"){
+    graph$x$OnceEvents <- mergeLists(graph$x$OnceEvents, events)
+  } else if (type %in% "off"){
+    graph$x$ResetEvents <- mergeLists(graph$x$ResetEvents, events)
+  }
+
   graph
-  
+
 }

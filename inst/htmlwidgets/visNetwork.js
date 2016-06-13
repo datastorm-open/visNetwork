@@ -1442,9 +1442,15 @@ HTMLWidgets.widget({
       }
     }
 
-    if(x.eventsOnce !== undefined){
-      for (var key in x.eventsOnce) {
-          instance.network.once(key, x.eventsOnce[key]);
+    if(x.OnceEvents !== undefined){
+      for (var key in x.OnceEvents) {
+          instance.network.once(key, x.OnceEvents[key]);
+      }
+    }
+    
+    if(x.ResetEvents !== undefined){
+      for (var key in x.ResetEvents) {
+          instance.network.off(key, x.ResetEvents[key]);
       }
     }
     //*************************
