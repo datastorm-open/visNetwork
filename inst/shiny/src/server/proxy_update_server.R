@@ -23,14 +23,18 @@ observe({
   
   visNetworkProxy("network_proxy_update") %>%
     visUpdateNodes(nodes = nodes) %>%
-    visUpdateEdges(edges = edges)
+    visUpdateEdges(edges = edges) %>%
+    visEvents(type = "on", dragEnd = "function(properties) {
+     alert('finsih to drag');}")
 })
 
 observe({
   input$goRemove
   visNetworkProxy("network_proxy_update") %>%
     visRemoveNodes(id = c(1:5)) %>%
-    visRemoveEdges(id = c(1:5))
+    visRemoveEdges(id = c(1:5)) %>%
+    visEvents(type = "off", dragEnd = "function(properties) {
+              alert('finsih to drag');}")
 })
 
 

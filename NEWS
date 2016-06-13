@@ -3,6 +3,7 @@ visNetwork 1.0.1
 
   * New options for highlightNearest : can use hierarchical information
   * Add type argument to set listener once, or disabled it
+  * Enabled visEvents with shiny/visNetworkProxy
   
 visNetwork 1.0.0
 --------------------------------------------------------------------------------

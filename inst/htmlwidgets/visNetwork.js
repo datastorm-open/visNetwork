@@ -445,6 +445,30 @@ function uniqueArray(arr) {
 //--------------------------------------------------------------- 
 if (HTMLWidgets.shinyMode){
   
+
+  // event method
+  Shiny.addCustomMessageHandler('visShinyEvents', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        
+        if(data.type === "once"){
+          for (var key in data.events) {
+            eval('network.once("' + key + '",' + data.events[key] + ')');
+          }
+        } else if(data.type === "on"){
+          for (var key in data.events) {
+            eval('network.on("' + key + '",' + data.events[key] + ')');
+          }
+        } else if(data.type === "off"){
+          for (var key in data.events) {
+            eval('network.off("' + key + '")');
+          }
+        }
+      }
+  });
+  
   // moveNode method
   Shiny.addCustomMessageHandler('visShinyMoveNode', function(data){
       // get container id
@@ -1450,7 +1474,7 @@ HTMLWidgets.widget({
     
     if(x.ResetEvents !== undefined){
       for (var key in x.ResetEvents) {
-          instance.network.off(key, x.ResetEvents[key]);
+          instance.network.off(key);
       }
     }
     //*************************

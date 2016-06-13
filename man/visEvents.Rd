@@ -80,7 +80,7 @@ visEvents(graph, type = "on", click = NULL, doubleClick = NULL,
 }
 \description{
 Network visualization events. For full documentation, have a look at \link{visDocumentation}.
-Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable.
+Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable all the related events.
 }
 \examples{
 

@@ -1,7 +1,7 @@
 #' Network visualization events
 #'
 #' Network visualization events. For full documentation, have a look at \link{visDocumentation}.
-#' Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable.
+#' Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable all the related events.
 #'
 #' @param graph : a visNetwork object
 #' @param type : Character. "on" (Default) to full listener, "once" to set an event listener only once, or "off" to disable a listener.
@@ -94,55 +94,58 @@ visEvents <- function(graph,
                       afterDrawing = NULL,
                       animationFinished = NULL){
 
-  if(any(class(graph) %in% "visNetwork_Proxy")){
-    stop("Can't use visEvents with visNetworkProxy object")
-  }
-  
-  if(!any(class(graph) %in% "visNetwork")){
-    stop("graph must be a visNetwork object")
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
   }
   
   stopifnot(type %in% c("on", "once", "off"))
   
   events <- list()
-  events$click  <- JS(click)
-  events$doubleClick  <- JS(doubleClick)
-  events$oncontext  <- JS(oncontext)
-  events$hold  <- JS(hold)
-  events$release  <- JS(release)
-  events$select  <- JS(select)
-  events$selectNode  <- JS(selectNode)
-  events$selectEdge  <- JS(selectEdge)
-  events$deselectNode  <- JS(deselectNode)
-  events$deselectEdge  <- JS(deselectEdge)
-  events$dragStart  <- JS(dragStart)
-  events$dragging  <- JS(dragging)
-  events$dragEnd  <- JS(dragEnd)
-  events$hoverNode  <- JS(hoverNode)
-  events$blurNode  <- JS(blurNode)
-  events$hoverEdge  <- JS(hoverEdge)
-  events$blurEdge  <- JS(blurEdge)
-  events$zoom  <- JS(zoom)
-  events$showPopup  <- JS(showPopup)
-  events$hidePopup  <- JS(hidePopup)
-  events$startStabilizing  <- JS(startStabilizing)
-  events$stabilizationProgress  <- JS(stabilizationProgress)
-  events$stabilizationIterationsDone  <- JS(stabilizationIterationsDone)
-  events$stabilized  <- JS(stabilized)
-  events$resize  <- JS(resize)
-  events$initRedraw  <- JS(initRedraw)
-  events$beforeDrawing  <- JS(beforeDrawing)
-  events$afterDrawing  <- JS(afterDrawing)
-  events$animationFinished <- JS(animationFinished)
+  events$click  <- click
+  events$doubleClick  <- doubleClick
+  events$oncontext  <- oncontext
+  events$hold  <- hold
+  events$release  <- release
+  events$select  <- select
+  events$selectNode  <- selectNode
+  events$selectEdge  <- selectEdge
+  events$deselectNode  <- deselectNode
+  events$deselectEdge  <- deselectEdge
+  events$dragStart  <- dragStart
+  events$dragging  <- dragging
+  events$dragEnd  <- dragEnd
+  events$hoverNode  <- hoverNode
+  events$blurNode  <- blurNode
+  events$hoverEdge  <- hoverEdge
+  events$blurEdge  <- blurEdge
+  events$zoom  <- zoom
+  events$showPopup  <- showPopup
+  events$hidePopup  <- hidePopup
+  events$startStabilizing  <- startStabilizing
+  events$stabilizationProgress  <- stabilizationProgress
+  events$stabilizationIterationsDone  <- stabilizationIterationsDone
+  events$stabilized  <- stabilized
+  events$resize  <- resize
+  events$initRedraw  <- initRedraw
+  events$beforeDrawing  <- beforeDrawing
+  events$afterDrawing  <- afterDrawing
+  events$animationFinished <- animationFinished
 
-  if(type %in% "on"){
-    graph$x$events <- mergeLists(graph$x$events, events)
-  } else if (type %in% "once"){
-    graph$x$OnceEvents <- mergeLists(graph$x$OnceEvents, events)
-  } else if (type %in% "off"){
-    graph$x$ResetEvents <- mergeLists(graph$x$ResetEvents, events)
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(nodes = nodes)
+    data <- list(id = graph$id, type = type, events = events)
+    graph$session$sendCustomMessage("visShinyEvents",data)
+  }else{
+    events <- lapply(events, function(x) htmlwidgets::JS(x))
+    if(type %in% "on"){
+      graph$x$events <- mergeLists(graph$x$events, events)
+    } else if (type %in% "once"){
+      graph$x$OnceEvents <- mergeLists(graph$x$OnceEvents, events)
+    } else if (type %in% "off"){
+      graph$x$ResetEvents <- mergeLists(graph$x$ResetEvents, events)
+    }
   }
-
+  
   graph
 
 }
