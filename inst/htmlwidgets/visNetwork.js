@@ -2076,13 +2076,18 @@ HTMLWidgets.widget({
                   var totalMass = 0;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
-                      if(i === 0){
-                        clusterOptions.shape =  childNodes[i].shape;
-                      }else{
-                        if(childNodes[i].shape !== clusterOptions.shape){
-                          clusterOptions.shape = 'database';
+                      if(x.clusteringColor.force === false){
+                        if(i === 0){
+                          clusterOptions.shape =  childNodes[i].shape;
+                        }else{
+                          if(childNodes[i].shape !== clusterOptions.shape){
+                            clusterOptions.shape = x.clusteringColor.shape;
+                          }
                         }
+                      } else {
+                        clusterOptions.shape = x.clusteringColor.shape;
                       }
+
                   }
                   clusterOptions.value = totalMass;
                   return clusterOptions;
@@ -2115,16 +2120,21 @@ HTMLWidgets.widget({
                   var totalMass = 0;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
-                      if(i === 0){
-                        clusterOptions.shape =  childNodes[i].shape;
-                        clusterOptions.color =  childNodes[i].color.background;
-                      }else{
-                        if(childNodes[i].shape !== clusterOptions.shape){
-                          clusterOptions.shape = 'database';
+                      if(x.clusteringGroup.force === false){
+                        if(i === 0){
+                          clusterOptions.shape =  childNodes[i].shape;
+                          clusterOptions.color =  childNodes[i].color.background;
+                        }else{
+                          if(childNodes[i].shape !== clusterOptions.shape){
+                            clusterOptions.shape = x.clusteringGroup.shape;
+                          }
+                          if(childNodes[i].color.background !== clusterOptions.color){
+                            clusterOptions.color = x.clusteringGroup.color;
+                          }
                         }
-                        if(childNodes[i].color.background !== clusterOptions.color){
-                          clusterOptions.color = 'grey';
-                        }
+                      } else {
+                        clusterOptions.shape = x.clusteringGroup.shape;
+                        clusterOptions.color = x.clusteringGroup.color;
                       }
                   }
                   clusterOptions.value = totalMass;

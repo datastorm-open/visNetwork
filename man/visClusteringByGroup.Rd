@@ -4,7 +4,8 @@
 \alias{visClusteringByGroup}
 \title{Network visualization clustering options - by group}
 \usage{
-visClusteringByGroup(graph, groups, label = "Cluster on group : ")
+visClusteringByGroup(graph, groups, label = "Cluster on group : ",
+  shape = "database", color = "grey", force = FALSE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -12,6 +13,12 @@ visClusteringByGroup(graph, groups, label = "Cluster on group : ")
 \item{groups}{: Character/vector. groups we want to cluster}
 
 \item{label}{: Character. Label put before value(s). See example}
+
+\item{shape}{: Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default}
+
+\item{color}{: Character. Color of cluster(s) if different colors between nodes or \code{force = T}. "grey" per default}
+
+\item{force}{: If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly defaut shape and color}
 }
 \description{
 Network visualization clustering options - by group.
@@ -26,7 +33,8 @@ Network visualization clustering options - by group.
  visNetwork(nodes, edges, legend = TRUE) \%>\%
    visGroups(groupname = "A", color = "red", shape = "database") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
-   visClusteringByGroup(groups = c("B"), label = "Group : ")
+   visClusteringByGroup(groups = c("B"), label = "Group : ", 
+     shape = "ellipse", color = "blue", force = TRUE)
  
 }
 

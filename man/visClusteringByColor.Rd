@@ -4,7 +4,8 @@
 \alias{visClusteringByColor}
 \title{Network visualization clustering options - by color}
 \usage{
-visClusteringByColor(graph, colors, label = "Cluster on color : ")
+visClusteringByColor(graph, colors, label = "Cluster on color : ",
+  shape = "database", force = FALSE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -12,6 +13,10 @@ visClusteringByColor(graph, colors, label = "Cluster on color : ")
 \item{colors}{: Character/vector. colors we want to cluster}
 
 \item{label}{: Character. Label put before value(s). See example}
+
+\item{shape}{: Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default}
+
+\item{force}{: If \code{force = FALSE}, Set shape of nodes if all equal, else directly defaut shape}
 }
 \description{
 Network visualization clustering options - by color.

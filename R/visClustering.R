@@ -42,6 +42,8 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #' @param graph : a visNetwork object
 #' @param colors : Character/vector. colors we want to cluster
 #' @param label : Character. Label put before value(s). See example
+#' @param shape : Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default
+#' @param force : If \code{force = FALSE}, Set shape of nodes if all equal, else directly defaut shape
 #' 
 #' @examples
 #'
@@ -67,7 +69,8 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
 #'    visClusteringByGroup(groups = c("A","B"))
 #' @export
-visClusteringByColor <- function(graph, colors, label = "Cluster on color : "){
+visClusteringByColor <- function(graph, colors, label = "Cluster on color : ",
+                                 shape = "database", force = FALSE){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringByColor with visNetworkProxy object")
@@ -80,7 +83,7 @@ visClusteringByColor <- function(graph, colors, label = "Cluster on color : "){
   if(length(colors) == 1){
     colors <- list(colors)
   }
-  clusteringColor<- list(colors = colors, label = label)
+  clusteringColor<- list(colors = colors, label = label, shape = shape, force = force)
   
   graph$x$clusteringColor <- clusteringColor 
   
@@ -137,6 +140,10 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #' @param graph : a visNetwork object
 #' @param groups : Character/vector. groups we want to cluster
 #' @param label : Character. Label put before value(s). See example
+#' @param shape : Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default
+#' @param color : Character. Color of cluster(s) if different colors between nodes or \code{force = T}. "grey" per default
+#' @param force : If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly defaut shape and color
+#' 
 #' 
 #' @examples
 #'
@@ -148,10 +155,12 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #'  visNetwork(nodes, edges, legend = TRUE) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-#'    visClusteringByGroup(groups = c("B"), label = "Group : ")
+#'    visClusteringByGroup(groups = c("B"), label = "Group : ", 
+#'      shape = "ellipse", color = "blue", force = TRUE)
 #'  
 #' @export
-visClusteringByGroup <- function(graph, groups, label = "Cluster on group : "){
+visClusteringByGroup <- function(graph, groups, label = "Cluster on group : ", 
+                                 shape = "database", color = "grey", force = FALSE){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringByGroup with visNetworkProxy object")
@@ -164,7 +173,7 @@ visClusteringByGroup <- function(graph, groups, label = "Cluster on group : "){
   if(length(groups) == 1){
     groups <- list(groups)
   }
-  clusteringGroup<- list(groups = groups, label = label)
+  clusteringGroup<- list(groups = groups, label = label, shape = shape, color = color, force = force)
   
   graph$x$clusteringGroup <- clusteringGroup
   
