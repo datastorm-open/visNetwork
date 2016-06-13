@@ -4,12 +4,14 @@
 \alias{visClusteringByColor}
 \title{Network visualization clustering options - by color}
 \usage{
-visClusteringByColor(graph, colors)
+visClusteringByColor(graph, colors, label = "Cluster on color : ")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
 \item{colors}{: Character/vector. colors we want to cluster}
+
+\item{label}{: Character. Label put before value(s). See example}
 }
 \description{
 Network visualization clustering options - by color.
@@ -30,8 +32,8 @@ visNetwork(nodes, edges) \%>\%
  visNetwork(nodes, edges, legend = TRUE) \%>\%
    visGroups(groupname = "A", color = "red", shape = "square") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
-   visClusteringByColor(colors = c("red")) \%>\%
-   visClusteringByGroup(groups = c("B"))
+   visClusteringByColor(colors = c("red"), label = "With color ") \%>\%
+   visClusteringByGroup(groups = c("B"), label = "Group : ")
    
  visNetwork(nodes, edges, legend = TRUE) \%>\%
    visGroups(groupname = "A", color = "red", shape = "triangle") \%>\%

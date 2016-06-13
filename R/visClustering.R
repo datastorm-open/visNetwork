@@ -41,6 +41,7 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #' 
 #' @param graph : a visNetwork object
 #' @param colors : Character/vector. colors we want to cluster
+#' @param label : Character. Label put before value(s). See example
 #' 
 #' @examples
 #'
@@ -58,15 +59,15 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #'  visNetwork(nodes, edges, legend = TRUE) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "square") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-#'    visClusteringByColor(colors = c("red")) %>%
-#'    visClusteringByGroup(groups = c("B"))
+#'    visClusteringByColor(colors = c("red"), label = "With color ") %>%
+#'    visClusteringByGroup(groups = c("B"), label = "Group : ")
 #'    
 #'  visNetwork(nodes, edges, legend = TRUE) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "triangle") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
 #'    visClusteringByGroup(groups = c("A","B"))
 #' @export
-visClusteringByColor <- function(graph, colors){
+visClusteringByColor <- function(graph, colors, label = "Cluster on color : "){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringByColor with visNetworkProxy object")
@@ -79,7 +80,7 @@ visClusteringByColor <- function(graph, colors){
   if(length(colors) == 1){
     colors <- list(colors)
   }
-  clusteringColor<- list(colors = colors)
+  clusteringColor<- list(colors = colors, label = label)
   
   graph$x$clusteringColor <- clusteringColor 
   
@@ -135,6 +136,7 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #' 
 #' @param graph : a visNetwork object
 #' @param groups : Character/vector. groups we want to cluster
+#' @param label : Character. Label put before value(s). See example
 #' 
 #' @examples
 #'
@@ -146,10 +148,10 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #'  visNetwork(nodes, edges, legend = TRUE) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-#'    visClusteringByGroup(groups = c("B"))
+#'    visClusteringByGroup(groups = c("B"), label = "Group : ")
 #'  
 #' @export
-visClusteringByGroup <- function(graph, groups){
+visClusteringByGroup <- function(graph, groups, label = "Cluster on group : "){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visClusteringByGroup with visNetworkProxy object")
@@ -162,7 +164,7 @@ visClusteringByGroup <- function(graph, groups){
   if(length(groups) == 1){
     groups <- list(groups)
   }
-  clusteringGroup<- list(groups = groups)
+  clusteringGroup<- list(groups = groups, label = label)
   
   graph$x$clusteringGroup <- clusteringGroup
   

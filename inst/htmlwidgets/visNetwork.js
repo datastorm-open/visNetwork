@@ -2087,7 +2087,7 @@ HTMLWidgets.widget({
                   clusterOptions.value = totalMass;
                   return clusterOptions;
               },
-              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, color:color, label:'Cluster on color:' + color}
+              clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, color:color, label: x.clusteringColor.label + color}
           }
           instance.network.cluster(clusterOptionsByData);
         }
@@ -2130,7 +2130,7 @@ HTMLWidgets.widget({
                   clusterOptions.value = totalMass;
                   return clusterOptions;
               },
-              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:'Cluster on group:' + group}
+              clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
           }
           instance.network.cluster(clusterOptionsByData);
         }

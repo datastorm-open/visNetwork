@@ -4,12 +4,14 @@
 \alias{visClusteringByGroup}
 \title{Network visualization clustering options - by group}
 \usage{
-visClusteringByGroup(graph, groups)
+visClusteringByGroup(graph, groups, label = "Cluster on group : ")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
 \item{groups}{: Character/vector. groups we want to cluster}
+
+\item{label}{: Character. Label put before value(s). See example}
 }
 \description{
 Network visualization clustering options - by group.
@@ -24,7 +26,7 @@ Network visualization clustering options - by group.
  visNetwork(nodes, edges, legend = TRUE) \%>\%
    visGroups(groupname = "A", color = "red", shape = "database") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
-   visClusteringByGroup(groups = c("B"))
+   visClusteringByGroup(groups = c("B"), label = "Group : ")
  
 }
 
