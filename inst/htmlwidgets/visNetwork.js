@@ -1208,12 +1208,18 @@ HTMLWidgets.widget({
       
       var mynetwork = document.getElementById('legend'+el.id);
       var lx = - mynetwork.clientWidth / 2 + 50;
-      var ly = - mynetwork.clientWidth / 2 + 50;
+      var ly = - mynetwork.clientHeight / 2 + 50;
       var step = 70;
       // want to view groups in legend
+      /*console.info("lx");
+      console.info(lx);
+      console.info("ly");
+      console.info(ly);*/
       if(x.groups && x.legend.useGroups){
         // create data
         for (var g1 = 0; g1 < x.groups.length; g1++){
+          /*console.info("ly+g1*step");
+          console.info(ly+g1*step);*/
           legendnodes.add({id: null, x : lx, y : ly+g1*step, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
         }
         // control icon size
@@ -1293,6 +1299,8 @@ HTMLWidgets.widget({
         }
       }
       
+      /*console.info("legendnodes");
+      console.info(legendnodes);*/
       // render legend network
       datalegend = {
         nodes: legendnodes, 
