@@ -4,7 +4,7 @@ visNetwork 1.0.1
   * New options for highlightNearest : can use hierarchical information
   * Add type argument to set listener once, or disabled it
   * Enabled visEvents with shiny/visNetworkProxy
-  * Add some options for clustering
+  * Add some options for clustering & fix interactions with visOptions
   * Fix some bug in legend placement with some special case
   
 visNetwork 1.0.0
