@@ -53,10 +53,10 @@
 #' edges = data.frame(from = c(1, 2, 2, 4, 6), to = c(2, 3, 4, 5, 4))
 #' 
 #' visNetwork(nodes, edges) %>% visHierarchicalLayout() %>% visEdges(arrows = "to") %>% 
-#'  visOptions(highlightNearest = list(enabled = T, algorithm = "hierarchical"))
+#'  visOptions(highlightNearest = list(enabled = TRUE, algorithm = "hierarchical"))
 #'  
 #' visNetwork(nodes, edges) %>% visHierarchicalLayout() %>% visEdges(arrows = "to") %>% 
-#'  visOptions(highlightNearest = list(enabled = T, algorithm = "hierarchical", 
+#'  visOptions(highlightNearest = list(enabled = TRUE, algorithm = "hierarchical", 
 #'    degree = list(from = 0, to = 2)))
 #'    
 #' ##########################
