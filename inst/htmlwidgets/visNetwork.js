@@ -2040,7 +2040,15 @@ HTMLWidgets.widget({
       instance.network.on("doubleClick", function (params) {
         if (params.nodes.length == 1) {
           if (instance.network.isCluster(params.nodes[0]) == true) {
-            instance.network.openCluster(params.nodes[0]);
+            instance.network.openCluster(params.nodes[0], {releaseFunction : function(clusterPosition, containedNodesPositions) {
+              //console.info(clusterPosition)
+              //console.info(containedNodesPositions)
+              //var newPositions = {};
+              // clusterPosition = {x:clusterX, y:clusterY};
+              // containedNodesPositions = {nodeId:{x:nodeX,y:nodeY}, nodeId2....}
+              //newPositions[nodeId] = {x:newPosX, y:newPosY};
+              return containedNodesPositions;
+            }});
             instance.network.fit()
           }
         }
