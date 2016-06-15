@@ -132,7 +132,6 @@ visEvents <- function(graph,
   events$animationFinished <- animationFinished
 
   if(any(class(graph) %in% "visNetwork_Proxy")){
-    options <- list(nodes = nodes)
     data <- list(id = graph$id, type = type, events = events)
     graph$session$sendCustomMessage("visShinyEvents",data)
   }else{

@@ -431,15 +431,7 @@ function resetList(list_name, id, shiny_input_name) {
     Shiny.onInputChange(id + '_' + shiny_input_name, "");
   }
 }
-//unique element in array
-function uniqueArray(arr) {
-    var a = [];
-    for (var i=0, l=arr.length; i<l; i++)
-        if (a.indexOf(arr[i]) === -1 && arr[i] !== '')
-            a.push(arr[i]);
-    return a;
-}
-            
+
 //----------------------------------------------------------------
 // All available functions/methods with visNetworkProxy
 //--------------------------------------------------------------- 
@@ -1585,7 +1577,23 @@ HTMLWidgets.widget({
     var is_hovered = false;
     var is_clicked = false;
     
+    //unique element in array
+    function uniqueArray(arr, exclude_cluster) {
+      var a = [];
+      for (var i=0, l=arr.length; i<l; i++){
+        if (a.indexOf(arr[i]) === -1 && arr[i] !== ''){
+          if(exclude_cluster === false){
+            a.push(arr[i]);
+          } else if(instance.network.isCluster(arr[i]) === false){
+            a.push(arr[i]);
+          }
+        }
+      }
+      return a;
+    }
+
     function neighbourhoodHighlight(params, action_type, algorithm) {
+
       var selectNode;
       // need to update nodes before ?
       if(document.getElementById(el.id).updateNodes){
@@ -1629,7 +1637,7 @@ HTMLWidgets.widget({
           }
           if(algorithm === "all"){
             if(degrees > 0){
-              var connectedNodes = instance.network.getConnectedNodes(selectedNode);
+              var connectedNodes = uniqueArray(instance.network.getConnectedNodes(selectedNode), true);
             }else{
               var connectedNodes = [selectedNode];
             }
@@ -1641,7 +1649,7 @@ HTMLWidgets.widget({
                 var previous_connectedNodes = connectedNodes;
                 var currentlength = connectedNodes.length;
                 for (j = 0; j < currentlength; j++) {
-                  connectedNodes = uniqueArray(connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j])));
+                  connectedNodes = uniqueArray(connectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j])), true);
                 }
                 if (connectedNodes.length === previous_connectedNodes.length) { break; }
               }
@@ -1650,6 +1658,9 @@ HTMLWidgets.widget({
             for (j = 0; j < connectedNodes.length; j++) {
                 allConnectedNodes = allConnectedNodes.concat(instance.network.getConnectedNodes(connectedNodes[j]));
             }
+            
+            allConnectedNodes = uniqueArray(allConnectedNodes, true);
+
             // all higher degree nodes get a different color and their label back
             for (i = 0; i < allConnectedNodes.length; i++) {
               if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
@@ -1747,8 +1758,8 @@ HTMLWidgets.widget({
               }
             }
             
-            allConnectedNodes = uniqueArray(allConnectedNodes).concat([selectedNode]);
-            
+            allConnectedNodes = uniqueArray(allConnectedNodes, true).concat([selectedNode]);
+
             var nodesWithLabel = [];
             if(degrees > 0){
               // nodes to just label
@@ -1759,11 +1770,11 @@ HTMLWidgets.widget({
               for (j = 0; j < currentConnectedFromNodes.length; j++) {
                   nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedFromNodes[j]));
               }
-              nodesWithLabel = uniqueArray(nodesWithLabel);
+              nodesWithLabel = uniqueArray(nodesWithLabel, true);
             } else{
               nodesWithLabel = currentConnectedToNodes;
               nodesWithLabel = nodesWithLabel.concat(currentConnectedFromNodes);
-              nodesWithLabel = uniqueArray(nodesWithLabel);
+              nodesWithLabel = uniqueArray(nodesWithLabel, true);
             }
 
             // all higher degree nodes get a different color and their label back
@@ -1873,34 +1884,40 @@ HTMLWidgets.widget({
 
     // shared click function (selectedNodes)
     document.getElementById("graph"+el.id).myclick = function(params){
-      if(document.getElementById(el.id).highlight && x.nodes){
-        neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
-      }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
-        onClickIDSelection(params)
-      } 
-      if(is_click_event){
-        x.events["click"](params);
+      if(instance.network.isCluster(params.nodes) === false){
+        if(document.getElementById(el.id).highlight && x.nodes){
+          neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
+        }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
+          onClickIDSelection(params)
+        } 
+        if(is_click_event){
+          x.events["click"](params);
+        }
       }
     };
     
     // Set event in relation with highlightNearest      
     instance.network.on("click", function(params){
-      if(document.getElementById(el.id).highlight && x.nodes){
-        neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
-      }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
-        onClickIDSelection(params)
-      } 
-      if(is_click_event){
-        x.events["click"](params);
+      if(instance.network.isCluster(params.nodes) === false){
+        if(document.getElementById(el.id).highlight && x.nodes){
+          neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
+        }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
+          onClickIDSelection(params)
+        } 
+        if(is_click_event){
+          x.events["click"](params);
+        }
       }
     });
     
     instance.network.on("hoverNode", function(params){
-      if(document.getElementById(el.id).hoverNearest && x.nodes){
-        neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
-      } 
-      if(is_hoverNode_event){
-        x.events["hoverNode"](params);
+      if(instance.network.isCluster(params.nodes) === false){
+        if(document.getElementById(el.id).hoverNearest && x.nodes){
+          neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
+        } 
+        if(is_hoverNode_event){
+          x.events["hoverNode"](params);
+        }
       }
     });
 
