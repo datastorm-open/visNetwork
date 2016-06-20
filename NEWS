@@ -6,6 +6,7 @@ visNetwork 1.0.1
   * Enabled visEvents with shiny/visNetworkProxy
   * Add some options for clustering & fix interactions with visOptions
   * Fix some bug in legend placement with some special case
+  * New size control with visIgraphLayout
   
 visNetwork 1.0.0
 --------------------------------------------------------------------------------

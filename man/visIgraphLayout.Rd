@@ -45,34 +45,28 @@ edges <- data.frame(from = sample(1:nnodes, nnedges, replace = T),
 
 # with defaut layout
 visNetwork(nodes, edges) \%>\% 
- visIgraphLayout() \%>\%
- visNodes(size = 10)
+ visIgraphLayout()
 
 # use full space
 visNetwork(nodes, edges) \%>\% 
- visIgraphLayout(type = "full") \%>\%
- visNodes(size = 10)
+ visIgraphLayout(type = "full")
 
 # in circle ?
 visNetwork(nodes, edges) \%>\% 
  visIgraphLayout(layout = "layout_in_circle") \%>\%
- visNodes(size = 10) \%>\%
  visOptions(highlightNearest = list(enabled = T, hover = T), 
    nodesIdSelection = T)
  
 # keep physics with smooth curves ?
 visNetwork(nodes, edges) \%>\% 
- visIgraphLayout(physics = TRUE, smooth = TRUE) \%>\%
- visNodes(size = 10)
+ visIgraphLayout(physics = TRUE, smooth = TRUE)
 
 # fix radomSeed to keep position
 visNetwork(nodes, edges) \%>\% 
- visIgraphLayout(randomSeed = 123) \%>\%
- visNodes(size = 10)
+ visIgraphLayout(randomSeed = 123)
  
 visNetwork(nodes, edges) \%>\% 
- visIgraphLayout(randomSeed = 123) \%>\%
- visNodes(size = 10)
+ visIgraphLayout(randomSeed = 123)
 }
 }
 \seealso{
