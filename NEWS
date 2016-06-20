@@ -7,6 +7,7 @@ visNetwork 1.0.1
   * Add some options for clustering & fix interactions with visOptions
   * Fix some bug in legend placement with some special case
   * New size control with visIgraphLayout
+  * To vis.js 4.16.1
   
 visNetwork 1.0.0
 --------------------------------------------------------------------------------
