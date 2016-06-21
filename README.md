@@ -1,10 +1,16 @@
-## ``1.0.0`` available and submit to the CRAN
-
 # visNetwork
 
 ### R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
 
+# Online documentation
+
+### http://datastorm-open.github.io/visNetwork
+
+And have a look to multiple R examples, vis.js documentation (````visDocumentation````). 
+
 # News
+
+## ``1.0.1`` available on CRAN
 
 * #### Update network in shiny using  ````visNetworkProxy```` (lot of functionalities,  ````?visNetworkProxy````)
 
@@ -22,11 +28,7 @@
 
 * #### Add custom legend with ````visLegend````
 
-# Online documentation
-
-### http://datastorm-open.github.io/visNetwork
-
-And have a look to multiple R examples, vis.js documentation (````visDocumentation````). 
+# Example
 
 ```` 
 install.packages("visNetwork")
