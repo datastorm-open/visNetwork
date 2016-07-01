@@ -339,7 +339,11 @@ function visNetworkdataframeToD3(df, type) {
       for (var col = 0; col < names.length; col++) {
         if(df[colnames[col]][row] !== null){
           if(names[col].length === 1){
-            item[names[col]] = df[colnames[col]][row];
+            if(names[col][0] === "dashes"){
+              item[names[col]] = eval(df[colnames[col]][row]);
+            } else {
+              item[names[col]] = df[colnames[col]][row];
+            }
           } else if(names[col].length === 2){
             if(item[names[col][0]] === undefined){
               item[names[col][0]] = {};
@@ -1378,7 +1382,7 @@ HTMLWidgets.widget({
     } 
     
     var options = x.options;
-    
+
     //*************************
     //manipulation
     //*************************
