@@ -103,7 +103,7 @@ visInteraction <- function(graph,
     data <- list(id = graph$id, options = options)
     graph$session$sendCustomMessage("visShinyOptions",data)
   }else{
-    graph$x$options$interaction <- interaction
+    graph$x$options$interaction <- mergeLists(graph$x$options$interaction, interaction)
   }
   graph
 }
