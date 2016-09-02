@@ -9,8 +9,7 @@ datass <- reactive({
 })
 
 output$network_proxy_select <- renderVisNetwork({
-  visNetwork(datass()$nodes, datass()$edges) %>% visLegend() %>%
-    visOptions(highlightNearest = TRUE)
+  visNetwork(datass()$nodes, datass()$edges) %>% visLegend()
 })
 
 observe({
