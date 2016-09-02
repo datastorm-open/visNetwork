@@ -3,6 +3,7 @@ visNetwork 1.0.2
 
   * Fix visInteraction bug using visOptions together
   * Fix passing dashes options + add example
+  * Fix timevis bad interaction
   
 visNetwork 1.0.1
 --------------------------------------------------------------------------------
