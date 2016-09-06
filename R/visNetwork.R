@@ -36,6 +36,17 @@
 #'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.}
 #'}
 #'
+#'@param submain : For add a subtitle. Character or a named list.
+#'\itemize{
+#'  \item{"text"}{ : Character. Subtitle.}
+#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'}
+#'
+#'@param footer : For add a footer. Character or a named list.
+#'\itemize{
+#'  \item{"text"}{ : Character. footer.}
+#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'}
 #' @param ... : Don't use.
 #' 
 #' @examples
@@ -50,6 +61,10 @@
 #' visNetwork(nodes, edges, main = "visNetwork minimal example")
 #' visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
 #'  style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"))
+#'  
+#' # and subtitle and footer
+#' visNetwork(nodes, edges, main = "visNetwork minimal example",
+#'  submain = "For add a subtitle", footer = "Fig.1 minimal example")
 #'  
 #' # customization adding more variables (see visNodes and visEdges)
 #' nodes <- data.frame(id = 1:10, 
@@ -185,7 +200,7 @@
 #' @export
 #' 
 visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-                       width = NULL, height = NULL, main = NULL, ...) {
+                       width = NULL, height = NULL, main = NULL, submain = NULL, footer = NULL, ...) {
 
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
@@ -211,13 +226,53 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     }
   }
  
+  # submain
+  if(!is.null(submain)){
+    if(is.list(submain)){
+      if(any(!names(submain)%in%c("text", "style"))){
+        stop("Invalid 'submain' argument")
+      }
+      if(!"text"%in%names(submain)){
+        stop("Needed a 'text' value using a list for 'submain'")
+      }
+      if(!"style"%in%names(submain)){
+        submain$style <- 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'
+      }
+    }else if(!inherits(submain, "character")){
+      stop("Invalid 'submain' argument. Not a character")
+    }else {
+      submain <- list(text = submain, 
+                   style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
+    }
+  }
+  
+  # footer
+  if(!is.null(footer)){
+    if(is.list(footer)){
+      if(any(!names(footer)%in%c("text", "style"))){
+        stop("Invalid 'footer' argument")
+      }
+      if(!"text"%in%names(footer)){
+        stop("Needed a 'text' value using a list for 'footer'")
+      }
+      if(!"style"%in%names(footer)){
+        footer$style <- 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'
+      }
+    }else if(!inherits(footer, "character")){
+      stop("Invalid 'footer' argument. Not a character")
+    }else {
+      footer <- list(text = footer, 
+                      style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
+    }
+  }
+  
   if(!is.null(dot)){
     x <- list(dot = dot,
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main)
+              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
     
   }else if(!is.null(gephi)){
     x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
@@ -225,7 +280,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main)
+              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
   }else{
     
     # forward options using x
@@ -238,7 +293,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = groups, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main)
+              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
   }
 
   # previous legend control

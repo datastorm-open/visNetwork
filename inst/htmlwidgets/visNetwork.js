@@ -970,6 +970,16 @@ HTMLWidgets.widget({
       div_title.setAttribute('style',  x.main.style);
       document.getElementById(el.id).appendChild(div_title);  
     }
+    
+    //*************************
+    //subtitle
+    //*************************
+    if(x.submain !== null){
+      var div_subtitle = document.createElement('div');
+      div_subtitle.innerHTML = x.submain.text;
+      div_subtitle.setAttribute('style',  x.submain.style);
+      document.getElementById(el.id).appendChild(div_subtitle);  
+    }
  
     //*************************
     //idselection
@@ -1955,6 +1965,18 @@ HTMLWidgets.widget({
         x.events["blurNode"](params);
       }
     });
+    
+    //*************************
+    //footer
+    //*************************
+    if(x.footer !== null){
+      console.info("footer")
+      console.info(x.footer)
+      var div_footer = document.createElement('div');
+      div_footer.innerHTML = x.footer.text;
+      div_footer.setAttribute('style',  x.footer.style);
+      document.getElementById("graph"+el.id).appendChild(div_footer);  
+    }
     
     //*************************
     // export

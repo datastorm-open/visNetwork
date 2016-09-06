@@ -5,7 +5,8 @@
 \title{Network visualization}
 \usage{
 visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-  width = NULL, height = NULL, main = NULL, ...)
+  width = NULL, height = NULL, main = NULL, submain = NULL,
+  footer = NULL, ...)
 }
 \arguments{
 \item{nodes}{: data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
@@ -42,6 +43,18 @@ visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.}
 }}
 
+\item{submain}{: For add a subtitle. Character or a named list.
+\itemize{
+ \item{"text"}{ : Character. Subtitle.}
+ \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+}}
+
+\item{footer}{: For add a footer. Character or a named list.
+\itemize{
+ \item{"text"}{ : Character. footer.}
+ \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+}}
+
 \item{...}{: Don't use.}
 }
 \description{
@@ -59,6 +72,10 @@ visNetwork(nodes, edges)
 visNetwork(nodes, edges, main = "visNetwork minimal example")
 visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
  style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"))
+ 
+# and subtitle and footer
+visNetwork(nodes, edges, main = "visNetwork minimal example",
+ submain = "For add a subtitle", footer = "Fig.1 minimal example")
  
 # customization adding more variables (see visNodes and visEdges)
 nodes <- data.frame(id = 1:10, 

@@ -5,7 +5,7 @@ output$network_id <- renderVisNetwork({
   edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
                       to = trunc(runif(15)*(15-1))+1)
   
-  visNetwork(nodes, edges) %>%
+  visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
     visExport() %>%
     visOptions(highlightNearest = TRUE, 
                nodesIdSelection = list(enabled = TRUE, selected = "1"))
