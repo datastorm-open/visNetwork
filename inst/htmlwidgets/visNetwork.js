@@ -584,6 +584,28 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+  // get edges data
+  Shiny.addCustomMessageHandler('visShinyGetEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var current_edges = el.edges.getDataSet();
+        // return data in shiny
+        Shiny.onInputChange(data.input, current_edges._data);
+      }
+  });
+  
+  // get nodes data
+  Shiny.addCustomMessageHandler('visShinyGetNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var current_nodes = el.nodes.getDataSet();
+        // return data in shiny
+        Shiny.onInputChange(data.input, current_nodes._data);
+      }
+  });
+  
   // Redraw the network
   Shiny.addCustomMessageHandler('visShinyRedraw', function(data){
       // get container id

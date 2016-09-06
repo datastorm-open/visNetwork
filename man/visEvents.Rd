@@ -101,8 +101,16 @@ visNetwork(nodes, edges) \%>\%
      alert('selected nodes: ' + properties.nodes);}", 
      dragEnd = "function(properties) {
      alert('finsih to drag');}")
-     
+      
+# use this to get the network
+nodes <- data.frame(id = 1:3)
+edges <- data.frame(from = c(1,2), to = c(1,3))
 
+visNetwork(nodes, edges) \%>\%
+  visEvents(type = "once", startStabilizing = "function() {
+            this.moveTo({scale:0.1})}") \%>\%
+  visPhysics(stabilization = FALSE)
+  
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

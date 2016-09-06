@@ -1,6 +1,7 @@
 visNetwork 1.0.2
 --------------------------------------------------------------------------------
 
+  * add visGetNodes & visGetEdges to get data using shiny
   * Fix visInteraction bug using visOptions together
   * Fix passing dashes options + add example
   * Fix timevis bad interaction
