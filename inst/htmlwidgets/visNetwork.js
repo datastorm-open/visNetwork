@@ -920,7 +920,7 @@ HTMLWidgets.widget({
     var data;
     var nodes;
     var edges;
-    
+
     // highlight nearest variables & selectedBy
     var allNodes;
     var nodesDataset;
@@ -1970,8 +1970,6 @@ HTMLWidgets.widget({
     //footer
     //*************************
     if(x.footer !== null){
-      console.info("footer")
-      console.info(x.footer)
       var div_footer = document.createElement('div');
       div_footer.innerHTML = x.footer.text;
       div_footer.setAttribute('style',  x.footer.style);
@@ -1999,9 +1997,24 @@ HTMLWidgets.widget({
       document.getElementById("maindiv"+el.id).appendChild(downloaddiv);
       
       document.getElementById("download"+el.id).onclick = function() {
-           
+
+      // height control for export
+      var addHeightExport = document.getElementById("graph" + el.id).offsetHeight + idList.offsetHeight + byList.offsetHeight + downloaddiv.offsetHeight;
+      if(x.main !== null){
+        addHeightExport = addHeightExport + div_title.offsetHeight;
+      }
+      if(x.submain !== null){
+        addHeightExport = addHeightExport + div_subtitle.offsetHeight;
+      }
+      if(x.footer !== null){
+        addHeightExport = addHeightExport + div_footer.offsetHeight;
+      } else {
+        addHeightExport = addHeightExport + 15;
+      }
+
            html2canvas(document.getElementById(el.id), {
              background: x.export.background,
+             height : addHeightExport,
               onrendered: function(canvas) {
                 canvas.toBlob(function(blob) {
                             saveAs(blob, x.export.name);

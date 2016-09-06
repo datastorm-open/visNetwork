@@ -3,7 +3,7 @@ shiny::tabPanel(
   fluidRow(
     column(
       width = 12,
-      visNetworkOutput("network_id",height = "600px"),
+      visNetworkOutput("network_id",height = "100px"),
       fluidRow(
         column(
           width = 6,

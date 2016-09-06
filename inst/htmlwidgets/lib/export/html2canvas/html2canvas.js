@@ -600,13 +600,15 @@ window.html2canvas = function(nodeList, options) {
 
     var node = ((nodeList === undefined) ? [document.documentElement] : ((nodeList.length) ? nodeList : [nodeList]))[0];
     node.setAttribute(html2canvasNodeAttribute + index, index);
-    return renderDocument(node.ownerDocument, options, node.ownerDocument.defaultView.innerWidth, node.ownerDocument.defaultView.innerHeight, index).then(function(canvas) {
-        if (typeof(options.onrendered) === "function") {
-            log("options.onrendered is deprecated, html2canvas returns a Promise containing the canvas");
-            options.onrendered(canvas);
-        }
-        return canvas;
-    });
+    var width = options.width != null ? options.width : node.ownerDocument.defaultView.innerWidth; var height = options.height != null ? options.height+node.ownerDocument.defaultView.innerHeight : node.ownerDocument.defaultView.innerHeight; return renderDocument(node.ownerDocument, options, width, height, index).then(function (canvas) { if (typeof(options.onrendered) === "function") { log("options.onrendered is deprecated, html2canvas returns a Promise containing the canvas"); options.onrendered(canvas); } return canvas; });
+ //   return renderDocument(node.ownerDocument, options, options.width != undefined ? options.width : node.ownerDocument.defaultView.innerWidth, options.height != undefined ? options.height : node.ownerDocument.defaultView.innerHeight, index).then(function(canvas) {
+    //return renderDocument(node.ownerDocument, options, node.ownerDocument.defaultView.innerWidth, node.ownerDocument.defaultView.innerHeight, index).then(function(canvas) {
+//        if (typeof(options.onrendered) === "function") {
+//            log("options.onrendered is deprecated, html2canvas returns a Promise containing the //canvas");
+//            options.onrendered(canvas);
+//        }
+//        return canvas;
+//    });
 };
 
 window.html2canvas.punycode = this.punycode;
