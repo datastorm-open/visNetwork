@@ -1,6 +1,7 @@
 visNetwork 1.0.2
 --------------------------------------------------------------------------------
 
+  * Fix bad interaction with columns order & visIgraphLayout
   * add visGetNodes & visGetEdges to get data using shiny
   * add submain and footer argument
   * change export height estimation

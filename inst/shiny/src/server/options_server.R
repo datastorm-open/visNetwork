@@ -8,10 +8,10 @@ output$network_id <- renderVisNetwork({
   # visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
   #   visExport()
   
-  visNetwork(nodes, edges) %>%
+  visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
     visExport() %>%
     visOptions(highlightNearest = TRUE,
-               nodesIdSelection = list(enabled = TRUE, selected = "1"), selectedBy = "group")
+               nodesIdSelection = list(enabled = TRUE, selected = "1"))
   
 })
 
@@ -21,8 +21,9 @@ output$view_id <- renderText({
 
 output$code_network_id <- renderText({
   '
-  visNetwork(nodes, edges) %>%
-    visOptions(highlightNearest = TRUE, 
+  visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
+    visExport() %>%
+    visOptions(highlightNearest = TRUE,
       nodesIdSelection = list(enabled = TRUE, selected = "1"))
  '
 })
