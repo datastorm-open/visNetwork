@@ -4,12 +4,14 @@
 \alias{visRemoveNodes}
 \title{Function to remove nodes from network, with shiny only.}
 \usage{
-visRemoveNodes(graph, id)
+visRemoveNodes(graph, id, updateOptions = T)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
 \item{id}{: vector of id, nodes to remove}
+
+\item{updateOptions}{: Boolean. Update options (nodesIdSelection & selectedBy) if needed ? Default to TRUE.}
 }
 \description{
 Function to remove nodes from network, with shiny only.

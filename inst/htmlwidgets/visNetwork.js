@@ -616,84 +616,7 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
-  // udpate nodes data
-  Shiny.addCustomMessageHandler('visShinyUpdateNodes', function(data){
-      // get container id
-      var el = document.getElementById("graph"+data.id);
-      var main_el = document.getElementById(data.id);
-      
-      if(el){
-        // get & transform nodes object
-        var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
-        
-        // reset some parameters / data before
-        if (main_el.selectActive === true | main_el.highlightActive === true) {
-          //reset nodes
-          var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
-          
-          if (main_el.selectActive === true){
-            main_el.selectActive = false;
-            resetList('selectedBy', data.id, 'selectedBy');
-          }
-          if (main_el.highlightActive === true){
-            main_el.highlightActive = false;
-            resetList('nodeSelect', data.id, 'selected');
-          }
-        }
-        // update nodes
-        el.nodes.update(tmpnodes);
-        main_el.updateNodes = true;
-      }
-  });
 
-  // udpate edges data
-  Shiny.addCustomMessageHandler('visShinyUpdateEdges', function(data){
-      // get container id
-      var el = document.getElementById("graph"+data.id);
-      if(el){
-        // get edges object
-        var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
-        el.edges.update(tmpedges);
-      }
-  });
-  
-  // remove nodes
-  Shiny.addCustomMessageHandler('visShinyRemoveNodes', function(data){
-      // get container id
-      var el = document.getElementById("graph"+data.id);
-      var main_el = document.getElementById(data.id);
-      if(el){
-        // reset some parameters / date before
-        if (main_el.selectActive === true | main_el.highlightActive === true) {
-          //reset nodes
-          var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
-          
-          if (main_el.selectActive === true){
-            main_el.selectActive = false;
-            resetList('selectedBy', data.id, 'selectedBy');
-          }
-          if (main_el.highlightActive === true){
-            main_el.highlightActive = false;
-            resetList('nodeSelect', data.id, 'selected');
-          }
-        }
-        // remove nodes
-        el.nodes.remove(data.rmid);
-        main_el.updateNodes = true;
-      }
-  });
-  
-  // remove edges
-  Shiny.addCustomMessageHandler('visShinyRemoveEdges', function(data){
-      // get container id
-      var el = document.getElementById("graph"+data.id);
-      if(el){
-        el.edges.remove(data.rmid);
-      }
-  });
-  
   // select nodes
   Shiny.addCustomMessageHandler('visShinySelectNodes', function(data){
       // get container id
@@ -744,7 +667,7 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
-  Shiny.addCustomMessageHandler('visShinyCustomOptions', function(data){
+  function updateVisOptions(data){
         // get container id
         var graph = document.getElementById("graph"+data.id);
         var el = document.getElementById(data.id);
@@ -781,8 +704,6 @@ if (HTMLWidgets.shinyMode){
           
           if(data.options.idselection !== undefined){
             if(data.options.idselection.enabled === true && data.options.idselection.selected !== undefined){
-              //console.info(data.options.idselection)
-              //console.info("ok")
               document.getElementById("nodeSelect"+data.id).value = data.options.idselection.selected;
               document.getElementById("nodeSelect"+data.id).onchange();
             }
@@ -902,7 +823,135 @@ if (HTMLWidgets.shinyMode){
               } 
           }
         }
-      });
+      };
+      
+  Shiny.addCustomMessageHandler('visShinyCustomOptions', updateVisOptions);
+  
+    // udpate nodes data
+  Shiny.addCustomMessageHandler('visShinyUpdateNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      var main_el = document.getElementById(data.id);
+      
+      if(el){
+        // get & transform nodes object
+        var tmpnodes = visNetworkdataframeToD3(data.nodes, "nodes");
+        
+        // reset some parameters / data before
+        if (main_el.selectActive === true | main_el.highlightActive === true) {
+          //reset nodes
+          var allNodes = el.nodes.get({returnType:"Object"});
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
+          
+          if (main_el.selectActive === true){
+            main_el.selectActive = false;
+            resetList('selectedBy', data.id, 'selectedBy');
+          }
+          if (main_el.highlightActive === true){
+            main_el.highlightActive = false;
+            resetList('nodeSelect', data.id, 'selected');
+          }
+        }
+        // update nodes
+        el.nodes.update(tmpnodes);
+        main_el.updateNodes = true;
+        
+        // update options ?
+        if(data.updateOptions){
+          var dataOptions = {};
+          dataOptions.options = {};
+        
+          var updateOpts = false;
+          if(document.getElementById("nodeSelect"+data.id).style.display === 'inline'){
+            updateOpts = true;
+            dataOptions.id  = data.id;
+            dataOptions.options.idselection = {enabled : true};
+          }
+    
+          if(document.getElementById("selectedBy"+data.id).style.display === 'inline'){
+            updateOpts = true;
+            dataOptions.id  = data.id;
+            dataOptions.options.byselection = {enabled : true, variable : main_el.byselection_variable, multiple : main_el.byselection_multiple};
+          }
+        
+          if(updateOpts){
+            updateVisOptions(dataOptions);
+          }
+        }
+
+      }
+  });
+
+  // udpate edges data
+  Shiny.addCustomMessageHandler('visShinyUpdateEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        // get edges object
+        var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
+        el.edges.update(tmpedges);
+      }
+  });
+  
+  // remove nodes
+  Shiny.addCustomMessageHandler('visShinyRemoveNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      var main_el = document.getElementById(data.id);
+      if(el){
+        // reset some parameters / date before
+        if (main_el.selectActive === true | main_el.highlightActive === true) {
+          //reset nodes
+          var allNodes = el.nodes.get({returnType:"Object"});
+          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
+          
+          if (main_el.selectActive === true){
+            main_el.selectActive = false;
+            resetList('selectedBy', data.id, 'selectedBy');
+          }
+          if (main_el.highlightActive === true){
+            main_el.highlightActive = false;
+            resetList('nodeSelect', data.id, 'selected');
+          }
+        }
+        // remove nodes
+        el.nodes.remove(data.rmid);
+        main_el.updateNodes = true;
+        
+        // update options ?
+        if(data.updateOptions){
+          var dataOptions = {};
+          dataOptions.options = {};
+        
+          var updateOpts = false;
+          if(document.getElementById("nodeSelect"+data.id).style.display === 'inline'){
+            updateOpts = true;
+            dataOptions.id  = data.id;
+            dataOptions.options.idselection = {enabled : true};
+          }
+    
+          if(document.getElementById("selectedBy"+data.id).style.display === 'inline'){
+            updateOpts = true;
+            dataOptions.id  = data.id;
+            dataOptions.options.byselection = {enabled : true, variable : main_el.byselection_variable, multiple : main_el.byselection_multiple};
+          }
+        
+          if(updateOpts){
+            updateVisOptions(dataOptions);
+          }
+        }
+      }
+  });
+  
+  // remove edges
+  Shiny.addCustomMessageHandler('visShinyRemoveEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        el.edges.remove(data.rmid);
+      }
+  });
+  
 }
 
 //----------------------------------------------------------------
@@ -948,6 +997,7 @@ HTMLWidgets.widget({
     document.getElementById(el.id).updateNodes = false;
     document.getElementById(el.id).idselection = x.idselection.enabled;
     document.getElementById(el.id).byselection = x.byselection.enabled;
+    
     if(x.highlight !== undefined){
       document.getElementById(el.id).highlight = x.highlight.enabled;
       document.getElementById(el.id).hoverNearest = x.highlight.hoverNearest;

@@ -4,7 +4,7 @@
 #' The link is based on id.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
-#' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
+#'@param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
 #'  \item{"id"}{ : id of the node, needed in edges information and for update nodes}
 #'  \item{"label"}{ : label of the node}
@@ -13,6 +13,7 @@
 #'  \item{"title"}{ : tooltip of the node}
 #'  \item{...}{}
 #'}
+#'@param updateOptions : Boolean. Update options (nodesIdSelection & selectedBy) if needed ? Default to TRUE.
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -29,13 +30,13 @@
 #'
 #'@export
 
-visUpdateNodes <- function(graph, nodes){
+visUpdateNodes <- function(graph, nodes, updateOptions = T){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visUpdateNodes with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
-  data <- list(id = graph$id, nodes = nodes)
+  data <- list(id = graph$id, nodes = nodes, updateOptions = updateOptions)
   
   graph$session$sendCustomMessage("visShinyUpdateNodes", data)
 

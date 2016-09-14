@@ -1,6 +1,7 @@
 visNetwork 1.0.2
 --------------------------------------------------------------------------------
 
+  * add updateOptions to visUpdateNodes & visRemoveNodes and fix update of options using this functions with proxy
   * add useLabels option for nodeIdSelection
   * Fix bad interaction with columns order & visIgraphLayout
   * add visGetNodes & visGetEdges to get data using shiny
