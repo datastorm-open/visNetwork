@@ -819,7 +819,9 @@ if (HTMLWidgets.shinyMode){
               el.byselection_variable = data.options.byselection.variable;
               el.byselection_multiple = data.options.byselection.multiple;
               selectList2.style.display = 'inline';
-              selectList2.setAttribute('style', data.options.byselection.style);
+              if(data.options.byselection.style !== undefined){
+                selectList2.setAttribute('style', data.options.byselection.style);
+              }
               el.byselection = true;
             } else {
               selectList2.style.display = 'none';
@@ -847,7 +849,9 @@ if (HTMLWidgets.shinyMode){
               option.text = "Select by id";
               selectList.appendChild(option);
               selectList.style.display = 'inline';
-              selectList.setAttribute('style', data.options.idselection.style);
+              if(data.options.idselection.style !== undefined){
+                selectList.setAttribute('style', data.options.idselection.style);
+              }
               el.idselection = true;
               do_loop_id = true;
             } else {

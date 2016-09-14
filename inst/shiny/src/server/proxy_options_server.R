@@ -10,7 +10,8 @@ dataos <- reactive({
 })
 
 output$network_proxy_options <- renderVisNetwork({
-  visNetwork(dataos()$nodes, dataos()$edges) %>% visEdges(arrows = "to") %>% visLegend()
+  visNetwork(dataos()$nodes, dataos()$edges) %>% visEdges(arrows = "to") %>% 
+    visLegend() 
 })
 
 observe({
