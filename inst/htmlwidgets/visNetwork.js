@@ -887,7 +887,7 @@ if (HTMLWidgets.shinyMode){
                   if(addid){
                     option = document.createElement("option");
                     option.value = allNodes[nodeId].id;
-                  if(allNodes[nodeId].label){
+                  if(allNodes[nodeId].label && data.options.idselection.useLabels){
                     option.text = allNodes[nodeId].label;
                   }else{
                     option.text = allNodes[nodeId].id;
@@ -1058,7 +1058,7 @@ HTMLWidgets.widget({
         if(addid){
           option = document.createElement("option");
           option.value = selnodes[i].id;
-          if(selnodes[i].label){
+          if(selnodes[i].label && x.idselection.useLabels){
             option.text = selnodes[i].label;
           }else{
             option.text = selnodes[i].id;

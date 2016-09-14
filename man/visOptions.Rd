@@ -29,6 +29,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"values}{ : Optional. Vector of possible values. Defaut to all id in nodes data.frame.}
  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
  \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
+ \item{"useLabels"}{ : Boolean. Use labels instead of id ? Default to TRUE. Optional.}
 }}
 
 \item{selectedBy}{: Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
@@ -89,12 +90,11 @@ visNetwork(nodes, edges) \%>\%
  visOptions(highlightNearest = TRUE, 
  nodesIdSelection = list(enabled = TRUE, selected = "1"))
  
-# subset on id values ?
+# subset on id values & don't use labels ?
 visNetwork(nodes, edges) \%>\% 
  visOptions(highlightNearest = TRUE, 
  nodesIdSelection = list(enabled = TRUE, 
-   selected = "2",
-   values = c(2:10)))
+   selected = "2", values = c(2:10), useLabels = F))
  
 # some style
 visNetwork(nodes, edges) \%>\% 
