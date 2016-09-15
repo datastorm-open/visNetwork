@@ -26,6 +26,12 @@ visRemoveEdges <- function(graph, id){
     stop("Can't use visRemoveEdges with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
+  if(!is.null(id)){
+    if(length(id) == 1){
+      id <- list(id)
+    }
+  }
+  
   data <- list(id = graph$id, rmid = id)
   
   graph$session$sendCustomMessage("visShinyRemoveEdges", data)

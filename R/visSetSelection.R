@@ -31,6 +31,18 @@ visSetSelection <- function(graph, nodesId = NULL, edgesId = NULL, unselectAll =
     stop("Can't use visSetSelection with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
+  if(!is.null(nodesId)){
+    if(length(nodesId) == 1){
+      nodesId <- list(nodesId)
+    }
+  }
+  
+  if(!is.null(edgesId)){
+    if(length(edgesId) == 1){
+      edgesId <- list(edgesId)
+    }
+  }
+  
   data <- list(id = graph$id, selection = list(nodes = nodesId, edges = edgesId), 
                options = list(unselectAll = unselectAll, highlightEdges = highlightEdges), clickEvent = clickEvent)
   

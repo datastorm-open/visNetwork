@@ -15,6 +15,8 @@ output$network_proxy_focus <- renderVisNetwork({
 observe({
   visNetworkProxy("network_proxy_focus") %>%
     visFocus(id = input$Focus, scale = input$scale_id)
+    # visRemoveNodes(id = input$Focus)
+    # visFit(nodes = input$Focus)
 })
 
 observe({

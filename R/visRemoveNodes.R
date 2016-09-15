@@ -27,6 +27,12 @@ visRemoveNodes <- function(graph, id, updateOptions = T){
     stop("Can't use visRemoveNodes with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
+  if(!is.null(id)){
+    if(length(id) == 1){
+      id <- list(id)
+    }
+  }
+  
   data <- list(id = graph$id, rmid = id, updateOptions = updateOptions)
   
   graph$session$sendCustomMessage("visShinyRemoveNodes", data)

@@ -26,6 +26,12 @@ visSelectEdges <- function(graph, id){
     stop("Can't use visSelectEdges with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
+  if(!is.null(id)){
+    if(length(id) == 1){
+      id <- list(id)
+    }
+  }
+  
   data <- list(id = graph$id, selid = id)
   
   graph$session$sendCustomMessage("visShinySelectEdges", data)

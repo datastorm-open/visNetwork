@@ -31,6 +31,12 @@ visSelectNodes <- function(graph, id, highlightEdges = TRUE, clickEvent = TRUE){
   stopifnot(is.logical(highlightEdges))
   stopifnot(is.logical(clickEvent))
   
+  if(!is.null(id)){
+    if(length(id) == 1){
+      id <- list(id)
+    }
+  }
+  
   data <- list(id = graph$id, selid = id, highlightEdges = highlightEdges, clickEvent = clickEvent)
   
   graph$session$sendCustomMessage("visShinySelectNodes", data)
