@@ -206,6 +206,11 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
   }
 
+  if(!is.null(nodes)){
+    if(any(class(nodes)%in%c("tbl_df", "tbl", "data.table"))){
+      nodes <- data.frame(nodes)
+    }
+  }
   # main
   if(!is.null(main)){
     if(is.list(main)){

@@ -1,6 +1,7 @@
 visNetwork 1.0.2
 --------------------------------------------------------------------------------
 
+  * fix some bad interactions with dplyr & data.table
   * fix visSelect... & visRemove.. when passing only one id greater than 9
   * add updateOptions to visUpdateNodes & visRemoveNodes and fix update of options using this functions with proxy
   * add useLabels option for nodeIdSelection
