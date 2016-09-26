@@ -326,7 +326,11 @@ visOptions <- function(graph,
         byselection$enabled <- TRUE
         
         if("values"%in%names(selectedBy)){
-          byselection$values <- selectedBy$values
+          if(length(selectedBy$values) > 1){
+            byselection$values <- selectedBy$values
+          } else {
+            byselection$values <- list(selectedBy$values)
+          }
         }
         
         if("selected"%in%names(byselection)){
@@ -353,6 +357,12 @@ visOptions <- function(graph,
             byselection$values <- selectedBy$values
           }
           
+          if("values"%in%names(byselection)){
+            if(length(byselection$values) == 1){
+              byselection$values <- list(byselection$values)
+            }
+          }
+
           if("selected"%in%names(byselection)){
             if(!byselection$selected%in%byselection$values){
               stop(byselection$selected, " not in data/selection. selectedBy$selected must be a valid value.")
