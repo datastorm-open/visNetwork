@@ -988,6 +988,12 @@ HTMLWidgets.widget({
     // legend control
     var addlegend = false;
     
+    // popup for title
+    var popupState = false;
+    var popupTimeout = null;
+    var vispopup = document.createElement("div");
+    vispopup.setAttribute('style', 'position: absolute;display:none;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);')
+    
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
@@ -1554,6 +1560,75 @@ HTMLWidgets.widget({
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
     
+    /////////
+    // popup
+    /////////
+    document.getElementById("graph"+el.id).appendChild(vispopup);
+    
+    // add some event listeners to avoid it disappearing when the mouse if over it.
+    vispopup.addEventListener('mouseover',function () {
+      if (popupTimeout !== null) {
+        clearTimeout(popupTimeout);
+        popupTimeout = null;
+      }
+    });
+  
+    // set the timeout when the mouse leaves it.
+    vispopup.addEventListener('mouseout',function () {
+      if (popupTimeout === null) {
+        myHidePopup(100);
+      }
+    });
+    
+    // use the popup event to show
+    instance.network.on("showPopup", function(params) {
+      popupState = true;  
+      myShowPopup(params);
+    })
+  
+    // use the hide event to hide it
+    instance.network.on("hidePopup", function(params) {
+      // avoid double firing of this event, bug in 4.2.0
+      if (popupState === true) {
+        popupState = false;
+        myHidePopup(300);
+      }
+    })
+  
+  
+    // hiding the popup through css and a timeout
+    function myHidePopup(delay) {
+      popupTimeout = setTimeout(function() {vispopup.style.display = 'none';}, delay);
+    }
+  
+    // showing the popup
+    function myShowPopup(nodeId) {
+      // get the data from the vis.DataSet
+      var nodeData = nodes.get([nodeId]);
+      vispopup.innerHTML = nodeData[0].title;
+    
+      // get the position of the node
+      var posCanvas = instance.network.getPositions([nodeId])[nodeId];
+    
+      // get the bounding box of the node
+      //var boundingBox = instance.network.getBoundingBox(nodeId);
+      
+      //position tooltip:
+      //posCanvas.x = posCanvas.x + 0.5*(boundingBox.right - boundingBox.left);
+      
+      // convert coordinates to the DOM space
+      var posDOM = instance.network.canvasToDOM(posCanvas);
+      
+      // Give it an offset
+      //posDOM.x += 10;
+      //posDOM.y -= 20;
+      
+      // show and place the tooltip.
+      vispopup.style.display = 'block';
+      vispopup.style.top = posDOM.y + 'px';
+      vispopup.style.left = posDOM.x + 'px';
+    }
+  
     //save data for re-use and update
     document.getElementById("graph"+el.id).chart = instance.network;
     document.getElementById("graph"+el.id).options = options;
