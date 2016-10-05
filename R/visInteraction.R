@@ -62,7 +62,7 @@
 #'   visInteraction(keyboard = TRUE)
 #'  
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visInteraction <- function(graph,
                        dragNodes = NULL,
                        dragView = NULL,

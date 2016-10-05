@@ -59,7 +59,7 @@
 #' @importFrom  utils getAnywhere
 #' 
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visIgraphLayout <- function(graph,
                             layout = "layout_nicely",
                             physics = FALSE, 

@@ -198,7 +198,7 @@
 #' @importFrom jsonlite fromJSON
 #'
 #' @export
-#' 
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                        width = NULL, height = NULL, main = NULL, submain = NULL, footer = NULL, ...) {
 

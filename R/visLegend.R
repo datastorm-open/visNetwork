@@ -99,7 +99,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-#' 
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visLegend <- function(graph,
                       enabled = TRUE,
                       useGroups = TRUE,

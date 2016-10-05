@@ -21,7 +21,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visMoveNode <- function(graph, id, x, y){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

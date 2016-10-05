@@ -70,6 +70,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #' @export
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visEvents <- function(graph,
                       type = "on",
                       click = NULL,

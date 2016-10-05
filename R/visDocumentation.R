@@ -21,6 +21,8 @@
 #'
 #' @export
 #' @importFrom  utils browseURL
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'
 visDocumentation <- function(viewer = getOption("viewer")){
   if (!is.null(viewer)){
     tempDir <- tempdir()

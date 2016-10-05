@@ -25,7 +25,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visFocus <- function(graph, id, scale =  2,
                      offset =  list(x = 0, y = 0),
                      locked = TRUE,

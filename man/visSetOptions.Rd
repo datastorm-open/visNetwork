@@ -32,4 +32,7 @@ visNetwork(nodes, edges) \%>\%
 
 
 }
+\references{
+See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+}
 

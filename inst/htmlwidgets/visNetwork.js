@@ -292,7 +292,7 @@ function nodeAsHardToRead(node, groups, options){
 
 //----------------------------------------------------------------
 // Revrite HTMLWidgets.dataframeToD3() for passing custom
-// properties directly in data.frame (color.background for example
+// properties directly in data.frame (color.background) for example
 //----------------------------------------------------------------
 function visNetworkdataframeToD3(df, type) {
 

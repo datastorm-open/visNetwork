@@ -30,7 +30,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visHierarchicalLayout <- function(graph,
                                   enabled = TRUE,
                                   levelSeparation = NULL,

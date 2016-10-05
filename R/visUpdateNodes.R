@@ -29,7 +29,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visUpdateNodes <- function(graph, nodes, updateOptions = T){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

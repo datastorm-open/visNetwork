@@ -137,7 +137,7 @@
 #' visNetwork(nodes, edges)
 #' 
 #' @export
-
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visEdges <- function(graph,
                      title = NULL,
                      value = NULL,

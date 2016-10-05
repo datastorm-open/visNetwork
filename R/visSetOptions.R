@@ -23,6 +23,7 @@
 #' 
 #' 
 #' @export
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visSetOptions <- function(graph, options = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){

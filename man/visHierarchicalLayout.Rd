@@ -45,6 +45,9 @@ visNetwork(nodes, edges) \%>\%
  visHierarchicalLayout(direction = "LR")
  
 }
+\references{
+See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+}
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 \link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 

@@ -20,7 +20,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visRemoveNodes <- function(graph, id, updateOptions = T){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

@@ -23,6 +23,7 @@
 #'
 #'}
 #' @export
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visSave <- function(graph, file, selfcontained = TRUE) {
   htmlwidgets::saveWidget(graph, file, selfcontained)
 }

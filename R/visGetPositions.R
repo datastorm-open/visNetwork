@@ -20,7 +20,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visGetPositions <- function(graph, nodes = NULL, input = paste0(graph$id, "_positions")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){

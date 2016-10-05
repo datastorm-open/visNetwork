@@ -18,7 +18,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visUnselectAll <- function(graph){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

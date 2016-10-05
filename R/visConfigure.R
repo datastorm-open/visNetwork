@@ -22,6 +22,8 @@
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'
 #' @export
 visConfigure <- function(graph,
                          enabled = NULL,

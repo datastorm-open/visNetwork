@@ -22,7 +22,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visFit <- function(graph, nodes = NULL,
                      animation = list(duration = 1500, easingFunction = "easeInOutQuad")){
   

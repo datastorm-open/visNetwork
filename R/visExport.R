@@ -34,7 +34,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visExport <- function(graph, type = "png", name = "network",
                          label = paste0("Export as ", type),
                          background = "#fff", float = "right", 

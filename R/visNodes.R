@@ -121,6 +121,7 @@
 #' 
 #' 
 #' @export
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visNodes <- function(graph,
                      id = NULL,
                      shape = NULL,

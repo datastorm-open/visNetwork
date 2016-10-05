@@ -19,7 +19,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visGetNodes <- function(graph, input = paste0(graph$id, "_nodes")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){

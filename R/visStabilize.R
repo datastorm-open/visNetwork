@@ -19,7 +19,7 @@
 #'}
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visStabilize <- function(graph, iterations = NULL){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){

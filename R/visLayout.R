@@ -27,7 +27,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #'@export
-
+#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visLayout <- function(graph,
                       randomSeed = NULL,
                       improvedLayout = NULL,
