@@ -76,7 +76,7 @@
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(highlightNearest = TRUE, 
 #'  nodesIdSelection = list(enabled = TRUE, 
-#'    selected = "2", values = c(2:10), useLabels = F))
+#'    selected = "2", values = c(2:10), useLabels = FALSE))
 #'  
 #' # some style
 #' visNetwork(nodes, edges) %>% 

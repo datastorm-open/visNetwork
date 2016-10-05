@@ -10,7 +10,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``1.0.1`` available on CRAN
+## ``1.0.2`` available on CRAN
 
 * #### Update network in shiny using  ````visNetworkProxy```` (lot of functionalities,  ````?visNetworkProxy````)
 
