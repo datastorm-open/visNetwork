@@ -81,7 +81,7 @@ visNetwork(nodes, edges) \%>\% visHierarchicalLayout() \%>\% visEdges(arrows = "
 ##########################
 # nodesIdSelection
 ##########################
-
+ 
 visNetwork(nodes, edges) \%>\% 
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
@@ -108,7 +108,12 @@ visNetwork(nodes, edges) \%>\%
 ##########################
 # selectedBy
 ##########################
+nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
+ group = sample(LETTERS[1:3], 15, replace = TRUE))
 
+edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
+ to = trunc(runif(15)*(15-1))+1)
+ 
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = "group")
  
