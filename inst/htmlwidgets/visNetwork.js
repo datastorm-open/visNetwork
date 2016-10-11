@@ -600,6 +600,9 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
+        if(data.addCoordinates){
+          el.chart.storePositions();
+        }
         var current_nodes = el.nodes.getDataSet();
         // return data in shiny
         Shiny.onInputChange(data.input, current_nodes._data);

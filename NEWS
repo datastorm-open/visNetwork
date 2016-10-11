@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * store positions of nodes before rendering with visGetNodes
   * add delay on tooltip popup (so you can click on a link...!)
   
 visNetwork 1.0.2

@@ -4,15 +4,17 @@
 \alias{visGetNodes}
 \title{Function to get nodes data, with shiny only.}
 \usage{
-visGetNodes(graph, input = paste0(graph$id, "_nodes"))
+visGetNodes(graph, input = paste0(graph$id, "_nodes"), addCoordinates = T)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
 \item{input}{: name of shiny input created. Default to paste0(graph$id, "_nodes")}
+
+\item{addCoordinates}{: Boolean. Add coordinates to nodes data ? Default to TRUE.}
 }
 \description{
-Function to get nodes data, with shiny only
+Function to get nodes data, with shiny only.
 }
 \examples{
 \dontrun{
