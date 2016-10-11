@@ -481,6 +481,16 @@ if (HTMLWidgets.shinyMode){
       var el = document.getElementById("graph"+data.id);
       if(el){
         var network = el.chart;
+        
+        // reset selection
+        document.getElementById("nodeSelect"+data.id).value = "";
+        document.getElementById("nodeSelect"+data.id).onchange();
+        
+        if(document.getElementById(data.id).selectActive === true){
+            document.getElementById("selectedBy"+data.id).value = "";
+            document.getElementById("selectedBy"+data.id).onchange();
+        }
+        
         network.unselectAll();
       }
   });
