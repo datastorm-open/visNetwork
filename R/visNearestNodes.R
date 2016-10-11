@@ -44,14 +44,9 @@ visNearestNodes <- function(graph, target, maxpoints = 5, addDist = T){
   if(!is.null(current_nodes)){
     target_row <- which(current_nodes$id %in% target)
     if(length(target_row) > 0){
-      res_dist <- do.call("rbind.data.frame", lapply(setdiff(1:nrow(current_nodes), target_row), function(x){
-        dist <- sqrt((current_nodes[x, "x"] - current_nodes[target_row, "x"])^2 + 
-                       (current_nodes[x, "y"] - current_nodes[target_row, "y"])^2)
-        
-        data.frame(id = current_nodes[x, "id"], dist_ = dist)
-      }))
-      
-      res <- merge(current_nodes, res_dist, by = "id", all.x = F, all.y = T)
+      current_nodes$dist_ <- sqrt((current_nodes[, "x"] - current_nodes[target_row, "x"])^2 + 
+                                    (current_nodes[, "y"] - current_nodes[target_row, "y"])^2)
+      res <- current_nodes[-target_row, ]
       res <- res[order(res$dist_), ]
       res <- res[1:min(maxpoints, nrow(res)), ]
       if(!addDist){
