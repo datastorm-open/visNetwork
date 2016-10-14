@@ -51,7 +51,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 
 \item{labelHighlightBold}{: Boolean. Default to true. Determines whether or not the label becomes bold when the node is selected.}
 
-\item{color}{: String | named list.    Color for the node. Can be just one color, or a list with several elements :
+\item{color}{: String | named list.    Color for the node. Can be 'rgba(120,32,14,1)', '#97C2FC' or 'red'. Can be just one color, or a list with several elements :
 \itemize{
  \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node.}
  \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node.}

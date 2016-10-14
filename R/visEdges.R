@@ -17,7 +17,7 @@
 #' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.
 #' @param labelHighlightBold 	: Boolean. Default to	true. Determines whether or not the label becomes bold when the edge is selected.
 #' 
-#' @param color : Named list or String. Default to named list. Color information of the edge in every situation. When the edge only needs a single color, a color value like 'rgb(120,32,14)', '#ffffff' or 'red'</code> can be supplied instead of an object.
+#' @param color : Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' or 'red'.
 #' \itemize{
 #'  \item{"color"}{ : String. Default to '#848484. The color of the border of the node when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
 #'  \item{"highlight "}{ : String. Default to '#848484'. The color the edge when it is selected.}
