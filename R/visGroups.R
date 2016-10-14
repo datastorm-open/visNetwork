@@ -50,6 +50,13 @@ visGroups <- function(graph,
         tmp$icon$color <- '#2B7CE9'
       }
     }
+    
+    if("scaling" %in% names(tmp)){
+      if("customScalingFunction"%in%names(tmp$scaling)){
+        tmp$scaling$customScalingFunction <- JS(tmp$scaling$customScalingFunction)
+      }
+    }
+    
     groups[[groupname]] <- tmp
   }
   

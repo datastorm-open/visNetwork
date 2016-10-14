@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * fix passing customScalingFunction using visGroups
   * fix reset options using unselectAll
   * add visNearestNodes function
   * store positions of nodes before rendering with visGetNodes
