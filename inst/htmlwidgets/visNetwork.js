@@ -1307,25 +1307,75 @@ HTMLWidgets.widget({
         }
       };
       
+      function range(start, length, step, rep){
+        var a=[], b=start;
+        while(a.length < length){
+          for (var i = 0; i < rep; i++){
+            a.push(b);
+            if(a.length === length){
+              break;
+            }
+          }
+          b+=step;
+        }
+        return a;
+      };
+      
       var mynetwork = document.getElementById('legend'+el.id);
-      var lx = - mynetwork.clientWidth / 2 + 50;
-      var ly = - mynetwork.clientHeight / 2 + 50;
-      var step = 70;
+      var lx = mynetwork.clientWidth / 2 + 50;
+      var ly = mynetwork.clientHeight / 2 + 50;
+      var edge_ly = ly;
+      var ncol = x.legend.ncol;
+      var step_x = x.legend.stepX;
+      var step_y = x.legend.stepY;
       var tmp_ly;
       var tmp_lx = lx;
       var tmp_lx2;
+      var all_tmp_y = [];
       if(tmp_lx === 0){
         tmp_lx = 1
       }
+      
+      // construct nodes data if needed
+      if(x.legend.nodes !== undefined){
+        if(x.legend.nodesToDataframe){ // data in data.frame
+          tmpnodes = visNetworkdataframeToD3(x.legend.nodes, "nodes")
+        } else { // data in list
+          tmpnodes = x.legend.nodes;
+        }
+        // only one element   
+        if(tmpnodes.length === undefined){
+          tmpnodes = new Array(tmpnodes);
+        }
+      }
+      
+      // array of y position 
+      if(x.groups && x.legend.useGroups && x.legend.nodes !== undefined){
+        all_tmp_y = range(ly, x.groups.length + tmpnodes.length, step_y, ncol);
+      } else if(x.groups && x.legend.useGroups && x.legend.nodes === undefined){
+        all_tmp_y = range(ly, x.groups.length, step_y, ncol);
+      } else if(x.legend.useGroups === false && x.legend.nodes !== undefined){
+        all_tmp_y = range(ly, tmpnodes.length, step_y, ncol);
+      }
+      
       // want to view groups in legend
       if(x.groups && x.legend.useGroups){
         // create data
         for (var g1 = 0; g1 < x.groups.length; g1++){
-          tmp_ly =ly+g1*step;
+          
+          if(g1 === 0){
+            tmp_lx = lx;
+          } else {
+            tmp_lx = lx + g1%ncol * step_x;
+          }
+          
+          tmp_ly = all_tmp_y[g1];
           if(tmp_ly === 0){
             tmp_ly = 1
           }
+          
           legendnodes.add({id: null, x : tmp_lx, y : tmp_ly, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
+          edge_ly = tmp_ly;
         }
         // control icon size
         if(x.options.groups){
@@ -1339,29 +1389,36 @@ HTMLWidgets.widget({
       }
       // want to add custom nodes
       if(x.legend.nodes !== undefined){
-        if(x.legend.nodesToDataframe){ // data in data.frame
-          tmpnodes = visNetworkdataframeToD3(x.legend.nodes, "nodes")
-        } else { // data in list
-          tmpnodes = x.legend.nodes;
-        }
-        // only one element   
-        if(tmpnodes.length === undefined){
-          tmpnodes = new Array(tmpnodes);
-        }
+        
         // control icon
         for (var nd in tmpnodes){
           if(tmpnodes[nd].icon  && !x.legend.nodesToDataframe){
             tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
           }
         }
+        // group control for y
+        var add_gr_y = 0;
+        if(x.groups && x.legend.useGroups){
+          add_gr_y = x.groups.length;
+        }
         // set coordinates
         for (var g = 0; g < tmpnodes.length; g++){
-          tmpnodes[g].x = tmp_lx;
-          tmp_ly = ly+(g+legendnodes.length)*step;
+          if((g+legendnodes.length) === 0){
+            tmp_lx = lx;
+          } else {
+            tmp_lx = lx + (g+legendnodes.length)%ncol * step_x;
+          }
+          
+          tmp_ly = all_tmp_y[add_gr_y + g];
+          if(tmp_lx === 0){
+            tmp_lx = 1
+          }
           if(tmp_ly === 0){
             tmp_ly = 1
           }
+          tmpnodes[g].x = tmp_lx;
           tmpnodes[g].y = tmp_ly;
+          
           if(tmpnodes[g].value === undefined && tmpnodes[g].size === undefined){
             tmpnodes[g].value = 1;
           }
@@ -1369,6 +1426,7 @@ HTMLWidgets.widget({
             tmpnodes[g].id = null;
           }
           tmpnodes[g].mass = 0;
+          edge_ly = tmp_ly;
         }
         legendnodes.add(tmpnodes);
       }
@@ -1384,7 +1442,6 @@ HTMLWidgets.widget({
           legendedges = new Array(legendedges);
         }
 
-        var ctrl = legendnodes.length;
         // set coordinates and options
         for (var edg = 0; edg < (legendedges.length); edg++){
           
@@ -1402,24 +1459,29 @@ HTMLWidgets.widget({
             legendedges[edg].width = 1;
           }
 
-          tmp_ly = ly+ctrl*step;
+          tmp_ly = edge_ly + (edg+1)*step_y;
           if(tmp_ly === 0){
             tmp_ly = 1
           }
           
-          tmp_lx = lx - mynetwork.clientWidth/3;
+          if(ncol === 1){
+            tmp_lx = lx - mynetwork.clientWidth/3;
+            tmp_lx2 = lx + mynetwork.clientWidth/3;
+          } else {
+            tmp_lx = lx;
+            tmp_lx2 = lx + (ncol-1) * step_x;
+          }
+          
           if(tmp_lx === 0){
             tmp_lx = 1
           }
           
-          tmp_lx2 = lx + mynetwork.clientWidth/3;
           if(tmp_lx2 === 0){
             tmp_lx2 = 1
           }
           
           legendnodes.add({id: edg*2+1, x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
           legendnodes.add({id: edg*2+2, x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
-          ctrl = ctrl+1;
         }
       }
       
@@ -1428,7 +1490,7 @@ HTMLWidgets.widget({
         nodes: legendnodes, 
         edges: legendedges       
       };
-          
+
       instance.legend = new vis.Network(document.getElementById("legend"+el.id), datalegend, optionslegend);
     }
     
@@ -1596,6 +1658,7 @@ HTMLWidgets.widget({
     // use the popup event to show
     instance.network.on("showPopup", function(params) {
       popupState = true;  
+      // console.info(params);
       myShowPopup(params);
     })
   
@@ -1608,7 +1671,6 @@ HTMLWidgets.widget({
       }
     })
   
-  
     // hiding the popup through css and a timeout
     function myHidePopup(delay) {
       popupTimeout = setTimeout(function() {vispopup.style.display = 'none';}, delay);
@@ -1618,28 +1680,30 @@ HTMLWidgets.widget({
     function myShowPopup(nodeId) {
       // get the data from the vis.DataSet
       var nodeData = nodes.get([nodeId]);
-      vispopup.innerHTML = nodeData[0].title;
+      
+      if(nodeData[0] !== null && nodeData[0] !== undefined){
+        vispopup.innerHTML = nodeData[0].title;
     
-      // get the position of the node
-      var posCanvas = instance.network.getPositions([nodeId])[nodeId];
+        // get the position of the node
+        var posCanvas = instance.network.getPositions([nodeId])[nodeId];
     
-      // get the bounding box of the node
-      //var boundingBox = instance.network.getBoundingBox(nodeId);
+        // get the bounding box of the node
+        //var boundingBox = instance.network.getBoundingBox(nodeId);
+        //position tooltip:
+        //posCanvas.x = posCanvas.x + 0.5*(boundingBox.right - boundingBox.left);
       
-      //position tooltip:
-      //posCanvas.x = posCanvas.x + 0.5*(boundingBox.right - boundingBox.left);
+        // convert coordinates to the DOM space
+        var posDOM = instance.network.canvasToDOM(posCanvas);
       
-      // convert coordinates to the DOM space
-      var posDOM = instance.network.canvasToDOM(posCanvas);
+        // Give it an offset
+        //posDOM.x += 10;
+        //posDOM.y -= 20;
       
-      // Give it an offset
-      //posDOM.x += 10;
-      //posDOM.y -= 20;
-      
-      // show and place the tooltip.
-      vispopup.style.display = 'block';
-      vispopup.style.top = posDOM.y + 'px';
-      vispopup.style.left = posDOM.x + 'px';
+        // show and place the tooltip.
+        vispopup.style.display = 'block';
+        vispopup.style.top = posDOM.y + 'px';
+        vispopup.style.left = posDOM.x + 'px';
+      }
     }
   
     //save data for re-use and update
@@ -2154,15 +2218,29 @@ HTMLWidgets.widget({
         addHeightExport = addHeightExport + 15;
       }
 
-           html2canvas(document.getElementById(el.id), {
-             background: x.export.background,
-             height : addHeightExport,
-              onrendered: function(canvas) {
-                canvas.toBlob(function(blob) {
-                            saveAs(blob, x.export.name);
-                                    }, "image/"+x.export.type);
-            }
-        });
+      html2canvas(document.getElementById(el.id), {
+        background: x.export.background,
+        height : addHeightExport,
+        onrendered: function(canvas) {
+          canvas.toBlob(function(blob) {
+            saveAs(blob, x.export.name);
+          }, "image/"+x.export.type);
+        }
+      });
+      
+      /*html2canvas(document.getElementById(el.id), {
+        background: x.export.background,
+        height : addHeightExport,
+        onrendered: function(canvas) {
+          var myImage = canvas.toDataURL("image/jpeg");
+          var imgWidth = (canvas.width * 25.4) / 240;
+          var imgHeight = (canvas.height * 25.4) / 240; 
+          var table = new jsPDF('l', 'pt', [imgWidth*1.01, imgHeight*1.01]);
+          table.addImage(myImage, 'JPEG', 0, 0, imgWidth, imgHeight);
+          table.save('sample-file.pdf');
+        } 
+      });*/
+      
       };
     }
 

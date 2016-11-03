@@ -14,7 +14,10 @@
 #'  \item{"text"}{ : Character. Title.}
 #'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'.}
 #' }
-#'
+#' @param ncol : Divide legend in multiple columns ? Defaut to 1 
+#' @param stepX : Experimental. Can use to control space between nodes. Defaut to 100
+#' @param stepY : Experimental. Can use to control space between nodes. Defaut to 100
+#' 
 #' @examples
 #'
 #' # minimal example
@@ -56,15 +59,22 @@
 #'   visLegend(addNodes = lnodes, useGroups = FALSE)
 #'   
 #' ledges <- data.frame(color = c("lightblue", "red"), 
-#'  label = c("reverse", "depends"), arrows =c("to", "from")) 
+#'  label = c("reverse", "depends"), arrows =c("to", "from"), 
+#'  font.align = "top") 
 #'  
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "lightblue") %>%
 #'   visGroups(groupname = "B", color = "red") %>%
-#'   visLegend(addEdges = ledges)    
+#'   visLegend(addEdges = ledges)   
+#'    
+#' # divide in columns
+#' visNetwork(nodes, edges) %>%
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(addNodes = lnodes, useGroups = T, ncol = 2)
 #'   
 #' # for more complex option, you can use a list(of list...)
-#'  # or a data.frame with specific notaion
+#' # or a data.frame with specific notaion
 #'
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 #' edges <- data.frame(from = c(1,2), to = c(2,3))
@@ -107,7 +117,10 @@ visLegend <- function(graph,
                       addEdges = NULL,
                       width =  0.2,
                       position = "left",
-                      main = NULL){
+                      main = NULL,
+                      ncol = 1, 
+                      stepX = 100, 
+                      stepY = 100){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visLegend with visNetworkProxy object")
@@ -133,6 +146,14 @@ visLegend <- function(graph,
       stop("position must be one of 'left' or 'right'")
     }
     legend$position <- position
+    
+    if(!ncol >= 1){
+      stop("ncol must be an integer >= 1")
+    }
+    legend$ncol <- ncol
+    
+    legend$stepX <- stepX
+    legend$stepY <- stepY
     
     if(!is.null(addEdges)){
       legend$edges <- addEdges

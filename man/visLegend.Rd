@@ -5,7 +5,8 @@
 \title{Add a legend on a visNetwork object}
 \usage{
 visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
-  addEdges = NULL, width = 0.2, position = "left", main = NULL)
+  addEdges = NULL, width = 0.2, position = "left", main = NULL,
+  ncol = 1, stepX = 100, stepY = 100)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -27,6 +28,12 @@ visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
  \item{"text"}{ : Character. Title.}
  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'.}
 }}
+
+\item{ncol}{: Divide legend in multiple columns ? Defaut to 1}
+
+\item{stepX}{: Experimental. Can use to control space between nodes. Defaut to 100}
+
+\item{stepY}{: Experimental. Can use to control space between nodes. Defaut to 100}
 }
 \description{
 Add a legend on a visNetwork object
@@ -72,15 +79,22 @@ visNetwork(nodes, edges) \%>\%
   visLegend(addNodes = lnodes, useGroups = FALSE)
   
 ledges <- data.frame(color = c("lightblue", "red"), 
- label = c("reverse", "depends"), arrows =c("to", "from")) 
+ label = c("reverse", "depends"), arrows =c("to", "from"), 
+ font.align = "top") 
  
 visNetwork(nodes, edges) \%>\%
   visGroups(groupname = "A", color = "lightblue") \%>\%
   visGroups(groupname = "B", color = "red") \%>\%
-  visLegend(addEdges = ledges)    
+  visLegend(addEdges = ledges)   
+   
+# divide in columns
+visNetwork(nodes, edges) \%>\%
+  visGroups(groupname = "A", color = "red") \%>\%
+  visGroups(groupname = "B", color = "lightblue") \%>\%
+  visLegend(addNodes = lnodes, useGroups = T, ncol = 2)
   
 # for more complex option, you can use a list(of list...)
- # or a data.frame with specific notaion
+# or a data.frame with specific notaion
 
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
