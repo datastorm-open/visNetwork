@@ -1000,13 +1000,7 @@ HTMLWidgets.widget({
     
     // legend control
     var addlegend = false;
-    
-    // popup for title
-    var popupState = false;
-    var popupTimeout = null;
-    var vispopup = document.createElement("div");
-    vispopup.setAttribute('style', 'position: absolute;display:none;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);')
-    
+
     // clear el.id (for shiny...)
     document.getElementById(el.id).innerHTML = "";  
     
@@ -1638,6 +1632,38 @@ HTMLWidgets.widget({
     /////////
     // popup
     /////////
+    
+    // Temporary variables to hold mouse x-y pos.s
+    var tempX = 0
+    var tempY = 0
+
+    // Main function to retrieve mouse x-y pos.s
+    function getMouseXY(e) {
+      tempX = e.clientX
+      tempY = e.clientY
+      // catch possible negative values in NS
+      if (tempX < 0){tempX = 0}
+      if (tempY < 0){tempY = 0}
+    }
+
+    document.addEventListener('mousemove', getMouseXY);
+
+   //this.body.emitter.emit("showPopup",{id:this.popupObj.id,x:t.x+3,y:t.y-5}))
+
+    // popup for title
+    var popupState = false;
+    var popupTimeout = null;
+    var vispopup = document.createElement("div");
+    var popupStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2)'
+    if(x.tooltipStyle !== undefined){
+      popupStyle = x.tooltipStyle
+    }
+    var popupStay = 300;
+    if(x.tooltipStay !== undefined){
+      popupStay = x.tooltipStay
+    }
+    vispopup.setAttribute('style', popupStyle)
+    
     document.getElementById("graph"+el.id).appendChild(vispopup);
     
     // add some event listeners to avoid it disappearing when the mouse if over it.
@@ -1658,7 +1684,6 @@ HTMLWidgets.widget({
     // use the popup event to show
     instance.network.on("showPopup", function(params) {
       popupState = true;  
-      // console.info(params);
       myShowPopup(params);
     })
   
@@ -1667,42 +1692,69 @@ HTMLWidgets.widget({
       // avoid double firing of this event, bug in 4.2.0
       if (popupState === true) {
         popupState = false;
-        myHidePopup(300);
+        myHidePopup(popupStay);
       }
     })
   
     // hiding the popup through css and a timeout
     function myHidePopup(delay) {
-      popupTimeout = setTimeout(function() {vispopup.style.display = 'none';}, delay);
+      popupTimeout = setTimeout(function() {vispopup.style.visibility = 'hidden';}, delay);
     }
   
     // showing the popup
-    function myShowPopup(nodeId) {
+    function myShowPopup(id) {
       // get the data from the vis.DataSet
-      var nodeData = nodes.get([nodeId]);
+      
+      var nodeData = nodes.get([id]);
       
       if(nodeData[0] !== null && nodeData[0] !== undefined){
+        
         vispopup.innerHTML = nodeData[0].title;
-    
+        /*
         // get the position of the node
-        var posCanvas = instance.network.getPositions([nodeId])[nodeId];
-    
-        // get the bounding box of the node
-        //var boundingBox = instance.network.getBoundingBox(nodeId);
-        //position tooltip:
-        //posCanvas.x = posCanvas.x + 0.5*(boundingBox.right - boundingBox.left);
-      
+        var posCanvas = instance.network.getPositions([id])[id];
         // convert coordinates to the DOM space
         var posDOM = instance.network.canvasToDOM(posCanvas);
       
-        // Give it an offset
-        //posDOM.x += 10;
-        //posDOM.y -= 20;
-      
+        var height = vispopup.clientHeight;
+        var width = vispopup.clientWidth;
+        var maxHeight = document.getElementById("graph"+el.id).clientHeight;
+        var maxWidth = document.getElementById("graph"+el.id).clientWidth;
+        var padding = 5;
+        
+        var top = params.y - height;
+        if (top + height + padding > maxHeight) {
+          top = maxHeight - height - padding;
+        }
+        
+        if (top < padding) {
+          top = padding;
+        }
+
+        var left = params.x;
+        if (left + width + padding > maxWidth) {
+          left = maxWidth - width - padding;
+        }
+        
+        if (left < padding) {
+          left = padding;
+        }*/
+
         // show and place the tooltip.
-        vispopup.style.display = 'block';
-        vispopup.style.top = posDOM.y + 'px';
-        vispopup.style.left = posDOM.x + 'px';
+        vispopup.style.visibility = 'visible';
+        vispopup.style.top = tempY - 20 +  "px";
+        vispopup.style.left = tempX + 5 + "px";
+        
+      } else {
+         // so it's perhaps a edge ?
+        var edgeData = edges.get([id]);
+        if(edgeData[0] !== null && edgeData[0] !== undefined){
+          vispopup.innerHTML = edgeData[0].title;
+          // show and place the tooltip.
+          vispopup.style.visibility = 'visible';
+          vispopup.style.top = tempY - 20 +  "px";
+          vispopup.style.left = tempX + 5 + "px";
+        }
       }
     }
   

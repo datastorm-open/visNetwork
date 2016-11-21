@@ -8,7 +8,9 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
   hideEdgesOnDrag = NULL, hideNodesOnDrag = NULL, hover = NULL,
   hoverConnectedEdges = NULL, keyboard = NULL, multiselect = NULL,
   navigationButtons = NULL, selectable = NULL,
-  selectConnectedEdges = NULL, tooltipDelay = NULL, zoomView = NULL)
+  selectConnectedEdges = NULL, tooltipDelay = NULL, tooltipStay = 300,
+  tooltipStyle = "position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);",
+  zoomView = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -48,6 +50,10 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
 
 \item{tooltipDelay}{: Number. Default to 300. When nodes or edges have a defined 'title' field, this can be shown as a pop-up tooltip. The tooltip itself is an HTML element that can be fully styled using CSS. The delay is the amount of time in milliseconds it takes before the tooltip is shown.}
 
+\item{tooltipStay}{: Number. Default to 300. This is the amount of time in milliseconds it takes before the tooltip is hidden.}
+
+\item{tooltipStyle}{: Character. HTML style of tooltip. You must use 'position: fixed;visibility:hidden;'.}
+
 \item{zoomView}{: Boolean. Default to true. When true, the user can zoom in.}
 }
 \description{
@@ -55,8 +61,14 @@ Network visualization interaction. For full documentation, have a look at \link{
 }
 \examples{
 
-nodes <- data.frame(id = 1:10)
+nodes <- data.frame(id = 1:10, 
+ title = '<a target="_blank" href="https://github.com/datastorm-open/visNetwork">github</a>')
 edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
+
+# custom tooltip
+visNetwork(nodes, edges) \%>\%
+visInteraction(tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;
+ font-family: cursive;font-size:18px;font-color:purple;background-color: red;')
 
 #frozen network
 visNetwork(nodes, edges) \%>\%

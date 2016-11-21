@@ -3,4 +3,4 @@ dependencies:
     version: 4.16.1
     src: htmlwidgets/lib/vis
     script: vis.min.js
-    stylesheet: vis.min.css
+    stylesheet: vis.css

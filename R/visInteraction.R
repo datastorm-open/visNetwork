@@ -26,6 +26,8 @@
 #'@param selectable : Boolean. Default to true When true, the nodes and edges can be selected by the user.
 #'@param selectConnectedEdges : Boolean. Default to true. When true, on selecting a node, its connecting edges are highlighted.
 #'@param tooltipDelay : Number. Default to 300. When nodes or edges have a defined 'title' field, this can be shown as a pop-up tooltip. The tooltip itself is an HTML element that can be fully styled using CSS. The delay is the amount of time in milliseconds it takes before the tooltip is shown.
+#'@param tooltipStay : Number. Default to 300. This is the amount of time in milliseconds it takes before the tooltip is hidden.
+#'@param tooltipStyle : Character. HTML style of tooltip. You must use 'position: fixed;visibility:hidden;'.
 #'@param zoomView : Boolean. Default to true. When true, the user can zoom in.
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
@@ -35,8 +37,14 @@
 #'
 #' @examples
 #'
-#'nodes <- data.frame(id = 1:10)
+#'nodes <- data.frame(id = 1:10, 
+#'  title = '<a target="_blank" href="https://github.com/datastorm-open/visNetwork">github</a>')
 #'edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
+#'
+#'# custom tooltip
+#'visNetwork(nodes, edges) %>%
+#' visInteraction(tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;
+#'  font-family: cursive;font-size:18px;font-color:purple;background-color: red;')
 #'
 #'#frozen network
 #'visNetwork(nodes, edges) %>%
@@ -76,6 +84,8 @@ visInteraction <- function(graph,
                        selectable = NULL,
                        selectConnectedEdges = NULL,
                        tooltipDelay = NULL,
+                       tooltipStay = 300,
+                       tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);',
                        zoomView = NULL){
 
   
@@ -103,7 +113,11 @@ visInteraction <- function(graph,
     data <- list(id = graph$id, options = options)
     graph$session$sendCustomMessage("visShinyOptions",data)
   }else{
-    graph$x$options$interaction <- mergeLists(graph$x$options$interaction, interaction)
+    if(length(interaction) > 0){
+      graph$x$options$interaction <- mergeLists(graph$x$options$interaction, interaction)
+    }
+    x <- list(tooltipStay = tooltipStay, tooltipStyle = tooltipStyle)
+    graph$x <- mergeLists(graph$x, x)
   }
   graph
 }
