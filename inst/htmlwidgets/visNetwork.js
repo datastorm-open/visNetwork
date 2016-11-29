@@ -982,7 +982,6 @@ HTMLWidgets.widget({
   },
   
   renderValue: function(el, x, instance) {
-
     var data;
     var nodes;
     var edges;
@@ -1503,14 +1502,33 @@ HTMLWidgets.widget({
       if(x.igraphlayout !== undefined){
         // to improved
         var zoomLevel = -232.622349 / (tmpnodes.length + 91.165919)  +2.516861;
-        var factor = document.getElementById("graph"+el.id).clientWidth / 1890;
-        zoomLevel = zoomLevel/factor;
+        var igclientWidth = document.getElementById("graph"+el.id).clientWidth;
+        var scalex = 100;
+        var scaley = 100;
         
-        var scalex = (document.getElementById("graph"+el.id).clientWidth / 2) * zoomLevel;
-        var scaley = scalex;
-        if(x.igraphlayout.type !== "square"){
-          scaley = (document.getElementById("graph"+el.id).clientHeight / 2) * zoomLevel;
+        // current div visibled
+        if(igclientWidth !== 0){
+          var factor = igclientWidth / 1890;
+          zoomLevel = zoomLevel/factor;
+          var scalex = (igclientWidth / 2) * zoomLevel;
+          var scaley = scalex;
+          if(x.igraphlayout.type !== "square"){
+            scaley = (document.getElementById("graph"+el.id).clientHeight / 2) * zoomLevel;
+          }
+        } else {
+          // current div not visibled....
+          igclientWidth = parseInt(document.getElementById(el.id).style.width);
+          if(igclientWidth !== 0){
+            var factor = igclientWidth / 1890;
+            zoomLevel = zoomLevel/factor;
+            var scalex = (igclientWidth / 2) * zoomLevel;
+            var scaley = scalex;
+            if(x.igraphlayout.type !== "square"){
+              scaley = (parseInt(document.getElementById(el.id).style.height) / 2) * zoomLevel;
+            }
+          }
         }
+        
         for (var nd in tmpnodes) {
           tmpnodes[nd].x = tmpnodes[nd].x * scalex;
           tmpnodes[nd].y = tmpnodes[nd].y * scaley;

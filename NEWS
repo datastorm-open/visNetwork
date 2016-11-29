@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * fix igraghLayout with rmarkdown and tabset
   * fix some bugs and add some options on legend
   * fix passing customScalingFunction using visGroups
   * fix reset options using unselectAll
