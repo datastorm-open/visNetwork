@@ -38,4 +38,7 @@ visSave(network, file = "network.html")
 \references{
 See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 }
+\seealso{
+\link{visExport}
+}
 

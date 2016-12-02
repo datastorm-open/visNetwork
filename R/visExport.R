@@ -28,10 +28,7 @@
 #'  visLegend()%>% visExport(type = "jpeg", name = "export-network", 
 #'    float = "left", label = "Save network", background = "purple", style= "") 
 #'  
-#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#'@seealso \link{visSave}
 #'
 #'@export
 #'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
