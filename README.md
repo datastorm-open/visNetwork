@@ -1,3 +1,8 @@
+[![Rdoc](http://www.rdocumentation.org/badges/version/visNetwork)](http://www.rdocumentation.org/packages/visNetwork)
+
+[![Rdoc](http://www.rdocumentation.org/api/badges/Direct/visNetwork)](http://www.rdocumentation.org/packages/visNetwork)
+
+
 # visNetwork
 
 ### R package, using vis.js library for network visualization. visNetwork is now available on CRAN.
