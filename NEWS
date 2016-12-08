@@ -2,6 +2,7 @@ visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
   * To vis.js 4.17.0
+  * enabled passing nodes & edges as list
   * fix igraghLayout with rmarkdown and tabset
   * fix some bugs and add some options on legend
   * fix passing customScalingFunction using visGroups

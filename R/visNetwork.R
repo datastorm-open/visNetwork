@@ -201,14 +201,21 @@
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                        width = NULL, height = NULL, main = NULL, submain = NULL, footer = NULL, ...) {
-
+  
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
   }
-
+  
   if(!is.null(nodes)){
     if(any(class(nodes)%in%c("tbl_df", "tbl", "data.table"))){
       nodes <- data.frame(nodes)
+    }
+    if(is.data.frame(nodes)){
+      nodesToDataframe <- TRUE
+    }else if(is.list(nodes)){
+      nodesToDataframe <- FALSE
+    }else{
+      stop("nodes must be a data.frame or a list")
     }
   }
   
@@ -216,8 +223,15 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     if(any(class(edges)%in%c("tbl_df", "tbl", "data.table"))){
       edges <- data.frame(edges)
     }
+    if(is.data.frame(edges)){
+      edgesToDataframe <- TRUE
+    }else if(is.list(edges)){
+      edgesToDataframe <- FALSE
+    }else{
+      stop("edges must be a data.frame or a list")
+    }
   }
-  
+
   # main
   if(!is.null(main)){
     if(is.list(main)){
@@ -237,7 +251,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                    style = 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;')
     }
   }
- 
+  
   # submain
   if(!is.null(submain)){
     if(is.list(submain)){
@@ -254,7 +268,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
       stop("Invalid 'submain' argument. Not a character")
     }else {
       submain <- list(text = submain, 
-                   style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
+                      style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
     }
   }
   
@@ -274,7 +288,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
       stop("Invalid 'footer' argument. Not a character")
     }else {
       footer <- list(text = footer, 
-                      style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
+                     style = 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;')
     }
   }
   
@@ -300,14 +314,15 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     if(length(groups) == 0){
       groups = NULL
     }
-    x <- list(nodes = nodes, edges = edges,
+    x <- list(nodes = nodes, edges = edges, nodesToDataframe = nodesToDataframe, 
+              edgesToDataframe = edgesToDataframe, 
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
                              manipulation = list(enabled = FALSE)),
               groups = groups, width = width, height = height,
               idselection = list(enabled = FALSE),
               byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
   }
-
+  
   # previous legend control
   ctrl <- list(...)
   legend <- NULL

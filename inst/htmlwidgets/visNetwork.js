@@ -1496,8 +1496,17 @@ HTMLWidgets.widget({
       nodes = new vis.DataSet();
       edges = new vis.DataSet();
       
-      var tmpnodes = visNetworkdataframeToD3(x.nodes, "nodes");
-      
+      var tmpnodes;
+      if(x.nodesToDataframe){ // data in data.frame
+        tmpnodes = visNetworkdataframeToD3(x.nodes, "nodes")
+      } else { // data in list
+        tmpnodes = x.nodes;
+      }
+      // only one element   
+      if(tmpnodes.length === undefined){
+        tmpnodes = new Array(tmpnodes);
+      }
+        
       // update coordinates if igraph
       if(x.igraphlayout !== undefined){
         // to improved
@@ -1536,8 +1545,19 @@ HTMLWidgets.widget({
       }
       
       nodes.add(tmpnodes);
-      edges.add(visNetworkdataframeToD3(x.edges, "edges"));
       
+      var tmpedges;
+      if(x.edgesToDataframe){ // data in data.frame
+        tmpedges = visNetworkdataframeToD3(x.edges, "edges")
+      } else { // data in list
+        tmpedges = x.edges;
+      }
+      // only one element   
+      if(tmpedges.length === undefined){
+        tmpedges = new Array(tmpedges);
+      }
+      edges.add(tmpedges);
+
       // reset tmpnodes
       tmpnodes = null;
       
