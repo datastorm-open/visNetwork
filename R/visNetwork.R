@@ -2,7 +2,7 @@
 #'
 #' Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
 #'
-#' @param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
+#' @param nodes : data.frame or a list with nodes informations. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
 #'  \item{"id"}{ : id of the node, needed in edges information}
 #'  \item{"label"}{ : label of the node}
@@ -12,7 +12,7 @@
 #'  \item{...}{}
 #'}
 #'
-#' @param edges : data.frame with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
+#' @param edges : data.frame or a list  with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
 #' \itemize{
 #'  \item{"from"}{ : node id of begin of the edge}
 #'  \item{"to"}{ : node id of end of the edge}
