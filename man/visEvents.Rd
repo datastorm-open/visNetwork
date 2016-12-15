@@ -91,7 +91,7 @@ visNetwork(nodes, edges) \%>\%
  visEvents(select = "function(properties) {
      alert('selected nodes: ' + properties.nodes);}", 
      dragEnd = "function(properties) {
-     alert('finsih to drag');}")
+     alert('finish to drag');}")
 
 # set one 
 visNetwork(nodes, edges) \%>\%
@@ -100,7 +100,7 @@ visNetwork(nodes, edges) \%>\%
  visEvents(select = "function(properties) {
      alert('selected nodes: ' + properties.nodes);}", 
      dragEnd = "function(properties) {
-     alert('finsih to drag');}")
+     alert('finish to drag');}")
       
 # use this to get the network
 nodes <- data.frame(id = 1:3)
