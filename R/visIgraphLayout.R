@@ -51,6 +51,17 @@
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(randomSeed = 123)
 #'}
+#'
+#'# layout_with_sugiyama
+#'nodes <- data.frame(id = 1:5)
+#'edges <- data.frame(from = c(1, 2, 2, 4), to = c(2, 3, 4, 5))
+#'
+#'visNetwork(nodes, edges) %>%
+#'  visIgraphLayout(layout = "layout_with_sugiyama", layers = c(1, 2, 3, 3, 4))
+#'
+#'visNetwork(nodes, edges) %>%
+#'  visIgraphLayout(layout = "layout_with_sugiyama")
+#'  
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -98,7 +109,7 @@ visIgraphLayout <- function(graph,
   
   ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, 
                                       vertices = graph$x$nodes[,c("id", setdiff(names(graph$x$nodes), "id"))])
-  
+
   if(!is.null(randomSeed)){
     set.seed(randomSeed)
   }
@@ -107,10 +118,13 @@ visIgraphLayout <- function(graph,
       stop("'layout.norm' requires a layout argument (a matrix with two or three columns), passed by layoutMatrix argument")
     }
     coord <- ctrl$objs[[1]](layout = layoutMatrix, ...)
+  } else if("layout_with_sugiyama" %in% layout){
+    coord <- ctrl$objs[[1]](graph = ig, ...)$layout
+    coord[, 2] <- max(coord[, 2]) - coord[, 2] + 1
   } else {
     coord <- ctrl$objs[[1]](graph = ig, ...)
   }
-
+  
   graph$x$nodes$x <- coord[, 1]
   graph$x$nodes$y <- coord[, 2]
   

@@ -68,6 +68,17 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\% 
  visIgraphLayout(randomSeed = 123)
 }
+
+# layout_with_sugiyama
+nodes <- data.frame(id = 1:5)
+edges <- data.frame(from = c(1, 2, 2, 4), to = c(2, 3, 4, 5))
+
+visNetwork(nodes, edges) \%>\%
+ visIgraphLayout(layout = "layout_with_sugiyama", layers = c(1, 2, 3, 3, 4))
+
+visNetwork(nodes, edges) \%>\%
+ visIgraphLayout(layout = "layout_with_sugiyama")
+ 
 }
 \references{
 See online documentation \url{http://datastorm-open.github.io/visNetwork/}

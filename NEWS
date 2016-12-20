@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * enabled layout_with_sugiyama with visIgraphLayout
   * To vis.js 4.17.0
   * enabled passing nodes & edges as list
   * fix igraghLayout with rmarkdown and tabset
