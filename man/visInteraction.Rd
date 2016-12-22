@@ -9,8 +9,7 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
   hoverConnectedEdges = NULL, keyboard = NULL, multiselect = NULL,
   navigationButtons = NULL, selectable = NULL,
   selectConnectedEdges = NULL, tooltipDelay = NULL, tooltipStay = 300,
-  tooltipStyle = "position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);",
-  zoomView = NULL)
+  tooltipStyle = NULL, zoomView = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

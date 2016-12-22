@@ -71,7 +71,7 @@
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "red") %>%
 #'   visGroups(groupname = "B", color = "lightblue") %>%
-#'   visLegend(addNodes = lnodes, useGroups = T, ncol = 2)
+#'   visLegend(addNodes = lnodes, useGroups = TRUE, ncol = 2)
 #'   
 #' # for more complex option, you can use a list(of list...)
 #' # or a data.frame with specific notaion
