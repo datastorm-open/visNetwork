@@ -38,7 +38,7 @@ visExport <- function(graph, type = "png", name = "network",
                          style = NULL, loadDependencies = TRUE, ...){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
-    stop("Can't use visSetExport with visNetworkProxy object")
+    stop("Can't use visExport with visNetworkProxy object")
   }
   
   if(!any(class(graph) %in% "visNetwork")){
