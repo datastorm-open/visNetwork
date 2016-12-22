@@ -17,7 +17,7 @@ output$network_proxy_update <- renderVisNetwork({
 observe({
   input$goUpdate
   nodes <- data.frame(id = 1:(n+10), 
-                      group = sample(LETTERS[1:3], n+10, replace = TRUE))
+                      group = sample(LETTERS[1:5], n+10, replace = TRUE))
   edges <- dataup()$edges
   edges$color <- sample(c("red", "blue", "yellow"), 1)
   
@@ -43,7 +43,7 @@ output$code_proxy_update  <- renderText({
 observe({
   input$goUpdate
   nodes <- data.frame(id = 1:15, 
-  group = sample(LETTERS[1:3], 15, replace = TRUE))
+  group = sample(LETTERS[1:5], 15, replace = TRUE))
   edges <- data()$edges
   edges$color <- sample(c("red", "blue", "yellow"), 1)
   

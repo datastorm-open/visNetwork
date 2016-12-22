@@ -21,7 +21,7 @@ output$view_id <- renderText({
 
 output$code_network_id <- renderText({
   '
-  visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
+  visNetwork(nodes, edges, main = "Title", submain = "Subtitle") %>%
     visExport() %>%
     visOptions(highlightNearest = TRUE,
       nodesIdSelection = list(enabled = TRUE, selected = "1"))

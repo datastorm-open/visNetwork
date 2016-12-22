@@ -11,13 +11,14 @@ dataos <- reactive({
 
 output$network_proxy_options <- renderVisNetwork({
   visNetwork(dataos()$nodes, dataos()$edges) %>% visEdges(arrows = "to") %>% 
-    visLegend() 
+    visLegend()
 })
 
 observe({
+  col <- paste0('rgba(200,200,200,', input$opahigh, ')')
   visNetworkProxy("network_proxy_options") %>%
     visOptions(highlightNearest = list(enabled = input$highlightNearest, hover = input$hover,
-                                       algorithm = input$algorithm))
+                                       algorithm = input$algorithm, degree = input$deg, hideColor = col))
 })
 
 observe({
@@ -27,8 +28,9 @@ observe({
 
 observe({
   if(input$selectedby){
+    col <- paste0('rgba(200,200,200,', input$opasel, ')')
     visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group"))
+      visOptions(selectedBy = list(variable = "group", hideColor = col))
   }else{
     visNetworkProxy("network_proxy_options") %>%
       visOptions(selectedBy = NULL)
@@ -49,23 +51,26 @@ observe({
 output$code_proxy_options  <- renderText({
   '
 observe({
+  col <- paste0("rgba(200,200,200,", input$opahigh, ")")
   visNetworkProxy("network_proxy_options") %>%
-    visOptions(highlightNearest = input$highlightNearest)
+    visOptions(highlightNearest = list(enabled = input$highlightNearest, hover = input$hover,
+                                       algorithm = input$algorithm, degree = input$deg, hideColor = col))
 })
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
-    visOptions(nodesIdSelection = input$nodesIdSelection)
+    visOptions(nodesIdSelection = list(enabled = input$nodesIdSelection, selected = 5))
 })
 
 observe({
   if(input$selectedby){
-  visNetworkProxy("network_proxy_options") %>%
-  visOptions(selectedBy = list(variable = "group"))
-}else{
-  visNetworkProxy("network_proxy_options") %>%
-  visOptions(selectedBy = NULL)
-}
-  })
+    col <- paste0("rgba(200,200,200,", input$opasel, ")")
+    visNetworkProxy("network_proxy_options") %>%
+      visOptions(selectedBy = list(variable = "group", hideColor = col))
+  }else{
+    visNetworkProxy("network_proxy_options") %>%
+      visOptions(selectedBy = NULL)
+  }
+})
  '
 })
