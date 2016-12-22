@@ -11,6 +11,7 @@
 #'  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
 #'  \item{"hover"}{ : Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
 #'  \item{"algorithm"}{ : String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
+#'  \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'}
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
@@ -27,6 +28,7 @@
 #'  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
+#'  \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -48,6 +50,10 @@
 #' 
 #' # also when hover a node ?
 #' visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE))
+#' 
+#' # don't show nodes/edges
+#' visNetwork(nodes, edges) %>% visOptions(highlightNearest = list(enabled = TRUE, 
+#'  hover = TRUE, hideColor = 'rgba(200,200,200,0)'))
 #' 
 #' # Using hierarchical information
 #' nodes = data.frame(id = 1:6, level = c(1, 2, 3, 3, 4, 2))
@@ -179,9 +185,9 @@ visOptions <- function(graph,
     #############################
     # highlightNearest
     #############################
-    highlight <- list(enabled = FALSE, hoverNearest = FALSE, degree = 1, algorithm = "all")
+    highlight <- list(enabled = FALSE, hoverNearest = FALSE, degree = 1, algorithm = "all", hideColor = 'rgba(200,200,200,0.5)')
     if(is.list(highlightNearest)){
-      if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover", "algorithm"))){
+      if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover", "algorithm", "hideColor"))){
         stop("Invalid 'highlightNearest' argument")
       }
       
@@ -190,9 +196,14 @@ visOptions <- function(graph,
         highlight$algorithm <- highlightNearest$algorithm
       }
       
+      if("hideColor"%in%names(highlightNearest)){
+        highlight$hideColor <- highlightNearest$hideColor
+      }
+      
       if("degree"%in%names(highlightNearest)){
         highlight$degree <- highlightNearest$degree
       }
+      
       if(highlight$algorithm %in% "hierarchical"){
         if(is.list(highlight$degree)){
           stopifnot(all(names(highlight$degree) %in% c("from", "to")))
@@ -286,15 +297,19 @@ visOptions <- function(graph,
     #############################
     # selectedBy
     #############################
-    byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', multiple = FALSE)
+    byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', multiple = FALSE, hideColor = 'rgba(200,200,200,0.5)')
     
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple"))){
-          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple'")
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor"))){
+          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor'")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
+        }
+        
+        if("hideColor"%in%names(selectedBy)){
+          byselection$hideColor <- selectedBy$hideColor
         }
         
         if(!"variable"%in%names(selectedBy)){

@@ -21,6 +21,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
  \item{"hover"}{ : Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
  \item{"algorithm"}{ : String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
+ \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 }}
 
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
@@ -39,6 +40,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
+ \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}
@@ -66,6 +68,10 @@ visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE
 
 # also when hover a node ?
 visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE))
+
+# don't show nodes/edges
+visNetwork(nodes, edges) \%>\% visOptions(highlightNearest = list(enabled = TRUE, 
+ hover = TRUE, hideColor = 'rgba(200,200,200,0)'))
 
 # Using hierarchical information
 nodes = data.frame(id = 1:6, level = c(1, 2, 3, 3, 4, 2))

@@ -30,11 +30,11 @@ if (!Function.prototype.bind) {
 //--------------------------------------------
 
 // for edges
-function resetEdges(edges){
+function resetEdges(edges, hideColor){
   var edgesHardToRead = edges.get({
     fields: ['id', 'color'],
     filter: function (item) {
-      return item.color === 'rgba(200,200,200,0.5)';
+      return item.color === hideColor;
     },
     returnType :'Array'
   });
@@ -184,13 +184,13 @@ function resetAllNodes(allNodes, update, nodes, groups, options){
 //--------------------------------------------
 
 // for classic node
-function simpleNodeAsHardToRead(node){
+function simpleNodeAsHardToRead(node, hideColor1, hideColor2){
   // saving color information (if we have)
-  if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+  if (node.hiddenColor === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
     node.hiddenColor = node.color;
   }
   // set "hard to read" color
-  node.color = 'rgba(200,200,200,0.5)';
+  node.color = hideColor1;
   // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
@@ -199,12 +199,12 @@ function simpleNodeAsHardToRead(node){
 }
 
 // for icon node
-function iconsNodeAsHardToRead(node){
+function iconsNodeAsHardToRead(node, hideColor1, hideColor2){
   // individual information
   if(node.icon !== undefined){
     node.iconDefined = true;
 	// saving color information (if we have)
-    if (node.hiddenColor === undefined & node.icon.color !== 'rgba(200,200,200,0.5)') {
+    if (node.hiddenColor === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
       node.hiddenColor = node.icon.color;
     }
   } else { // information in group : have to as individual
@@ -212,13 +212,13 @@ function iconsNodeAsHardToRead(node){
     node.iconDefined = false;
   }
   // set "hard to read" color
-  node.icon.color = 'rgba(200,200,200,0.5)';
+  node.icon.color = hideColor1;
   // for edges....saving color information (if we have)
-  if (node.hiddenColorForLabel === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+  if (node.hiddenColorForLabel === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
     node.hiddenColorForLabel = node.color;
   }
   // set "hard to read" color
-  node.color = 'rgba(200,200,200,0.5)';
+  node.color = hideColor1;
   // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
@@ -227,13 +227,13 @@ function iconsNodeAsHardToRead(node){
 }
 
 // for image node
-function imageNodeAsHardToRead(node, type){
+function imageNodeAsHardToRead(node, type, hideColor1, hideColor2){
   // saving color information (if we have)
-  if (node.hiddenColor === undefined & node.color !== 'rgba(200,200,200,0.5)') {
+  if (node.hiddenColor === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
     node.hiddenColor = node.color;
   }
   // set "hard to read" color
-  node.color = 'rgba(200,200,200,0.5)';
+  node.color = hideColor1;
   // reset and save label
   if (node.hiddenLabel === undefined) {
     node.hiddenLabel = node.label;
@@ -250,7 +250,7 @@ function imageNodeAsHardToRead(node, type){
 }
 
 // Global function to set one node as hard to read
-function nodeAsHardToRead(node, groups, options){
+function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2){
   var final_shape;
   var shape_group = false;
   // have a group information & a shape defined in group ?
@@ -278,13 +278,13 @@ function nodeAsHardToRead(node, groups, options){
   }
   // and call good function
   if(final_shape === "icon"){
-    iconsNodeAsHardToRead(node);
+    iconsNodeAsHardToRead(node, hideColor1, hideColor2);
   } else if(final_shape === "image"){
-    imageNodeAsHardToRead(node, "image");
+    imageNodeAsHardToRead(node, "image", hideColor1, hideColor2);
   } else if(final_shape === "circularImage"){
-    imageNodeAsHardToRead(node, "circularImage");
+    imageNodeAsHardToRead(node, "circularImage", hideColor1, hideColor2);
   } else {
-    simpleNodeAsHardToRead(node);
+    simpleNodeAsHardToRead(node, hideColor1, hideColor2);
   }
   // finally set isHardToRead
   node.isHardToRead = true;
@@ -704,6 +704,7 @@ if (HTMLWidgets.shinyMode){
             document.getElementById(el.id).highlight = data.options.highlight.enabled;
             document.getElementById(el.id).degree = data.options.highlight.degree;
             document.getElementById(el.id).hoverNearest = data.options.highlight.hoverNearest;
+            document.getElementById(el.id).highlightColor = data.options.highlight.hideColor;
             document.getElementById(el.id).highlightAlgorithm = data.options.highlight.algorithm;
           }
 
@@ -712,6 +713,9 @@ if (HTMLWidgets.shinyMode){
             if(data.options.byselection.selected !== undefined){
               document.getElementById("selectedBy"+data.id).value = data.options.byselection.selected;
               document.getElementById("selectedBy"+data.id).onchange();
+            }
+            if(data.options.byselection.hideColor){
+              document.getElementById(el.id).byselectionColor = data.options.byselection.hideColor;
             }
           }
           
@@ -1012,16 +1016,23 @@ HTMLWidgets.widget({
     
     if(x.highlight !== undefined){
       document.getElementById(el.id).highlight = x.highlight.enabled;
+      document.getElementById(el.id).highlightColor = x.highlight.hideColor;
       document.getElementById(el.id).hoverNearest = x.highlight.hoverNearest;
       document.getElementById(el.id).degree = x.highlight.degree;
       document.getElementById(el.id).highlightAlgorithm = x.highlight.algorithm;
     } else {
       document.getElementById(el.id).highlight = false;
       document.getElementById(el.id).hoverNearest = false;
+      document.getElementById(el.id).highlightColor = 'rgba(200,200,200,0.5)';
       document.getElementById(el.id).degree = 1;
       document.getElementById(el.id).highlightAlgorithm = "all";
     }
 
+    if(x.byselection.enabled){
+      document.getElementById(el.id).byselectionColor = x.byselection.hideColor;
+    } else {
+      document.getElementById(el.id).byselectionColor = 'rgba(200,200,200,0.5)';
+    }
     
     var changeInput = function(id, data) {
             Shiny.onInputChange(el.id + '_' + id, data);
@@ -1839,6 +1850,7 @@ HTMLWidgets.widget({
       if(document.getElementById(el.id).updateNodes){
         document.getElementById(el.id).updateNodes = false;
         allNodes = nodesDataset.get({returnType:"Object"});
+        
       }
       // get variable
       var sel = document.getElementById(el.id).byselection_variable;
@@ -1881,7 +1893,7 @@ HTMLWidgets.widget({
             }
           }
           if(value_in === false){ // not in selection, so as hard to read
-            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options);
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor);
           } else { // in selection, so reset if needed
             resetOneNode(allNodes[nodeId], instance.network.groups, options);
           }
@@ -1963,7 +1975,7 @@ HTMLWidgets.widget({
           
           // mark all nodes as hard to read.
           for (var nodeId in allNodes) {
-            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options);
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor);
             allNodes[nodeId].x = undefined;
             allNodes[nodeId].y = undefined;
           }
@@ -2010,7 +2022,7 @@ HTMLWidgets.widget({
           } else if(algorithm === "hierarchical"){
             
             // first resetEdges
-            resetEdges(edges);
+            resetEdges(edges, document.getElementById(el.id).highlightColor);
             
             var degree_from = degrees.from;
             var degree_to = degrees.to;
@@ -2133,7 +2145,7 @@ HTMLWidgets.widget({
             
             // all in degree nodes get their own color and their label back
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgesHardToRead[i].color = 'rgba(200,200,200,0.5)';
+              edgesHardToRead[i].color = document.getElementById(el.id).highlightColor;
             }
             
             edges.update(edgesHardToRead);
@@ -2166,7 +2178,7 @@ HTMLWidgets.widget({
           resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
           if(algorithm === "hierarchical"){
             // resetEdges
-            resetEdges(edges);
+            resetEdges(edges, document.getElementById(el.id).highlightColor);
           }
           document.getElementById(el.id).highlightActive = false;
           is_clicked = false;

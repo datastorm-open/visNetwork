@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * new hideColor argument to control hidden nodes & edges
   * add pdf export
   * enabled layout_with_sugiyama with visIgraphLayout
   * To vis.js 4.17.0
