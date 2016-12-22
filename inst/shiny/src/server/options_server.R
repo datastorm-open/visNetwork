@@ -8,7 +8,7 @@ output$network_id <- renderVisNetwork({
   # visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
   #   visExport()
   
-  visNetwork(nodes, edges, main = "Title", submain = "Subtitle", footer = "footer") %>%
+  visNetwork(nodes, edges, main = "Title", submain = "Subtitle") %>%
     visExport() %>%
     visOptions(highlightNearest = TRUE,
                nodesIdSelection = list(enabled = TRUE, selected = "1"))

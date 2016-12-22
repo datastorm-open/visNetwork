@@ -2308,29 +2308,31 @@ HTMLWidgets.widget({
         addHeightExport = addHeightExport + 15;
       }
 
-      html2canvas(document.getElementById(el.id), {
-        background: x.export.background,
-        height : addHeightExport,
-        onrendered: function(canvas) {
-          canvas.toBlob(function(blob) {
-            saveAs(blob, x.export.name);
-          }, "image/"+x.export.type);
-        }
-      });
-      
-      /*html2canvas(document.getElementById(el.id), {
-        background: x.export.background,
-        height : addHeightExport,
-        onrendered: function(canvas) {
-          var myImage = canvas.toDataURL("image/jpeg");
-          var imgWidth = (canvas.width * 25.4) / 240;
-          var imgHeight = (canvas.height * 25.4) / 240; 
-          var table = new jsPDF('l', 'pt', [imgWidth*1.01, imgHeight*1.01]);
-          table.addImage(myImage, 'JPEG', 0, 0, imgWidth, imgHeight);
-          table.save('sample-file.pdf');
-        } 
-      });*/
-      
+      if(x.export.type !== "pdf"){
+        html2canvas(document.getElementById(el.id), {
+          background: x.export.background,
+          height : addHeightExport,
+          onrendered: function(canvas) {
+            canvas.toBlobHD(function(blob) {
+              saveAs(blob, x.export.name);
+            }, "image/"+x.export.type);
+          }
+        });
+      } else {
+        html2canvas(document.getElementById(el.id), {
+          background: x.export.background,
+          height : addHeightExport,
+          onrendered: function(canvas) {
+            var myImage = canvas.toDataURL("image/png", 1.0);
+            //var imgWidth = (canvas.width * 25.4) / 24;
+            //var imgHeight = (canvas.height * 25.4) / 24; 
+            var table = new jsPDF('l', 'pt', [canvas.width, canvas.height]);
+            table.addImage(myImage, 'JPEG', 0, 0, canvas.width, canvas.height);
+            table.save(x.export.name);
+          } 
+        });
+      }
+
       };
     }
 

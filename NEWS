@@ -1,6 +1,7 @@
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 
+  * add pdf export
   * enabled layout_with_sugiyama with visIgraphLayout
   * To vis.js 4.17.0
   * enabled passing nodes & edges as list

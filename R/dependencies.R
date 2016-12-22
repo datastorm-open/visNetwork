@@ -81,7 +81,6 @@ addFontAwesome <- function(graph){
 #' @import htmltools
 #'
 #' @export
-
 addIonicons <- function(graph){
   if(!inherits(graph,"htmlwidget")){
     stop("graph should be a htmlwidget.", call.=F)
@@ -103,7 +102,20 @@ addIonicons <- function(graph){
   graph
 }
 
-addExport <- function(graph){
+
+#' Add libraries dependencies used in export \link{visExport}
+#'
+#'   
+#' @param  graph : a visNetwork object
+#' @param  pdf : boolean. Add jsPDF or not ?
+#' 
+#' @return \code{graph} htmlwidget with dependencies attached.
+#' 
+#' @import htmltools
+#'
+#' @export
+#
+addExport <- function(graph, pdf = TRUE){
   if(!inherits(graph,"htmlwidget")){
     stop("graph should be a htmlwidget.", call.=F)
   } 
@@ -144,6 +156,17 @@ addExport <- function(graph){
   graph$dependencies[[length(graph$dependencies)+1]] <- Blob_dep
   graph$dependencies[[length(graph$dependencies)+1]] <- canvastoBlob_dep
   graph$dependencies[[length(graph$dependencies)+1]] <- html2canvas_dep
+  
+  if(pdf){
+    jspdf_dep <- htmltools::htmlDependency(
+      name = "jspdf",
+      version = "1.3.2",
+      src = c(file=system.file("htmlwidgets/lib/export/jsPDF", package="visNetwork")),
+      script = "jspdf.debug.js"
+    )
+    
+    graph$dependencies[[length(graph$dependencies)+1]] <- jspdf_dep
+  }
   
   graph
 }
