@@ -1,5 +1,4 @@
 [![Rdoc](http://www.rdocumentation.org/badges/version/visNetwork)](http://www.rdocumentation.org/packages/visNetwork)
-
 [![Rdoc](http://www.rdocumentation.org/api/badges/Direct/visNetwork)](http://www.rdocumentation.org/packages/visNetwork)
 
 
