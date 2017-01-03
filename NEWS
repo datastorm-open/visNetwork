@@ -1,3 +1,8 @@
+visNetwork 1.0.4
+--------------------------------------------------------------------------------
+
+  * new proxy methods : visGetBoundingBox, visGetConnectedEdges, visGetConnectedNodes, visGetEdges, visGetNodes, visGetPositions, visGetScale, visGetSelectedEdges, visGetSelectedNodes, visGetSelection, visGetViewPosition
+  
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
 

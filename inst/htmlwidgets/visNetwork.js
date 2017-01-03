@@ -619,6 +619,110 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+  // get selected edges
+  Shiny.addCustomMessageHandler('visShinyGetSelectedEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos = network.getSelectedEdges();
+		    // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // get selected nodes
+  Shiny.addCustomMessageHandler('visShinyGetSelectedNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos = network.getSelectedNodes();
+		    // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // getConnectedEdges
+  Shiny.addCustomMessageHandler('visShinyGetConnectedEdges', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos = network.getConnectedEdges(data.nodeId);
+        // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // getConnectedNodes
+  Shiny.addCustomMessageHandler('visShinyGetConnectedNodes', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos = network.getConnectedNodes(data.nodeId);
+        // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // getBoundingBox
+  Shiny.addCustomMessageHandler('visShinyGetBoundingBox', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos = network.getBoundingBox(data.nodeId);
+        // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // get selection
+  Shiny.addCustomMessageHandler('visShinyGetSelection', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos;
+        
+        pos = network.getSelection();
+
+		    // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // get scale
+  Shiny.addCustomMessageHandler('visShinyGetScale', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos;
+        
+        pos = network.getScale();
+
+		    // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // get view position
+  Shiny.addCustomMessageHandler('visShinyGetViewPosition', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        var pos;
+        
+        pos = network.getViewPosition();
+
+		    // return  in shiny
+        Shiny.onInputChange(data.input, pos);
+      }
+  });
   // Redraw the network
   Shiny.addCustomMessageHandler('visShinyRedraw', function(data){
       // get container id
