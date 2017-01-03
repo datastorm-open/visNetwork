@@ -229,10 +229,22 @@ visOptions <- function(graph,
     
     if(highlight$enabled && any(class(graph) %in% "visNetwork")){
       if(!"label"%in%colnames(graph$x$nodes)){
-        graph$x$nodes$label <- as.character(graph$x$nodes$id)
+        if(is.data.frame(graph$x$nodes)){
+          graph$x$nodes$label <- as.character(graph$x$nodes$id)
+        } else if(is.list(graph$x$nodes)){
+          ctrl <- lapply(1:length(graph$x$nodes), function(x){
+            graph$x$nodes[[x]]$label <<- as.character(graph$x$nodes[[x]]$id)
+          })
+        }
       }
       if(!"group"%in%colnames(graph$x$nodes)){
-        graph$x$nodes$group <- 1
+        if(is.data.frame(graph$x$nodes)){
+          graph$x$nodes$group <- 1
+        } else if(is.list(graph$x$nodes)){
+          ctrl <- lapply(1:length(graph$x$nodes), function(x){
+            graph$x$nodes[[x]]$group <<- 1
+          })
+        }
       }
     }
     
@@ -337,7 +349,7 @@ visOptions <- function(graph,
           byselection$style <- NULL
           byselection$multiple <- NULL
         }
-
+        
       }else{
         stop("Invalid 'selectedBy' argument. Must a 'character' or a 'list'")
       }
@@ -382,7 +394,7 @@ visOptions <- function(graph,
               byselection$values <- list(byselection$values)
             }
           }
-
+          
           if("selected"%in%names(byselection)){
             if(!byselection$selected%in%byselection$values){
               stop(byselection$selected, " not in data/selection. selectedBy$selected must be a valid value.")
@@ -391,10 +403,22 @@ visOptions <- function(graph,
           }
           
           if(!"label"%in%colnames(graph$x$nodes)){
-            graph$x$nodes$label <- ""
+            if(is.data.frame(graph$x$nodes)){
+              graph$x$nodes$label <- ""
+            } else if(is.list(graph$x$nodes)){
+              ctrl <- lapply(1:length(graph$x$nodes), function(x){
+                graph$x$nodes[[x]]$label <<- ""
+              })
+            }
           }
           if(!"group"%in%colnames(graph$x$nodes)){
-            graph$x$nodes$group <- 1
+            if(is.data.frame(graph$x$nodes)){
+              graph$x$nodes$group <- 1
+            } else if(is.list(graph$x$nodes)){
+              ctrl <- lapply(1:length(graph$x$nodes), function(x){
+                graph$x$nodes[[x]]$group <<- 1
+              })
+            }
           }
         }
       }

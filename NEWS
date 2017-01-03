@@ -2,6 +2,7 @@ visNetwork 1.0.4
 --------------------------------------------------------------------------------
 
   * new proxy methods : visGetBoundingBox, visGetConnectedEdges, visGetConnectedNodes, visGetEdges, visGetNodes, visGetPositions, visGetScale, visGetSelectedEdges, visGetSelectedNodes, visGetSelection, visGetViewPosition
+  * fix visOptions passing nodes as list rather data.frame
   
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
