@@ -2356,6 +2356,8 @@ HTMLWidgets.widget({
           x.events["click"](params);
         }
       }
+      
+      
     });
     
     instance.network.on("hoverNode", function(params){
@@ -2377,6 +2379,176 @@ HTMLWidgets.widget({
         x.events["blurNode"](params);
       }
     });
+    
+    
+    //*************************
+    //collapse
+    //*************************
+    /*function collapsedNetwork(params, all) {
+      
+      var selectedNode = params.nodes[0];
+      
+      var firstLevelNodes = [];
+      var otherLevelNodes = [];
+      var currentConnectedToNodes = [];
+      var connectedToNodes = [];
+      
+      var firstConnectedEdges = [];
+      var otherConnectedEdges = [];
+      
+      connectedToNodes = edges.get({
+      fields: ['id','to'],
+        filter: function (item) {
+          return item.from == selectedNode;
+        },
+        returnType :'Array'
+      });
+      
+      console.info(connectedToNodes);
+      console.info("connectedToNodes");
+      for (j = 0; j < connectedToNodes.length; j++) {
+        firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
+        currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
+        
+        firstConnectedEdges = firstConnectedEdges.concat(connectedToNodes[j].id);
+      }
+
+      console.info(firstLevelNodes);
+      console.info("firstLevelNodes");
+      console.info(currentConnectedToNodes);
+      console.info("currentConnectedToNodes");
+      console.info(firstConnectedEdges);
+      console.info("firstConnectedEdges");
+      
+      while(currentConnectedToNodes.length !== 0){
+        connectedToNodes = edges.get({
+          fields: ['id', 'to'],
+            filter: function (item) {
+              return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
+            },
+            returnType :'Array'
+        });
+          
+        currentConnectedToNodes = [];
+        
+        console.info(connectedToNodes);
+        console.info("connectedToNodes");
+      
+    
+        var currentlength = currentConnectedToNodes.length;
+        for (j = 0; j < connectedToNodes.length; j++) {
+          otherLevelNodes = otherLevelNodes.concat(connectedToNodes[j].to);
+          currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
+            
+          otherConnectedEdges = otherConnectedEdges.concat(connectedToNodes[j].id);
+        }
+        if (currentConnectedToNodes.length === currentlength) { break; }
+      }
+      
+            console.info(otherLevelNodes);
+      console.info("otherLevelNodes");
+        console.info(currentConnectedToNodes);
+      console.info("currentConnectedToNodes");
+        console.info(otherConnectedEdges);
+      console.info("otherConnectedEdges");
+      
+      var item;
+      var item_collapsed;
+      var to_collapsed;
+      
+      item = instance.network.body.data.nodes.get({
+        fields: ['is_collapsed'],    // output the specified fields only
+        filter: function (item) {
+          return item.id == selectedNode;
+        }
+      });
+
+      if(item[0].is_collapsed === undefined){
+        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: true, borderWidth : 3});
+        to_collapsed = true;
+      }else if(item[0].is_collapsed){
+        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: false, borderWidth : 1});
+        to_collapsed = false;
+      }else if(item[0].is_collapsed === false){
+        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: true, borderWidth : 3});
+        to_collapsed = true;
+      }
+        
+      if(all === false){
+        for (j = 0; j < firstLevelNodes.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: true});
+          }else{
+            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false});
+          }
+        }
+      
+        for (j = 0; j < otherLevelNodes.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: true});
+          }
+        }
+      } else {
+        for (j = 0; j < firstLevelNodes.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: false});
+          }else{
+            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false, is_collapsed: false});
+          }
+        }
+      
+        for (j = 0; j < otherLevelNodes.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: false});
+          }else{
+            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: false, is_collapsed: false});
+          }
+        }
+      }
+      
+      for (j = 0; j < firstLevelNodes.length; j++) {
+        if(to_collapsed){
+          instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: true});
+        }else{
+          instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false});
+        }
+      }
+    
+      for (j = 0; j < otherLevelNodes.length; j++) {
+        if(to_collapsed){
+          instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: true});
+        }else{
+          if(all){
+            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: false});
+          }
+        }
+      }
+        
+      for (j = 0; j < firstConnectedEdges.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.edges.update({id: firstConnectedEdges[j], hidden: true});
+          }else{
+            instance.network.body.data.edges.update({id: firstConnectedEdges[j], hidden: false});
+          }
+      }
+      
+      for (j = 0; j < otherConnectedEdges.length; j++) {
+          if(to_collapsed){
+            instance.network.body.data.edges.update({id: otherConnectedEdges[j], hidden: true});
+          }else{
+            if(all){
+              instance.network.body.data.edges.update({id: otherConnectedEdges[j], hidden: false});
+            }
+          }
+      }
+      
+    }
+    
+    // test collapse
+    instance.network.on("doubleClick", function(params){
+      collapsedNetwork(params, true)
+    });*/
+    
     
     //*************************
     //footer
