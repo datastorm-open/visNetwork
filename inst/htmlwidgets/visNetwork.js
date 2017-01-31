@@ -2384,7 +2384,7 @@ HTMLWidgets.widget({
     //*************************
     //collapse
     //*************************
-    /*function collapsedNetwork(params, all) {
+    function collapsedNetwork(params, all) {
       
       var selectedNode = params.nodes[0];
       
@@ -2541,13 +2541,105 @@ HTMLWidgets.widget({
             }
           }
       }
-      
     }
     
+    function collapsedNetwork2(params, all) {
+      
+      var selectedNode = params.nodes[0];
+      
+      if(instance.network.isCluster(selectedNode)){
+        instance.network.openCluster(selectedNode)
+      } else {
+        var firstLevelNodes = [];
+        var otherLevelNodes = [];
+        var currentConnectedToNodes = [];
+        var connectedToNodes = [];
+        
+        var firstConnectedEdges = [];
+        var otherConnectedEdges = [];
+        
+              item = instance.network.body.data.nodes.get({
+        filter: function (item) {
+          return item.id == selectedNode;
+        }
+      });
+      
+      console.info(item)
+        connectedToNodes = edges.get({
+        fields: ['id','to'],
+          filter: function (item) {
+            return item.from == selectedNode;
+          },
+          returnType :'Array'
+        });
+        
+        console.info(connectedToNodes);
+        console.info("connectedToNodes");
+        for (j = 0; j < connectedToNodes.length; j++) {
+          firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
+          currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
+          
+          firstConnectedEdges = firstConnectedEdges.concat(connectedToNodes[j].id);
+        }
+  
+        console.info(firstLevelNodes);
+        console.info("firstLevelNodes");
+        console.info(currentConnectedToNodes);
+        console.info("currentConnectedToNodes");
+        console.info(firstConnectedEdges);
+        console.info("firstConnectedEdges");
+        
+        while(currentConnectedToNodes.length !== 0){
+          connectedToNodes = edges.get({
+            fields: ['id', 'to'],
+              filter: function (item) {
+                return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
+              },
+              returnType :'Array'
+          });
+            
+          currentConnectedToNodes = [];
+          
+          console.info(connectedToNodes);
+          console.info("connectedToNodes");
+        
+      
+          var currentlength = currentConnectedToNodes.length;
+          for (j = 0; j < connectedToNodes.length; j++) {
+            otherLevelNodes = otherLevelNodes.concat(connectedToNodes[j].to);
+            currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
+              
+            otherConnectedEdges = otherConnectedEdges.concat(connectedToNodes[j].id);
+          }
+          if (currentConnectedToNodes.length === currentlength) { break; }
+        }
+        
+              console.info(otherLevelNodes);
+        console.info("otherLevelNodes");
+          console.info(currentConnectedToNodes);
+        console.info("currentConnectedToNodes");
+          console.info(otherConnectedEdges);
+        console.info("otherConnectedEdges");
+        
+        var clusterOptions = {
+                joinCondition: function (nodesOptions) {
+                    return nodesOptions.id === selectedNode || indexOf.call(firstLevelNodes, nodesOptions.id, true) > -1; 
+                },
+                clusterNodeProperties: {
+                  allowSingleNodeCluster: true,
+                  level: item[0].level
+                }
+        }
+        
+        instance.network.cluster(clusterOptions);
+      }
+      
+      
+    }
     // test collapse
     instance.network.on("doubleClick", function(params){
-      collapsedNetwork(params, true)
-    });*/
+      collapsedNetwork2(params, true)
+    });
     
     
     //*************************

@@ -308,7 +308,7 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     border-width: 12px;
     margin-top: -12px;
 }
-/*div.vis-tooltip {
+^/*div.vis-tooltip {
   position: absolute;
   visibility: hidden;
   padding: 5px;
@@ -509,6 +509,8 @@ div.vis-color-picker input.vis-saturation-range {
   width: 289px !important;
 }*/
 div.vis-network div.vis-manipulation {
+  box-sizing: content-box;
+
   border-width: 0;
   border-bottom: 1px;
   border-style:solid;
@@ -657,6 +659,7 @@ div.network-navigation_wrapper {
   height: 100%;
 }
 */
+
 div.vis-network div.vis-navigation div.vis-button {
     width:34px;
     height:34px;
