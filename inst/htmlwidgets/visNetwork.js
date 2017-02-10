@@ -2384,7 +2384,8 @@ HTMLWidgets.widget({
     //*************************
     //collapse
     //*************************
-    function collapsedNetwork(params, all) {
+    
+    /*function collapsedNetwork(params, all) {
       
       var selectedNode = params.nodes[0];
       
@@ -2639,7 +2640,7 @@ HTMLWidgets.widget({
     // test collapse
     instance.network.on("doubleClick", function(params){
       collapsedNetwork2(params, true)
-    });
+    }); */
     
     
     //*************************
