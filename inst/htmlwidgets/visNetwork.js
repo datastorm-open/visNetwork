@@ -1885,23 +1885,29 @@ HTMLWidgets.widget({
     // showing the popup
     function myShowPopup(id) {
       // get the data from the vis.DataSet
-      
       var nodeData = nodes.get([id]);
+      var edgeData = edges.get([id]);
       
+      // a node ?
       if(nodeData[0] !== null && nodeData[0] !== undefined){
-        
         vispopup.innerHTML = nodeData[0].title;
-
         // show and place the tooltip.
         vispopup.style.visibility = 'visible';
         vispopup.style.top = tempY - 20 +  "px";
         vispopup.style.left = tempX + 5 + "px";
         
+      } else if(edgeData[0] !== null && edgeData[0] !== undefined){
+        // so it's perhaps a edge ?
+        vispopup.innerHTML = edgeData[0].title;
+        // show and place the tooltip.
+        vispopup.style.visibility = 'visible';
+        vispopup.style.top = tempY - 20 +  "px";
+        vispopup.style.left = tempX + 5 + "px";
       } else {
-         // so it's perhaps a edge ?
-        var edgeData = edges.get([id]);
-        if(edgeData[0] !== null && edgeData[0] !== undefined){
-          vispopup.innerHTML = edgeData[0].title;
+        // or a cluster ?
+        var node_cluster = instance.network.body.nodes[id]
+        if(node_cluster !== undefined){
+          vispopup.innerHTML = node_cluster.options.title;
           // show and place the tooltip.
           vispopup.style.visibility = 'visible';
           vispopup.style.top = tempY - 20 +  "px";
@@ -2575,10 +2581,6 @@ HTMLWidgets.widget({
       if(instance.network.isCluster(selectedNode)){
         instance.network.openCluster(selectedNode, 
         {releaseFunction : function(clusterPosition, containedNodesPositions) {
-          var newPositions = {};
-          // clusterPosition = {x:clusterX, y:clusterY};
-          // containedNodesPositions = {nodeId:{x:nodeX,y:nodeY}, nodeId2....}
-          //newPositions[nodeId] = {x:newPosX, y:newPosY};
           return containedNodesPositions;
         }})
       } else {
@@ -2617,8 +2619,6 @@ HTMLWidgets.widget({
         console.info("currentConnectedToNodes");
         console.info(currentConnectedToNodes);
 
-        
-        var cpt = 1
         while(currentConnectedToNodes.length !== 0){
           connectedToNodes = edges.get({
             fields: ['id', 'to'],
@@ -2632,6 +2632,7 @@ HTMLWidgets.widget({
           
           console.info("connectedToNodes");
           console.info(connectedToNodes);
+          
           var currentlength = otherLevelNodes.length;
           for (j = 0; j < connectedToNodes.length; j++) {
             otherLevelNodes = uniqueArray(otherLevelNodes.concat(connectedToNodes[j].to));
@@ -2644,9 +2645,6 @@ HTMLWidgets.widget({
           console.info(otherLevelNodes);
           
           if (otherLevelNodes.length === currentlength) { break; }
-           if (cpt === 5) { break; }
-           cpt = cpt +1;
-           console.info(cpt)
         }
         
         console.info("otherLevelNodes");
@@ -2720,6 +2718,7 @@ HTMLWidgets.widget({
                     }
                   }
               clusterOptions.physics = false;    
+              //console.info(clusterOptions)
               return clusterOptions;
             },
             clusterNodeProperties: {

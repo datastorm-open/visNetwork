@@ -315,7 +315,7 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     border-width: 12px;
     margin-top: -12px;
 }
-^/*div.vis-tooltip {
+/*div.vis-tooltip {
   position: absolute;
   visibility: hidden;
   padding: 5px;
