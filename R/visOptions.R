@@ -30,6 +30,10 @@
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
 #'  \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'}
+#'@param collapse : Custom option. Just a Boolean, or a named list. In dev.
+#'\itemize{
+#'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
+#'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
 #'@param manipulation : Just a Boolean
@@ -148,6 +152,7 @@ visOptions <- function(graph,
                        highlightNearest = FALSE,
                        nodesIdSelection = FALSE,
                        selectedBy = NULL,
+                       collapse = FALSE,
                        autoResize = NULL,
                        clickToUse = NULL,
                        manipulation = NULL){
@@ -181,7 +186,23 @@ visOptions <- function(graph,
     idselection <- list(enabled = FALSE)
     byselection <- list(enabled = FALSE)
   }else{
-    
+    #############################
+    # collapse
+    #############################
+    list_collapse <- list(enabled = FALSE)
+    if(is.list(collapse)){
+      if(any(!names(collapse)%in%c("enabled"))){
+        stop("Invalid 'collapse' argument")
+      }
+      
+      if("enabled"%in%names(collapse)){
+        list_collapse$enabled <- collapse$enabled
+      }
+    } else {
+      stopifnot(is.logical(collapse))
+      list_collapse$enabled <- collapse
+    }
+      
     #############################
     # highlightNearest
     #############################
@@ -428,7 +449,7 @@ visOptions <- function(graph,
   # x <- list(highlight = highlightNearest, hoverNearest = hoverNearest, degree = degree, 
   #           idselection = idselection, byselection = byselection)
   
-  x <- list(highlight = highlight, idselection = idselection, byselection = byselection)
+  x <- list(highlight = highlight, idselection = idselection, byselection = byselection, collapse = list_collapse)
   
   if(highlight$hoverNearest){
     graph <- visInteraction(graph, hover = TRUE)

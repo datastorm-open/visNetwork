@@ -5,8 +5,8 @@
 \title{Network visualization general options}
 \usage{
 visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
-  nodesIdSelection = FALSE, selectedBy = NULL, autoResize = NULL,
-  clickToUse = NULL, manipulation = NULL)
+  nodesIdSelection = FALSE, selectedBy = NULL, collapse = FALSE,
+  autoResize = NULL, clickToUse = NULL, manipulation = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -41,6 +41,11 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
  \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+}}
+
+\item{collapse}{: Custom option. Just a Boolean, or a named list. In dev.
+\itemize{
+ \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}
