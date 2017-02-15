@@ -44,10 +44,10 @@ function edgeAsHardToRead(edge, hideColor){
     edge.hiddenLabel = edge.label;
     edge.label = undefined;
   }
-  edge.isHardToRead = true
+  edge.isHardToRead = true;
 }
 
-function resetEdges(edges, hideColor){
+function resetAllEdges(edges){
   var edgesToReset = edges.get({
     fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
     filter: function (item) {
@@ -57,7 +57,7 @@ function resetEdges(edges, hideColor){
   });
   
   // all edges get their own color and their label back
-  for (i = 0; i < edgesToReset.length; i++) {
+  for (var i = 0; i < edgesToReset.length; i++) {
     // get back color
     if (edgesToReset[i].hiddenColor !== undefined) {
       edgesToReset[i].color = edgesToReset[i].hiddenColor;
@@ -133,79 +133,84 @@ function simpleImageResetNode(node, type){
 
 // Global function to reset one node
 function resetOneNode(node, groups, options){
-  if(node.isHardToRead !== undefined){ // we have to reset this node
-    if(node.isHardToRead){
-      var final_shape;
-      var shape_group = false;
-      var is_group = false;
-	  // have a group information & a shape defined in group ?
-      if(node.group !== undefined){
-        if(groups.groups[node.group] !== undefined){
-          is_group = true;
-          if(groups.groups[node.group].shape !== undefined){
-            shape_group = true;
-          }
-        }
-      }
-      // have a global shape in nodes options ?
-      var shape_options = false;
-      if(options.nodes !== undefined){
-        if(options.nodes.shape !== undefined){
-          shape_options = true;
-        }
-      }
-      // set final shape (individual > group > global)
-      if(node.hiddenImage !== undefined){
-        final_shape = node.hiddenImage;
-      } else if(node.shape !== undefined){
-        final_shape = node.shape;
-      } else if(shape_group){
-        final_shape = groups.groups[node.group].shape;
-      } else if(shape_options){
-        final_shape = options.nodes.shape;
-      }
-      // and call good reset function
-      if(final_shape === "icon"){
-        group_color = false;
-        if(is_group){ // have icon color in group ?
-          if(groups.groups[node.group].icon){
-            if(groups.groups[node.group].icon.color){
-              group_color = true;
+  if(node !== undefined){
+    if(node.isHardToRead !== undefined){ // we have to reset this node
+      if(node.isHardToRead){
+        var final_shape;
+        var shape_group = false;
+        var is_group = false;
+  	  // have a group information & a shape defined in group ?
+        if(node.group !== undefined){
+          if(groups.groups[node.group] !== undefined){
+            is_group = true;
+            if(groups.groups[node.group].shape !== undefined){
+              shape_group = true;
             }
           }
         }
-        simpleIconResetNode(node, group_color);
-      } else if(final_shape === "image"){
-        simpleImageResetNode(node, "image");
-      } else if(final_shape === "circularImage"){
-        simpleImageResetNode(node, "circularImage");
-      } else {
-        simpleResetNode(node);
+        // have a global shape in nodes options ?
+        var shape_options = false;
+        if(options.nodes !== undefined){
+          if(options.nodes.shape !== undefined){
+            shape_options = true;
+          }
+        }
+        // set final shape (individual > group > global)
+        if(node.hiddenImage !== undefined){
+          final_shape = node.hiddenImage;
+        } else if(node.shape !== undefined){
+          final_shape = node.shape;
+        } else if(shape_group){
+          final_shape = groups.groups[node.group].shape;
+        } else if(shape_options){
+          final_shape = options.nodes.shape;
+        }
+        // and call good reset function
+        if(final_shape === "icon"){
+          group_color = false;
+          if(is_group){ // have icon color in group ?
+            if(groups.groups[node.group].icon){
+              if(groups.groups[node.group].icon.color){
+                group_color = true;
+              }
+            }
+          }
+          simpleIconResetNode(node, group_color);
+        } else if(final_shape === "image"){
+          simpleImageResetNode(node, "image");
+        } else if(final_shape === "circularImage"){
+          simpleImageResetNode(node, "circularImage");
+        } else {
+          simpleResetNode(node);
+        }
+  	  // finally, get back label
+        if (node.hiddenLabel !== undefined) {
+          node.label = node.hiddenLabel;
+          node.hiddenLabel = undefined;
+        }
+        node.isHardToRead = false;
       }
-	  // finally, get back label
-      if (node.hiddenLabel !== undefined) {
-        node.label = node.hiddenLabel;
-        node.hiddenLabel = undefined;
-      }
-      node.isHardToRead = false;
     }
   }
 }
 
 // Global function to reset all node
-function resetAllNodes(allNodes, update, nodes, groups, options){
-  var updateArray = [];
-  for (var nodeId in allNodes) {
-    resetOneNode(allNodes[nodeId], groups, options);
+function resetAllNodes(nodes, update, groups, options){
+  var nodesToReset = nodes.get({
+    filter: function (item) {
+      return item.isHardToRead === true;
+    },
+    returnType :'Array'
+  });
+  
+  for (var i = 0; i < nodesToReset.length; i++) {
+    resetOneNode(nodesToReset[i], groups, options);
 	// reset coordinates
-    allNodes[nodeId].x = undefined;
-    allNodes[nodeId].y = undefined;
-    if (allNodes.hasOwnProperty(nodeId) && update) {
-      updateArray.push(allNodes[nodeId]);
-    }
+    nodesToReset[i].x = undefined;
+    nodesToReset[i].y = undefined;
   }
   if(update){
-    nodes.update(updateArray);
+    nodes.update(nodesToReset);
   }
 }
 
@@ -866,8 +871,6 @@ if (HTMLWidgets.shinyMode){
             document.getElementById("nodeSelect"+data.id).onchange();
           }
           
-          el.updateNodes = true;
-          
           if(data.options.byselection !== undefined){
             selectList2 = document.getElementById("selectedBy"+data.id)
             selectList2.options.length = 0;
@@ -991,8 +994,7 @@ if (HTMLWidgets.shinyMode){
         // reset some parameters / data before
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
-          var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
+          resetAllNodes(el.nodes, true, el.chart.groups, el.options);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -1005,7 +1007,6 @@ if (HTMLWidgets.shinyMode){
         }
         // update nodes
         el.nodes.update(tmpnodes);
-        main_el.updateNodes = true;
         
         // update options ?
         if(data.updateOptions){
@@ -1040,6 +1041,8 @@ if (HTMLWidgets.shinyMode){
       if(el){
         // get edges object
         var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
+        // reset edges
+        resetAllEdges(el.edges)
         el.edges.update(tmpedges);
       }
   });
@@ -1053,8 +1056,7 @@ if (HTMLWidgets.shinyMode){
         // reset some parameters / date before
         if (main_el.selectActive === true | main_el.highlightActive === true) {
           //reset nodes
-          var allNodes = el.nodes.get({returnType:"Object"});
-          resetAllNodes(allNodes, true, el.nodes, el.chart.groups, el.options);
+          resetAllNodes(el.nodes, true, el.chart.groups, el.options);
           
           if (main_el.selectActive === true){
             main_el.selectActive = false;
@@ -1067,8 +1069,7 @@ if (HTMLWidgets.shinyMode){
         }
         // remove nodes
         el.nodes.remove(data.rmid);
-        main_el.updateNodes = true;
-        
+
         // update options ?
         if(data.updateOptions){
           var dataOptions = {};
@@ -1099,6 +1100,8 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
+        // reset edges
+        resetAllEdges(el.edges)
         el.edges.remove(data.rmid);
       }
   });
@@ -1124,10 +1127,6 @@ HTMLWidgets.widget({
     var nodes;
     var edges;
 
-    // highlight nearest variables & selectedBy
-    var allNodes;
-    var nodesDataset;
-    
     // clustergin by zoom variables
     var clusterIndex = 0;
     var clusters = [];
@@ -1144,7 +1143,6 @@ HTMLWidgets.widget({
     // shared control with proxy function (is there a better way ?)
     document.getElementById(el.id).highlightActive = false;
     document.getElementById(el.id).selectActive = false;
-    document.getElementById(el.id).updateNodes = false;
     document.getElementById(el.id).idselection = x.idselection.enabled;
     document.getElementById(el.id).byselection = x.byselection.enabled;
     
@@ -1980,12 +1978,12 @@ HTMLWidgets.widget({
     //*************************
   
     function selectedHighlight(value) {
-      // need to update nodes before ?
-      if(document.getElementById(el.id).updateNodes){
-        document.getElementById(el.id).updateNodes = false;
-        allNodes = nodesDataset.get({returnType:"Object"});
-        
-      }
+
+      var allNodes = nodes.get({returnType:"Object"});
+       
+      // first resetEdges
+      resetAllEdges(edges);
+      var connectedNodes = [];  
       // get variable
       var sel = document.getElementById(el.id).byselection_variable;
       // need to make an update?
@@ -2029,6 +2027,7 @@ HTMLWidgets.widget({
           if(value_in === false){ // not in selection, so as hard to read
             nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor);
           } else { // in selection, so reset if needed
+            connectedNodes = connectedNodes.concat(allNodes[nodeId].id);
             resetOneNode(allNodes[nodeId], instance.network.groups, options);
           }
           allNodes[nodeId].x = undefined;
@@ -2039,12 +2038,27 @@ HTMLWidgets.widget({
           }
         }
         if(update){
-          nodesDataset.update(updateArray);
+          // set some edges as hard to read
+          var edgesHardToRead = edges.get({
+            fields: ['id', 'color', 'hiddenColor', 'hiddenLabel', 'label'],
+            filter: function (item) {
+              return (indexOf.call(connectedNodes, item.from, true) === -1) ;
+            },
+            returnType :'Array'
+          });
+
+          // all in degree nodes get their own color and their label back
+          for (i = 0; i < edgesHardToRead.length; i++) {
+            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+          }
+          edges.update(edgesHardToRead);
+            
+          nodes.update(updateArray);
         }
       }
       else if (document.getElementById(el.id).selectActive === true) {
         //reset nodes
-        resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
+        resetAllNodes(nodes, update, instance.network.groups, options)
         document.getElementById(el.id).selectActive = false
       }
     } 
@@ -2073,16 +2087,17 @@ HTMLWidgets.widget({
     function neighbourhoodHighlight(params, action_type, algorithm) {
 
       var selectNode;
-      // need to update nodes before ?
-      if(document.getElementById(el.id).updateNodes){
-        document.getElementById(el.id).updateNodes = false;
-        allNodes = nodesDataset.get({returnType:"Object"});
-      };
+      // get nodes data
+      var allNodes = nodes.get({returnType:"Object"});
       
       // update 
       var update = !(document.getElementById(el.id).highlightActive === false & params.length === 0) | (document.getElementById(el.id).selectActive === true & params.length === 0);
 
       if(!(action_type == "hover" && is_clicked)){
+        
+        // first resetEdges
+        resetAllEdges(edges);
+          
         if (params.length > 0) {
         
           var updateArray = [];
@@ -2113,6 +2128,7 @@ HTMLWidgets.widget({
             allNodes[nodeId].x = undefined;
             allNodes[nodeId].y = undefined;
           }
+          
           if(algorithm === "all"){
             if(degrees > 0){
               var connectedNodes = uniqueArray(instance.network.getConnectedNodes(selectedNode), true);
@@ -2153,10 +2169,25 @@ HTMLWidgets.widget({
             // the main node gets its own color and its label back.
             resetOneNode(allNodes[selectedNode], instance.network.groups, options);
             
-          } else if(algorithm === "hierarchical"){
+            connectedNodes = connectedNodes.concat(selectedNode);
             
-            // first resetEdges
-            resetEdges(edges, document.getElementById(el.id).highlightColor);
+            // set some edges as hard to read
+            var edgesHardToRead = edges.get({
+              fields: ['id', 'color', 'hiddenColor', 'hiddenLabel', 'label'],
+              filter: function (item) {
+                return ((indexOf.call(connectedNodes, item.from, true) === -1)) ;
+              },
+              returnType :'Array'
+            });
+
+            // all in degree nodes get their own color and their label back
+            for (i = 0; i < edgesHardToRead.length; i++) {
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+            }
+            
+            edges.update(edgesHardToRead);
+            
+          } else if(algorithm === "hierarchical"){
             
             var degree_from = degrees.from;
             var degree_to = degrees.to;
@@ -2299,7 +2330,7 @@ HTMLWidgets.widget({
                 updateArray.push(allNodes[nodeId]);
               }
             }
-            nodesDataset.update(updateArray);
+            nodes.update(updateArray);
           }else{
             is_clicked = false;
           }
@@ -2311,11 +2342,7 @@ HTMLWidgets.widget({
             resetList("nodeSelect", el.id, 'selected');
           }
           //reset nodes
-          resetAllNodes(allNodes, update, nodesDataset, instance.network.groups, options)
-          if(algorithm === "hierarchical"){
-            // resetEdges
-            resetEdges(edges, document.getElementById(el.id).highlightColor);
-          }
+          resetAllNodes(nodes, update, instance.network.groups, options)
           document.getElementById(el.id).highlightActive = false;
           is_clicked = false;
         }
@@ -2356,12 +2383,6 @@ HTMLWidgets.widget({
       }
     }
     
-    // get a copy of nodes for all highlight / selection process
-    nodesDataset = nodes; 
-    if((document.getElementById(el.id).byselection || document.getElementById(el.id).highlight) && x.nodes){
-      allNodes = nodesDataset.get({returnType:"Object"});
-    }
-
     // shared click function (selectedNodes)
     document.getElementById("graph"+el.id).myclick = function(params){
       if(instance.network.isCluster(params.nodes) === false){

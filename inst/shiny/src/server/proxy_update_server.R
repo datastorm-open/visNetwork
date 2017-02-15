@@ -11,7 +11,7 @@ dataup <- reactive({
 
 output$network_proxy_update <- renderVisNetwork({
   visNetwork(dataup()$nodes, dataup()$edges) %>% visLegend() %>% 
-    visOptions(selectedBy = "group", highlightNearest = T) 
+    visOptions(selectedBy = "group", highlightNearest = TRUE) 
 })
 
 observe({
@@ -19,6 +19,7 @@ observe({
   nodes <- data.frame(id = 1:(n+10), 
                       group = sample(LETTERS[1:5], n+10, replace = TRUE))
   edges <- dataup()$edges
+  
   edges$color <- sample(c("red", "blue", "yellow"), 1)
   
   visNetworkProxy("network_proxy_update") %>%
