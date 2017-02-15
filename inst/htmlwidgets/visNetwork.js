@@ -30,20 +30,50 @@ if (!Function.prototype.bind) {
 //--------------------------------------------
 
 // for edges
+
+// for classic node
+function edgeAsHardToRead(edge, hideColor){
+  // saving color information (if we have)
+  if (edge.hiddenColor === undefined & edge.color !== hideColor) {
+    edge.hiddenColor = edge.color;
+  }
+  // set "hard to read" color
+  edge.color = hideColor;
+  // reset and save label
+  if (edge.hiddenLabel === undefined) {
+    edge.hiddenLabel = edge.label;
+    edge.label = undefined;
+  }
+  edge.isHardToRead = true
+}
+
 function resetEdges(edges, hideColor){
-  var edgesHardToRead = edges.get({
-    fields: ['id', 'color'],
+  var edgesToReset = edges.get({
+    fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
     filter: function (item) {
-      return item.color === hideColor;
+      return item.isHardToRead === true;
     },
     returnType :'Array'
   });
-            
-  // all in degree nodes get their own color and their label back
-  for (i = 0; i < edgesHardToRead.length; i++) {
-      edgesHardToRead[i].color = null;
+  
+  // all edges get their own color and their label back
+  for (i = 0; i < edgesToReset.length; i++) {
+    // get back color
+    if (edgesToReset[i].hiddenColor !== undefined) {
+      edgesToReset[i].color = edgesToReset[i].hiddenColor;
+      edgesToReset[i].hiddenColor = undefined;
+    }else{
+      edgesToReset[i].color = null;
+    }
+    
+    // finally, get back label
+    if (edgesToReset[i].hiddenLabel !== undefined) {
+      edgesToReset[i].label = edgesToReset[i].hiddenLabel;
+      edgesToReset[i].hiddenLabel = undefined;
+    }
+    edgesToReset[i].isHardToRead = false;
   }
-  edges.update(edgesHardToRead);
+  edges.update(edgesToReset);
 }
 
 //--------------------------------------------
@@ -2238,18 +2268,20 @@ HTMLWidgets.widget({
               resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options);
             }
             
-            // set som edges as hard to read
+            // set some edges as hard to read
             var edgesHardToRead = edges.get({
-              fields: ['id', 'color'],
+              fields: ['id', 'color', 'hiddenColor', 'hiddenLabel', 'label'],
               filter: function (item) {
-                return ((indexOf.call(allConnectedNodes, item.from, true) === -1) && (indexOf.call(allConnectedNodes, item.to, true) > -1)) || ((indexOf.call(allConnectedNodes, item.from, true) > -1) && (indexOf.call(allConnectedNodes, item.to, true) === -1)) ;
+                /*return ((indexOf.call(allConnectedNodes, item.from, true) === -1) && (indexOf.call(allConnectedNodes, item.to, true) > -1)) || ((indexOf.call(allConnectedNodes, item.from, true) > -1) && (indexOf.call(allConnectedNodes, item.to, true) === -1)) ;*/
+                return ((indexOf.call(allConnectedNodes, item.from, true) === -1)  || (indexOf.call(allConnectedNodes, item.to, true) === -1)) ;
               },
               returnType :'Array'
             });
-            
+
             // all in degree nodes get their own color and their label back
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgesHardToRead[i].color = document.getElementById(el.id).highlightColor;
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+              //edgesHardToRead[i].color = document.getElementById(el.id).highlightColor;
             }
             
             edges.update(edgesHardToRead);
@@ -2544,6 +2576,7 @@ HTMLWidgets.widget({
       }
     }
     
+    /*
     function collapsedNetwork2(params, all) {
       
       var selectedNode = params.nodes[0];
@@ -2559,13 +2592,12 @@ HTMLWidgets.widget({
         var firstConnectedEdges = [];
         var otherConnectedEdges = [];
         
-              item = instance.network.body.data.nodes.get({
-        filter: function (item) {
-          return item.id == selectedNode;
-        }
-      });
+        item = instance.network.body.data.nodes.get({
+          filter: function (item) {
+            return item.id == selectedNode;
+          }
+        });
       
-      console.info(item)
         connectedToNodes = edges.get({
         fields: ['id','to'],
           filter: function (item) {
@@ -2574,8 +2606,9 @@ HTMLWidgets.widget({
           returnType :'Array'
         });
         
-        console.info(connectedToNodes);
         console.info("connectedToNodes");
+        console.info(connectedToNodes);
+        
         for (j = 0; j < connectedToNodes.length; j++) {
           firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
           currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
@@ -2583,12 +2616,13 @@ HTMLWidgets.widget({
           firstConnectedEdges = firstConnectedEdges.concat(connectedToNodes[j].id);
         }
   
-        console.info(firstLevelNodes);
         console.info("firstLevelNodes");
-        console.info(currentConnectedToNodes);
+        console.info(firstLevelNodes);
         console.info("currentConnectedToNodes");
-        console.info(firstConnectedEdges);
+        console.info(currentConnectedToNodes);
         console.info("firstConnectedEdges");
+        console.info(firstConnectedEdges);
+        
         
         while(currentConnectedToNodes.length !== 0){
           connectedToNodes = edges.get({
@@ -2615,12 +2649,13 @@ HTMLWidgets.widget({
           if (currentConnectedToNodes.length === currentlength) { break; }
         }
         
-              console.info(otherLevelNodes);
         console.info("otherLevelNodes");
-          console.info(currentConnectedToNodes);
+        console.info(otherLevelNodes);
         console.info("currentConnectedToNodes");
-          console.info(otherConnectedEdges);
+        console.info(currentConnectedToNodes);
         console.info("otherConnectedEdges");
+        console.info(otherConnectedEdges);
+      
         
         var clusterOptions = {
                 joinCondition: function (nodesOptions) {
@@ -2634,8 +2669,6 @@ HTMLWidgets.widget({
         
         instance.network.cluster(clusterOptions);
       }
-      
-      
     }
     // test collapse
     instance.network.on("doubleClick", function(params){
