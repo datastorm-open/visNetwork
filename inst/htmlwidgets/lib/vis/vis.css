@@ -1,3 +1,10 @@
+.rPartvisNetworkTooltipShowme{ 
+display: none;
+}
+.rPartvisNetworkTooltipShowhim:hover .rPartvisNetworkTooltipShowme{
+display : block;
+}
+
 .vis .overlay {
   position: absolute;
   top: 0;
