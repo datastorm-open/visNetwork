@@ -2731,10 +2731,12 @@ HTMLWidgets.widget({
     }
     
     // test collapse
-    if(x.collapse.enabled){
-      instance.network.on("doubleClick", function(params){
-        collapsedNetwork2(params, true)
-      }); 
+    if(x.collapse !== undefined){
+      if(x.collapse.enabled){
+        instance.network.on("doubleClick", function(params){
+          collapsedNetwork2(params, true)
+        }); 
+      }
     }
 
     //*************************
