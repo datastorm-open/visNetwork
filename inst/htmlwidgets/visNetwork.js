@@ -1810,6 +1810,10 @@ HTMLWidgets.widget({
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
     
+    //save data for re-use and update
+    document.getElementById("graph"+el.id).chart = instance.network;
+    document.getElementById("graph"+el.id).options = options;
+    
     /////////
     // popup
     /////////
@@ -1916,10 +1920,6 @@ HTMLWidgets.widget({
       }
     }
   
-    //save data for re-use and update
-    document.getElementById("graph"+el.id).chart = instance.network;
-    document.getElementById("graph"+el.id).options = options;
-
     // add Events
     // control to put this event due to highlightNearest
     var is_click_event = false;
