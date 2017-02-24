@@ -16,7 +16,7 @@
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
-#'  \item{"values}{ : Optional. Vector of possible values. Defaut to all id in nodes data.frame.}
+#'  \item{"values}{ : Optional. Vector of possible values (node's id), and so order is preserve. Defaut to all id in nodes data.frame.}
 #'  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
 #'  \item{"useLabels"}{ : Optional. Boolean. Use labels instead of id ? Default to TRUE.}

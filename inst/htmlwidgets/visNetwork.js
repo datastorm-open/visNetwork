@@ -476,7 +476,6 @@ function resetList(list_name, id, shiny_input_name) {
 //--------------------------------------------------------------- 
 if (HTMLWidgets.shinyMode){
   
-
   // event method
   Shiny.addCustomMessageHandler('visShinyEvents', function(data){
       // get container id
@@ -1030,7 +1029,6 @@ if (HTMLWidgets.shinyMode){
             updateVisOptions(dataOptions);
           }
         }
-
       }
   });
 
@@ -1191,7 +1189,7 @@ HTMLWidgets.widget({
     }
  
     //*************************
-    //idselection
+    //init idselection
     //*************************
     function onIdChange(id, init) {
       if(id === ""){
@@ -1241,46 +1239,7 @@ HTMLWidgets.widget({
     hr.setAttribute('style', 'height:0px; visibility:hidden; margin-bottom:-1px;');
     document.getElementById(el.id).appendChild(hr);  
       
-    if(document.getElementById(el.id).idselection){  
-      var option;
-      //Create and append select list
-      var selnodes = visNetworkdataframeToD3(x.nodes, "nodes");
-      
-      var selectList = document.getElementById("nodeSelect"+el.id)
-      selectList.setAttribute('style', x.idselection.style);
-      selectList.style.display = 'inline';
-      
-      option = document.createElement("option");
-      option.value = "";
-      option.text = "Select by id";
-      selectList.appendChild(option);
-      
-      var addid;
-      //Create and append the options
-      for (var i = 0; i < selnodes.length; i++) {
-        addid = true;
-        if(x.idselection.values !== undefined){
-          if(indexOf.call(x.idselection.values, selnodes[i].id, false) === -1){
-            addid = false;
-          }
-        }
-        if(addid){
-          option = document.createElement("option");
-          option.value = selnodes[i].id;
-          if(selnodes[i].label && x.idselection.useLabels){
-            option.text = selnodes[i].label;
-          }else{
-            option.text = selnodes[i].id;
-          }
-          selectList.appendChild(option);
-        }
-      }
-      
-      if (window.Shiny){
-        changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
-      }
-    }
-    
+
     //*************************
     //selectedBy
     //*************************
@@ -1810,6 +1769,66 @@ HTMLWidgets.widget({
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
     
+    //*************************
+    //add values to idselection
+    //*************************
+    
+    if(document.getElementById(el.id).idselection){  
+      var option;
+      
+      var selectList = document.getElementById("nodeSelect"+el.id)
+      selectList.setAttribute('style', x.idselection.style);
+      selectList.style.display = 'inline';
+      
+      option = document.createElement("option");
+      option.value = "";
+      option.text = "Select by id";
+      selectList.appendChild(option);
+      
+      // have to set for all nodes ?
+      if(x.idselection.values === undefined){
+        var info_node_list = nodes.get({
+          fields: ['id', 'label'],
+          returnType :'Array'
+        });
+        for (var i = 0; i < info_node_list.length; i++) {
+          option = document.createElement("option");
+          option.value = info_node_list[i].id;
+          if(info_node_list[i].label && x.idselection.useLabels){
+            option.text = info_node_list[i].label;
+          }else{
+            option.text = info_node_list[i].id;
+          }
+          selectList.appendChild(option);
+        }
+      } else {
+        var tmp_node;
+        for(var tmp_id = 0 ; tmp_id < x.idselection.values.length; tmp_id++){
+          tmp_node = nodes.get({
+            fields: ['id', 'label'],
+            filter: function (item) {
+              return (item.id === x.idselection.values[tmp_id]) ;
+            },
+            returnType :'Array'
+          });
+          if(tmp_node !== undefined){
+            option = document.createElement("option");
+            option.value = tmp_node[0].id;
+            if(tmp_node[0].label && x.idselection.useLabels){
+              option.text = tmp_node[0].label;
+            }else{
+              option.text = tmp_node[0].id;
+            }
+            selectList.appendChild(option);
+          }
+        }
+      }
+      
+      if (window.Shiny){
+        changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
+      }
+    }
+      
     //save data for re-use and update
     document.getElementById("graph"+el.id).chart = instance.network;
     document.getElementById("graph"+el.id).options = options;
