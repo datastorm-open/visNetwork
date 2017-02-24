@@ -33,6 +33,10 @@
 #'@param collapse : Custom option. Just a Boolean, or a named list. In dev.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
+#'  \item{"fit"}{ : Optional. Boolean. Default to true. Call fit method after collpase event ?.}
+#'  \item{"unselect"}{ : Optional. Boolean. Default to true. Unselect nodes after collpase event ?.}
+#'  \item{"clusterOptions"}{ : Optional. A list of all options you want to pass to cluster collapsed node}
+#'  
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -189,14 +193,27 @@ visOptions <- function(graph,
     #############################
     # collapse
     #############################
-    list_collapse <- list(enabled = FALSE)
+    list_collapse <- list(enabled = FALSE, fit = TRUE, unselect = TRUE)
     if(is.list(collapse)){
-      if(any(!names(collapse)%in%c("enabled"))){
+      if(any(!names(collapse)%in%c("enabled", "fit", "unselect", "clusterOptions"))){
         stop("Invalid 'collapse' argument")
       }
       
       if("enabled"%in%names(collapse)){
+        stopifnot(is.logical(collapse$enabled))
         list_collapse$enabled <- collapse$enabled
+      }
+      if("fit"%in%names(collapse)){
+        stopifnot(is.logical(collapse$fit))
+        list_collapse$fit <- collapse$fit
+      }
+      if("unselect"%in%names(collapse)){
+        stopifnot(is.logical(collapse$unselect))
+        list_collapse$unselect <- collapse$unselect
+      }
+      if("clusterOptions"%in%names(collapse)){
+        stopifnot(is.list(collapse$clusterOptions))
+        list_collapse$clusterOptions <- collapse$clusterOptions
       }
     } else {
       stopifnot(is.logical(collapse))

@@ -46,6 +46,10 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \item{collapse}{: Custom option. Just a Boolean, or a named list. In dev.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
+ \item{"fit"}{ : Optional. Boolean. Default to true. Call fit method after collpase event ?.}
+ \item{"unselect"}{ : Optional. Boolean. Default to true. Unselect nodes after collpase event ?.}
+ \item{"clusterOptions"}{ : Optional. A list of all options you want to pass to cluster collapsed node}
+ 
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}

@@ -2385,8 +2385,6 @@ HTMLWidgets.widget({
           x.events["click"](params);
         }
       }
-      
-      
     });
     
     instance.network.on("hoverNode", function(params){
@@ -2414,179 +2412,27 @@ HTMLWidgets.widget({
     //collapse
     //*************************
     
-    /*function collapsedNetwork(params, all) {
+    function collapsedNetwork(params, all, fit, unselect, cluster_params) {
       
-      var selectedNode = params.nodes[0];
-      
-      var firstLevelNodes = [];
-      var otherLevelNodes = [];
-      var currentConnectedToNodes = [];
-      var connectedToNodes = [];
-      
-      var firstConnectedEdges = [];
-      var otherConnectedEdges = [];
-      
-      connectedToNodes = edges.get({
-      fields: ['id','to'],
-        filter: function (item) {
-          return item.from == selectedNode;
-        },
-        returnType :'Array'
-      });
-      
-      console.info(connectedToNodes);
-      console.info("connectedToNodes");
-      for (j = 0; j < connectedToNodes.length; j++) {
-        firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
-        currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
-        
-        firstConnectedEdges = firstConnectedEdges.concat(connectedToNodes[j].id);
-      }
-
-      console.info(firstLevelNodes);
-      console.info("firstLevelNodes");
-      console.info(currentConnectedToNodes);
-      console.info("currentConnectedToNodes");
-      console.info(firstConnectedEdges);
-      console.info("firstConnectedEdges");
-      
-      while(currentConnectedToNodes.length !== 0){
-        connectedToNodes = edges.get({
-          fields: ['id', 'to'],
-            filter: function (item) {
-              return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
-            },
-            returnType :'Array'
-        });
-          
-        currentConnectedToNodes = [];
-        
-        console.info(connectedToNodes);
-        console.info("connectedToNodes");
-      
-    
-        var currentlength = currentConnectedToNodes.length;
-        for (j = 0; j < connectedToNodes.length; j++) {
-          otherLevelNodes = otherLevelNodes.concat(connectedToNodes[j].to);
-          currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
-            
-          otherConnectedEdges = otherConnectedEdges.concat(connectedToNodes[j].id);
-        }
-        if (currentConnectedToNodes.length === currentlength) { break; }
-      }
-      
-            console.info(otherLevelNodes);
-      console.info("otherLevelNodes");
-        console.info(currentConnectedToNodes);
-      console.info("currentConnectedToNodes");
-        console.info(otherConnectedEdges);
-      console.info("otherConnectedEdges");
-      
-      var item;
-      var item_collapsed;
-      var to_collapsed;
-      
-      item = instance.network.body.data.nodes.get({
-        fields: ['is_collapsed'],    // output the specified fields only
-        filter: function (item) {
-          return item.id == selectedNode;
-        }
-      });
-
-      if(item[0].is_collapsed === undefined){
-        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: true, borderWidth : 3});
-        to_collapsed = true;
-      }else if(item[0].is_collapsed){
-        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: false, borderWidth : 1});
-        to_collapsed = false;
-      }else if(item[0].is_collapsed === false){
-        instance.network.body.data.nodes.update({id: selectedNode, is_collapsed: true, borderWidth : 3});
-        to_collapsed = true;
-      }
-        
-      if(all === false){
-        for (j = 0; j < firstLevelNodes.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: true});
-          }else{
-            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false});
-          }
-        }
-      
-        for (j = 0; j < otherLevelNodes.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: true});
-          }
-        }
-      } else {
-        for (j = 0; j < firstLevelNodes.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: false});
-          }else{
-            instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false, is_collapsed: false});
-          }
-        }
-      
-        for (j = 0; j < otherLevelNodes.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: false});
-          }else{
-            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: false, is_collapsed: false});
-          }
-        }
-      }
-      
-      for (j = 0; j < firstLevelNodes.length; j++) {
-        if(to_collapsed){
-          instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: true, is_collapsed: true});
-        }else{
-          instance.network.body.data.nodes.update({id: firstLevelNodes[j], hidden: false});
-        }
-      }
-    
-      for (j = 0; j < otherLevelNodes.length; j++) {
-        if(to_collapsed){
-          instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: true, is_collapsed: true});
-        }else{
-          if(all){
-            instance.network.body.data.nodes.update({id: otherLevelNodes[j], hidden: false});
-          }
-        }
-      }
-        
-      for (j = 0; j < firstConnectedEdges.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.edges.update({id: firstConnectedEdges[j], hidden: true});
-          }else{
-            instance.network.body.data.edges.update({id: firstConnectedEdges[j], hidden: false});
-          }
-      }
-      
-      for (j = 0; j < otherConnectedEdges.length; j++) {
-          if(to_collapsed){
-            instance.network.body.data.edges.update({id: otherConnectedEdges[j], hidden: true});
-          }else{
-            if(all){
-              instance.network.body.data.edges.update({id: otherConnectedEdges[j], hidden: false});
-            }
-          }
-      }
-    } */
-    
-    
-    function collapsedNetwork2(params, all) {
-      
+      var set_position = true;
       var selectedNode = params.nodes[0];
       
       if(instance.network.isCluster(selectedNode)){
-        instance.network.openCluster(selectedNode, 
+        instance.network.openCluster(selectedNode)
+        /*instance.network.openCluster(selectedNode, 
         {releaseFunction : function(clusterPosition, containedNodesPositions) {
-          return containedNodesPositions;
-        }})
+          return tmp_position;
+        }})*/
+        
+        if(unselect){
+          document.getElementById("nodeSelect"+el.id).value = "";
+          document.getElementById("nodeSelect"+el.id).onchange();
+        }
+        if(fit){
+          instance.network.fit();
+        }
       } else {
-        
-        //instance.network.storePositions();
-        
+
         var firstLevelNodes = [];
         var otherLevelNodes = [];
         var currentConnectedToNodes = [];
@@ -2606,18 +2452,18 @@ HTMLWidgets.widget({
           returnType :'Array'
         });
         
-        console.info("connectedToNodes");
-        console.info(connectedToNodes);
+        //console.info("connectedToNodes");
+        //console.info(connectedToNodes);
         
         for (j = 0; j < connectedToNodes.length; j++) {
           firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
           currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
         }
   
-        console.info("firstLevelNodes");
-        console.info(firstLevelNodes);
-        console.info("currentConnectedToNodes");
-        console.info(currentConnectedToNodes);
+        //console.info("firstLevelNodes");
+        //console.info(firstLevelNodes);
+        //console.info("currentConnectedToNodes");
+        //console.info(currentConnectedToNodes);
 
         while(currentConnectedToNodes.length !== 0){
           connectedToNodes = edges.get({
@@ -2630,27 +2476,27 @@ HTMLWidgets.widget({
             
           currentConnectedToNodes = [];
           
-          console.info("connectedToNodes");
-          console.info(connectedToNodes);
+          //console.info("connectedToNodes");
+          //console.info(connectedToNodes);
           
           var currentlength = otherLevelNodes.length;
           for (j = 0; j < connectedToNodes.length; j++) {
             otherLevelNodes = uniqueArray(otherLevelNodes.concat(connectedToNodes[j].to));
             currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
           }
-          console.info("currentConnectedToNodes");
-          console.info(currentConnectedToNodes);
+          //console.info("currentConnectedToNodes");
+          //console.info(currentConnectedToNodes);
           
-          console.info("otherLevelNodes");
-          console.info(otherLevelNodes);
+          //console.info("otherLevelNodes");
+          //console.info(otherLevelNodes);
           
           if (otherLevelNodes.length === currentlength) { break; }
         }
         
-        console.info("otherLevelNodes");
-        console.info(otherLevelNodes);
-        console.info("currentConnectedToNodes");
-        console.info(currentConnectedToNodes);
+        //console.info("otherLevelNodes");
+        //console.info(otherLevelNodes);
+        //console.info("currentConnectedToNodes");
+        //console.info(currentConnectedToNodes);
       
         var finalFirstLevelNodes = [];
         for (j = 0; j < firstLevelNodes.length; j++) {
@@ -2672,16 +2518,16 @@ HTMLWidgets.widget({
           }
         }
         
+        if(set_position){ 
+          instance.network.storePositions();
+        }
+        
         var clusterOptions = {
                 joinCondition: function (nodesOptions) {
                     return nodesOptions.id === selectedNode || indexOf.call(finalFirstLevelNodes, nodesOptions.id, true) > -1 || 
                      indexOf.call(finalClusterNodes, nodesOptions.id, true) > -1; 
                 },
                 processProperties: function(clusterOptions, childNodes) {
-                  console.info("clusterOptions")
-                  console.info(clusterOptions)
-                  console.info("childNodes")
-                  console.info(childNodes)
                   
                   var click_node = nodes.get({
                     filter: function (item) {
@@ -2689,9 +2535,6 @@ HTMLWidgets.widget({
                     },
                     returnType :'Array'
                   });
-          
-                  console.info("click_node")
-                  console.info(click_node)
           
                   for (var i in click_node[0]) {
                     if(i !== "id"){
@@ -2711,30 +2554,45 @@ HTMLWidgets.widget({
                     clusterOptions.borderWidth =  3;
                   }
                   
-                  for (var i = 0; i < childNodes.length; i++) {
-                    if(childNodes[i].id === selectedNode){
-                      clusterOptions.x = childNodes[i].x;
-                      clusterOptions.y = childNodes[i].y;
+                  if(set_position){
+                    if(click_node[0].x !== undefined){
+                      clusterOptions.x = click_node[0].x;
+                    }
+                    if(click_node[0].y !== undefined){
+                      clusterOptions.y = click_node[0].y;
                     }
                   }
-              clusterOptions.physics = false;    
-              //console.info(clusterOptions)
-              return clusterOptions;
-            },
-            clusterNodeProperties: {
-              allowSingleNodeCluster: true,
-            }
-        }
+                
+                  if(cluster_params !== undefined){
+                    for (var j in cluster_params) {
+                      clusterOptions[j]=  cluster_params[j];
+                    }
+                  }
+              
+                return clusterOptions;
+              },
+              clusterNodeProperties: {
+                allowSingleNodeCluster: false,
+              }
+          }
         
         instance.network.cluster(clusterOptions);
+        if(unselect){
+          document.getElementById("nodeSelect"+el.id).value = "";
+          document.getElementById("nodeSelect"+el.id).onchange();
+        }
+        if(fit){
+          instance.network.fit();
+        }
       }
     }
     
     // test collapse
     if(x.collapse !== undefined){
       if(x.collapse.enabled){
+        //var init_position = instance.network.getPositions();
         instance.network.on("doubleClick", function(params){
-          collapsedNetwork2(params, true)
+          collapsedNetwork(params, true, x.collapse.fit, x.collapse.unselect, x.collapse.clusterOptions)
         }); 
       }
     }
