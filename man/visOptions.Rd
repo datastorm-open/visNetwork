@@ -18,10 +18,10 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \item{highlightNearest}{: Custom Option. Just a Boolean, or a named list. Default to false. Highlight nearest when clicking a node ? Not available for DOT and Gephi.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
- \item{"degree"}{ : Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
- \item{"hover"}{ : Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
- \item{"algorithm"}{ : String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
- \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+ \item{"degree"}{ : Optional. Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
+ \item{"hover"}{ : Optional. Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
+ \item{"algorithm"}{ : Optional. String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
+ \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 }}
 
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
@@ -29,8 +29,8 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
  \item{"values}{ : Optional. Vector of possible values. Defaut to all id in nodes data.frame.}
  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
- \item{"style"}{ : Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
- \item{"useLabels"}{ : Boolean. Use labels instead of id ? Default to TRUE. Optional.}
+ \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
+ \item{"useLabels"}{ : Optional. Boolean. Use labels instead of id ? Default to TRUE.}
 }}
 
 \item{selectedBy}{: Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
@@ -38,17 +38,17 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"variable"}{ : Character. Column name of selection variable.}
  \item{"values}{ : Optional. Vector of possible values. Defaut to all values in nodes data.frame.}
  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
- \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'. Optional.}
+ \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
- \item{"hideColor"}{ : String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+ \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 }}
 
 \item{collapse}{: Custom option. Just a Boolean, or a named list. In dev.
 \itemize{
- \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
- \item{"fit"}{ : Optional. Boolean. Default to true. Call fit method after collpase event ?.}
- \item{"unselect"}{ : Optional. Boolean. Default to true. Unselect nodes after collpase event ?.}
- \item{"clusterOptions"}{ : Optional. A list of all options you want to pass to cluster collapsed node}
+ \item{"enabled"}{ : Boolean. Default to false. Activated or not ?}
+ \item{"fit"}{ : Optional. Boolean. Default to TRUE Call fit method after collpase event ?}
+ \item{"unselect"}{ : Optional. Boolean. Default to TRUE Unselect nodes after collpase event ?}
+ \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
  
 }}
 
