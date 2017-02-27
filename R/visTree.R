@@ -9,6 +9,7 @@
 #' up-down, down-up, left-right, right-left. Default UD
 #' @param fallenLeaves \code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE
 #' @param fontSize \code{numeric}, size of label. Defaut to 11
+#' @param fontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.
 #' @param colorVar \code{data.frame} 2 columns :
 #' 'variable' with names of variables X
 #' 'color' with colors (in hexa)
@@ -53,7 +54,7 @@
 #' visTree(res, height = "800px", fontSize = 15)
 #' 
 #' # fallen leaves
-#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
+#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35, fontAlign = "middle")
 #' 
 #' # Change color
 #' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
@@ -75,6 +76,7 @@ visTree <- function(object,
                      direction = "UD",
                      fallenLeaves = FALSE,
                      fontSize = 11,
+                     fontAlign = "horizontal",
                      colorVar = NULL,
                      colorMod = NULL,
                      colorEdges = "#8181F7",
@@ -280,7 +282,7 @@ visTree <- function(object,
                       white-space: nowrap;
                       font-family: cursive;font-size:12px;font-color:purple;background-color: #E6E6E6;
                       border-radius: 15px;') %>% 
-    visEdges(font = list(size = fontSize), value = 3, smooth = smooth, color = colorEdges,
+    visEdges(font = list(size = fontSize, align = fontAlign), value = 3, smooth = smooth, color = colorEdges,
              scaling = list(label = list(enabled = FALSE))) %>%
     visNodes(font = list(size = fontSize)) %>%
     visEvents(type = "once", stabilized = "function() { 

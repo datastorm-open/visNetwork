@@ -5,13 +5,14 @@
 \title{Plotting rpart objects}
 \usage{
 visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
-  fontSize = 11, colorVar = NULL, colorMod = NULL,
-  colorEdges = "#8181F7", legend = TRUE, legendWidth = 0.1,
-  legendNcol = 1, highlightNearest = list(enabled = TRUE, degree = list(from
-  = 50000, to = 0), hover = TRUE, algorithm = "hierarchical"),
-  collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, clusterOptions
-  = list(fixed = TRUE, physics = FALSE)), tooltipDelay = 500, rules = TRUE,
-  digits = 3, height = "500px", width = "100\%")
+  fontSize = 11, fontAlign = "horizontal", colorVar = NULL,
+  colorMod = NULL, colorEdges = "#8181F7", legend = TRUE,
+  legendWidth = 0.1, legendNcol = 1, highlightNearest = list(enabled =
+  TRUE, degree = list(from = 50000, to = 0), hover = TRUE, algorithm =
+  "hierarchical"), collapse = list(enabled = TRUE, fit = TRUE, unselect =
+  TRUE, clusterOptions = list(fixed = TRUE, physics = FALSE)),
+  tooltipDelay = 500, rules = TRUE, digits = 3, height = "500px",
+  width = "100\%")
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
@@ -25,6 +26,8 @@ up-down, down-up, left-right, right-left. Default UD}
 \item{fallenLeaves}{\code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE}
 
 \item{fontSize}{\code{numeric}, size of label. Defaut to 11}
+
+\item{fontAlign}{\code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.}
 
 \item{colorVar}{\code{data.frame} 2 columns :
 'variable' with names of variables X
@@ -86,7 +89,7 @@ res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
 visTree(res, height = "800px", fontSize = 15)
 
 # fallen leaves
-visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
+visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35, fontAlign = "middle")
 
 # Change color
 colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
