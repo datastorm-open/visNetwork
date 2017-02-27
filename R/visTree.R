@@ -37,23 +37,23 @@
 #' 
 #' # Basic classification tree
 #' res <- rpart(Species~., data=iris)
-#' visRpart(res)
-#' visRpart(res, direction = 'LR', main = "Iris classification Tree", fontSize = 15)
+#' visTree(res)
+#' visTree(res, direction = 'LR', main = "Iris classification Tree", fontSize = 15)
 #' 
 #' # Basic regression tree
 #' res <- rpart(Petal.Length~., data=iris)
-#' visRpart(res)
+#' visTree(res)
 #' 
 #' # disable rules in tooltip, and render faster
-#' visRpart(res, rules = FALSE, tooltipDelay = 0)
+#' visTree(res, rules = FALSE, tooltipDelay = 0)
 #' 
 #' # Complex tree
 #' data("solder")
 #' res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
-#' visRpart(res, height = "800px", fontSize = 15)
+#' visTree(res, height = "800px", fontSize = 15)
 #' 
 #' # fallen leaves
-#' visRpart(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
+#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
 #' 
 #' # Change color
 #' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
@@ -62,14 +62,15 @@
 #' colorMod <- data.frame(modality = unique(solder$Opening), color = 
 #'                               c("#AA00AA", "#CDAD15", "#213478"))
 #' 
-#' visRpart(res, colorEdges = "#000099", colorVar = colorVar, 
+#' visTree(res, colorEdges = "#000099", colorVar = colorVar, 
 #'         colorMod = colorMod)
 #' 
 #' }
 #' 
 #' @export
+#' @importFrom grDevices hcl
 #' 
-visRpart <- function(object,
+visTree <- function(object,
                      main = "",
                      direction = "UD",
                      fallenLeaves = FALSE,
@@ -201,9 +202,8 @@ visRpart <- function(object,
     }
   }else{
     #Regression tree
-    Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
-    vardecided[which(vardecided=="Terminal")] <- paste0(Ynam,
-                                                        round(object$frame$yval[which(vardecided=="Terminal")],digits))
+    # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
+    vardecided[which(vardecided=="Terminal")] <- round(object$frame$yval[which(vardecided=="Terminal")],digits)
     meanV <- object$frame$yval-min(object$frame$yval)
     meanV <- meanV/max(meanV)*(360-180)+180
     colorTerm <- grDevices::hcl(meanV, l = 60)
