@@ -20,6 +20,8 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
 
+*  #### init ``visRpart``, to visualizze rpart object
+
 ## ``1.0.3`` available on CRAN
 
 * #### New ``hideColor`` argument to control hidden nodes & edges using ``highlightNearest/selectedBy``

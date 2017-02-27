@@ -5,6 +5,7 @@ visNetwork 1.0.4
   * to vis.js 4.18.1
   * new proxy methods : visGetBoundingBox, visGetConnectedEdges, visGetConnectedNodes, visGetEdges, visGetNodes, visGetPositions, visGetScale, visGetSelectedEdges, visGetSelectedNodes, visGetSelection, visGetViewPosition
   * fix visOptions passing nodes as list rather data.frame
+  * init visRpart, to visualizze rpart object
   
 visNetwork 1.0.3
 --------------------------------------------------------------------------------
