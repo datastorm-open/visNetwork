@@ -54,7 +54,7 @@
 #' visTree(res, height = "800px", fontSize = 15)
 #' 
 #' # fallen leaves
-#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 35, fontAlign = "middle")
+#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 25, fontAlign = "middle")
 #' 
 #' # Change color
 #' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
