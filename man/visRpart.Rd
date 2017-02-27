@@ -4,14 +4,14 @@
 \alias{visRpart}
 \title{Plotting rpart objects}
 \usage{
-visRpart(object, main = "", direction = "UD", fontSize = 11,
-  colorVar = NULL, colorMod = NULL, colorEdges = "#8181F7",
-  legend = TRUE, legendWidth = 0.1, legendNcol = 1,
-  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
-  hover = TRUE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
-  fit = TRUE, unselect = TRUE, clusterOptions = list(fixed = TRUE, physics =
-  FALSE)), tooltipDelay = 500, rules = TRUE, digits = 3,
-  height = "500px", width = "100\%")
+visRpart(object, main = "", direction = "UD", fallenLeaves = FALSE,
+  fontSize = 11, colorVar = NULL, colorMod = NULL,
+  colorEdges = "#8181F7", legend = TRUE, legendWidth = 0.1,
+  legendNcol = 1, highlightNearest = list(enabled = TRUE, degree = list(from
+  = 50000, to = 0), hover = TRUE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, clusterOptions
+  = list(fixed = TRUE, physics = FALSE)), tooltipDelay = 500, rules = TRUE,
+  digits = 3, height = "500px", width = "100\%")
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
@@ -21,6 +21,8 @@ visRpart(object, main = "", direction = "UD", fontSize = 11,
 \item{direction}{\code{character}, The direction of the hierarchical layout.
 The available options are: UD, DU, LR, RL. To simplify:
 up-down, down-up, left-right, right-left. Default UD}
+
+\item{fallenLeaves}{\code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE}
 
 \item{fontSize}{\code{numeric}, size of label. Defaut to 11}
 
@@ -53,7 +55,10 @@ apparition in millisecond. Default 500}
 
 \item{height}{\code{character}, defaut to "500px"}
 
-\item{width}{\code{character}, defaut to "100%"}
+\item{width}{\code{character}, defaut to "100\%"}
+}
+\value{
+a visNetwork object
 }
 \description{
 Function to plot rpart objects
@@ -79,6 +84,9 @@ visRpart(res, rules = FALSE, tooltipDelay = 0)
 data("solder")
 res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
 visRpart(res, height = "800px", fontSize = 15)
+
+# fallen leaves
+visRpart(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
 
 # Change color
 colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",

@@ -1,11 +1,13 @@
-#' @title Plotting rpart objects
-#' @description  Function to plot rpart objects
+#' Plotting rpart objects
+#' 
+#' Function to plot rpart objects
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param main \code{character}, Graph title
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
 #' up-down, down-up, left-right, right-left. Default UD
+#' @param fallenLeaves \code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE
 #' @param fontSize \code{numeric}, size of label. Defaut to 11
 #' @param colorVar \code{data.frame} 2 columns :
 #' 'variable' with names of variables X
@@ -24,7 +26,9 @@
 #' @param rules \code{boolean}, add rules in tooltips ? Default TRUE
 #' @param digits \code{numeric}, number of digits. Defaut to 3
 #' @param height \code{character}, defaut to "500px"
-#' @param width \code{character}, defaut to "100%"
+#' @param width \code{character}, defaut to "100\%"
+#' 
+#' @return a visNetwork object 
 #' 
 #' @examples
 #' 
@@ -48,6 +52,9 @@
 #' res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
 #' visRpart(res, height = "800px", fontSize = 15)
 #' 
+#' # fallen leaves
+#' visRpart(res, fallenLeaves = TRUE, height = "800px", fontSize = 35)
+#' 
 #' # Change color
 #' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
 #'                                                            "#88cc00", "#9900ff","#247856"))
@@ -65,6 +72,7 @@
 visRpart <- function(object,
                      main = "",
                      direction = "UD",
+                     fallenLeaves = FALSE,
                      fontSize = 11,
                      colorVar = NULL,
                      colorMod = NULL,
@@ -251,7 +259,11 @@ visRpart <- function(object,
   
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod,
-                      shape = shape, title = labelsNode) 
+                      shape = shape, title = labelsNode, fixed = TRUE) 
+  
+  if(fallenLeaves){
+    nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
+  }
   
   edges <- data.frame(from = from, to = to, label = decision, value = eff, title = decisionLabels)
   
@@ -270,7 +282,7 @@ visRpart <- function(object,
                       border-radius: 15px;') %>% 
     visEdges(font = list(size = fontSize), value = 3, smooth = smooth, color = colorEdges,
              scaling = list(label = list(enabled = FALSE))) %>%
-    visNodes(font = list(size = fontSize), fixed = TRUE) %>%
+    visNodes(font = list(size = fontSize)) %>%
     visEvents(type = "once", stabilized = "function() { 
         this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});
   }")
