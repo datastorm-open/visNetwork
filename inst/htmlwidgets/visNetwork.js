@@ -273,7 +273,7 @@ function resetOneNode(node, groups, options){
 }
 
 // Global function to reset all node
-function resetAllNodes(nodes, update, groups, options, network = null){
+function resetAllNodes(nodes, update, groups, options, network = undefined){
   var nodesToReset = nodes.get({
     filter: function (item) {
       return item.isHardToRead === true;
@@ -283,7 +283,7 @@ function resetAllNodes(nodes, update, groups, options, network = null){
   
   
   var have_cluster_nodes = false;
-  if(network !== null){
+  if(network !== undefined){
     var nodes_in_clusters = network.body.modules.clustering.clusteredNodes;
     if(Object.keys(nodes_in_clusters).length > 0){
       have_cluster_nodes = true;
