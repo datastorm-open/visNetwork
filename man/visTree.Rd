@@ -4,15 +4,16 @@
 \alias{visTree}
 \title{Plotting rpart objects}
 \usage{
-visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
-  fontSize = 11, fontAlign = "horizontal", colorVar = NULL,
-  colorMod = NULL, colorEdges = "#8181F7", legend = TRUE,
+visTree(object, main = "", direction = "UD", nodeSize = FALSE,
+  minNodeSize = NULL, maxNodeSize = NULL, fallenLeaves = FALSE,
+  simplifyRules = TRUE, fontSize = 11, fontAlign = "horizontal",
+  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7", legend = TRUE,
   legendWidth = 0.1, legendNcol = 1, highlightNearest = list(enabled =
   TRUE, degree = list(from = 50000, to = 0), hover = TRUE, algorithm =
   "hierarchical"), collapse = list(enabled = TRUE, fit = TRUE, unselect =
   TRUE, clusterOptions = list(fixed = TRUE, physics = FALSE)),
   tooltipDelay = 500, rules = TRUE, digits = 3, height = "500px",
-  width = "100\%")
+  width = "100\%", shapeVar = "dot", shapeY = "square")
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
@@ -23,19 +24,28 @@ visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
 The available options are: UD, DU, LR, RL. To simplify:
 up-down, down-up, left-right, right-left. Default UD}
 
+\item{nodeSize}{\code{boolean}, nodes size depends on population}
+
+\item{minNodeSize}{\code{numeric}, defaut to NULL}
+
+\item{maxNodeSize}{\code{numeric}, defaut to NULL}
+
 \item{fallenLeaves}{\code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE}
+
+\item{simplifyRules}{\code{boolean}, simplify rules writing}
 
 \item{fontSize}{\code{numeric}, size of label. Defaut to 11}
 
 \item{fontAlign}{\code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.}
 
 \item{colorVar}{\code{data.frame} 2 columns :
-'variable' with names of variables X
-'color' with colors (in hexa)}
+'variable' with levels of Y
+'color' with colors (in hexa),}
 
-\item{colorMod}{\code{data.frame} 2 columns :
-'modality' with levels of Y
-'color' with colors (in hexa)}
+\item{colorY}{if classification tree\code{data.frame} 2 columns :
+'modality' with names of variables X
+'color' with colors (in hexa)
+if regression tree \code{character}, 2 colors in hexa}
 
 \item{colorEdges}{\code{character} color of edges, in hexa. Default #8181F7}
 
@@ -59,6 +69,10 @@ apparition in millisecond. Default 500}
 \item{height}{\code{character}, defaut to "500px"}
 
 \item{width}{\code{character}, defaut to "100\%"}
+
+\item{shapeVar}{\code{character}, shape for variables nodes See \link{visNodes}}
+
+\item{shapeY}{\code{character}, shape for trerminal nodes See \link{visNodes}}
 }
 \value{
 a visNetwork object
@@ -95,11 +109,11 @@ visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 25, fontAlign = "
 colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
                                                            "#88cc00", "#9900ff","#247856"))
 
-colorMod <- data.frame(modality = unique(solder$Opening), color = 
+colorY <- data.frame(modality = unique(solder$Opening), color = 
                               c("#AA00AA", "#CDAD15", "#213478"))
 
 visTree(res, colorEdges = "#000099", colorVar = colorVar, 
-        colorMod = colorMod)
+        colorY = colorY)
 
 }
 
