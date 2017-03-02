@@ -2360,7 +2360,6 @@ HTMLWidgets.widget({
           document.getElementById(el.id).highlightActive = true;
           var i,j;
           var degrees = document.getElementById(el.id).degree;
-          
           // mark all nodes as hard to read.
           for (var nodeId in instance.network.body.nodes) {
             if(instance.network.isCluster(nodeId)){
@@ -2374,13 +2373,13 @@ HTMLWidgets.widget({
               }
             }
           }
-          
+ 
           if(algorithm === "all"){
             var connectedNodes;
             if(degrees > 0){
               connectedNodes = [];
               for (j = 0; j < selectedNode.length; j++) {
-                connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(selectedNode[j]), true);
+                connectedNodes = connectedNodes.concat(instance.network.getConnectedNodes(selectedNode[j], true));
               }
               connectedNodes = uniqueArray(connectedNodes, true);
             }else{
@@ -2694,13 +2693,11 @@ HTMLWidgets.widget({
     });
     
     instance.network.on("hoverNode", function(params){
-      if(instance.network.isCluster(params.nodes) === false){
-        if(document.getElementById(el.id).hoverNearest && x.nodes){
-          neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
-        } 
-        if(is_hoverNode_event){
-          x.events["hoverNode"](params);
-        }
+      if(document.getElementById(el.id).hoverNearest && x.nodes){
+        neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
+      } 
+      if(is_hoverNode_event){
+        x.events["hoverNode"](params);
       }
     });
 
@@ -2723,172 +2720,156 @@ HTMLWidgets.widget({
       var set_position = true;
       var selectedNode = params.nodes[0];
       
-      if(instance.network.isCluster(selectedNode)){
-        instance.network.openCluster(selectedNode)
-        /*instance.network.openCluster(selectedNode, 
-        {releaseFunction : function(clusterPosition, containedNodesPositions) {
-          return tmp_position;
-        }})*/
-        
-        if(unselect){
-          document.getElementById("nodeSelect"+el.id).value = "";
-          document.getElementById("nodeSelect"+el.id).onchange();
-        }
-        if(fit){
-          instance.network.fit();
-        }
-      } else {
-
-        var firstLevelNodes = [];
-        var otherLevelNodes = [];
-        var currentConnectedToNodes = [];
-        var connectedToNodes = [];
-
-        item = instance.network.body.data.nodes.get({
-          filter: function (item) {
-            return item.id == selectedNode;
-          }
-        });
-      
-        connectedToNodes = edges.get({
-        fields: ['id','to'],
-          filter: function (item) {
-            return item.from == selectedNode;
-          },
-          returnType :'Array'
-        });
-        
-        //console.info("connectedToNodes");
-        //console.info(connectedToNodes);
-        
-        for (j = 0; j < connectedToNodes.length; j++) {
-          firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
-          currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
-        }
-  
-        //console.info("firstLevelNodes");
-        //console.info(firstLevelNodes);
-        //console.info("currentConnectedToNodes");
-        //console.info(currentConnectedToNodes);
-
-        while(currentConnectedToNodes.length !== 0){
-          connectedToNodes = edges.get({
-            fields: ['id', 'to'],
-              filter: function (item) {
-                return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
-              },
-              returnType :'Array'
-          });
-            
-          currentConnectedToNodes = [];
+      if(selectedNode !== undefined){
+        if(instance.network.isCluster(selectedNode)){
+          instance.network.openCluster(selectedNode)
+          /*instance.network.openCluster(selectedNode, 
+          {releaseFunction : function(clusterPosition, containedNodesPositions) {
+            return tmp_position;
+          }})*/
           
+          if(unselect){
+            document.getElementById("nodeSelect"+el.id).value = "";
+            document.getElementById("nodeSelect"+el.id).onchange();
+          }
+          if(fit){
+            instance.network.fit();
+          }
+        } else {
+          var firstLevelNodes = [];
+          var otherLevelNodes = [];
+          var connectedToNodes = [];
+  
+          item = instance.network.body.data.nodes.get({
+            filter: function (item) {
+              return item.id == selectedNode;
+            }
+          });
+        
+          connectedToNodes = edges.get({
+          fields: ['id','to'],
+            filter: function (item) {
+              return item.from == selectedNode;
+            },
+            returnType :'Array'
+          });
           //console.info("connectedToNodes");
           //console.info(connectedToNodes);
           
-          var currentlength = otherLevelNodes.length;
           for (j = 0; j < connectedToNodes.length; j++) {
-            otherLevelNodes = uniqueArray(otherLevelNodes.concat(connectedToNodes[j].to));
-            currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
+            firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
           }
-          //console.info("currentConnectedToNodes");
-          //console.info(currentConnectedToNodes);
-          
-          //console.info("otherLevelNodes");
-          //console.info(otherLevelNodes);
-          
-          if (otherLevelNodes.length === currentlength) { break; }
-        }
-        
-        //console.info("otherLevelNodes");
-        //console.info(otherLevelNodes);
-        //console.info("currentConnectedToNodes");
-        //console.info(currentConnectedToNodes);
-      
-        var finalFirstLevelNodes = [];
-        for (j = 0; j < firstLevelNodes.length; j++) {
-          var findnode = instance.network.clustering.findNode(firstLevelNodes[j])
-          if(findnode.length === 1){
-            finalFirstLevelNodes = finalFirstLevelNodes.concat(firstLevelNodes[j]);
-          } else {
-            finalFirstLevelNodes = finalFirstLevelNodes.concat(findnode[0]);
-          }
-        }
-      
-        var finalClusterNodes = [];
-        for (j = 0; j < otherLevelNodes.length; j++) {
-          var findnode = instance.network.clustering.findNode(otherLevelNodes[j])
-          if(findnode.length === 1){
-            finalClusterNodes = finalClusterNodes.concat(otherLevelNodes[j]);
-          } else {
-            finalClusterNodes = finalClusterNodes.concat(findnode[0]);
-          }
-        }
-        
-        if(set_position){ 
-          instance.network.storePositions();
-        }
-        
-        var clusterOptions = {
-                joinCondition: function (nodesOptions) {
-                    return nodesOptions.id === selectedNode || indexOf.call(finalFirstLevelNodes, nodesOptions.id, true) > -1 || 
-                     indexOf.call(finalClusterNodes, nodesOptions.id, true) > -1; 
+          //console.info("firstLevelNodes");
+          //console.info(firstLevelNodes);
+  
+          var currentConnectedToNodes = firstLevelNodes;
+          while(currentConnectedToNodes.length !== 0){
+            connectedToNodes = edges.get({
+              fields: ['id', 'to'],
+                filter: function (item) {
+                  return indexOf.call(currentConnectedToNodes, item.from, true) > -1;
                 },
-                processProperties: function(clusterOptions, childNodes) {
-                  
-                  var click_node = nodes.get({
-                    filter: function (item) {
-                      return item.id == selectedNode;
-                    },
-                    returnType :'Array'
-                  });
-          
-                  for (var i in click_node[0]) {
-                    if(i !== "id"){
-                      clusterOptions[i]=  click_node[0][i];
-                    }
-                  }
-                  
-                  if(clusterOptions.label !== undefined){
-                    clusterOptions.label = clusterOptions.label + ' (cluster)'
-                  } else {
-                    clusterOptions.label =  '(cluster)'
-                  }
-                  
-                  if(clusterOptions.borderWidth !== undefined){
-                    clusterOptions.borderWidth = clusterOptions.borderWidth * 3;
-                  } else {
-                    clusterOptions.borderWidth =  3;
-                  }
-                  
-                  if(set_position){
-                    if(click_node[0].x !== undefined){
-                      clusterOptions.x = click_node[0].x;
-                    }
-                    if(click_node[0].y !== undefined){
-                      clusterOptions.y = click_node[0].y;
-                    }
-                  }
-                
-                  if(cluster_params !== undefined){
-                    for (var j in cluster_params) {
-                      clusterOptions[j]=  cluster_params[j];
-                    }
-                  }
-              
-                return clusterOptions;
-              },
-              clusterNodeProperties: {
-                allowSingleNodeCluster: false,
-              }
+                returnType :'Array'
+            });
+            
+            currentConnectedToNodes = [];
+            var currentlength = otherLevelNodes.length;
+            for (j = 0; j < connectedToNodes.length; j++) {
+              otherLevelNodes = uniqueArray(otherLevelNodes.concat(connectedToNodes[j].to));
+              currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
+            }
+            console.info("currentConnectedToNodes")
+            console.info(currentConnectedToNodes)
+            console.info("otherLevelNodes")
+            console.info(otherLevelNodes)
+            if (otherLevelNodes.length === currentlength) { break; }
           }
-        
-        instance.network.cluster(clusterOptions);
-        if(unselect){
-          document.getElementById("nodeSelect"+el.id).value = "";
-          document.getElementById("nodeSelect"+el.id).onchange();
-        }
-        if(fit){
-          instance.network.fit();
+          
+          var finalFirstLevelNodes = [];
+          for (j = 0; j < firstLevelNodes.length; j++) {
+            var findnode = instance.network.clustering.findNode(firstLevelNodes[j])
+            if(findnode.length === 1){
+              finalFirstLevelNodes = finalFirstLevelNodes.concat(firstLevelNodes[j]);
+            } else {
+              finalFirstLevelNodes = finalFirstLevelNodes.concat(findnode[0]);
+            }
+          }
+          var finalClusterNodes = [];
+          for (j = 0; j < otherLevelNodes.length; j++) {
+            var findnode = instance.network.clustering.findNode(otherLevelNodes[j])
+            if(findnode.length === 1){
+              finalClusterNodes = finalClusterNodes.concat(otherLevelNodes[j]);
+            } else {
+              finalClusterNodes = finalClusterNodes.concat(findnode[0]);
+            }
+          }
+
+          if(set_position){ 
+            instance.network.storePositions();
+          }
+
+          var clusterOptions = {
+                  joinCondition: function (nodesOptions) {
+                      return nodesOptions.id === selectedNode || indexOf.call(finalFirstLevelNodes, nodesOptions.id, true) > -1 || 
+                       indexOf.call(finalClusterNodes, nodesOptions.id, true) > -1; 
+                  },
+                  processProperties: function(clusterOptions, childNodes) {
+                    
+                    var click_node = nodes.get({
+                      filter: function (item) {
+                        return item.id == selectedNode;
+                      },
+                      returnType :'Array'
+                    });
+            
+                    for (var i in click_node[0]) {
+                      if(i !== "id"){
+                        clusterOptions[i]=  click_node[0][i];
+                      }
+                    }
+                    
+                    if(clusterOptions.label !== undefined){
+                      clusterOptions.label = clusterOptions.label + ' (cluster)'
+                    } else {
+                      clusterOptions.label =  '(cluster)'
+                    }
+                    
+                    if(clusterOptions.borderWidth !== undefined){
+                      clusterOptions.borderWidth = clusterOptions.borderWidth * 3;
+                    } else {
+                      clusterOptions.borderWidth =  3;
+                    }
+                    
+                    if(set_position){
+                      if(click_node[0].x !== undefined){
+                        clusterOptions.x = click_node[0].x;
+                      }
+                      if(click_node[0].y !== undefined){
+                        clusterOptions.y = click_node[0].y;
+                      }
+                    }
+                  
+                    if(cluster_params !== undefined){
+                      for (var j in cluster_params) {
+                        clusterOptions[j]=  cluster_params[j];
+                      }
+                    }
+                
+                  return clusterOptions;
+                },
+                clusterNodeProperties: {
+                  allowSingleNodeCluster: false,
+                }
+            }
+          
+          instance.network.cluster(clusterOptions);
+          if(unselect){
+            document.getElementById("nodeSelect"+el.id).value = "";
+            document.getElementById("nodeSelect"+el.id).onchange();
+          }
+          if(fit){
+            instance.network.fit();
+          }
         }
       }
     }
