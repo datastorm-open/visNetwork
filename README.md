@@ -20,7 +20,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
 
-*  #### init ``visTree``, to visualizze rpart object
+* #### init ``visTree``, to visualizze rpart object
 
 ## ``1.0.3`` available on CRAN
 
