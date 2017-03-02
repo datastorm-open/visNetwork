@@ -81,7 +81,7 @@ function resetOneEdge(edge){
   edge.isHardToRead = false;
 }
 
-/*function resetAllEdges(edges, network = null){
+function resetAllEdges(edges, network){
   var edgesToReset = edges.get({
     fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
     filter: function (item) {
@@ -91,7 +91,7 @@ function resetOneEdge(edge){
   });
   
   var is_cluster_edges = false;
-  if(network !== null){
+  if(network !== undefined){
     var edges_in_clusters = network.body.modules.clustering.clusteredEdges;
     if(Object.keys(edges_in_clusters).length > 0){
       is_cluster_edges = true;
@@ -273,7 +273,7 @@ function resetOneNode(node, groups, options){
 }
 
 // Global function to reset all node
-function resetAllNodes(nodes, update, groups, options, network = undefined){
+function resetAllNodes(nodes, update, groups, options, network){
   var nodesToReset = nodes.get({
     filter: function (item) {
       return item.isHardToRead === true;
