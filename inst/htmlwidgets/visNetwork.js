@@ -115,7 +115,7 @@ function resetAllEdges(edges, network){
     }
   }
   edges.update(edgesToReset);
-}*/
+}
 
 //--------------------------------------------
 // functions to reset nodes after hard to read
