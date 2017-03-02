@@ -81,7 +81,7 @@ function resetOneEdge(edge){
   edge.isHardToRead = false;
 }
 
-function resetAllEdges(edges, network = null){
+/*function resetAllEdges(edges, network = null){
   var edgesToReset = edges.get({
     fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
     filter: function (item) {
@@ -115,7 +115,7 @@ function resetAllEdges(edges, network = null){
     }
   }
   edges.update(edgesToReset);
-}
+}*/
 
 //--------------------------------------------
 // functions to reset nodes after hard to read
