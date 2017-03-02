@@ -2778,10 +2778,10 @@ HTMLWidgets.widget({
               otherLevelNodes = uniqueArray(otherLevelNodes.concat(connectedToNodes[j].to));
               currentConnectedToNodes = uniqueArray(currentConnectedToNodes.concat(connectedToNodes[j].to));
             }
-            console.info("currentConnectedToNodes")
+            /*console.info("currentConnectedToNodes")
             console.info(currentConnectedToNodes)
             console.info("otherLevelNodes")
-            console.info(otherLevelNodes)
+            console.info(otherLevelNodes)*/
             if (otherLevelNodes.length === currentlength) { break; }
           }
           
@@ -2872,7 +2872,7 @@ HTMLWidgets.widget({
           }
         }
       }
-    }
+    };
     
     // test collapse
     if(x.collapse !== undefined){
