@@ -7,17 +7,15 @@
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
 #' up-down, down-up, left-right, right-left. Default UD
-#' @param nodeSize \code{boolean}, nodes size depends on population
 #' @param fallenLeaves \code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE
 #' @param fontSize \code{numeric}, size of label. Defaut to 11
 #' @param fontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.
 #' @param colorVar \code{data.frame} 2 columns :
-#' 'variable' with levels of Y
-#' 'color' with colors (in hexa),
-#' @param colorY if classification tree\code{data.frame} 2 columns :
-#' 'modality' with names of variables X
+#' 'variable' with names of variables X
 #' 'color' with colors (in hexa)
-#' if regression tree \code{character}, 2 colors in hexa
+#' @param colorMod \code{data.frame} 2 columns :
+#' 'modality' with levels of Y
+#' 'color' with colors (in hexa)
 #' @param colorEdges \code{character} color of edges, in hexa. Default #8181F7
 #' @param legend \code{boolean}, add legend ? Default TRUE
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
@@ -30,11 +28,6 @@
 #' @param digits \code{numeric}, number of digits. Defaut to 3
 #' @param height \code{character}, defaut to "500px"
 #' @param width \code{character}, defaut to "100\%"
-#' @param minNodeSize \code{numeric}, defaut to NULL
-#' @param maxNodeSize \code{numeric}, defaut to NULL
-#' @param simplifyRules \code{boolean}, simplify rules writing
-#' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
-#' @param shapeY \code{character}, shape for trerminal nodes See \link{visNodes}
 #' 
 #' @return a visNetwork object 
 #' 
@@ -67,83 +60,41 @@
 #' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
 #'                                                            "#88cc00", "#9900ff","#247856"))
 #' 
-#' colorY <- data.frame(modality = unique(solder$Opening), color = 
+#' colorMod <- data.frame(modality = unique(solder$Opening), color = 
 #'                               c("#AA00AA", "#CDAD15", "#213478"))
 #' 
 #' visTree(res, colorEdges = "#000099", colorVar = colorVar, 
-#'         colorY = colorY)
+#'         colorMod = colorMod)
 #' 
 #' }
 #' 
 #' @export
 #' @importFrom grDevices hcl
-#' @importFrom grDevices colorRamp
-#' @importFrom grDevices rgb
 #' 
 visTree <- function(object,
-                    main = "",
-                    direction = "UD",
-                    nodeSize = FALSE,
-                    minNodeSize = NULL,
-                    maxNodeSize = NULL,
-                    fallenLeaves = FALSE,
-                    simplifyRules = TRUE,
-                    fontSize = 11,
-                    fontAlign = "horizontal",
-                    colorVar = NULL,
-                    colorY = NULL,
-                    colorEdges = "#8181F7",
-                    legend = TRUE,
-                    legendWidth = 0.1,
-                    legendNcol = 1,
-                    highlightNearest =  list(enabled = TRUE,
-                                             degree = list(from = 50000, to = 0), hover = TRUE,
-                                             algorithm = "hierarchical"),
-                    collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, 
-                                    clusterOptions = list(fixed = TRUE, physics = FALSE)),
-                    tooltipDelay = 500,
-                    rules = TRUE,
-                    digits = 3, 
-                    height = "500px",
-                    width = "100%",
-                    shapeVar = "dot",
-                    shapeY = "square"){
+                     main = "",
+                     direction = "UD",
+                     fallenLeaves = FALSE,
+                     fontSize = 11,
+                     fontAlign = "horizontal",
+                     colorVar = NULL,
+                     colorMod = NULL,
+                     colorEdges = "#8181F7",
+                     legend = TRUE,
+                     legendWidth = 0.1,
+                     legendNcol = 1,
+                     highlightNearest =  list(enabled = TRUE,
+                                              degree = list(from = 50000, to = 0), hover = TRUE,
+                                              algorithm = "hierarchical"),
+                     collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, 
+                                     clusterOptions = list(fixed = TRUE, physics = FALSE)),
+                     tooltipDelay = 500,
+                     rules = TRUE,
+                     digits = 3, 
+                     height = "500px",
+                     width = "100%"){
   
   stopifnot("rpart"%in%class(object))
-  stopifnot("character"%in%class(main))
-  stopifnot("character"%in%class(direction))
-  stopifnot(direction%in% c("UD", "LR", "RL", "DU"))
-  stopifnot(length(direction) == 1)
-  stopifnot("logical"%in%class(nodeSize))
-  if(!is.null(minNodeSize))stopifnot("numeric"%in%class(minNodeSize))
-  if(!is.null(maxNodeSize))stopifnot("numeric"%in%class(maxNodeSize))
-  stopifnot("logical"%in%class(fallenLeaves))
-  stopifnot("logical"%in%class(simplifyRules))
-  stopifnot("numeric"%in%class(fontSize))
-  stopifnot("character"%in%class(fontAlign))
-  
-  if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorVar))
-  if(object$method == "class")
-  {
-    if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorY))
-  }
-  if(object$method == "anova")
-  {
-    if(!is.null(colorVar))stopifnot("character"%in%class(colorY))
-  }
-  if(!is.null(colorEdges))stopifnot("character"%in%class(colorEdges))
-  stopifnot("logical"%in%class(legend))
-  stopifnot("numeric"%in%class(legendWidth))
-  stopifnot("numeric"%in%class(legendNcol))
-  stopifnot("list"%in%class(highlightNearest))
-  stopifnot("list"%in%class(collapse))
-  stopifnot("numeric"%in%class(tooltipDelay))
-  stopifnot("logical"%in%class(rules))
-  stopifnot("numeric"%in%class(digits))
-  stopifnot("character"%in%class(height))
-  stopifnot("character"%in%class(width))
-  stopifnot("character"%in%class(shapeVar))
-  stopifnot("character"%in%class(shapeY))
   
   terminal <- object$frame$var=="<leaf>"
   rowNam <- row.names(object$frame)
@@ -172,22 +123,18 @@ visTree <- function(object,
     num <- as.numeric(substr(re, 2, nchar(re)))
     regl <- tt[[sens]][[num]]
     comp <- attributes(regl)$compare
-    if(names(comp)%in%names(ww[which(ww%in%c("factor", "character", "ordered"))])){
+    if(names(comp)%in%names(ww[which(ww%in%c("factor", "character"))])){
       comp <- ""
     }else{
       regl <- round(regl, digits)
     }
-    
-    
     decision <- c(decision, paste( comp, regl, collapse = ","))
-    
     decisionLabels <- c(decisionLabels,
                         paste0('<div style="text-align:center;">',
                                comp,
                                regl,
                                "</div>",
                                collapse = ""))
-    
   }
   
   decision2 <- decision
@@ -195,7 +142,7 @@ visTree <- function(object,
   decision <- sapply(decision, Truncc)
   eff <- object$frame$n[match(to,rowNam)]
   vardecided <- ifelse(res2 != "<leaf>",as.character(res2),"Terminal")
-  shape <- ifelse(res2 != "<leaf>",shapeVar,shapeY)
+  shape <- ifelse(res2 != "<leaf>","dot","square")
   SortLabel <-  sort(unique(vardecided))
   if(is.null(colorVar)){
     color <-grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
@@ -227,66 +174,19 @@ visTree <- function(object,
     probsend <- paste('<hr>', probsend)
   }else{
     #Regression TREE
-    
-    varianceNodes <- round(object$frame$dev/(object$frame$n - 1),digits)
-    varianceNodes[which(varianceNodes == Inf)] <- NA
     probsend <- paste0("Mean : <b>" ,
                        round(object$frame$yval,digits),
-                       "</b><br>Variance : <b>",varianceNodes, "</b>")
+                       "</b>")
   }
   returndec <- list()
   for(i in 2:length(parentsDec[[1]])){
     use <- parentsDec[[1]][[i]]
-    varDecisions <- vardecided[match(as.character(use[-length(use)]),
-                                     rowNam)]
-    decisionsrules <- decision2[match(as.character(use),
-                                      rowNam)-1]
-    varDecisionBegin <- unique(varDecisions)
-    if(simplifyRules)
-    {
-      
-      filtre <- paste0(varDecisions, substr(decisionsrules, 1 ,1))
-      tabFiltre <- table(filtre)>1
-      if(length(which(tabFiltre))>0)
-      {
-        filtres <- names(tabFiltre)[which(tabFiltre)]
-        filtreOut <- NULL
-        for(j in filtres){
-          filtreOut <- c(filtreOut, max(which(j== filtre)))
-        }
-        keeprules <- sort(c(which(!filtre%in%filtres), filtreOut))
-        varDecisions <- varDecisions[keeprules]
-        decisionsrules <- decisionsrules[keeprules]
-      }
-      
-      filtre <- varDecisions
-      varDecisionsOrder <- varDecisions
-      tabFiltre <- table(filtre)>1
-      if(length(which(tabFiltre))>0)
-      {
-        filtres <- names(tabFiltre)[which(tabFiltre)]
-        for(j in filtres){
-          rulesNumSimpl <-decisionsrules[which( varDecisions== j)] 
-          down <- which(substr(rulesNumSimpl,1,1)==">")
-          newLib <- paste0("",substr(rulesNumSimpl[down],4,nchar(rulesNumSimpl[down])),
-                           " <= <b>", j, "</b> > ", substr(rulesNumSimpl[-down],3,nchar(rulesNumSimpl[-down])))
-          decisionsrules <- decisionsrules[-which(varDecisions== j)]
-          varDecisions <- varDecisions[-which(varDecisions== j)]
-          varDecisionsOrder <- varDecisionsOrder[-which(varDecisionsOrder== j)]
-          varDecisionsOrder <- c(varDecisionsOrder, j)
-          varDecisions <- c(varDecisions, "")
-          decisionsrules <- c(decisionsrules, newLib)
-        }
-      }
-      varDecisions <- varDecisions[match(varDecisionBegin,varDecisionsOrder )]
-      decisionsrules <- decisionsrules[match(varDecisionBegin,varDecisionsOrder )]
-      
-    }
-    
-    returndec[[i]] <- paste0(paste("<b>",varDecisions,"</b>"
-                                   ,decisionsrules
-    ),
-    collapse = "<br>")
+    returndec[[i]] <- paste0(paste("<b>",
+                                   vardecided[match(as.character(use[-length(use)]),
+                                                    rowNam)],
+                                   "</b>",decision2[match(as.character(use),
+                                                          rowNam)-1]),
+                             collapse = "<br>")
   }
   
   terminal <- which(vardecided=="Terminal")
@@ -295,29 +195,20 @@ visTree <- function(object,
     #Classification tree
     classTerminal <- clas[apply(probs2[which(vardecided=="Terminal"),],1,which.max)]
     vardecided[which(vardecided=="Terminal")] <- classTerminal
-    if(is.null(colorY)){
+    if(is.null(colorMod)){
       colorTerm <- grDevices::hcl(seq(250, 360, length = length(unique(clas))), l = 60)
       colNod[terminal] <- colorTerm[match(classTerminal, clas)]
     }else{
-      colNod[terminal] <- as.character(colorY$color[match(classTerminal,
-                                                          colorY$modality)])
+      colNod[terminal] <- as.character(colorMod$color[match(classTerminal,
+                                                            colorMod$modality)])
     }
   }else{
     #Regression tree
     # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
     vardecided[which(vardecided=="Terminal")] <- round(object$frame$yval[which(vardecided=="Terminal")],digits)
     meanV <- object$frame$yval-min(object$frame$yval)
-    meanV <- meanV/max(meanV)
-    
-    if(is.null(colorY))
-    {
-      colRamp <- colorRamp(c("#FFFF00", "#FA5858"))
-    }else{
-      colRamp <- colorRamp(c(colorY[1],colorY[2]))
-    }
-    colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
-    colorMin <-  rgb(colRamp(0), maxColorValue=255)
-    colorMax <-   rgb(colRamp(1), maxColorValue=255)
+    meanV <- meanV/max(meanV)*(360-180)+180
+    colorTerm <- grDevices::hcl(meanV, l = 60)
     colNod[terminal] <- colorTerm[terminal]
   }
   
@@ -332,21 +223,20 @@ visTree <- function(object,
     rul <- ""
   }
   
-  labelsNode <- paste0(
-    '<div style="text-align:center;">', "N : <b>",
-    round(object$frame$n/object$frame$n[1],digits)*100
-    , "%</b> (", object$frame$n,")<br>",
-    "Complexity : <b>",
-    round(object$frame$complexity, digits),
-    "</b><br>",
-    probsend,
-    ifelse(!unlist(lapply(returndec, is.null)),
-           rul
-           , ""),
-    '</div>'
+  labelsNode <- paste0('<div style="text-align:center;">', "N : <b>",
+                       round(object$frame$n/object$frame$n[1],digits)*100
+                       , "%</b> (", object$frame$n,")<br>",
+                       "Complexity : <b>",
+                       round(object$frame$complexity, digits),
+                       "</b><br>",
+                       probsend,
+                       ifelse(!unlist(lapply(returndec, is.null)),
+                              rul
+                              , ""),
+                       "</div>"
   )
   
-  legendVisVar <- sapply(SortLabel[SortLabel!="Terminal"], function(X){
+  legelDvIS <- sapply(SortLabel[SortLabel!="Terminal"], function(X){
     if(is.null(colorVar))
     {
       col <- color[which(SortLabel== X)]
@@ -356,53 +246,28 @@ visTree <- function(object,
     list(label = X, color = col, shape = "dot")
   }, simplify = FALSE, USE.NAMES = FALSE)
   
-  legendVisRep <- sapply(clas, function(X){
-    if(is.null(colorY))
+  legendVis2 <- sapply(clas, function(X){
+    if(is.null(colorMod))
     {
       col <- colorTerm[which(clas== X)]
     }else{
-      col <- as.character(colorY$color[match(X, colorY$modality)])
+      col <- as.character(colorMod$color[match(X, colorMod$modality)])
     }
     list(label = X, color = col, shape = "square")
   }, simplify = FALSE, USE.NAMES = FALSE)
   
-  legelDvIS <- c(legendVisVar, legendVisRep)
+  legelDvIS <- c(legelDvIS, legendVis2)
   smooth <- list(enabled = TRUE, type = "cubicBezier", roundness = 0.5)
-  if(nodeSize){
-    value = object$frame$n
-    
-    if(is.null(minNodeSize)){
-      minNodeSize = min(object$frame$n)
-    }
-    if(is.null(maxNodeSize)){
-      maxNodeSize = max(object$frame$n)
-    }
-    
-    
-  }else{
-    value = 1
-    if(is.null(minNodeSize)){
-      minNodeSize = 25
-    }
-    if(is.null(maxNodeSize)){
-      maxNodeSize = 25
-    }
-  }
+  
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
-                      level = level, color = colNod, value = value,
+                      level = level, color = colNod,
                       shape = shape, title = labelsNode, fixed = TRUE) 
   
   if(fallenLeaves){
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
   }
   
-  
-  
-  edges <- data.frame(from = from,
-                      to = to,
-                      label = decision,
-                      value = eff,
-                      title = decisionLabels)
+  edges <- data.frame(from = from, to = to, label = decision, value = eff, title = decisionLabels)
   
   visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main)%>% 
     visHierarchicalLayout(direction = direction) %>%
@@ -419,22 +284,11 @@ visTree <- function(object,
                       border-radius: 15px;') %>% 
     visEdges(font = list(size = fontSize, align = fontAlign), value = 3, smooth = smooth, color = colorEdges,
              scaling = list(label = list(enabled = FALSE))) %>%
-    visNodes(font = list(size = fontSize),
-             scaling = list(min = minNodeSize, max = maxNodeSize)) %>%
+    visNodes(font = list(size = fontSize)) %>%
     visEvents(type = "once", stabilized = "function() { 
         this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});
   }")
 }
-
-#Legend regression tree gradient color, still in dev
-# ' <div style= "background: red;
-# background: -webkit-linear-gradient(colorMax,',',colorMin,');
-#                        background: -o-linear-gradient(colorMax,',',colorMin,');
-#                        background: -moz-linear-gradient(colorMax,',',colorMin,');
-#                        background: linear-gradient(colorMax,',',colorMin,');">Test gradient color</div>'
-# ,
-
-
 
 .parent <- function(x) {
   if (x[1] != 1)
