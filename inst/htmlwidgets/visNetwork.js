@@ -2163,20 +2163,9 @@ HTMLWidgets.widget({
   
     // add Events
     // control to put this event due to highlightNearest
-    var is_click_event = false;
-    var is_hoverNode_event = false;
-    var is_blurNode_event = false;
     if(x.events !== undefined){
       for (var key in x.events) {
-        /*if(key === "click"){
-          is_click_event = true;
-        } else if(key === "hoverNode"){
-          is_hoverNode_event = true;
-        } else if(key === "blurNode"){
-          is_blurNode_event = true;
-        } else {*/
           instance.network.on(key, x.events[key]);
-        //}
       }
     }
 
@@ -2675,9 +2664,6 @@ HTMLWidgets.widget({
         }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
           onClickIDSelection(params)
         } 
-        /*if(is_click_event){
-          x.events["click"](params);
-        }*/
     };
     
     // Set event in relation with highlightNearest      
@@ -2687,27 +2673,18 @@ HTMLWidgets.widget({
         }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
           onClickIDSelection(params)
         } 
-        /*if(is_click_event){
-          x.events["click"](params);
-        }*/
     });
     
     instance.network.on("hoverNode", function(params){
       if(document.getElementById(el.id).hoverNearest && x.nodes){
         neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
       } 
-      /*if(is_hoverNode_event){
-        x.events["hoverNode"](params);
-      }*/
     });
 
     instance.network.on("blurNode", function(params){
       if(document.getElementById(el.id).hoverNearest && x.nodes){
         neighbourhoodHighlight([], "hover", document.getElementById(el.id).highlightAlgorithm);
       }      
-      /*if(is_blurNode_event){
-        x.events["blurNode"](params);
-      }*/
     });
     
     
