@@ -72,8 +72,9 @@ function resetAllEdges(edges, network){
   });
   
   var is_cluster_edges = false;
+  var edges_in_clusters;
   if(network !== undefined){
-    var edges_in_clusters = network.body.modules.clustering.clusteredEdges;
+    edges_in_clusters = network.body.modules.clustering.clusteredEdges;
     if(Object.keys(edges_in_clusters).length > 0){
       is_cluster_edges = true;
       edges_in_clusters = Object.keys(edges_in_clusters);
@@ -103,63 +104,95 @@ function resetAllEdges(edges, network){
 //--------------------------------------------
 
 // for classic node
-function simpleResetNode(node, network){
-  // reset body information
-  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
-  // get back color
-  if (node.hiddenColor !== undefined) {
-    node.color = node.hiddenColor;
-    node.hiddenColor = undefined;
-  }else{
-    if(node.group !== undefined){
-      node.color = undefined;
-    } else {
-      node.color = null;
+function simpleResetNode(node, type = "node"){
+  if(type === "node"){
+    // get back color
+    if (node.hiddenColor !== undefined) {
+      node.color = node.hiddenColor;
+      node.hiddenColor = undefined;
+    }else{
+      if(node.group !== undefined){
+        node.color = undefined;
+      } else {
+        node.color = null;
+      }
+    }
+  } else {
+    if (node.options.hiddenColor !== undefined) {
+      node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
+    }else{
+      if(node.group !== undefined){
+        node.setOptions({color : undefined});
+      } else {
+        node.setOptions({color : null});
+      }
     }
   }
 }
 
 // for icon node
-function simpleIconResetNode(node, network){
-  // reset body information
-  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
-  // icon color
-  node.icon.color = node.hiddenColor;
-  node.hiddenColor = undefined;
-  // get back color
-  if (node.hiddenColorForLabel !== undefined) {
-    node.color = node.hiddenColorForLabel;
-    node.hiddenColorForLabel = undefined;
-  }else{
-    if(node.group !== undefined){
-      node.color = undefined;
-    } else {
-      node.color = null;
+function simpleIconResetNode(node, type = "node"){
+  if(type === "node"){  
+    // icon color
+    node.icon.color = node.hiddenColor;
+    node.hiddenColor = undefined;
+    // get back color
+    if (node.hiddenColorForLabel !== undefined) {
+      node.color = node.hiddenColorForLabel;
+      node.hiddenColorForLabel = undefined;
+    }else{
+      if(node.group !== undefined){
+        node.color = undefined;
+      } else {
+        node.color = null;
+      }
+    }
+  } else {
+    node.setOptions({icon : { color : node.options.hiddenColor}, hiddenColor : undefined});
+    if (node.options.hiddenColorForLabel !== undefined) {
+      node.setOptions({color : node.options.hiddenColorForLabel, hiddenColorForLabel : undefined});
+    }else{
+      if(node.group !== undefined){
+        node.setOptions({color : undefined});
+      } else {
+        node.setOptions({color : null});
+      }
     }
   }
 }
 
 // for image node
-function simpleImageResetNode(node, type, network){
-  // reset body information
-  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
-  // get back color
-  if (node.hiddenColor !== undefined) {
-    node.color = node.hiddenColor;
-    node.hiddenColor = undefined;
-  }else{
-    if(node.group !== undefined){
-      node.color = undefined;
-    } else {
-      node.color = null;
+function simpleImageResetNode(node, imageType, type = "node"){
+  if(type === "node"){  
+    // get back color
+    if (node.hiddenColor !== undefined) {
+      node.color = node.hiddenColor;
+      node.hiddenColor = undefined;
+    }else{
+      if(node.group !== undefined){
+        node.color = undefined;
+      } else {
+        node.color = null;
+      }
     }
+    // and set shape as image/circularImage
+    node.shape = imageType;
+  } else {
+    if (node.options.hiddenColor !== undefined) {
+      node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
+    }else{
+      if(node.group !== undefined){
+        node.setOptions({color : undefined});
+      } else {
+        node.setOptions({color : null});
+      }
+    }
+    node.setOptions({shape : imageType});
   }
-  // and set shape as image/circularImage
-  node.shape = type;
 }
 
-// Global function to reset one node
-function resetOneCluster(node, groups, options){
+// Global function to reset one cluster
+function resetOneCluster(node, groups, options, network){
   if(node !== undefined){
     if(node.options.isHardToRead !== undefined){ // we have to reset this node
       if(node.options.isHardToRead){
@@ -192,26 +225,20 @@ function resetOneCluster(node, groups, options){
         } else if(shape_options){
           final_shape = options.nodes.shape;
         }
+        
+        node.setOptions({bodyHiddenColor : network.body.nodes[node.id].options.color});
+  
         // and call good reset function
         if(final_shape === "icon"){
-          // TODO
+          simpleIconResetNode(node, "cluster");
         } else if(final_shape === "image"){
-          // TODO
+          simpleImageResetNode(node, "image", "cluster");
         } else if(final_shape === "circularImage"){
-          // TODO
+          simpleImageResetNode(node, "circularImage", "cluster");
         } else {
-          // get back color
-          if (node.options.hiddenColor !== undefined) {
-            node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
-          }else{
-            if(node.group !== undefined){
-              node.setOptions({color : undefined});
-            } else {
-              node.setOptions({color : null});
-            }
-          }
+          simpleResetNode(node, "cluster");
         }
-  	  // finally, get back label
+    	 // finally, get back label
         if (node.options.hiddenLabel !== undefined) {
           node.setOptions({label : node.options.hiddenLabel, hiddenLabel : undefined});
         }
@@ -255,18 +282,22 @@ function resetOneNode(node, groups, options, network){
         } else if(shape_options){
           final_shape = options.nodes.shape;
         }
+        
+        // reset body information
+        network.body.nodes[node.id].options.color = node.bodyHiddenColor;
+
         // and call good reset function
         if(final_shape === "icon"){
-          simpleIconResetNode(node, network);
+          simpleIconResetNode(node, "node");
         } else if(final_shape === "image"){
-          simpleImageResetNode(node, "image", network);
+          simpleImageResetNode(node, "image", "node");
         } else if(final_shape === "circularImage"){
-          simpleImageResetNode(node, "circularImage", network);
+          simpleImageResetNode(node, "circularImage", "node");
         } else {
-          simpleResetNode(node, network);
+          simpleResetNode(node, "node");
         }
-  	  // finally, get back label
-        if (node.hiddenLabel !== undefined) {
+    	 // finally, get back label
+    	  if (node.hiddenLabel !== undefined) {
           node.label = node.hiddenLabel;
           node.hiddenLabel = undefined;
         }
@@ -286,8 +317,9 @@ function resetAllNodes(nodes, update, groups, options, network){
   });
   
   var have_cluster_nodes = false;
+   var nodes_in_clusters;
   if(network !== undefined){
-    var nodes_in_clusters = network.body.modules.clustering.clusteredNodes;
+    nodes_in_clusters = network.body.modules.clustering.clusteredNodes;
     if(Object.keys(nodes_in_clusters).length > 0){
       have_cluster_nodes = true;
       nodes_in_clusters = Object.keys(nodes_in_clusters);
@@ -297,14 +329,14 @@ function resetAllNodes(nodes, update, groups, options, network){
   }
  
   for (var i = 0; i < nodesToReset.length; i++) {
-    resetOneNode(nodesToReset[i], groups, options, network);
+    resetOneNode(nodesToReset[i], groups, options, network, type = "node");
 	// reset coordinates
     nodesToReset[i].x = undefined;
     nodesToReset[i].y = undefined;
     if(have_cluster_nodes){
       if(indexOf.call(nodes_in_clusters, nodesToReset[i].id, true) > -1){
         var tmp_cluster_id = network.clustering.findNode(nodesToReset[i].id)[0];
-          resetOneCluster(network.body.nodes[tmp_cluster_id], groups, options);
+        resetOneCluster(network.body.nodes[tmp_cluster_id], groups, options, network);
       }
     }
   }
@@ -318,77 +350,129 @@ function resetAllNodes(nodes, update, groups, options, network){
 //--------------------------------------------
 
 // for classic node
-function simpleNodeAsHardToRead(node, hideColor1, hideColor2, network){
-  // information save in body nodes
-  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
-  // saving color information (if we have)
-  if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
-    node.hiddenColor = node.color;
-  }
+function simpleNodeAsHardToRead(node, hideColor1, hideColor2, type = "node"){
+  // classic nodes
+  if(type === "node"){
+    // saving color information (if we have)
+    if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
+      node.hiddenColor = node.color;
+    }
   
-  // set "hard to read" color
-  node.color = hideColor1;
-  // reset and save label
-  if (node.hiddenLabel === undefined) {
-    node.hiddenLabel = node.label;
-    node.label = undefined;
+    // set "hard to read" color
+    node.color = hideColor1;
+    // reset and save label
+    if (node.hiddenLabel === undefined) {
+      node.hiddenLabel = node.label;
+      node.label = undefined;
+    }
+  // cluster  
+  } else {
+    // saving color information (if we have)
+    if (node.options.hiddenColor === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
+      node.setOptions({hiddenColor : node.options.color});
+    }
+    // set "hard to read" color
+    node.setOptions({color : hideColor1});
+    // reset and save label
+    if (node.options.hiddenLabel === undefined) {
+      node.setOptions({hiddenLabel : node.options.label});
+      node.setOptions({label : undefined});
+    }
   }
 }
 
 // for icon node
-function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, network){
-  // information save in body nodes
-  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
-  // individual information
-  if(node.icon !== undefined && node.icon !== null && node.icon !== {}){
-    node.iconDefined = true;
-  } else { // information in group : have to as individual
-    node.icon = {};
-    node.iconDefined = false;
-  }
-  // set "hard to read" color
-  node.icon.color = hideColor1;
-  node.hiddenColor = icon_color;
-  // for edges....saving color information (if we have)
-  if (node.hiddenColorForLabel === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
-    node.hiddenColorForLabel = node.color;
-  }
-  // set "hard to read" color
-  node.color = hideColor1;
-  // reset and save label
-  if (node.hiddenLabel === undefined) {
-    node.hiddenLabel = node.label;
-    node.label = undefined;
+function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, type = "node"){
+  // classic nodes
+  if(type === "node"){
+    // individual information
+    if(node.icon !== undefined && node.icon !== null && node.icon !== {}){
+      node.iconDefined = true;
+    } else { // information in group : have to as individual
+      node.icon = {};
+      node.iconDefined = false;
+    }
+    // set "hard to read" color
+    node.icon.color = hideColor1;
+    node.hiddenColor = icon_color;
+    // for edges....saving color information (if we have)
+    if (node.hiddenColorForLabel === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
+      node.hiddenColorForLabel = node.color;
+    }
+    // set "hard to read" color
+    node.color = hideColor1;
+    // reset and save label
+    if (node.hiddenLabel === undefined) {
+      node.hiddenLabel = node.label;
+      node.label = undefined;
+    }
+  } else {
+    // individual information
+    if(node.options.icon !== undefined && node.options.icon !== null && node.options.icon !== {}){
+      node.setOptions({iconDefined : true});
+    } else { // information in group : have to as individual
+      node.setOptions({iconDefined : false, icon:{}});
+    }
+    // set "hard to read" color
+    node.setOptions({hiddenColor : icon_color, icon:{color : hideColor1}});
+    // for edges....saving color information (if we have)
+    if (node.options.hiddenColorForLabel === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
+      node.setOptions({hiddenColorForLabel : node.options.color});
+    }
+    // set "hard to read" color
+    node.setOptions({color : hideColor1});
+    // reset and save label
+    if (node.options.hiddenLabel === undefined) {
+      node.setOptions({hiddenLabel : node.options.label, label : undefined});
+    }
   }
 }
 
 // for image node
-function imageNodeAsHardToRead(node, type, hideColor1, hideColor2, network){
-  // information save in body nodes
-  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
-  // saving color information (if we have)
-  if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
-    node.hiddenColor = node.color;
-  }
-  // set "hard to read" color
-  node.color = hideColor1;
-  // reset and save label
-  if (node.hiddenLabel === undefined) {
-    node.hiddenLabel = node.label;
-    node.label = undefined;
-  }
-  // keep shape information, and set a new
-  if(type === "image"){
-    node.hiddenImage = type;
-    node.shape = "square";
-  }else if(type === "circularImage"){
-    node.hiddenImage = type;
-    node.shape = "dot";
+function imageNodeAsHardToRead(node, imageType, hideColor1, hideColor2, type = "node"){
+  // classic nodes
+  if(type === "node"){
+    // saving color information (if we have)
+    if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
+      node.hiddenColor = node.color;
+    }
+    // set "hard to read" color
+    node.color = hideColor1;
+    // reset and save label
+    if (node.hiddenLabel === undefined) {
+      node.hiddenLabel = node.label;
+      node.label = undefined;
+    }
+    // keep shape information, and set a new
+    if(imageType === "image"){
+      node.hiddenImage = imageType;
+      node.shape = "square";
+    }else if(imageType === "circularImage"){
+      node.hiddenImage = imageType;
+      node.shape = "dot";
+    }
+  } else {
+    // saving color information (if we have)
+    if (node.options.hiddenColor === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
+      node.setOptions({hiddenColor : node.options.color});
+    }
+    // set "hard to read" color
+    node.setOptions({color : hideColor1});
+    // reset and save label
+    if (node.options.hiddenLabel === undefined) {
+      node.setOptions({hiddenLabel : node.options.label, label : undefined});
+    }
+    if(imageType === "image"){
+      node.setOptions({hiddenImage : "image", shape : "square"});
+    } else if(imageType === "circularImage"){
+      node.setOptions({hiddenImage : "circularImage", shape : "dot"});
+    }
+    node.hiddenImage = imageType;
   }
 }
 
 // Global function to set one node as hard to read
-function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network){
+function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network, type = "node"){
   var final_shape;
   var shape_group = false;
   var is_group = false;
@@ -418,6 +502,14 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
     } else if(shape_options){
       final_shape = options.nodes.shape;
     }
+    
+    // information save in body nodes
+    if(type === "node"){
+      node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
+    } else {
+      node.setOptions({bodyHiddenColor : clone(network.body.nodes[node.id].options.color)});
+    }
+  
     // and call good function
     if(final_shape === "icon"){
       // find color for icon
@@ -443,21 +535,26 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
           icon_color = options.nodes.icon.color;
         }
       } 
-      iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, network);
+      iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, type);
     } else if(final_shape === "image"){
-      imageNodeAsHardToRead(node, "image", hideColor1, hideColor2, network);
+      imageNodeAsHardToRead(node, "image", hideColor1, hideColor2, type);
     } else if(final_shape === "circularImage"){
-      imageNodeAsHardToRead(node, "circularImage", hideColor1, hideColor2, network);
+      imageNodeAsHardToRead(node, "circularImage", hideColor1, hideColor2, type);
     } else {
-      simpleNodeAsHardToRead(node, hideColor1, hideColor2, network);
+      simpleNodeAsHardToRead(node, hideColor1, hideColor2, type);
     }
+    
     // finally set isHardToRead
-    node.isHardToRead = true;
+    if(type === "node"){
+      node.isHardToRead = true;
+    } else {
+      node.setOptions({isHardToRead : true});
+    }
   }
 }
 
 // Global function to set one node as hard to read
-function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
+function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2, network){
   var final_shape;
   var shape_group = false;
   var is_group = false;
@@ -486,7 +583,10 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
   } else if(shape_options){
     final_shape = options.nodes.shape;
   }
-  // and call good function
+  
+  // information save in body nodes
+   node.setOptions({bodyHiddenColor : clone(network.body.nodes[node.id].options.color)});
+  
   if(final_shape === "icon"){
       // find color for icon
       var icon_color = "#2B7CE9";
@@ -2379,7 +2479,7 @@ HTMLWidgets.widget({
           // mark all nodes as hard to read.
           for (var nodeId in instance.network.body.nodes) {
             if(instance.network.isCluster(nodeId)){
-              clusterAsHardToRead(instance.network.body.nodes[nodeId], instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor);
+              nodeAsHardToRead(instance.network.body.nodes[nodeId], instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "cluster");
             }else {
               var tmp_node = allNodes[nodeId];
               if(tmp_node !== undefined){
@@ -2442,7 +2542,7 @@ HTMLWidgets.widget({
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, connectedNodes[i], true) > -1){
                   var tmp_cluster_id = instance.network.clustering.findNode(connectedNodes[i])[0];
-                  resetOneCluster(instance.network.body.nodes[tmp_cluster_id], instance.network.groups, options);
+                  resetOneCluster(instance.network.body.nodes[tmp_cluster_id], instance.network.groups, options, instance.network);
                 }
               }
             }
@@ -2591,7 +2691,7 @@ HTMLWidgets.widget({
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, allConnectedNodes[i], true) > -1){
                   var tmp_cluster_id = instance.network.clustering.findNode(allConnectedNodes[i])[0];
-                  resetOneCluster(instance.network.body.nodes[tmp_cluster_id], instance.network.groups, options);
+                  resetOneCluster(instance.network.body.nodes[tmp_cluster_id], instance.network.groups, options, instance.network);
                 }
               }
             }
@@ -2883,7 +2983,7 @@ HTMLWidgets.widget({
       if(x.collapse.enabled){
         //var init_position = instance.network.getPositions();
         instance.network.on("doubleClick", function(params){
-          collapsedNetwork(params, true, x.collapse.fit, x.collapse.unselect, x.collapse.clusterOptions)
+          collapsedNetwork(params, true, x.collapse.fit, x.collapse.resetHighlight, x.collapse.clusterOptions)
         }); 
       }
     }
