@@ -275,15 +275,15 @@ visOptions <- function(graph,
           })
         }
       }
-      if(!"group"%in%colnames(graph$x$nodes)){
-        if(is.data.frame(graph$x$nodes)){
-          graph$x$nodes$group <- 1
-        } else if(is.list(graph$x$nodes)){
-          ctrl <- lapply(1:length(graph$x$nodes), function(x){
-            graph$x$nodes[[x]]$group <<- 1
-          })
-        }
-      }
+      # if(!"group"%in%colnames(graph$x$nodes)){
+      #   if(is.data.frame(graph$x$nodes)){
+      #     graph$x$nodes$group <- 1
+      #   } else if(is.list(graph$x$nodes)){
+      #     ctrl <- lapply(1:length(graph$x$nodes), function(x){
+      #       graph$x$nodes[[x]]$group <<- 1
+      #     })
+      #   }
+      # }
     }
     
     #############################
@@ -449,15 +449,15 @@ visOptions <- function(graph,
               })
             }
           }
-          if(!"group"%in%colnames(graph$x$nodes)){
-            if(is.data.frame(graph$x$nodes)){
-              graph$x$nodes$group <- 1
-            } else if(is.list(graph$x$nodes)){
-              ctrl <- lapply(1:length(graph$x$nodes), function(x){
-                graph$x$nodes[[x]]$group <<- 1
-              })
-            }
-          }
+          # if(!"group"%in%colnames(graph$x$nodes)){
+          #   if(is.data.frame(graph$x$nodes)){
+          #     graph$x$nodes$group <- 1
+          #   } else if(is.list(graph$x$nodes)){
+          #     ctrl <- lapply(1:length(graph$x$nodes), function(x){
+          #       graph$x$nodes[[x]]$group <<- 1
+          #     })
+          #   }
+          # }
         }
       }
     }

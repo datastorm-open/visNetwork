@@ -30,15 +30,13 @@ if (!Function.prototype.bind) {
 //--------------------------------------------
 
 // for edges
-
-// for classic edges
-function edgeAsHardToRead(edge, hideColor){
+function edgeAsHardToRead(edge, hideColor1, hideColor2){
   // saving color information (if we have)
-  if (edge.hiddenColor === undefined & edge.color !== hideColor) {
+  if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
     edge.hiddenColor = edge.color;
   }
   // set "hard to read" color
-  edge.color = hideColor;
+  edge.color = hideColor1;
   // reset and save label
   if (edge.hiddenLabel === undefined) {
     edge.hiddenLabel = edge.label;
@@ -46,23 +44,6 @@ function edgeAsHardToRead(edge, hideColor){
   }
   edge.isHardToRead = true;
 }
-
-// for classic edges
-/*function clusterEdgeAsHardToRead(edge, hideColor){
-  // saving color information (if we have)
-  if (edge.options.hiddenColor === undefined & edge.options.color !== hideColor) {
-    edge.setOptions({hiddenColor : edge.options.color});
-  }
-  // set "hard to read" color
-  edge.setOptions({color : hideColor});
-  // reset and save label
-  if (edge.options.hiddenLabel === undefined) {
-    
-    edge.setOptions({hiddenLabel : edge.options.label, label:undefined});
-  }
-  edge.options.isHardToRead = true;
-  //edge.setOptions({isHardToRead : true});
-}*/
 
 function resetOneEdge(edge){
   // get back color
@@ -122,18 +103,27 @@ function resetAllEdges(edges, network){
 //--------------------------------------------
 
 // for classic node
-function simpleResetNode(node){
+function simpleResetNode(node, network){
+  // reset body information
+  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
   // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
     node.hiddenColor = undefined;
   }else{
-    node.color = undefined;
+    if(node.group !== undefined){
+      node.color = undefined;
+    } else {
+      node.color = null;
+    }
   }
 }
 
 // for icon node
-function simpleIconResetNode(node){
+function simpleIconResetNode(node, network){
+  // reset body information
+  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
+  // icon color
   node.icon.color = node.hiddenColor;
   node.hiddenColor = undefined;
   // get back color
@@ -141,18 +131,28 @@ function simpleIconResetNode(node){
     node.color = node.hiddenColorForLabel;
     node.hiddenColorForLabel = undefined;
   }else{
-    node.color = undefined;
+    if(node.group !== undefined){
+      node.color = undefined;
+    } else {
+      node.color = null;
+    }
   }
 }
 
 // for image node
-function simpleImageResetNode(node, type){
+function simpleImageResetNode(node, type, network){
+  // reset body information
+  network.body.nodes[node.id].options.color = node.bodyHiddenColor;
   // get back color
   if (node.hiddenColor !== undefined) {
     node.color = node.hiddenColor;
     node.hiddenColor = undefined;
   }else{
-    node.color = undefined;
+    if(node.group !== undefined){
+      node.color = undefined;
+    } else {
+      node.color = null;
+    }
   }
   // and set shape as image/circularImage
   node.shape = type;
@@ -204,7 +204,11 @@ function resetOneCluster(node, groups, options){
           if (node.options.hiddenColor !== undefined) {
             node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
           }else{
-            node.setOptions({color : undefined});
+            if(node.group !== undefined){
+              node.setOptions({color : undefined});
+            } else {
+              node.setOptions({color : null});
+            }
           }
         }
   	  // finally, get back label
@@ -218,7 +222,7 @@ function resetOneCluster(node, groups, options){
 }
 
 // Global function to reset one node
-function resetOneNode(node, groups, options){
+function resetOneNode(node, groups, options, network){
   if(node !== undefined){
     if(node.isHardToRead !== undefined){ // we have to reset this node
       if(node.isHardToRead){
@@ -253,13 +257,13 @@ function resetOneNode(node, groups, options){
         }
         // and call good reset function
         if(final_shape === "icon"){
-          simpleIconResetNode(node);
+          simpleIconResetNode(node, network);
         } else if(final_shape === "image"){
-          simpleImageResetNode(node, "image");
+          simpleImageResetNode(node, "image", network);
         } else if(final_shape === "circularImage"){
-          simpleImageResetNode(node, "circularImage");
+          simpleImageResetNode(node, "circularImage", network);
         } else {
-          simpleResetNode(node);
+          simpleResetNode(node, network);
         }
   	  // finally, get back label
         if (node.hiddenLabel !== undefined) {
@@ -281,7 +285,6 @@ function resetAllNodes(nodes, update, groups, options, network){
     returnType :'Array'
   });
   
-  
   var have_cluster_nodes = false;
   if(network !== undefined){
     var nodes_in_clusters = network.body.modules.clustering.clusteredNodes;
@@ -294,7 +297,7 @@ function resetAllNodes(nodes, update, groups, options, network){
   }
  
   for (var i = 0; i < nodesToReset.length; i++) {
-    resetOneNode(nodesToReset[i], groups, options);
+    resetOneNode(nodesToReset[i], groups, options, network);
 	// reset coordinates
     nodesToReset[i].x = undefined;
     nodesToReset[i].y = undefined;
@@ -315,11 +318,14 @@ function resetAllNodes(nodes, update, groups, options, network){
 //--------------------------------------------
 
 // for classic node
-function simpleNodeAsHardToRead(node, hideColor1, hideColor2){
+function simpleNodeAsHardToRead(node, hideColor1, hideColor2, network){
+  // information save in body nodes
+  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
   // saving color information (if we have)
-  if (node.hiddenColor === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
+  if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
     node.hiddenColor = node.color;
   }
+  
   // set "hard to read" color
   node.color = hideColor1;
   // reset and save label
@@ -330,7 +336,9 @@ function simpleNodeAsHardToRead(node, hideColor1, hideColor2){
 }
 
 // for icon node
-function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color){
+function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, network){
+  // information save in body nodes
+  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
   // individual information
   if(node.icon !== undefined && node.icon !== null && node.icon !== {}){
     node.iconDefined = true;
@@ -342,7 +350,7 @@ function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color){
   node.icon.color = hideColor1;
   node.hiddenColor = icon_color;
   // for edges....saving color information (if we have)
-  if (node.hiddenColorForLabel === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
+  if (node.hiddenColorForLabel === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
     node.hiddenColorForLabel = node.color;
   }
   // set "hard to read" color
@@ -355,9 +363,11 @@ function iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color){
 }
 
 // for image node
-function imageNodeAsHardToRead(node, type, hideColor1, hideColor2){
+function imageNodeAsHardToRead(node, type, hideColor1, hideColor2, network){
+  // information save in body nodes
+  node.bodyHiddenColor = clone(network.body.nodes[node.id].options.color);
   // saving color information (if we have)
-  if (node.hiddenColor === undefined & node.color !== hideColor1 & node.color !== hideColor2) {
+  if (node.hiddenColor === undefined && node.color !== hideColor1 && node.color !== hideColor2) {
     node.hiddenColor = node.color;
   }
   // set "hard to read" color
@@ -378,7 +388,7 @@ function imageNodeAsHardToRead(node, type, hideColor1, hideColor2){
 }
 
 // Global function to set one node as hard to read
-function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2){
+function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network){
   var final_shape;
   var shape_group = false;
   var is_group = false;
@@ -410,27 +420,36 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2){
     }
     // and call good function
     if(final_shape === "icon"){
-      icon_color = "#2B7CE9";
+      // find color for icon
+      var icon_color = "#2B7CE9";
+      var find_color = false;
+      // in nodes ?
       if(node.icon !== undefined){
         if(node.icon.color !== undefined){
           icon_color = node.icon.color;
+          find_color = true;
         }
-      } else if(is_group && groups.groups[node.group].icon !== undefined){
+      } 
+      // or in group ?
+      if(find_color === false && is_group && groups.groups[node.group].icon !== undefined){
         if(groups.groups[node.group].icon.color !== undefined){
           icon_color = groups.groups[node.group].icon.color;
+          find_color = true;
         }
-      } else if(options.nodes.icon !== undefined){
+      }
+      // in global node ?
+      if(find_color === false && options.nodes.icon !== undefined){
         if(options.nodes.icon.color !== undefined){
           icon_color = options.nodes.icon.color;
         }
-      }
-      iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color);
+      } 
+      iconsNodeAsHardToRead(node, hideColor1, hideColor2, icon_color, network);
     } else if(final_shape === "image"){
-      imageNodeAsHardToRead(node, "image", hideColor1, hideColor2);
+      imageNodeAsHardToRead(node, "image", hideColor1, hideColor2, network);
     } else if(final_shape === "circularImage"){
-      imageNodeAsHardToRead(node, "circularImage", hideColor1, hideColor2);
+      imageNodeAsHardToRead(node, "circularImage", hideColor1, hideColor2, network);
     } else {
-      simpleNodeAsHardToRead(node, hideColor1, hideColor2);
+      simpleNodeAsHardToRead(node, hideColor1, hideColor2, network);
     }
     // finally set isHardToRead
     node.isHardToRead = true;
@@ -441,7 +460,7 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2){
 function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
   var final_shape;
   var shape_group = false;
-   var is_group = false;
+  var is_group = false;
    
   // have a group information & a shape defined in group ?
   if(node.options.group !== undefined){
@@ -469,21 +488,29 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
   }
   // and call good function
   if(final_shape === "icon"){
-      icon_color = "#2B7CE9";
+      // find color for icon
+      var icon_color = "#2B7CE9";
+      var find_color = false;
+      // in nodes ?
       if(node.icon !== undefined){
         if(node.icon.color !== undefined){
           icon_color = node.icon.color;
+          find_color = true;
         }
-      } else if(is_group && groups.groups[node.group].icon !== undefined){
+      } 
+      // or in group ?
+      if(find_color === false && is_group && groups.groups[node.group].icon !== undefined){
         if(groups.groups[node.group].icon.color !== undefined){
           icon_color = groups.groups[node.group].icon.color;
+          find_color = true;
         }
-      } else if(options.nodes.icon !== undefined){
+      }
+      // in global node ?
+      if(find_color === false && options.nodes.icon !== undefined){
         if(options.nodes.icon.color !== undefined){
           icon_color = options.nodes.icon.color;
         }
-      }
-
+      } 
       // individual information
       if(node.options.icon !== undefined && node.options.icon !== null && node.options.icon !== {}){
         node.setOptions({iconDefined : true});
@@ -493,7 +520,7 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
       // set "hard to read" color
       node.setOptions({hiddenColor : icon_color, icon:{color : hideColor1}});
       // for edges....saving color information (if we have)
-      if (node.options.hiddenColorForLabel === undefined & node.options.color !== hideColor1 & node.options.color !== hideColor2) {
+      if (node.options.hiddenColorForLabel === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
         node.setOptions({hiddenColorForLabel : node.options.color});
       }
       // set "hard to read" color
@@ -504,7 +531,7 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
       }
   } else if(final_shape === "image"){
       // saving color information (if we have)
-      if (node.options.hiddenColor === undefined & node.options.color !== hideColor1 & node.options.color !== hideColor2) {
+      if (node.options.hiddenColor === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
         node.setOptions({hiddenColor : node.options.color});
       }
       // set "hard to read" color
@@ -517,7 +544,7 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
       node.hiddenImage = "image";
   } else if(final_shape === "circularImage"){
       // saving color information (if we have)
-      if (node.options.hiddenColor === undefined & node.options.color !== hideColor1 & node.options.color !== hideColor2) {
+      if (node.options.hiddenColor === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
         node.setOptions({hiddenColor : node.options.color});
       }
       // set "hard to read" color
@@ -530,7 +557,7 @@ function clusterAsHardToRead(node, groups, options, hideColor1, hideColor2){
       node.hiddenImage = "circularImage";
   } else {
     // saving color information (if we have)
-    if (node.options.hiddenColor === undefined & node.options.color !== hideColor1 & node.options.color !== hideColor2) {
+    if (node.options.hiddenColor === undefined && node.options.color !== hideColor1 && node.options.color !== hideColor2) {
       node.setOptions({hiddenColor : node.options.color});
     }
     // set "hard to read" color
@@ -989,7 +1016,6 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
-
   // select nodes
   Shiny.addCustomMessageHandler('visShinySelectNodes', function(data){
       // get container id
@@ -1087,7 +1113,6 @@ if (HTMLWidgets.shinyMode){
           }
           
           if(reset){
-            //console.info("reset nodes");
             document.getElementById("nodeSelect"+data.id).value = "";
             document.getElementById("nodeSelect"+data.id).onchange();
           }
@@ -1202,7 +1227,7 @@ if (HTMLWidgets.shinyMode){
       
   Shiny.addCustomMessageHandler('visShinyCustomOptions', updateVisOptions);
   
-    // udpate nodes data
+  // udpate nodes data
   Shiny.addCustomMessageHandler('visShinyUpdateNodes', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
@@ -2161,8 +2186,9 @@ HTMLWidgets.widget({
       }
     }
   
-    // add Events
-    // control to put this event due to highlightNearest
+    //*************************
+    // Events
+    //*************************
     if(x.events !== undefined){
       for (var key in x.events) {
           instance.network.on(key, x.events[key]);
@@ -2195,7 +2221,7 @@ HTMLWidgets.widget({
       // get variable
       var sel = document.getElementById(el.id).byselection_variable;
       // need to make an update?
-      var update = !(document.getElementById(el.id).selectActive === false & value === "");
+      var update = !(document.getElementById(el.id).selectActive === false && value === "");
 
       if (value !== "") {
         var updateArray = [];
@@ -2233,10 +2259,10 @@ HTMLWidgets.widget({
             }
           }
           if(value_in === false){ // not in selection, so as hard to read
-            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor);
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network);
           } else { // in selection, so reset if needed
             connectedNodes = connectedNodes.concat(allNodes[nodeId].id);
-            resetOneNode(allNodes[nodeId], instance.network.groups, options);
+            resetOneNode(allNodes[nodeId], instance.network.groups, options, instance.network);
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
@@ -2257,7 +2283,7 @@ HTMLWidgets.widget({
 
           // all in degree nodes get their own color and their label back
           for (i = 0; i < edgesHardToRead.length; i++) {
-            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor)
           }
           edges.update(edgesHardToRead);
             
@@ -2308,9 +2334,9 @@ HTMLWidgets.widget({
       var selectNode;
       // get nodes data
       var allNodes = nodes.get({returnType:"Object"});
-      
+
       // update 
-      var update = !(document.getElementById(el.id).highlightActive === false & params.length === 0) | (document.getElementById(el.id).selectActive === true & params.length === 0);
+      var update = !(document.getElementById(el.id).highlightActive === false && params.length === 0) | (document.getElementById(el.id).selectActive === true && params.length === 0);
 
       if(!(action_type == "hover" && is_clicked)){
         
@@ -2349,6 +2375,7 @@ HTMLWidgets.widget({
           document.getElementById(el.id).highlightActive = true;
           var i,j;
           var degrees = document.getElementById(el.id).degree;
+          
           // mark all nodes as hard to read.
           for (var nodeId in instance.network.body.nodes) {
             if(instance.network.isCluster(nodeId)){
@@ -2356,7 +2383,7 @@ HTMLWidgets.widget({
             }else {
               var tmp_node = allNodes[nodeId];
               if(tmp_node !== undefined){
-                nodeAsHardToRead(tmp_node, instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor);
+                nodeAsHardToRead(tmp_node, instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network);
                 tmp_node.x = undefined;
                 tmp_node.y = undefined;
               }
@@ -2411,7 +2438,7 @@ HTMLWidgets.widget({
             // all in degree nodes get their own color and their label back + main nodes
             connectedNodes = connectedNodes.concat(selectedNode);
             for (i = 0; i < connectedNodes.length; i++) {
-              resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options);
+              resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options, instance.network);
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, connectedNodes[i], true) > -1){
                   var tmp_cluster_id = instance.network.clustering.findNode(connectedNodes[i])[0];
@@ -2431,13 +2458,13 @@ HTMLWidgets.widget({
 
             // all in degree nodes get their own color and their label back
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   var tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
                   if(tmp_cluster_id.length > 1){
                     tmp_cluster_id = tmp_cluster_id[0];
-                    edgeAsHardToRead(instance.network.body.edges[tmp_cluster_id].options, document.getElementById(el.id).highlightColor)
+                    edgeAsHardToRead(instance.network.body.edges[tmp_cluster_id].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
                   }
                 }
               }
@@ -2560,7 +2587,7 @@ HTMLWidgets.widget({
               
             // all in degree nodes get their own color and their label back
             for (i = 0; i < allConnectedNodes.length; i++) {
-              resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options);
+              resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options, instance.network);
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, allConnectedNodes[i], true) > -1){
                   var tmp_cluster_id = instance.network.clustering.findNode(allConnectedNodes[i])[0];
@@ -2579,13 +2606,13 @@ HTMLWidgets.widget({
             });
 
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor)
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   var tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
                   if(tmp_cluster_id.length > 1){
                     tmp_cluster_id = tmp_cluster_id[0];
-                    edgeAsHardToRead(instance.network.body.edges[tmp_cluster_id].options, document.getElementById(el.id).highlightColor)
+                    edgeAsHardToRead(instance.network.body.edges[tmp_cluster_id].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
                   }
                 }
               }
