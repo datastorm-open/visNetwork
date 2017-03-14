@@ -46,8 +46,8 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 \item{collapse}{: Custom option. Just a Boolean, or a named list. In dev.
 \itemize{
  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?}
- \item{"fit"}{ : Optional. Boolean. Default to TRUE Call fit method after collpase event ?}
- \item{"unselect"}{ : Optional. Boolean. Default to TRUE Unselect nodes after collpase event ?}
+ \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collpase event ?}
+ \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collpase event.}
  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
  
 }}

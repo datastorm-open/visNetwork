@@ -33,8 +33,8 @@
 #'@param collapse : Custom option. Just a Boolean, or a named list. In dev.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?}
-#'  \item{"fit"}{ : Optional. Boolean. Default to TRUE Call fit method after collpase event ?}
-#'  \item{"unselect"}{ : Optional. Boolean. Default to TRUE Unselect nodes after collpase event ?}
+#'  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collpase event ?}
+#'  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collpase event.}
 #'  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
 #'  
 #'}
@@ -193,9 +193,9 @@ visOptions <- function(graph,
     #############################
     # collapse
     #############################
-    list_collapse <- list(enabled = FALSE, fit = TRUE, unselect = TRUE)
+    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE)
     if(is.list(collapse)){
-      if(any(!names(collapse)%in%c("enabled", "fit", "unselect", "clusterOptions"))){
+      if(any(!names(collapse)%in%c("enabled", "fit", "resetHighlight", "clusterOptions"))){
         stop("Invalid 'collapse' argument")
       }
       
@@ -207,9 +207,9 @@ visOptions <- function(graph,
         stopifnot(is.logical(collapse$fit))
         list_collapse$fit <- collapse$fit
       }
-      if("unselect"%in%names(collapse)){
-        stopifnot(is.logical(collapse$unselect))
-        list_collapse$unselect <- collapse$unselect
+      if("resetHighlight"%in%names(collapse)){
+        stopifnot(is.logical(collapse$resetHighlight))
+        list_collapse$resetHighlight <- collapse$resetHighlight
       }
       if("clusterOptions"%in%names(collapse)){
         stopifnot(is.list(collapse$clusterOptions))

@@ -10,8 +10,8 @@ visTree(object, main = "", direction = "UD", nodeSize = FALSE,
   colorVar = NULL, colorY = NULL, colorEdges = "#8181F7", legend = TRUE,
   legendWidth = 0.1, legendNcol = 1, highlightNearest = list(enabled =
   TRUE, degree = list(from = 50000, to = 0), hover = TRUE, algorithm =
-  "hierarchical"), collapse = list(enabled = TRUE, fit = TRUE, unselect =
-  TRUE, clusterOptions = list(fixed = TRUE, physics = FALSE)),
+  "hierarchical"), collapse = list(enabled = TRUE, fit = TRUE, resetHighlight
+  = TRUE, clusterOptions = list(fixed = TRUE, physics = FALSE)),
   tooltipDelay = 500, rules = TRUE, digits = 3, height = "500px",
   width = "100\%", shapeVar = "dot", shapeY = "square")
 }
@@ -55,9 +55,9 @@ if regression tree \code{character}, 2 colors in hexa}
 
 \item{legendNcol}{\code{numeric}, number of column for legend. Default 1}
 
-\item{highlightNearest}{\code{boolean}, Highlight nearest nodes. See \link{visOptions}}
+\item{highlightNearest}{\code{list}, Highlight nearest nodes. See \link{visOptions}}
 
-\item{collapse}{\code{boolean}, collapse or not using double click on a node ? See \link{visOptions}}
+\item{collapse}{\code{list}, collapse or not using double click on a node ? See \link{visOptions}}
 
 \item{tooltipDelay}{\code{numeric}, delay before tooltips 
 apparition in millisecond. Default 500}

@@ -22,8 +22,8 @@
 #' @param legend \code{boolean}, add legend ? Default TRUE
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of column for legend. Default 1
-#' @param highlightNearest \code{boolean}, Highlight nearest nodes. See \link{visOptions}
-#' @param collapse \code{boolean}, collapse or not using double click on a node ? See \link{visOptions}
+#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
+#' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
 #' @param tooltipDelay \code{numeric}, delay before tooltips 
 #' apparition in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default TRUE
@@ -99,7 +99,7 @@ visTree <- function(object,
                     highlightNearest =  list(enabled = TRUE,
                                              degree = list(from = 50000, to = 0), hover = TRUE,
                                              algorithm = "hierarchical"),
-                    collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, 
+                    collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, 
                                     clusterOptions = list(fixed = TRUE, physics = FALSE)),
                     tooltipDelay = 500,
                     rules = TRUE,
