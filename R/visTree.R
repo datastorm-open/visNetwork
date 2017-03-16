@@ -22,8 +22,8 @@
 #' @param legend \code{boolean}, add legend ? Default TRUE
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of column for legend. Default 1
-#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
-#' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
+#' @param highlightNearest \code{boolean}, Highlight nearest nodes. See \link{visOptions}
+#' @param collapse \code{boolean}, collapse or not using double click on a node ? See \link{visOptions}
 #' @param tooltipDelay \code{numeric}, delay before tooltips 
 #' apparition in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default TRUE
@@ -99,7 +99,7 @@ visTree <- function(object,
                     highlightNearest =  list(enabled = TRUE,
                                              degree = list(from = 50000, to = 0), hover = TRUE,
                                              algorithm = "hierarchical"),
-                    collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, 
+                    collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, 
                                     clusterOptions = list(fixed = TRUE, physics = FALSE)),
                     tooltipDelay = 500,
                     rules = TRUE,
@@ -305,7 +305,7 @@ visTree <- function(object,
   }else{
     #Regression tree
     # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
-    vardecided[which(vardecided=="Terminal")] <- round(object$frame$yval[which(vardecided=="Terminal")],digits)
+    vardecided <- round(object$frame$yval,digits)
     meanV <- object$frame$yval-min(object$frame$yval)
     meanV <- meanV/max(meanV)
     
@@ -318,7 +318,39 @@ visTree <- function(object,
     colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
     colorMin <-  rgb(colRamp(0), maxColorValue=255)
     colorMax <-   rgb(colRamp(1), maxColorValue=255)
-    colNod[terminal] <- colorTerm[terminal]
+    colNodClust <- colorTerm
+  }
+  
+  #Color clusters
+  if(!is.null(attributes(object)$ylevels))
+  {
+    #Classification tree
+    classTerminal <- clas[apply(probs2,1,which.max)]
+    vardecidedClust<- classTerminal
+    if(is.null(colorY)){
+      colorTerm <- grDevices::hcl(seq(250, 360, length = length(unique(clas))), l = 60)
+      colNodClust <- colorTerm[match(classTerminal, clas)]
+    }else{
+      colNodClust <- as.character(colorY$color[match(classTerminal,
+                                                          colorY$modality)])
+    }
+  }else{
+    #Regression tree
+    # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
+    vardecidedClust <- round(object$frame$yval,digits)
+    meanV <- object$frame$yval-min(object$frame$yval)
+    meanV <- meanV/max(meanV)
+    
+    if(is.null(colorY))
+    {
+      colRamp <- colorRamp(c("#FFFF00", "#FA5858"))
+    }else{
+      colRamp <- colorRamp(c(colorY[1],colorY[2]))
+    }
+    colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
+    colorMin <-  rgb(colRamp(0), maxColorValue=255)
+    colorMax <-   rgb(colRamp(1), maxColorValue=255)
+    colNodClust <- colorTerm
   }
   
   if(rules) 
@@ -390,8 +422,8 @@ visTree <- function(object,
   }
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod, value = value,
-                      shape = shape, title = labelsNode, fixed = TRUE) 
-  
+                      shape = shape, title = labelsNode, fixed = TRUE,
+                      colNodClust = colNodClust, labelClust = vardecidedClust) 
   if(fallenLeaves){
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
   }
