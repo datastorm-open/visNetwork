@@ -381,8 +381,7 @@ function simpleNodeAsHardToRead(node, hideColor1, hideColor2, type){
     node.setOptions({color : hideColor1});
     // reset and save label
     if (node.options.hiddenLabel === undefined) {
-      var tmp_lab = clone(node.options.label)
-      node.setOptions({hiddenLabel : tmp_lab});
+      node.setOptions({hiddenLabel : node.options.label});
       node.setOptions({label : undefined});
     }
   }
@@ -2155,6 +2154,14 @@ HTMLWidgets.widget({
           vispopup.style.left = tempX + 5 + "px";
         }
       }
+      
+      // for sparkline. Eval script...
+      var any_script= vispopup.getElementsByTagName('script')
+      for (var n = 0; n < any_script.length; n++){
+        if(any_script[n].getAttribute("type") === "text/javascript"){
+           eval(any_script[n].innerHTML);
+        }
+      }
     }
   
     //*************************
@@ -2844,6 +2851,15 @@ HTMLWidgets.widget({
                     for (var i in click_node[0]) {
                       if(i !== "id"){
                         clusterOptions[i]=  click_node[0][i];
+                      }
+                    }
+                    
+                    // gestion des tree
+                    if(x.tree !== undefined){
+                      if(x.tree.updateShape){
+                        clusterOptions.label = clusterOptions.labelClust
+                        clusterOptions.color = clusterOptions.colorClust
+                        clusterOptions.shape = x.tree.shapeY
                       }
                     }
                     

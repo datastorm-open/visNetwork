@@ -3,38 +3,45 @@
 #' Function to plot rpart objects
 #' 
 #' @param object \code{rpart}, rpart object
-#' @param main \code{character}, Graph title
+#' @param main \code{character}, title
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
 #' up-down, down-up, left-right, right-left. Default UD
-#' @param nodeSize \code{boolean}, nodes size depends on population
+#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ?
 #' @param fallenLeaves \code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE
-#' @param fontSize \code{numeric}, size of label. Defaut to 11
-#' @param fontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.
+#' @param nodesFontSize \code{numeric}, size of labels of nodes. Defaut to 16
+#' @param edgesFontSize \code{numeric}, size of labels of edges Defaut to 14
+#' @param legendFontSize \code{numeric}, size of labels of nodes in legend. Defaut to 16
+#' @param legendNodesSize \code{numeric}, size of nodes in legend. Defaut to 22
+#' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.
 #' @param colorVar \code{data.frame} 2 columns :
-#' 'variable' with levels of Y
-#' 'color' with colors (in hexa),
+#' \itemize{
+#'   \item{"variable"}{ : with names of variables X}
+#'   \item{"color"}{ : with colors (in hexa)}
+#' }
 #' @param colorY if classification tree\code{data.frame} 2 columns :
-#' 'modality' with names of variables X
-#' 'color' with colors (in hexa)
+#' \itemize{
+#'   \item{"modality"}{ : with levels of Y}
+#'   \item{"color"}{ : with colors (in hexa)}
+#' }
 #' if regression tree \code{character}, 2 colors in hexa
 #' @param colorEdges \code{character} color of edges, in hexa. Default #8181F7
 #' @param legend \code{boolean}, add legend ? Default TRUE
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of column for legend. Default 1
-#' @param highlightNearest \code{boolean}, Highlight nearest nodes. See \link{visOptions}
-#' @param collapse \code{boolean}, collapse or not using double click on a node ? See \link{visOptions}
-#' @param tooltipDelay \code{numeric}, delay before tooltips 
-#' apparition in millisecond. Default 500
+#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
+#' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
+#' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ?
+#' @param tooltipDelay \code{numeric}, delay before tooltips apparition in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default TRUE
 #' @param digits \code{numeric}, number of digits. Defaut to 3
 #' @param height \code{character}, defaut to "500px"
 #' @param width \code{character}, defaut to "100\%"
-#' @param minNodeSize \code{numeric}, defaut to NULL
-#' @param maxNodeSize \code{numeric}, defaut to NULL
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15.
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30.
 #' @param simplifyRules \code{boolean}, simplify rules writing
 #' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
-#' @param shapeY \code{character}, shape for trerminal nodes See \link{visNodes}
+#' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
 #' 
 #' @return a visNetwork object 
 #' 
@@ -45,30 +52,36 @@
 #' 
 #' # Basic classification tree
 #' res <- rpart(Species~., data=iris)
-#' visTree(res)
-#' visTree(res, direction = 'LR', main = "Iris classification Tree", fontSize = 15)
+#' visTree(res, main = "Iris classification Tree")
 #' 
 #' # Basic regression tree
 #' res <- rpart(Petal.Length~., data=iris)
-#' visTree(res)
-#' 
-#' # disable rules in tooltip, and render faster
-#' visTree(res, rules = FALSE, tooltipDelay = 0)
+#' visTree(res, edgesFontSize = 14, nodesFontSize = 16)
 #' 
 #' # Complex tree
 #' data("solder")
-#' res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
-#' visTree(res, height = "800px", fontSize = 15)
+#' res <- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.00005)))
+#' visTree(res, height = "800px", nodesPopSize = TRUE, minNodeSize = 10, maxNodeSize = 30)
 #' 
-#' # fallen leaves
-#' visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 25, fontAlign = "middle")
+#' # ----- Options
+#' res <- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.005)))
+#' 
+#' # fallen leaves + align edges label & size
+#' visTree(res, fallenLeaves = TRUE, height = "500px", 
+#'  edgesFontAlign = "middle", edgesFontSize = 20)
+#' 
+#' # disable rules in tooltip, and render tooltip faster
+#' # disable hover highlight
+#' visTree(res, rules = FALSE, tooltipDelay = 0, 
+#'  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
+#'  hover = FALSE, algorithm = "hierarchical"))
 #' 
 #' # Change color
-#' colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
-#'                                                            "#88cc00", "#9900ff","#247856"))
-#' 
-#' colorY <- data.frame(modality = unique(solder$Opening), color = 
-#'                               c("#AA00AA", "#CDAD15", "#213478"))
+#' colorVar <- data.frame(variable = names(solder), 
+#'  color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+#'  
+#' colorY <- data.frame(modality = unique(solder$Opening), 
+#'  color = c("#AA00AA", "#CDAD15", "#213478"))
 #' 
 #' visTree(res, colorEdges = "#000099", colorVar = colorVar, 
 #'         colorY = colorY)
@@ -83,44 +96,50 @@
 visTree <- function(object,
                     main = "",
                     direction = "UD",
-                    nodeSize = FALSE,
-                    minNodeSize = NULL,
-                    maxNodeSize = NULL,
                     fallenLeaves = FALSE,
+                    rules = TRUE,
                     simplifyRules = TRUE,
-                    fontSize = 11,
-                    fontAlign = "horizontal",
+                    shapeVar = "dot",
+                    shapeY = "square",
                     colorVar = NULL,
                     colorY = NULL,
                     colorEdges = "#8181F7",
+                    nodesFontSize = 16,
+                    edgesFontSize = 14,
+                    edgesFontAlign = "horizontal",
+                    legendNodesSize = 22,
+                    legendFontSize = 16,
                     legend = TRUE,
                     legendWidth = 0.1,
                     legendNcol = 1,
+                    nodesPopSize = FALSE,
+                    minNodeSize = 15,
+                    maxNodeSize = 30,
                     highlightNearest =  list(enabled = TRUE,
                                              degree = list(from = 50000, to = 0), hover = TRUE,
                                              algorithm = "hierarchical"),
-                    collapse = list(enabled = TRUE, fit = TRUE, unselect = TRUE, 
+                    collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, 
                                     clusterOptions = list(fixed = TRUE, physics = FALSE)),
+                    updateShape = TRUE,
                     tooltipDelay = 500,
-                    rules = TRUE,
                     digits = 3, 
                     height = "500px",
-                    width = "100%",
-                    shapeVar = "dot",
-                    shapeY = "square"){
+                    width = "100%"){
   
   stopifnot("rpart"%in%class(object))
   stopifnot("character"%in%class(main))
   stopifnot("character"%in%class(direction))
   stopifnot(direction%in% c("UD", "LR", "RL", "DU"))
   stopifnot(length(direction) == 1)
-  stopifnot("logical"%in%class(nodeSize))
+  stopifnot("logical"%in%class(nodesPopSize))
   if(!is.null(minNodeSize))stopifnot("numeric"%in%class(minNodeSize))
   if(!is.null(maxNodeSize))stopifnot("numeric"%in%class(maxNodeSize))
   stopifnot("logical"%in%class(fallenLeaves))
   stopifnot("logical"%in%class(simplifyRules))
-  stopifnot("numeric"%in%class(fontSize))
-  stopifnot("character"%in%class(fontAlign))
+  stopifnot("numeric"%in%class(nodesFontSize))
+  stopifnot("numeric"%in%class(edgesFontSize))
+  stopifnot("numeric"%in%class(legendFontSize))
+  stopifnot("character"%in%class(edgesFontAlign))
   
   if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorVar))
   if(object$method == "class")
@@ -145,7 +164,7 @@ visTree <- function(object,
   stopifnot("character"%in%class(shapeVar))
   stopifnot("character"%in%class(shapeY))
   
-  terminal <- object$frame$var=="<leaf>"
+  # terminal <- object$frame$var=="<leaf>"
   rowNam <- row.names(object$frame)
   
   tt <- sapply(as.numeric(rowNam[2:length(rowNam)]), function(X){
@@ -178,31 +197,25 @@ visTree <- function(object,
       regl <- round(regl, digits)
     }
     
-    
-    decision <- c(decision, paste( comp, regl, collapse = ","))
+    decision <- c(decision, paste(comp, regl, collapse = ","))
     
     decisionLabels <- c(decisionLabels,
-                        paste0('<div style="text-align:center;">',
-                               comp,
-                               regl,
-                               "</div>",
-                               collapse = ""))
-    
+                        paste0('<div style="text-align:center;"><b>', names(attr(regl, "compare")),  "</b></div>", 
+                               paste0('<div style="text-align:center;">', comp, regl, "</div>", collapse = "")))
   }
   
   decision2 <- decision
   Truncc <- function(VV)ifelse(nchar(VV)>10,paste0(substr(VV, 1, 7), "..."), VV)
   decision <- sapply(decision, Truncc)
-  eff <- object$frame$n[match(to,rowNam)]
-  vardecided <- ifelse(res2 != "<leaf>",as.character(res2),"Terminal")
-  shape <- ifelse(res2 != "<leaf>",shapeVar,shapeY)
+  eff <- object$frame$n[match(to, rowNam)]
+  vardecided <- ifelse(res2 != "<leaf>", as.character(res2), "Terminal")
+  shape <- ifelse(res2 != "<leaf>", shapeVar, shapeY)
   SortLabel <-  sort(unique(vardecided))
   if(is.null(colorVar)){
     color <-grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
     colNod <- color[match(vardecided, SortLabel)]
   }else{
-    colNod <- as.character(colorVar$color[match(vardecided,
-                                                colorVar$variable)])
+    colNod <- as.character(colorVar$color[match(vardecided, colorVar$variable)])
   }
   probsend <- NULL
   if(!is.null(attributes(object)$ylevels))
@@ -227,7 +240,6 @@ visTree <- function(object,
     probsend <- paste('<hr>', probsend)
   }else{
     #Regression TREE
-    
     varianceNodes <- round(object$frame$dev/(object$frame$n - 1),digits)
     varianceNodes[which(varianceNodes == Inf)] <- NA
     probsend <- paste0("Mean : <b>" ,
@@ -237,10 +249,8 @@ visTree <- function(object,
   returndec <- list()
   for(i in 2:length(parentsDec[[1]])){
     use <- parentsDec[[1]][[i]]
-    varDecisions <- vardecided[match(as.character(use[-length(use)]),
-                                     rowNam)]
-    decisionsrules <- decision2[match(as.character(use),
-                                      rowNam)-1]
+    varDecisions <- vardecided[match(as.character(use[-length(use)]), rowNam)]
+    decisionsrules <- decision2[match(as.character(use), rowNam)-1]
     varDecisionBegin <- unique(varDecisions)
     if(simplifyRules)
     {
@@ -280,7 +290,6 @@ visTree <- function(object,
       }
       varDecisions <- varDecisions[match(varDecisionBegin,varDecisionsOrder )]
       decisionsrules <- decisionsrules[match(varDecisionBegin,varDecisionsOrder )]
-      
     }
     
     returndec[[i]] <- paste0(paste("<b>",varDecisions,"</b>"
@@ -289,83 +298,64 @@ visTree <- function(object,
     collapse = "<br>")
   }
   
-  terminal <- which(vardecided=="Terminal")
+  ind_terminal <- which(vardecided=="Terminal")
   if(!is.null(attributes(object)$ylevels))
   {
     #Classification tree
-    classTerminal <- clas[apply(probs2[which(vardecided=="Terminal"),],1,which.max)]
-    vardecided[which(vardecided=="Terminal")] <- classTerminal
-    if(is.null(colorY)){
-      colorTerm <- grDevices::hcl(seq(250, 360, length = length(unique(clas))), l = 60)
-      colNod[terminal] <- colorTerm[match(classTerminal, clas)]
-    }else{
-      colNod[terminal] <- as.character(colorY$color[match(classTerminal,
-                                                          colorY$modality)])
-    }
-  }else{
-    #Regression tree
-    # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
-    vardecided <- round(object$frame$yval,digits)
-    meanV <- object$frame$yval-min(object$frame$yval)
-    meanV <- meanV/max(meanV)
+    vardecidedClust <- clas[apply(probs2, 1, which.max)]
     
-    if(is.null(colorY))
-    {
-      colRamp <- colorRamp(c("#FFFF00", "#FA5858"))
-    }else{
-      colRamp <- colorRamp(c(colorY[1],colorY[2]))
-    }
-    colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
-    colorMin <-  rgb(colRamp(0), maxColorValue=255)
-    colorMax <-   rgb(colRamp(1), maxColorValue=255)
-    colNodClust <- colorTerm
-  }
-  
-  #Color clusters
-  if(!is.null(attributes(object)$ylevels))
-  {
-    #Classification tree
-    classTerminal <- clas[apply(probs2,1,which.max)]
-    vardecidedClust<- classTerminal
     if(is.null(colorY)){
       colorTerm <- grDevices::hcl(seq(250, 360, length = length(unique(clas))), l = 60)
-      colNodClust <- colorTerm[match(classTerminal, clas)]
+      colNodClust <- colorTerm[match(vardecidedClust, clas)]
+      colNod[ind_terminal] <- colNodClust[ind_terminal]
     }else{
-      colNodClust <- as.character(colorY$color[match(classTerminal,
-                                                          colorY$modality)])
+      colNodClust <- as.character(colorY$color[match(vardecidedClust, colorY$modality)])
+      colNod[ind_terminal] <- colNodClust[ind_terminal]
     }
+    
+    vardecided[ind_terminal] <- vardecidedClust[ind_terminal]
+    
   }else{
     #Regression tree
-    # Ynam <- strsplit(as.character(object$call)[2], "~")[[1]][1]
+    
+    # label as terminal nodes for all
     vardecidedClust <- round(object$frame$yval,digits)
+    
+    # palette
     meanV <- object$frame$yval-min(object$frame$yval)
     meanV <- meanV/max(meanV)
     
     if(is.null(colorY))
     {
-      colRamp <- colorRamp(c("#FFFF00", "#FA5858"))
+      colRamp <- colorRamp(c("#E6E0F8", "#8904B1"))
     }else{
       colRamp <- colorRamp(c(colorY[1],colorY[2]))
     }
+    
     colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
+    # for legend color
     colorMin <-  rgb(colRamp(0), maxColorValue=255)
     colorMax <-   rgb(colRamp(1), maxColorValue=255)
+    # terminal nodes
+    colNod[ind_terminal] <- colorTerm[ind_terminal]
+    classTerminal <- round(object$frame$yval, digits)
+    vardecided[ind_terminal] <- vardecidedClust[ind_terminal]
+    
+    # cluster
     colNodClust <- colorTerm
   }
   
   if(rules) 
   {
     rul <-  paste0('<hr><div class="rPartvisNetworkTooltipShowhim" style="color:blue;"><U>RULES</U>
-                            <div class="rPartvisNetworkTooltipShowme" style="color:black;">',
-                   returndec,'
-         </div>
-         </div>')
+                   <div class="rPartvisNetworkTooltipShowme" style="color:black;">',
+                   returndec,'</div></div>')
   }else{
     rul <- ""
   }
   
   labelsNode <- paste0(
-    '<div style="text-align:center;">', "N : <b>",
+    '<div style="text-align:center;">', "N% : <b>",
     round(object$frame$n/object$frame$n[1],digits)*100
     , "%</b> (", object$frame$n,")<br>",
     "Complexity : <b>",
@@ -385,7 +375,7 @@ visTree <- function(object,
     }else{
       col <- as.character(colorVar$color[match(X, colorVar$variable)])
     }
-    list(label = X, color = col, shape = "dot")
+    list(label = X, color = col, shape = "dot", size = legendNodesSize, font = list(size = legendFontSize))
   }, simplify = FALSE, USE.NAMES = FALSE)
   
   legendVisRep <- sapply(clas, function(X){
@@ -395,12 +385,13 @@ visTree <- function(object,
     }else{
       col <- as.character(colorY$color[match(X, colorY$modality)])
     }
-    list(label = X, color = col, shape = "square")
+    list(label = X, color = col, shape = "square", size = legendNodesSize, font = list(size = legendFontSize))
   }, simplify = FALSE, USE.NAMES = FALSE)
   
   legelDvIS <- c(legendVisVar, legendVisRep)
+  
   smooth <- list(enabled = TRUE, type = "cubicBezier", roundness = 0.5)
-  if(nodeSize){
+  if(nodesPopSize){
     value = object$frame$n
     
     if(is.null(minNodeSize)){
@@ -409,7 +400,6 @@ visTree <- function(object,
     if(is.null(maxNodeSize)){
       maxNodeSize = max(object$frame$n)
     }
-    
     
   }else{
     value = 1
@@ -423,11 +413,10 @@ visTree <- function(object,
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod, value = value,
                       shape = shape, title = labelsNode, fixed = TRUE,
-                      colNodClust = colNodClust, labelClust = vardecidedClust) 
+                      colorClust = colNodClust, labelClust = vardecidedClust) 
   if(fallenLeaves){
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
   }
-  
   
   
   edges <- data.frame(from = from,
@@ -436,7 +425,7 @@ visTree <- function(object,
                       value = eff,
                       title = decisionLabels)
   
-  visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main)%>% 
+  net <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main)%>% 
     visHierarchicalLayout(direction = direction) %>%
     visLegend(addNodes = legelDvIS, 
               useGroups = FALSE, enabled = legend,
@@ -449,13 +438,18 @@ visTree <- function(object,
                       white-space: nowrap;
                       font-family: cursive;font-size:12px;font-color:purple;background-color: #E6E6E6;
                       border-radius: 15px;') %>% 
-    visEdges(font = list(size = fontSize, align = fontAlign), value = 3, smooth = smooth, color = colorEdges,
+    visEdges(font = list(size = edgesFontSize, align = edgesFontAlign), value = 3, smooth = smooth, color = colorEdges,
              scaling = list(label = list(enabled = FALSE))) %>%
-    visNodes(font = list(size = fontSize),
+    visNodes(font = list(size = nodesFontSize),
              scaling = list(min = minNodeSize, max = maxNodeSize)) %>%
     visEvents(type = "once", stabilized = "function() { 
         this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});
   }")
+  
+  # rajout informations class tree
+  net$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, shapeY = shapeY)
+  
+  net
 }
 
 #Legend regression tree gradient color, still in dev
@@ -537,3 +531,37 @@ visTree <- function(object,
   results <- list(L = lsplit, R = rsplit)
   return(results)
 }
+
+
+# object =rpart(Petal.Length~., data=iris)
+# main = ""
+# direction = "UD"
+# fallenLeaves = FALSE
+# rules = TRUE
+# simplifyRules = TRUE
+# shapeVar = "dot"
+# shapeY = "square"
+# colorVar = NULL
+# colorY = NULL
+# colorEdges = "#8181F7"
+# nodesFontSize = 16
+# edgesFontSize = 14
+# edgesFontAlign = "horizontal"
+# legendNodesSize = 22
+# legendFontSize = 16
+# legend = TRUE
+# legendWidth = 0.1
+# legendNcol = 1
+# nodesPopSize = FALSE
+# minNodeSize = 15
+# maxNodeSize = 30
+# highlightNearest =  list(enabled = TRUE,
+#                          degree = list(from = 50000, to = 0), hover = TRUE,
+#                          algorithm = "hierarchical")
+# collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
+#                 clusterOptions = list(fixed = TRUE, physics = FALSE))
+# updateShape = TRUE
+# tooltipDelay = 500
+# digits = 3
+# height = "500px"
+# width = "100%"

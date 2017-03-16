@@ -4,50 +4,62 @@
 \alias{visTree}
 \title{Plotting rpart objects}
 \usage{
-visTree(object, main = "", direction = "UD", nodeSize = FALSE,
-  minNodeSize = NULL, maxNodeSize = NULL, fallenLeaves = FALSE,
-  simplifyRules = TRUE, fontSize = 11, fontAlign = "horizontal",
-  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7", legend = TRUE,
-  legendWidth = 0.1, legendNcol = 1, highlightNearest = list(enabled =
-  TRUE, degree = list(from = 50000, to = 0), hover = TRUE, algorithm =
-  "hierarchical"), collapse = list(enabled = TRUE, fit = TRUE, resetHighlight
-  = TRUE, clusterOptions = list(fixed = TRUE, physics = FALSE)),
-  tooltipDelay = 500, rules = TRUE, digits = 3, height = "500px",
-  width = "100\%", shapeVar = "dot", shapeY = "square")
+visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
+  rules = TRUE, simplifyRules = TRUE, shapeVar = "dot",
+  shapeY = "square", colorVar = NULL, colorY = NULL,
+  colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
+  edgesFontAlign = "horizontal", legendNodesSize = 22,
+  legendFontSize = 16, legend = TRUE, legendWidth = 0.1, legendNcol = 1,
+  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
+  hover = TRUE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
+  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
+  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
+  height = "500px", width = "100\%")
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
 
-\item{main}{\code{character}, Graph title}
+\item{main}{\code{character}, title}
 
 \item{direction}{\code{character}, The direction of the hierarchical layout.
 The available options are: UD, DU, LR, RL. To simplify:
 up-down, down-up, left-right, right-left. Default UD}
 
-\item{nodeSize}{\code{boolean}, nodes size depends on population}
-
-\item{minNodeSize}{\code{numeric}, defaut to NULL}
-
-\item{maxNodeSize}{\code{numeric}, defaut to NULL}
-
 \item{fallenLeaves}{\code{boolean} position the leaf nodes at the bottom of the graph ? Default to FALSE}
+
+\item{rules}{\code{boolean}, add rules in tooltips ? Default TRUE}
 
 \item{simplifyRules}{\code{boolean}, simplify rules writing}
 
-\item{fontSize}{\code{numeric}, size of label. Defaut to 11}
+\item{shapeVar}{\code{character}, shape for variables nodes See \link{visNodes}}
 
-\item{fontAlign}{\code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.}
+\item{shapeY}{\code{character}, shape for terminal nodes See \link{visNodes}}
 
 \item{colorVar}{\code{data.frame} 2 columns :
-'variable' with levels of Y
-'color' with colors (in hexa),}
+\itemize{
+  \item{"variable"}{ : with names of variables X}
+  \item{"color"}{ : with colors (in hexa)}
+}}
 
 \item{colorY}{if classification tree\code{data.frame} 2 columns :
-'modality' with names of variables X
-'color' with colors (in hexa)
+\itemize{
+  \item{"modality"}{ : with levels of Y}
+  \item{"color"}{ : with colors (in hexa)}
+}
 if regression tree \code{character}, 2 colors in hexa}
 
 \item{colorEdges}{\code{character} color of edges, in hexa. Default #8181F7}
+
+\item{nodesFontSize}{\code{numeric}, size of labels of nodes. Defaut to 16}
+
+\item{edgesFontSize}{\code{numeric}, size of labels of edges Defaut to 14}
+
+\item{edgesFontAlign}{\code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Defaut),'top','middle','bottom'. The alignment determines how the label is aligned over the edge.}
+
+\item{legendNodesSize}{\code{numeric}, size of nodes in legend. Defaut to 22}
+
+\item{legendFontSize}{\code{numeric}, size of labels of nodes in legend. Defaut to 16}
 
 \item{legend}{\code{boolean}, add legend ? Default TRUE}
 
@@ -55,24 +67,25 @@ if regression tree \code{character}, 2 colors in hexa}
 
 \item{legendNcol}{\code{numeric}, number of column for legend. Default 1}
 
+\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ?}
+
+\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15.}
+
+\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30.}
+
 \item{highlightNearest}{\code{list}, Highlight nearest nodes. See \link{visOptions}}
 
 \item{collapse}{\code{list}, collapse or not using double click on a node ? See \link{visOptions}}
 
-\item{tooltipDelay}{\code{numeric}, delay before tooltips 
-apparition in millisecond. Default 500}
+\item{updateShape}{\code{boolean}, in case of collapse, udpate cluster node shape as terminal node ?}
 
-\item{rules}{\code{boolean}, add rules in tooltips ? Default TRUE}
+\item{tooltipDelay}{\code{numeric}, delay before tooltips apparition in millisecond. Default 500}
 
 \item{digits}{\code{numeric}, number of digits. Defaut to 3}
 
 \item{height}{\code{character}, defaut to "500px"}
 
 \item{width}{\code{character}, defaut to "100\%"}
-
-\item{shapeVar}{\code{character}, shape for variables nodes See \link{visNodes}}
-
-\item{shapeY}{\code{character}, shape for trerminal nodes See \link{visNodes}}
 }
 \value{
 a visNetwork object
@@ -87,30 +100,36 @@ library(rpart)
 
 # Basic classification tree
 res <- rpart(Species~., data=iris)
-visTree(res)
-visTree(res, direction = 'LR', main = "Iris classification Tree", fontSize = 15)
+visTree(res, main = "Iris classification Tree")
 
 # Basic regression tree
 res <- rpart(Petal.Length~., data=iris)
-visTree(res)
-
-# disable rules in tooltip, and render faster
-visTree(res, rules = FALSE, tooltipDelay = 0)
+visTree(res, edgesFontSize = 14, nodesFontSize = 16)
 
 # Complex tree
 data("solder")
-res<- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.000005)))
-visTree(res, height = "800px", fontSize = 15)
+res <- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.00005)))
+visTree(res, height = "800px", nodesPopSize = TRUE, minNodeSize = 10, maxNodeSize = 30)
 
-# fallen leaves
-visTree(res, fallenLeaves = TRUE, height = "800px", fontSize = 25, fontAlign = "middle")
+# ----- Options
+res <- rpart(Opening~., data=solder, control = (rpart.control(cp = 0.005)))
+
+# fallen leaves + align edges label & size
+visTree(res, fallenLeaves = TRUE, height = "500px", 
+ edgesFontAlign = "middle", edgesFontSize = 20)
+
+# disable rules in tooltip, and render tooltip faster
+# disable hover highlight
+visTree(res, rules = FALSE, tooltipDelay = 0, 
+ highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
+ hover = FALSE, algorithm = "hierarchical"))
 
 # Change color
-colorVar <- data.frame(variable = names(solder), color = c("#339933", "#b30000","#4747d1",
-                                                           "#88cc00", "#9900ff","#247856"))
-
-colorY <- data.frame(modality = unique(solder$Opening), color = 
-                              c("#AA00AA", "#CDAD15", "#213478"))
+colorVar <- data.frame(variable = names(solder), 
+ color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+ 
+colorY <- data.frame(modality = unique(solder$Opening), 
+ color = c("#AA00AA", "#CDAD15", "#213478"))
 
 visTree(res, colorEdges = "#000099", colorVar = colorVar, 
         colorY = colorY)
