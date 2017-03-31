@@ -132,13 +132,13 @@ visTree <- function(object,
   stopifnot(direction%in% c("UD", "LR", "RL", "DU"))
   stopifnot(length(direction) == 1)
   stopifnot("logical"%in%class(nodesPopSize))
-  if(!is.null(minNodeSize))stopifnot("numeric"%in%class(minNodeSize))
-  if(!is.null(maxNodeSize))stopifnot("numeric"%in%class(maxNodeSize))
+  if(!is.null(minNodeSize))stopifnot("numeric"%in%class(minNodeSize)|"integer"%in%class(minNodeSize))
+  if(!is.null(maxNodeSize))stopifnot("numeric"%in%class(maxNodeSize)|"integer"%in%class(maxNodeSize))
   stopifnot("logical"%in%class(fallenLeaves))
   stopifnot("logical"%in%class(simplifyRules))
-  stopifnot("numeric"%in%class(nodesFontSize))
-  stopifnot("numeric"%in%class(edgesFontSize))
-  stopifnot("numeric"%in%class(legendFontSize))
+  stopifnot("numeric"%in%class(nodesFontSize)|"integer"%in%class(nodesFontSize))
+  stopifnot("numeric"%in%class(edgesFontSize)|"integer"%in%class(edgesFontSize))
+  stopifnot("numeric"%in%class(legendFontSize)|"integer"%in%class(legendFontSize))
   stopifnot("character"%in%class(edgesFontAlign))
   
   if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorVar))
@@ -305,7 +305,7 @@ visTree <- function(object,
     vardecidedClust <- clas[apply(probs2, 1, which.max)]
     
     if(is.null(colorY)){
-      colorTerm <- grDevices::hcl(seq(250, 360, length = length(unique(clas))), l = 60)
+      colorTerm <- .generateYColor(clas)
       colNodClust <- colorTerm[match(vardecidedClust, clas)]
       colNod[ind_terminal] <- colNodClust[ind_terminal]
     }else{
@@ -533,7 +533,11 @@ visTree <- function(object,
 }
 
 .generateVarColor <- function(vardecided, SortLabel){
-  color <-grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
+  grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
+}
+
+.generateYColor <- function(vardecided){
+  grDevices::hcl(seq(250, 360, length = length(unique(vardecided))), l = 60)
 }
 
 # object =rpart(Petal.Length~., data=iris)
