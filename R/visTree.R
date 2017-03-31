@@ -144,11 +144,11 @@ visTree <- function(object,
   if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorVar))
   if(object$method == "class")
   {
-    if(!is.null(colorVar))stopifnot("data.frame"%in%class(colorY))
+    if(!is.null(colorY))stopifnot("data.frame"%in%class(colorY))
   }
   if(object$method == "anova")
   {
-    if(!is.null(colorVar))stopifnot("character"%in%class(colorY))
+    if(!is.null(colorY))stopifnot("character"%in%class(colorY))
   }
   if(!is.null(colorEdges))stopifnot("character"%in%class(colorEdges))
   stopifnot("logical"%in%class(legend))
@@ -212,7 +212,7 @@ visTree <- function(object,
   shape <- ifelse(res2 != "<leaf>", shapeVar, shapeY)
   SortLabel <-  sort(unique(vardecided))
   if(is.null(colorVar)){
-    color <-grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
+    color <- .generateVarColor(vardecided = vardecided, SortLabel = SortLabel)
     colNod <- color[match(vardecided, SortLabel)]
   }else{
     colNod <- as.character(colorVar$color[match(vardecided, colorVar$variable)])
@@ -532,6 +532,9 @@ visTree <- function(object,
   return(results)
 }
 
+.generateVarColor <- function(vardecided, SortLabel){
+  color <-grDevices::hcl(seq(0, 250, length = length(unique(vardecided))), l = 80)
+}
 
 # object =rpart(Petal.Length~., data=iris)
 # main = ""
