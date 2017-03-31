@@ -279,7 +279,7 @@ visTree <- function(object,
           rulesNumSimpl <-decisionsrules[which( varDecisions== j)] 
           down <- which(substr(rulesNumSimpl,1,1)==">")
           newLib <- paste0("",substr(rulesNumSimpl[down],4,nchar(rulesNumSimpl[down])),
-                           " <= <b>", j, "</b> > ", substr(rulesNumSimpl[-down],3,nchar(rulesNumSimpl[-down])))
+                           " <= <b>", j, "</b> < ", substr(rulesNumSimpl[-down],3,nchar(rulesNumSimpl[-down])))
           decisionsrules <- decisionsrules[-which(varDecisions== j)]
           varDecisions <- varDecisions[-which(varDecisions== j)]
           varDecisionsOrder <- varDecisionsOrder[-which(varDecisionsOrder== j)]
