@@ -325,13 +325,8 @@ visTree <- function(object,
     meanV <- object$frame$yval-min(object$frame$yval)
     meanV <- meanV/max(meanV)
     
-    if(is.null(colorY))
-    {
-      colRamp <- colorRamp(c("#E6E0F8", "#8904B1"))
-    }else{
-      colRamp <- colorRamp(c(colorY[1],colorY[2]))
-    }
-    
+
+    colRamp <- .creatColorRampY(colorY)
     colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
     # for legend color
     colorMin <-  rgb(colRamp(0), maxColorValue=255)
@@ -389,6 +384,7 @@ visTree <- function(object,
   }, simplify = FALSE, USE.NAMES = FALSE)
   
   legelDvIS <- c(legendVisVar, legendVisRep)
+  legelDvIS <- do.call(rbind,(lapply(legelDvIS, data.frame)))
   
   smooth <- list(enabled = TRUE, type = "cubicBezier", roundness = 0.5)
   if(nodesPopSize){
@@ -410,10 +406,13 @@ visTree <- function(object,
       maxNodeSize = 25
     }
   }
+  
+  
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod, value = value,
                       shape = shape, title = labelsNode, fixed = TRUE,
-                      colorClust = colNodClust, labelClust = vardecidedClust) 
+                      colorClust = colNodClust, labelClust = vardecidedClust,Leaf = 0) 
+  nodes$Leaf[ind_terminal] <- 1
   if(fallenLeaves){
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
   }
@@ -538,6 +537,17 @@ visTree <- function(object,
 
 .generateYColor <- function(vardecided){
   grDevices::hcl(seq(250, 360, length = length(unique(vardecided))), l = 60)
+}
+
+.creatColorRampY <- function(colorY)
+{
+  if(is.null(colorY))
+  {
+    colRamp <- colorRamp(c("#E6E0F8", "#8904B1"))
+  }else{
+    colRamp <- colorRamp(c(colorY[1],colorY[2]))
+  }
+  colRamp
 }
 
 # object =rpart(Petal.Length~., data=iris)
