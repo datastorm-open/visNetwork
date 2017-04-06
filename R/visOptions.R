@@ -30,13 +30,12 @@
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
 #'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'}
-#'@param collapse : Custom option. Just a Boolean, or a named list. In dev.
+#'@param collapse : Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?}
-#'  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collpase event ?}
-#'  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collpase event.}
+#'  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collapse/uncollapse event ?}
+#'  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
 #'  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
-#'  
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.

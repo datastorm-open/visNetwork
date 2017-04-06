@@ -85,6 +85,8 @@
 #'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 #'}
 #'
+#' @param widthConstraint : Number or boolean. If false (defaut), no widthConstraint is applied. If a number is specified, the maximum width of the edge's label is set to the value. The edge's label's lines will be broken on spaces to stay below the maximum.
+#'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -160,7 +162,8 @@ visEdges <- function(graph,
                      arrowStrikethrough = NULL,
                      smooth = NULL,
                      shadow = NULL, 
-                     scaling = NULL){
+                     scaling = NULL, 
+                     widthConstraint = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -187,6 +190,7 @@ visEdges <- function(graph,
   edges$font <- font
   edges$smooth <- smooth
   edges$shadow <- shadow
+  edges$widthConstraint <- widthConstraint
   
   if(!is.null(scaling)){
     if("customScalingFunction"%in%names(scaling)){

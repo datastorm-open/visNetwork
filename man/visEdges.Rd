@@ -9,7 +9,7 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
   id = NULL, physics = NULL, selectionWidth = NULL,
   selfReferenceSize = NULL, labelHighlightBold = NULL, color = NULL,
   font = NULL, arrows = NULL, arrowStrikethrough = NULL, smooth = NULL,
-  shadow = NULL, scaling = NULL)
+  shadow = NULL, scaling = NULL, widthConstraint = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -107,6 +107,8 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
  }
  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 }}
+
+\item{widthConstraint}{: Number or boolean. If false (defaut), no widthConstraint is applied. If a number is specified, the maximum width of the edge's label is set to the value. The edge's label's lines will be broken on spaces to stay below the maximum.}
 }
 \description{
 Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.

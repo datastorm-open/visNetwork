@@ -4,7 +4,7 @@
 \alias{visUpdateNodes}
 \title{Function to update nodes information, with shiny only.}
 \usage{
-visUpdateNodes(graph, nodes, updateOptions = T)
+visUpdateNodes(graph, nodes, updateOptions = T, legend = FALSE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
@@ -20,6 +20,8 @@ visUpdateNodes(graph, nodes, updateOptions = T)
 }}
 
 \item{updateOptions}{: Boolean. Update options (nodesIdSelection & selectedBy) if needed ? Default to TRUE.}
+
+\item{legend}{: Boolean. Update nodes of legend ? Default to FALSE}
 }
 \description{
 Function to update nodes information, with shiny only. You can also use this function passing new nodes.

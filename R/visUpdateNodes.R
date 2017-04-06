@@ -14,6 +14,7 @@
 #'  \item{...}{}
 #'}
 #'@param updateOptions : Boolean. Update options (nodesIdSelection & selectedBy) if needed ? Default to TRUE.
+#'@param legend : Boolean. Update nodes on legend ? Default to FALSE
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -30,13 +31,13 @@
 #'
 #'@export
 #'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
-visUpdateNodes <- function(graph, nodes, updateOptions = T){
+visUpdateNodes <- function(graph, nodes, updateOptions = TRUE, legend = FALSE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visUpdateNodes with visNetwork object. Only within shiny & using visNetworkProxy")
   }
 
-  data <- list(id = graph$id, nodes = nodes, updateOptions = updateOptions)
+  data <- list(id = graph$id, nodes = nodes, updateOptions = updateOptions, legend = legend)
   
   graph$session$sendCustomMessage("visShinyUpdateNodes", data)
 

@@ -5,6 +5,7 @@
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param id : vector of id, nodes to remove
 #'@param updateOptions : Boolean. Update options (nodesIdSelection & selectedBy) if needed ? Default to TRUE.
+#'@param legend : Boolean. Remove nodes on legend ? Default to FALSE
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -21,7 +22,7 @@
 #'
 #'@export
 #'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
-visRemoveNodes <- function(graph, id, updateOptions = T){
+visRemoveNodes <- function(graph, id, updateOptions = TRUE, legend = FALSE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visRemoveNodes with visNetwork object. Only within shiny & using visNetworkProxy")
@@ -33,7 +34,7 @@ visRemoveNodes <- function(graph, id, updateOptions = T){
     }
   }
   
-  data <- list(id = graph$id, rmid = id, updateOptions = updateOptions)
+  data <- list(id = graph$id, rmid = id, updateOptions = updateOptions, legend = legend)
   
   graph$session$sendCustomMessage("visShinyRemoveNodes", data)
 
