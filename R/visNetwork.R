@@ -212,6 +212,10 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     }
     if(is.data.frame(nodes)){
       nodesToDataframe <- TRUE
+      # unique id
+      if(anyDuplicated(nodes$id)){
+        stop("nodes must have unique ids")
+      }
     }else if(is.list(nodes)){
       nodesToDataframe <- FALSE
     }else{
