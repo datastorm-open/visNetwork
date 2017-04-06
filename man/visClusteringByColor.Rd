@@ -34,15 +34,17 @@ visNetwork(nodes, edges) \%>\%
    group = sample(c("A", "B"), 10, replace = TRUE))
  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
- visNetwork(nodes, edges, legend = TRUE) \%>\%
+ visNetwork(nodes, edges) \%>\%
    visGroups(groupname = "A", color = "red", shape = "square") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
    visClusteringByColor(colors = c("red"), label = "With color ") \%>\%
-   visClusteringByGroup(groups = c("B"), label = "Group : ")
+   visClusteringByGroup(groups = c("B"), label = "Group : ") \%>\%
+   visLegend()
    
- visNetwork(nodes, edges, legend = TRUE) \%>\%
+ visNetwork(nodes, edges) \%>\%
    visGroups(groupname = "A", color = "red", shape = "triangle") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
-   visClusteringByGroup(groups = c("A","B"))
+   visClusteringByGroup(groups = c("A","B")) \%>\%
+   visLegend()
 }
 

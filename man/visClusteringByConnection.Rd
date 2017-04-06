@@ -20,7 +20,7 @@ set.seed(124)
 nodes <- data.frame(id = 1:10, color = c(rep("blue", 6), rep("red", 3), rep("green", 1)))
 edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
 
- visNetwork(nodes, edges, legend = TRUE) \%>\%
+ visNetwork(nodes, edges) \%>\%
    visClusteringByConnection(nodes = 9)
      
 }

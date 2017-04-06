@@ -242,7 +242,7 @@ nodes <- data.frame(id = 1:10, label = paste("Label", 1:10),
 
 edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
-visNetwork(nodes, edges, legend = TRUE, width = "100%") %>%
+visNetwork(nodes, edges, width = "100%") %>%
    visGroups(groupname = "A", color = "red", shape = "square") %>%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
    visClusteringByColor(colors = c("red")) %>%

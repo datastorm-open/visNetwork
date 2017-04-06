@@ -30,11 +30,12 @@ Network visualization clustering options - by group.
    group = sample(c("A", "B"), 10, replace = TRUE))
  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 
- visNetwork(nodes, edges, legend = TRUE) \%>\%
+ visNetwork(nodes, edges) \%>\%
    visGroups(groupname = "A", color = "red", shape = "database") \%>\%
    visGroups(groupname = "B", color = "yellow", shape = "triangle") \%>\%
    visClusteringByGroup(groups = c("B"), label = "Group : ", 
-     shape = "ellipse", color = "blue", force = TRUE)
+     shape = "ellipse", color = "blue", force = TRUE) \%>\%
+   visLegend()
  
 }
 

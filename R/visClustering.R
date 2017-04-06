@@ -58,16 +58,18 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #'    group = sample(c("A", "B"), 10, replace = TRUE))
 #'  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 #'
-#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'  visNetwork(nodes, edges) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "square") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
 #'    visClusteringByColor(colors = c("red"), label = "With color ") %>%
-#'    visClusteringByGroup(groups = c("B"), label = "Group : ")
+#'    visClusteringByGroup(groups = c("B"), label = "Group : ") %>%
+#'    visLegend()
 #'    
-#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'  visNetwork(nodes, edges) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "triangle") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-#'    visClusteringByGroup(groups = c("A","B"))
+#'    visClusteringByGroup(groups = c("A","B")) %>%
+#'    visLegend()
 #' @export
 visClusteringByColor <- function(graph, colors, label = "Cluster on color : ",
                                  shape = "database", force = FALSE){
@@ -152,11 +154,12 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #'    group = sample(c("A", "B"), 10, replace = TRUE))
 #'  edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
 #'
-#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'  visNetwork(nodes, edges) %>%
 #'    visGroups(groupname = "A", color = "red", shape = "database") %>%
 #'    visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
 #'    visClusteringByGroup(groups = c("B"), label = "Group : ", 
-#'      shape = "ellipse", color = "blue", force = TRUE)
+#'      shape = "ellipse", color = "blue", force = TRUE) %>%
+#'    visLegend()
 #'  
 #' @export
 visClusteringByGroup <- function(graph, groups, label = "Cluster on group : ", 
@@ -194,7 +197,7 @@ visClusteringByGroup <- function(graph, groups, label = "Cluster on group : ",
 #' nodes <- data.frame(id = 1:10, color = c(rep("blue", 6), rep("red", 3), rep("green", 1)))
 #' edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
 #'
-#'  visNetwork(nodes, edges, legend = TRUE) %>%
+#'  visNetwork(nodes, edges) %>%
 #'    visClusteringByConnection(nodes = 9)
 #'      
 #' @export

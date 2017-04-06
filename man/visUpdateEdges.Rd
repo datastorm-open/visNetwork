@@ -4,7 +4,7 @@
 \alias{visUpdateEdges}
 \title{Function to update edges information, with shiny only.}
 \usage{
-visUpdateEdges(graph, edges)
+visUpdateEdges(graph, edges, legend = FALSE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
@@ -19,6 +19,8 @@ visUpdateEdges(graph, edges)
  \item{"title"}{ : tooltip of the node}
  \item{...}{}
 }}
+
+\item{legend}{: Boolean. Update edges on legend ? Default to FALSE}
 }
 \description{
 Function to update edges information, with shiny only. You can also use this function passing new edges.
