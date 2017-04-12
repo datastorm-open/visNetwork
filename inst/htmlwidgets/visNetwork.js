@@ -1424,6 +1424,14 @@ if (HTMLWidgets.shinyMode){
             document.getElementById("nodeSelect"+data.id).onchange();
           }
           
+          // collapse init
+          if(data.options.collapse !== undefined){
+            el.collapse = data.options.collapse.enabled;
+            el.collapseFit = data.options.collapse.fit;
+            el.collapseResetHighlight = data.options.collapse.resetHighlight;
+            el.clusterOptions = data.options.collapse.clusterOptions;
+          }
+          
           // highlight init
           if(data.options.highlight !== undefined){
             el.highlight = data.options.highlight.enabled;
@@ -1778,11 +1786,13 @@ HTMLWidgets.widget({
         document.getElementById(el.id).collapse = true;
         document.getElementById(el.id).collapseFit = x.collapse.fit;
         document.getElementById(el.id).collapseResetHighlight = x.collapse.resetHighlight;
+        document.getElementById(el.id).clusterOptions = x.collapse.clusterOptions;
       }
     } else {
       document.getElementById(el.id).collapse = false;
       document.getElementById(el.id).collapseFit = false;
       document.getElementById(el.id).collapseResetHighlight = false;
+      document.getElementById(el.id).clusterOptions = undefined;
     }
 
     var changeInput = function(id, data) {
@@ -3086,7 +3096,7 @@ HTMLWidgets.widget({
     //*************************
     instance.network.on("doubleClick", function(params){
       if(document.getElementById(el.id).collapse){
-        collapsedNetwork(params.nodes, document.getElementById(el.id).collapseFit, document.getElementById(el.id).collapseResetHighlight, x.collapse.clusterOptions, x.tree, instance.network, el.id) 
+        collapsedNetwork(params.nodes, document.getElementById(el.id).collapseFit, document.getElementById(el.id).collapseResetHighlight, document.getElementById(el.id).clusterOptions, x.tree, instance.network, el.id) 
       }
     }); 
     

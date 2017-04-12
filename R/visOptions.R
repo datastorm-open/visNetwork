@@ -188,11 +188,12 @@ visOptions <- function(graph,
     highlight <- list(enabled = FALSE)
     idselection <- list(enabled = FALSE)
     byselection <- list(enabled = FALSE)
+    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE)
   }else{
     #############################
     # collapse
     #############################
-    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE)
+    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE, clusterOptions = NULL)
     if(is.list(collapse)){
       if(any(!names(collapse)%in%c("enabled", "fit", "resetHighlight", "clusterOptions"))){
         stop("Invalid 'collapse' argument")
@@ -484,6 +485,9 @@ visOptions <- function(graph,
     }
     if(missing(selectedBy)){
       x$byselection <- NULL
+    }
+    if(missing(collapse)){
+      x$collapse <- NULL
     }
     
     data <- list(id = graph$id, options = x)

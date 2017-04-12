@@ -37,6 +37,19 @@ observe({
   }
 })
 
+observe({
+  if(input$open_collapse){
+    visNetworkProxy("network_proxy_options") %>% visEvents(type = "on", doubleClick = "networkOpenCluster")
+  } else {
+    visNetworkProxy("network_proxy_options") %>% visEvents(type = "off", doubleClick = "networkOpenCluster")
+  }
+})
+
+observe({
+  visNetworkProxy("network_proxy_options") %>%
+    visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, resetHighlight = input$reset_collapse))
+})
+
 # observe({
 #   if(length(input$selectedby) > 0){
 #     visNetworkProxy("network_proxy_options") %>%
@@ -50,6 +63,7 @@ observe({
 
 output$code_proxy_options  <- renderText({
   '
+# highlight
 observe({
   col <- paste0("rgba(200,200,200,", input$opahigh, ")")
   visNetworkProxy("network_proxy_options") %>%
@@ -57,11 +71,13 @@ observe({
                                        algorithm = input$algorithm, degree = input$deg, hideColor = col))
 })
 
+# nodesIdSelection
 observe({
   visNetworkProxy("network_proxy_options") %>%
     visOptions(nodesIdSelection = list(enabled = input$nodesIdSelection, selected = 5))
 })
 
+# selectedBy
 observe({
   if(input$selectedby){
     col <- paste0("rgba(200,200,200,", input$opasel, ")")
@@ -70,6 +86,21 @@ observe({
   }else{
     visNetworkProxy("network_proxy_options") %>%
       visOptions(selectedBy = NULL)
+  }
+})
+
+# collapse
+observe({
+  visNetworkProxy("network_proxy_options") %>%
+  visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, 
+    resetHighlight = input$reset_collapse))
+})
+
+observe({
+  if(input$open_collapse){
+    visNetworkProxy("network_id") %>% visEvents(type = "on", doubleClick = "networkOpenCluster")
+  } else {
+    visNetworkProxy("network_id") %>% visEvents(type = "off", doubleClick = "networkOpenCluster")
   }
 })
  '
