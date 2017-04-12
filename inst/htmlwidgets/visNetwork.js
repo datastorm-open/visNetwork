@@ -30,19 +30,39 @@ if (!Function.prototype.bind) {
 //--------------------------------------------
 
 // for edges
-function edgeAsHardToRead(edge, hideColor1, hideColor2){
-  // saving color information (if we have)
-  if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
-    edge.hiddenColor = edge.color;
+function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
+
+  if(type === "edge"){
+    
+    // saving color information (if we have)
+    if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
+      edge.hiddenColor = edge.color;
+    }
+    // set "hard to read" color
+    edge.color = hideColor1;
+    
+    // reset and save label
+    if (edge.hiddenLabel === undefined) {
+      edge.hiddenLabel = edge.label;
+      edge.label = undefined;
+    }
+    edge.isHardToRead = true;
+  } else {
+    // saving color information (if we have)
+    if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
+      network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
+
+    }
+    network.clustering.updateEdge(edge.id, {color : hideColor1});
+    
+    // reset and save label
+    if (edge.hiddenLabel === undefined) {
+      edge.hiddenLabel = edge.label;
+      edge.label = undefined;
+    }
+    edge.isHardToRead = true;
   }
-  // set "hard to read" color
-  edge.color = hideColor1;
-  // reset and save label
-  if (edge.hiddenLabel === undefined) {
-    edge.hiddenLabel = edge.label;
-    edge.label = undefined;
-  }
-  edge.isHardToRead = true;
+
 }
 
 function resetOneEdge(edge, type){
@@ -339,8 +359,11 @@ function resetAllNodes(nodes, update, groups, options, network){
     nodesToReset[i].y = undefined;
     if(have_cluster_nodes){
       if(indexOf.call(nodes_in_clusters, nodesToReset[i].id, true) > -1){
-        var tmp_cluster_id = network.clustering.findNode(nodesToReset[i].id)[0];
-        resetOneCluster(network.body.nodes[tmp_cluster_id], groups, options, network);
+        var tmp_cluster_id = network.clustering.findNode(nodesToReset[i].id);
+        // in case of multiple cluster...
+        for(var j = 0; j < (tmp_cluster_id.length-1); j++) {
+          resetOneCluster(network.body.nodes[tmp_cluster_id[j]], groups, options, network);
+        }
       }
     }
   }
@@ -668,6 +691,7 @@ function uniqueArray(arr, exclude_cluster, network) {
       }
     }
   }
+
   return a;
 }
 // clone an object
@@ -2592,7 +2616,7 @@ HTMLWidgets.widget({
 
           // all in degree nodes get their own color and their label back
           for (i = 0; i < edgesHardToRead.length; i++) {
-            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor)
+            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network, type = "edge")
           }
           edges.update(edgesHardToRead);
             
@@ -2639,7 +2663,7 @@ HTMLWidgets.widget({
         
         // first resetEdges
         resetAllEdges(edges, instance.network);
-          
+
         if (params.length > 0) {
           var is_cluster = instance.network.isCluster(params[0]);
           var selectedNode;
@@ -2771,7 +2795,7 @@ HTMLWidgets.widget({
             array_cluster_id = [];
             var tmp_cluster_id;
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "edge")
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
@@ -2785,7 +2809,7 @@ HTMLWidgets.widget({
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
+                edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "cluster")
               }
             }
             edges.update(edgesHardToRead);
@@ -2938,7 +2962,7 @@ HTMLWidgets.widget({
 
             array_cluster_id = [];
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor)
+              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "edge")
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   var tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
@@ -2948,15 +2972,16 @@ HTMLWidgets.widget({
                 }
               }
             }
-            
+
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                 edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor);
+                 edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "cluster");
               }
             }
             
             edges.update(edgesHardToRead);
+            
           }
 
           if(update){
