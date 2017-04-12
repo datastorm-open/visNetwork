@@ -34,9 +34,7 @@ server <- shinyServer(function(input, output) {
      # highlight nearest
      ###################
      
-     visNetwork(nodes, edges) %>% visOptions(highlightNearest = TRUE, collapse = T) %>%
-        visEvents(select = "function(properties) {
-          console.info('selected nodes: ' + properties.nodes);}")
+     visNetwork(nodes, edges) %>% visOptions(highlightNearest = T, collapse = T) %>% visEdges(arrows = "to")
      
    })
    
