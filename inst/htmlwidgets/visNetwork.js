@@ -1016,9 +1016,12 @@ function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
           network.openCluster(selectedNode)
         } else {
           if(indexOf.call(nodes_in_clusters, selectedNode, true) > -1){
-            cluster_node = network.clustering.findNode(selectedNode)[0];
-            if(network.isCluster(cluster_node)){
-              network.openCluster(cluster_node)
+            // not a cluster into a cluster...
+            if(selectedNode.search(/^cluster/i) === -1){
+              cluster_node = network.clustering.findNode(selectedNode)[0];
+              if(network.isCluster(cluster_node)){
+                network.openCluster(cluster_node)
+              }
             }
           }
         } 
@@ -1074,7 +1077,7 @@ if (HTMLWidgets.shinyMode){
           }
         } else if(data.type === "off"){
           for (var key in data.events) {
-            eval('network.off("' + key + '")');
+            eval('network.off("' + key + '",' + data.events[key] + ')');
           }
         }
       }

@@ -29,7 +29,13 @@ Network visualization collapse /uncollapsed method
 \dontrun{
 
 # have a look to : 
+
 shiny::runApp(system.file("shiny", package = "visNetwork"))
+
+# You can also disable / enabled the double-click event opening cluster
+
+visNetworkProxy("network_id") \%>\% visEvents(type = "off", doubleClick = "networkOpenCluster")
+visNetworkProxy("network_id") \%>\% visEvents(type = "on", doubleClick = "networkOpenCluster")
 
 }
 
