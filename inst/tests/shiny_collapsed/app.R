@@ -15,6 +15,7 @@ ui <- shinyUI(fluidPage(
   actionButton("goCol", "Collapsed !"),
   actionButton("goUC", "uncollapse!"),
   actionButton("goRm", "remove event!"),
+  actionButton("goAdd", "add event!"),
   visNetworkOutput("distPlot")
       
 ))
@@ -53,6 +54,12 @@ server <- shinyServer(function(input, output) {
    observe({
      if(input$goRm > 0){
        visNetworkProxy("distPlot") %>% visEvents(type = "off", doubleClick = "networkOpenCluster")
+     }
+   })
+   
+   observe({
+     if(input$goAdd > 0){
+       visNetworkProxy("distPlot") %>% visEvents(type = "on", doubleClick = "networkOpenCluster")
      }
    })
    

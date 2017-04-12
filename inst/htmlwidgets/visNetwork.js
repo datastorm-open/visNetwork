@@ -88,6 +88,7 @@ function resetOneEdge(edge, type){
 }
 
 function resetAllEdges(edges, network){
+  
   var edgesToReset = edges.get({
     fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
     filter: function (item) {
@@ -95,7 +96,7 @@ function resetAllEdges(edges, network){
     },
     returnType :'Array'
   });
-  
+
   var is_cluster_edges = false;
   var edges_in_clusters;
   if(network !== undefined){
@@ -107,7 +108,7 @@ function resetAllEdges(edges, network){
       edges_in_clusters = [];
     }
   }
-
+  
   // all edges get their own color and their label back
   for (var i = 0; i < edgesToReset.length; i++) {
     resetOneEdge(edgesToReset[i], type = "edge");
@@ -121,6 +122,24 @@ function resetAllEdges(edges, network){
       }
     }
   }
+  
+  // some misunderstood bug on some cluster edges... so have a (bad) fix...
+  var edges_in_clusters_ctrl = edges_in_clusters.filter(function(word,index){
+    if(word.match(/^clusterEdge/i)){
+        return true;
+    }else{
+        return false;
+    }
+  });
+
+  if(is_cluster_edges){
+    if(edges_in_clusters_ctrl.length > 0){
+       for (var j = 0; j < edges_in_clusters_ctrl.length; j++) {
+          resetOneEdge(network.body.edges[edges_in_clusters_ctrl[j]].options, type = "cluster");
+        }
+    }
+  }
+
   edges.update(edgesToReset);
 }
 
