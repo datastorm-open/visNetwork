@@ -182,14 +182,14 @@ dashboardPage(
           )),
           
           column(1,
-          dropdownButton(icon = "Edges",status = "warning",width = 400,
+          dropdownButton(icon = "Edges",status = "warning",width = 200,
                          
           fluidRow(
-            column(6,colourpicker::colourInput("colorEdges", "Color edges :",
+            column(12,colourpicker::colourInput("colorEdges", "Color edges :",
                                                value = "#8181F7")),
-            column(6,numericInput("edgesFontSize", "Edges font size :",
+            column(12,numericInput("edgesFontSize", "Edges font size :",
                                   value = 14, min = 1)),
-            column(6,selectInput("edgesFontAlign","Edges font align",choices = c(
+            column(12,selectInput("edgesFontAlign","Edges font align",choices = c(
               "horizontal", "top", "middle", "bottom"
             )))))),
           column(12),
