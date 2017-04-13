@@ -325,7 +325,6 @@ visTree <- function(object,
     meanV <- object$frame$yval-min(object$frame$yval)
     meanV <- meanV/max(meanV)
     
-
     colRamp <- .creatColorRampY(colorY)
     colorTerm <- rgb(colRamp(meanV), maxColorValue=255)
     # for legend color
@@ -407,7 +406,7 @@ visTree <- function(object,
     }
   }
   
-  
+  legelDvIS$id <- 10000:(10000 + (nrow(legelDvIS))-1)
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod, value = value,
                       shape = shape, title = labelsNode, fixed = TRUE,
@@ -418,11 +417,12 @@ visTree <- function(object,
   }
   
   
-  edges <- data.frame(from = from,
+  edges <- data.frame(id = 1:length(from),from = from,
                       to = to,
                       label = decision,
                       value = eff,
-                      title = decisionLabels)
+                      title = decisionLabels,
+                      color = colorEdges)
   
   net <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main)%>% 
     visHierarchicalLayout(direction = direction) %>%
@@ -437,7 +437,7 @@ visTree <- function(object,
                       white-space: nowrap;
                       font-family: cursive;font-size:12px;font-color:purple;background-color: #E6E6E6;
                       border-radius: 15px;') %>% 
-    visEdges(font = list(size = edgesFontSize, align = edgesFontAlign), value = 3, smooth = smooth, color = colorEdges,
+    visEdges(font = list(size = edgesFontSize, align = edgesFontAlign), value = 3, smooth = smooth,
              scaling = list(label = list(enabled = FALSE))) %>%
     visNodes(font = list(size = nodesFontSize),
              scaling = list(min = minNodeSize, max = maxNodeSize)) %>%
