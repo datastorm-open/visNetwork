@@ -5,7 +5,7 @@ edges <- data.frame(from = trunc(runif(5)*(5-1))+1,
                     to = trunc(runif(5)*(5-1))+1)
 
 visNetwork(nodes, edges) %>% 
-  visOptions(highlightNearest = list(enabled = T, degree = 10, hover = F))
+  visOptions(highlightNearest = list(enabled = T, degree = 1, hover = F))
 
 
 # simple nodes, passing some information individually
@@ -52,7 +52,6 @@ visNetwork(nodes, edges) %>%
   visOptions(highlightNearest = list(enabled = T, degree = 10, hover = T))
 
 # icons in group only
-?addFontAwesome
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
@@ -73,7 +72,6 @@ visNetwork(nodes, edges) %>%
   addFontAwesome() %>% visOptions(highlightNearest = list(enabled = T, hover = T), selectedBy = "group")
 
 # icons in group and individually
-?addFontAwesome
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"), 
                     shape = "icon", 
                     icon.code = c("f0c0", NA, NA),

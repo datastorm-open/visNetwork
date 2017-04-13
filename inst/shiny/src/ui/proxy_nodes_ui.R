@@ -3,7 +3,7 @@ shiny::tabPanel(
   fluidRow(
     column(
       width = 4,
-      selectInput("color", "Color :",
+      selectInput("color", "Nodes Color :",
                     c("blue", "red", "green")),
       checkboxInput("shadow", "Shadow", FALSE),
       sliderInput("size", "Size : ", min = 10, max = 100, value = 20),
