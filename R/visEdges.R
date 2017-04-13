@@ -19,7 +19,7 @@
 #' 
 #' @param color : Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' or 'red'.
 #' \itemize{
-#'  \item{"color"}{ : String. Default to '#848484. The color of the border of the node when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
+#'  \item{"color"}{ : String. Default to '#848484. The color of the edge when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
 #'  \item{"highlight "}{ : String. Default to '#848484'. The color the edge when it is selected.}
 #'  \item{"hover"}{ : String. Default to '#848484'. The color the edge when the mouse hovers over it (assuming hover is enabled in the interaction module).}
 #'  \item{"inherit"}{ : String or Boolean. Default to 'from'. When color, highlight or hover are defined, inherit is set to false! Supported options are: true, false, 'from','to','both'.}
