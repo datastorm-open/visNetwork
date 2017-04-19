@@ -40,4 +40,3 @@ visNetwork(nodes, edges) \%>\%
   addFontAwesome()
 
 }
-

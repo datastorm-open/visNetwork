@@ -17,4 +17,3 @@ addExport(graph, pdf = TRUE)
 \description{
 Add libraries dependencies used in export \link{visExport}
 }
-

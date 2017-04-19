@@ -6,4 +6,3 @@
 \description{
 Export magrittr function
 }
-

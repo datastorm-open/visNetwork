@@ -27,4 +27,3 @@ visNetwork(nodes, edges) \%>\%
  visClusteringByHubsize(size = 2)
  
 }
-

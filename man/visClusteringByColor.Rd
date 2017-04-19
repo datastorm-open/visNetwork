@@ -47,4 +47,3 @@ visNetwork(nodes, edges) \%>\%
    visClusteringByGroup(groups = c("A","B")) \%>\%
    visLegend()
 }
-

@@ -31,4 +31,3 @@ visNetwork(nodes, edges) \%>\%
   addIonicons()
 
 }
-

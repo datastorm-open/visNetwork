@@ -38,4 +38,3 @@ Network visualization clustering options - by group.
    visLegend()
  
 }
-

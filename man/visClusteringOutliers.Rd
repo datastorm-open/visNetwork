@@ -27,4 +27,3 @@ visNetwork(nodes, edges) \%>\%
 
  
 }
-

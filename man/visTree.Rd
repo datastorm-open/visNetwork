@@ -137,4 +137,3 @@ visTree(res, colorEdges = "#000099", colorVar = colorVar,
 }
 
 }
-

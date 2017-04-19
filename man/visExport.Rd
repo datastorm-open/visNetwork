@@ -53,4 +53,3 @@ See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 \seealso{
 \link{visSave}
 }
-

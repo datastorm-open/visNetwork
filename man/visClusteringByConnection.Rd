@@ -24,4 +24,3 @@ edges <- data.frame(from = round(runif(6)*10), to = round(runif(6)*10))
    visClusteringByConnection(nodes = 9)
      
 }
-
