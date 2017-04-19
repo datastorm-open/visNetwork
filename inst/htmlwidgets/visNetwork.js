@@ -1466,6 +1466,7 @@ if (HTMLWidgets.shinyMode){
             el.hoverNearest = data.options.highlight.hoverNearest;
             el.highlightColor = data.options.highlight.hideColor;
             el.highlightAlgorithm = data.options.highlight.algorithm;
+            el.highlightLabelOnly = data.options.labelOnly;
           }
 
           // byselection init
@@ -1788,12 +1789,14 @@ HTMLWidgets.widget({
       document.getElementById(el.id).hoverNearest = x.highlight.hoverNearest;
       document.getElementById(el.id).degree = x.highlight.degree;
       document.getElementById(el.id).highlightAlgorithm = x.highlight.algorithm;
+      document.getElementById(el.id).highlightLabelOnly = x.highlight.labelOnly;
     } else {
       document.getElementById(el.id).highlight = false;
       document.getElementById(el.id).hoverNearest = false;
       document.getElementById(el.id).highlightColor = 'rgba(200,200,200,0.5)';
       document.getElementById(el.id).degree = 1;
       document.getElementById(el.id).highlightAlgorithm = "all";
+      document.getElementById(el.id).highlightLabelOnly = true;
     }
 
     if(x.byselection.enabled){
@@ -2781,28 +2784,30 @@ HTMLWidgets.widget({
             }
             allConnectedNodes = uniqueArray(allConnectedNodes, true, instance.network);
 
-            // all higher degree nodes get a different color and their label back
-            array_cluster_id = [];
-            for (i = 0; i < allConnectedNodes.length; i++) {
-              if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
-                allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
-                allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
-                if(have_cluster_nodes){
-                  if(indexOf.call(nodes_in_clusters, allConnectedNodes[i], true) > -1){
-
-                    array_cluster_id = array_cluster_id.concat(instance.network.clustering.findNode(allConnectedNodes[i])[0]);
+            if(document.getElementById(el.id).highlightLabelOnly === true){
+              // all higher degree nodes get a different color and their label back
+              array_cluster_id = [];
+              for (i = 0; i < allConnectedNodes.length; i++) {
+                if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+                  allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
+                  allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+                  if(have_cluster_nodes){
+                    if(indexOf.call(nodes_in_clusters, allConnectedNodes[i], true) > -1){
+  
+                      array_cluster_id = array_cluster_id.concat(instance.network.clustering.findNode(allConnectedNodes[i])[0]);
+                    }
                   }
+                }
+              }
+  
+              if(array_cluster_id.length > 0){
+                array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
+                for (i = 0; i < array_cluster_id.length; i++) {
+                  instance.network.body.nodes[array_cluster_id[i]].setOptions({label : instance.network.body.nodes[array_cluster_id[i]].options.hiddenLabel, hiddenLabel:undefined})
                 }
               }
             }
 
-            if(array_cluster_id.length > 0){
-              array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
-              for (i = 0; i < array_cluster_id.length; i++) {
-                instance.network.body.nodes[array_cluster_id[i]].setOptions({label : instance.network.body.nodes[array_cluster_id[i]].options.hiddenLabel, hiddenLabel:undefined})
-              }
-            }
-            
             // all in degree nodes get their own color and their label back + main nodes
             connectedNodes = connectedNodes.concat(selectedNode);
             array_cluster_id = [];
@@ -2895,9 +2900,14 @@ HTMLWidgets.widget({
                 currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
             }
             
+            var go_from;
+            var go_to;
+                
             if(degrees > 1){
               for (i = 2; i <= degrees; i++) {
-                if(currentConnectedFromNodes.length > 0 && degrees <= degree_from){
+                go_from = false;
+                go_to = false;
+                if(currentConnectedFromNodes.length > 0 && i <= degree_from){
                   connectedFromNodes = edges.get({
                     fields: ['from'],
                     filter: function (item) {
@@ -2905,9 +2915,10 @@ HTMLWidgets.widget({
                     },
                     returnType :'Array'
                   });
+                  go_from = true;
                 }
 
-                if(currentConnectedToNodes.length > 0 && degrees <= degree_to){
+                if(currentConnectedToNodes.length > 0 && i <= degree_to){
                   connectedToNodes = edges.get({
                     fields: ['to'],
                     filter: function (item) {
@@ -2915,43 +2926,49 @@ HTMLWidgets.widget({
                     },
                     returnType :'Array'
                   });
+                  go_to = true;
                 }
-                
-                currentConnectedFromNodes = [];
-                currentConnectedToNodes = [];
-                
-                for (j = 0; j < connectedFromNodes.length; j++) {
+
+                if(go_from === true){
+                  currentConnectedFromNodes = [];
+                  for (j = 0; j < connectedFromNodes.length; j++) {
                     allConnectedNodes = allConnectedNodes.concat(connectedFromNodes[j].from);
                     currentConnectedFromNodes = currentConnectedFromNodes.concat(connectedFromNodes[j].from);
+                  }
                 }
-                
-                for (j = 0; j < connectedToNodes.length; j++) {
+
+                if(go_to === true){
+                  currentConnectedToNodes = [];
+                  for (j = 0; j < connectedToNodes.length; j++) {
                     allConnectedNodes = allConnectedNodes.concat(connectedToNodes[j].to);
                     currentConnectedToNodes = currentConnectedToNodes.concat(connectedToNodes[j].to);
+                  } 
                 }
-                if (currentConnectedToNodes.length === 0 &&  currentConnectedFromNodes.length === 0) { break; }
+                
+                if (go_from === false &&  go_to === false) { break;}
               }
             }
             
             allConnectedNodes = uniqueArray(allConnectedNodes, true, instance.network).concat(selectedNode);
 
             var nodesWithLabel = [];
-            if(degrees > 0){
-              // nodes to just label
-              for (j = 0; j < currentConnectedToNodes.length; j++) {
-                  nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedToNodes[j]));
+            if(document.getElementById(el.id).highlightLabelOnly === true){
+              if(degrees > 0){
+                // nodes to just label
+                for (j = 0; j < currentConnectedToNodes.length; j++) {
+                    nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedToNodes[j]));
+                }
+                
+                for (j = 0; j < currentConnectedFromNodes.length; j++) {
+                    nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedFromNodes[j]));
+                }
+                nodesWithLabel = uniqueArray(nodesWithLabel, true, instance.network);
+              } else{
+                nodesWithLabel = currentConnectedToNodes;
+                nodesWithLabel = nodesWithLabel.concat(currentConnectedFromNodes);
+                nodesWithLabel = uniqueArray(nodesWithLabel, true, instance.network);
               }
-              
-              for (j = 0; j < currentConnectedFromNodes.length; j++) {
-                  nodesWithLabel = nodesWithLabel.concat(instance.network.getConnectedNodes(currentConnectedFromNodes[j]));
-              }
-              nodesWithLabel = uniqueArray(nodesWithLabel, true, instance.network);
-            } else{
-              nodesWithLabel = currentConnectedToNodes;
-              nodesWithLabel = nodesWithLabel.concat(currentConnectedFromNodes);
-              nodesWithLabel = uniqueArray(nodesWithLabel, true, instance.network);
             }
-
             // all higher degree nodes get a different color and their label back
             array_cluster_id = [];
             for (i = 0; i < nodesWithLabel.length; i++) {

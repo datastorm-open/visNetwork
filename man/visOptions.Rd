@@ -22,6 +22,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"hover"}{ : Optional. Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
  \item{"algorithm"}{ : Optional. String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+ \item{"labelOnly"}{ : Optional. Boolean. Keep just label for nodes on degree + 1 ? Default to TRUE}
 }}
 
 \item{nodesIdSelection}{:  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
@@ -171,4 +172,3 @@ See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 \link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
 \link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 }
-

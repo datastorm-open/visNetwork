@@ -12,6 +12,7 @@
 #'  \item{"hover"}{ : Optional. Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
 #'  \item{"algorithm"}{ : Optional. String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
 #'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+#'  \item{"labelOnly"}{ : Optional. Boolean. Keep just label for nodes on degree + 1 ? Default to TRUE}
 #'}
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
@@ -223,9 +224,9 @@ visOptions <- function(graph,
     #############################
     # highlightNearest
     #############################
-    highlight <- list(enabled = FALSE, hoverNearest = FALSE, degree = 1, algorithm = "all", hideColor = 'rgba(200,200,200,0.5)')
+    highlight <- list(enabled = FALSE, hoverNearest = FALSE, degree = 1, algorithm = "all", hideColor = 'rgba(200,200,200,0.5)', labelOnly = TRUE)
     if(is.list(highlightNearest)){
-      if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover", "algorithm", "hideColor"))){
+      if(any(!names(highlightNearest)%in%c("enabled", "degree", "hover", "algorithm", "hideColor", "labelOnly"))){
         stop("Invalid 'highlightNearest' argument")
       }
       
@@ -248,6 +249,11 @@ visOptions <- function(graph,
         }else{
           highlight$degree <- list(from = highlight$degree, to = highlight$degree)
         }
+      }
+      
+      if("labelOnly"%in%names(highlightNearest)){
+        stopifnot(is.logical(highlightNearest$labelOnly))
+        highlight$labelOnly <- highlightNearest$labelOnly
       }
       
       if("hover"%in%names(highlightNearest)){
