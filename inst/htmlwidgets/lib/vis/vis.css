@@ -5,6 +5,10 @@ display: none;
 display : block;
 }
 
+hr.rPartvisNetwork{
+	margin: 0.1em auto;
+}
+
 .vis .overlay {
   position: absolute;
   top: 0;

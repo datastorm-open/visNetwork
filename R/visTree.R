@@ -341,7 +341,7 @@ visTree <- function(object,
   
   if(rules) 
   {
-    rul <-  paste0('<hr><div class="rPartvisNetworkTooltipShowhim" style="color:blue;"><U>RULES</U>
+    rul <-  paste0('<hr class="rPartvisNetwork"><div class="rPartvisNetworkTooltipShowhim" style="color:blue;"><U>RULES</U>
                    <div class="rPartvisNetworkTooltipShowme" style="color:black;">',
                    returndec,'</div></div>')
   }else{
