@@ -15,8 +15,11 @@ nodes <- data.frame(id = 1:5,
 edges <- data.frame(from = trunc(runif(5)*(5-1))+1,
                     to = trunc(runif(5)*(5-1))+1)
 
+nodes <- data.frame(id = 1:5, group = "A")
+
 visNetwork(nodes, edges) %>% 
   visNodes(color = "red")%>% 
+  visGroups(groupname = "A", color = "yellow")%>%
   visOptions(highlightNearest = list(enabled = T, degree = 10, hover = F), collapse = T)
 
 # simple nodes, passing some information individually

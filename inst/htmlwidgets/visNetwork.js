@@ -31,7 +31,6 @@ if (!Function.prototype.bind) {
 
 // for edges
 function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
-
   if(type === "edge"){
     
     // saving color information (if we have)
@@ -50,11 +49,11 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
   } else {
     // saving color information (if we have)
     if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
-      network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
-
+      //network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
+      edge.hiddenColor = edge.color;
     }
     network.clustering.updateEdge(edge.id, {color : hideColor1});
-    
+    //edge.color = hideColor1;
     // reset and save label
     if (edge.hiddenLabel === undefined) {
       edge.hiddenLabel = edge.label;
@@ -66,6 +65,7 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
 }
 
 function resetOneEdge(edge, type){
+
   // get back color
   if (edge.hiddenColor !== undefined) {
     edge.color = edge.hiddenColor;
@@ -76,7 +76,6 @@ function resetOneEdge(edge, type){
     } else {
       delete edge.color;
     }
-    
   }
   
   // finally, get back label
@@ -158,17 +157,17 @@ function simpleResetNode(node, type){
       if(node.group !== undefined){
         node.color = undefined;
       } else {
-        node.color = undefined;
+        node.color = null;
       }
     }
   } else {
-    if (node.options.hiddenColor !== undefined) {
+    if (Object.keys(node.options.hiddenColor).length > 2){
       node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
     }else{
-      if(node.group !== undefined){
+      if(node.options.group !== undefined){
         node.setOptions({color : undefined});
       } else {
-        node.setOptions({color : undefined});
+        node.setOptions({color : null});
       }
     }
   }
@@ -196,7 +195,7 @@ function simpleIconResetNode(node, type){
     if (node.options.hiddenColorForLabel !== undefined) {
       node.setOptions({color : node.options.hiddenColorForLabel, hiddenColorForLabel : undefined});
     }else{
-      if(node.group !== undefined){
+      if(node.options.group !== undefined){
         node.setOptions({color : undefined});
       } else {
         node.setOptions({color : null});
@@ -222,10 +221,10 @@ function simpleImageResetNode(node, imageType, type){
     // and set shape as image/circularImage
     node.shape = imageType;
   } else {
-    if (node.options.hiddenColor !== undefined) {
+    if (Object.keys(node.options.hiddenColor).length > 2) {
       node.setOptions({color : node.options.hiddenColor, hiddenColor : undefined});
     }else{
-      if(node.group !== undefined){
+      if(node.options.group !== undefined){
         node.setOptions({color : undefined});
       } else {
         node.setOptions({color : null});
@@ -370,7 +369,7 @@ function resetAllNodes(nodes, update, groups, options, network){
       nodes_in_clusters = [];
     }
   }
- 
+
   for (var i = 0; i < nodesToReset.length; i++) {
     resetOneNode(nodesToReset[i], groups, options, network, type = "node");
 	// reset coordinates
@@ -525,7 +524,8 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
   var shape_group = false;
   var is_group = false;
 
-  if(node.isHardToRead === false || node.isHardToRead === undefined || (node.isHardToRead === true && node.label !== undefined)){
+  if(node.isHardToRead === false || node.isHardToRead === undefined){
+
     // have a group information & a shape defined in group ?
     if(node.group !== undefined){
       if(groups.groups[node.group] !== undefined){
@@ -597,6 +597,14 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
       node.isHardToRead = true;
     } else {
       node.setOptions({isHardToRead : true});
+    }
+  // special case of just to label  
+  } else if(node.isHardToRead === true && node.label !== undefined){
+    if(type === "node"){
+      node.hiddenLabel = node.label;
+      node.label = undefined;
+    } else {
+      node.setOptions({hiddenLabel : node.options.label, label : undefined})
     }
   }
 }
