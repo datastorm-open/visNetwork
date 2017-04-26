@@ -71,33 +71,62 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
 
 }
 
-function resetOneEdge(edge, type){
+function resetOneEdge(edge, hideColor1, hideColor2, type){
   
-  // console.info("resetOneEdge")
-  // console.info(type)
-  // console.info(edge.id) 
+  /*console.info("resetOneEdge")
+  console.info(type)
+  console.info(edge.id) 
+  console.info(edge)
+  console.info("edge.hiddenColor")
+  console.info(edge.hiddenColor)*/
   
-  // get back color
-  if (edge.hiddenColor !== undefined) {
-    edge.color = edge.hiddenColor;
-    edge.hiddenColor = undefined;
-  }else{
-    if(type === "edge"){
-      edge.color = null;
-    } else {
-      //delete edge.color;
+  var treat_egde = false;
+  if(type === "cluster"){
+    if(edge.isHardToRead !== undefined){ // we have to reset this node
+      if(edge.isHardToRead){
+        treat_egde = true;
+      } else if(edge.isHardToRead === false && (edge.color.color === hideColor1 || edge.color.color === hideColor2)){
+        treat_egde = true;
+      }
+    } else if(edge.color.color === hideColor1 || edge.color.color === hideColor2){
+      treat_egde = true;
     }
+    
+    if(treat_egde){
+      // get back color
+      if (edge.hiddenColor !== undefined) {
+        edge.color = edge.hiddenColor;
+        edge.hiddenColor = undefined;
+      }else{
+        delete edge.color;
+      }
+        
+      // finally, get back label
+      if (edge.hiddenLabel !== undefined) {
+        edge.label = edge.hiddenLabel;
+        edge.hiddenLabel = undefined;
+      }
+      edge.isHardToRead = false;
+    }
+  } else {
+    // get back color
+    if (edge.hiddenColor !== undefined) {
+      edge.color = edge.hiddenColor;
+      edge.hiddenColor = undefined;
+    }else{
+      edge.color = null;
+    }
+    
+    // finally, get back label
+    if (edge.hiddenLabel !== undefined) {
+      edge.label = edge.hiddenLabel;
+      edge.hiddenLabel = undefined;
+    }
+    edge.isHardToRead = false;
   }
-  
-  // finally, get back label
-  if (edge.hiddenLabel !== undefined) {
-    edge.label = edge.hiddenLabel;
-    edge.hiddenLabel = undefined;
-  }
-  edge.isHardToRead = false;
 }
 
-function resetAllEdges(edges, network){
+function resetAllEdges(edges, hideColor1, hideColor2, network){
   
   var edgesToReset = edges.get({
     fields: ['id', 'color', 'hiddenColor', 'label', 'hiddenLabel'],
@@ -119,15 +148,17 @@ function resetAllEdges(edges, network){
     }
   }
   
+  var treat_edges_in_clusters = [];
   // all edges get their own color and their label back
   for (var i = 0; i < edgesToReset.length; i++) {
-    resetOneEdge(edgesToReset[i], type = "edge");
+    resetOneEdge(edgesToReset[i], hideColor1, hideColor2,type = "edge");
     if(is_cluster_edges){
       if(indexOf.call(edges_in_clusters, edgesToReset[i].id, true) > -1){
         var tmp_cluster_id = network.clustering.getClusteredEdges(edgesToReset[i].id);
         if(tmp_cluster_id.length > 1){
           tmp_cluster_id = tmp_cluster_id[0];
-          resetOneEdge(network.body.edges[tmp_cluster_id].options, type = "cluster");
+          treat_edges_in_clusters.push(tmp_cluster_id);
+          resetOneEdge(network.body.edges[tmp_cluster_id].options, hideColor1, hideColor2, type = "cluster");
         }
       }
     }
@@ -136,7 +167,12 @@ function resetAllEdges(edges, network){
   // some misunderstood bug on some cluster edges... so have a (bad) fix...
   var edges_in_clusters_ctrl = edges_in_clusters.filter(function(word,index){
     if(word.match(/^clusterEdge/i)){
+      if(indexOf.call(treat_edges_in_clusters, word, true) === -1){
         return true;
+      } else {
+        return false;
+      }
+        
     }else{
         return false;
     }
@@ -145,7 +181,7 @@ function resetAllEdges(edges, network){
   if(is_cluster_edges){
     if(edges_in_clusters_ctrl.length > 0){
        for (var j = 0; j < edges_in_clusters_ctrl.length; j++) {
-          resetOneEdge(network.body.edges[edges_in_clusters_ctrl[j]].options, type = "cluster");
+          resetOneEdge(network.body.edges[edges_in_clusters_ctrl[j]].options, hideColor1, hideColor2, type = "cluster");
         }
     }
   }
@@ -1667,7 +1703,7 @@ if (HTMLWidgets.shinyMode){
           // get edges object
           var tmpedges = visNetworkdataframeToD3(data.edges, "edges");
           // reset edges
-          resetAllEdges(el.edges, el.chart)
+          resetAllEdges(el.edges, el.highlightColor,  el.byselectionColor, el.chart)
           el.edges.update(tmpedges);
         }
       } else if(data.legend === true){
@@ -1748,7 +1784,7 @@ if (HTMLWidgets.shinyMode){
       if(data.legend === false){
         if(el){
           // reset edges
-          resetAllEdges(el.edges, el.chart)
+          resetAllEdges(el.edges, el.highlightColor,  el.byselectionColor, el.chart)
           el.edges.remove(data.rmid);
         }
       } else if(data.legend === true){
@@ -2611,7 +2647,7 @@ HTMLWidgets.widget({
       var allNodes = nodes.get({returnType:"Object"});
        
       // first resetEdges
-      resetAllEdges(edges, instance.network);
+      resetAllEdges(edges, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network);
       var connectedNodes = [];  
       
       // get variable
@@ -2725,7 +2761,7 @@ HTMLWidgets.widget({
       if(!(action_type == "hover" && is_clicked)){
         
         // first resetEdges
-        resetAllEdges(edges, instance.network);
+        resetAllEdges(edges, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network);
 
         if (params.length > 0) {
           var is_cluster = instance.network.isCluster(params[0]);
