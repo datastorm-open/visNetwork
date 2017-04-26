@@ -31,7 +31,11 @@ if (!Function.prototype.bind) {
 
 // for edges
 function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
+  //console.info("edgeAsHardToRead")
+  
   if(type === "edge"){
+    //console.info("edge")
+    //console.info(edge.id)
     
     // saving color information (if we have)
     if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
@@ -47,6 +51,9 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
     }
     edge.isHardToRead = true;
   } else {
+    //console.info("cluster")
+    //console.info(edge.id)
+    //console.info(edge)
     // saving color information (if we have)
     if (edge.hiddenColor === undefined && edge.color !== hideColor1 && edge.color !== hideColor2) {
       //network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
@@ -65,7 +72,11 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
 }
 
 function resetOneEdge(edge, type){
-
+  
+  // console.info("resetOneEdge")
+  // console.info(type)
+  // console.info(edge.id) 
+  
   // get back color
   if (edge.hiddenColor !== undefined) {
     edge.color = edge.hiddenColor;
@@ -74,7 +85,7 @@ function resetOneEdge(edge, type){
     if(type === "edge"){
       edge.color = null;
     } else {
-      delete edge.color;
+      //delete edge.color;
     }
   }
   
@@ -1086,7 +1097,6 @@ if (HTMLWidgets.shinyMode){
       }
   });
 
-
   // event method
   Shiny.addCustomMessageHandler('visShinyEvents', function(data){
       // get container id
@@ -1351,6 +1361,16 @@ if (HTMLWidgets.shinyMode){
 
 		    // return  in shiny
         Shiny.onInputChange(data.input, pos);
+      }
+  });
+  
+  // store positions
+  Shiny.addCustomMessageHandler('visShinyStorePositions', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+        network.storePositions();
       }
   });
   
