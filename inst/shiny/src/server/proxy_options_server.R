@@ -47,6 +47,11 @@ observe({
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
+    visCollapse(nodes = input$nodes_to_collapse)
+})
+
+observe({
+  visNetworkProxy("network_proxy_options") %>%
     visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, resetHighlight = input$reset_collapse))
 })
 
