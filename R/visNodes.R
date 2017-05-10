@@ -14,7 +14,11 @@
 #' @param level : Number. Default to undefined. When using the hierarchical layout, the level determines where the node is going to be positioned.
 #' @param group : String. Default to undefined. When not undefined, the group of node(s)
 #' @param hidden : Boolean. Default to false. When true, the node will not be shown. It will still be part of the physics simulation though!
-#' @param image : String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.
+#' @param image : List or String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.
+#'    \itemize{
+#'      \item{"unselected"}{ : String. Unselected (default) image URL.}
+#'      \item{"selected"}{ : String. Selected image URL.}
+#'    }
 #' @param mass : Number. Default to 1. The barnesHut physics model (which is enabled by default) is based on an inverted gravity model. By increasing the mass of a node, you increase it's repulsion. Values lower than 1 are not recommended.
 #' @param physics : Boolean. Default to true. When false, the node is not part of the physics simulation. It will not move except for from manual dragging.
 #' @param borderWidth : Number. Default to 1. The width of the border of the node when it is not selected, automatically limited by the width of the node.
@@ -52,6 +56,8 @@
 #'  \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
 #'  \item{"strokeWidth"}{ : Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
 #'  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
+#'  \item{"align"}{ : String. Default to 'center'. This can be set to 'left' to make the label left-aligned}
+#'  \item{"vadjust, multi, bold, ital, boldital, mono"}{○ See \link{\code{visDocumentation}}}
 #'}
 #'
 #' @param icon : Named list. These options are only used when the shape is set to 'icon'.
@@ -96,6 +102,11 @@
 #'  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 #'}
 #'  
+#' @param heightConstraint : See \link{\code{visDocumentation}}  
+#' @param widthConstraint : See \link{\code{visDocumentation}}  
+#' @param margin : See \link{\code{visDocumentation}}  
+#' @param chosen : See \link{\code{visDocumentation}}  
+#'   
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
@@ -147,7 +158,11 @@ visNodes <- function(graph,
                      icon = NULL, 
                      shadow = NULL,
                      scaling = NULL, 
-                     shapeProperties = NULL){
+                     shapeProperties = NULL, 
+                     heightConstraint = NULL,
+                     widthConstraint = NULL,
+                     margin = NULL,
+                     chosen = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -179,6 +194,9 @@ visNodes <- function(graph,
   nodes$icon <- icon
   nodes$shadow <- shadow
   nodes$shapeProperties <- shapeProperties
+  nodes$chosen <- chosen
+  nodes$widthConstraint <- widthConstraint
+  nodes$heightConstraint <- heightConstraint
   
   if(!is.null(scaling)){
     if("customScalingFunction"%in%names(scaling)){

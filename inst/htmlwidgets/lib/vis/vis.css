@@ -319,7 +319,8 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     border-width: 12px;
     margin-top: -12px;
 }
-/*div.vis-tooltip {
+/*
+div.vis-tooltip {
   position: absolute;
   visibility: hidden;
   padding: 5px;
@@ -339,8 +340,8 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
   pointer-events: none;
 
   z-index: 5;
-}*/
-
+}
+*/
 
 div.vis-color-picker {
   position:absolute;
@@ -911,6 +912,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   border-width: 1px;
   background-color: #D5DDF6;
   display: inline-block;
+  z-index: 1;
   /*overflow: hidden;*/
 }
 
@@ -1008,6 +1010,10 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   white-space: nowrap;
   padding: 5px;
   border-radius: 1px;
+  transition: 0.4s;
+  -o-transition: 0.4s;
+  -moz-transition: 0.4s;
+  -webkit-transition: 0.4s;
 }
 
 .vis-item .vis-delete, .vis-item .vis-delete-rtl {

@@ -10,7 +10,8 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
   physics = NULL, borderWidth = NULL, borderWidthSelected = NULL,
   brokenImage = NULL, labelHighlightBold = NULL, color = NULL,
   fixed = NULL, font = NULL, icon = NULL, shadow = NULL,
-  scaling = NULL, shapeProperties = NULL)
+  scaling = NULL, shapeProperties = NULL, heightConstraint = NULL,
+  widthConstraint = NULL, margin = NULL, chosen = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -37,7 +38,11 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 
 \item{hidden}{: Boolean. Default to false. When true, the node will not be shown. It will still be part of the physics simulation though!}
 
-\item{image}{: String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.}
+\item{image}{: List or String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.
+\itemize{
+  \item{"unselected"}{ : String. Unselected (default) image URL.}
+  \item{"selected"}{ : String. Selected image URL.}
+}}
 
 \item{mass}{: Number. Default to 1. The barnesHut physics model (which is enabled by default) is based on an inverted gravity model. By increasing the mass of a node, you increase it's repulsion. Values lower than 1 are not recommended.}
 
@@ -83,6 +88,8 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
  \item{"strokeWidth"}{ : Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
+ \item{"align"}{ : String. Default to 'center'. This can be set to 'left' to make the label left-aligned}
+ \item{"vadjust, multi, bold, ital, boldital, mono"}{○ See \link{\code{visDocumentation}}}
 }}
 
 \item{icon}{: Named list. These options are only used when the shape is set to 'icon'.
@@ -126,6 +133,14 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"useImageSize"}{ : Boolean. Default to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 }}
+
+\item{heightConstraint}{: See \link{\code{visDocumentation}}}
+
+\item{widthConstraint}{: See \link{\code{visDocumentation}}}
+
+\item{margin}{: See \link{\code{visDocumentation}}}
+
+\item{chosen}{: See \link{\code{visDocumentation}}}
 }
 \description{
 Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.
