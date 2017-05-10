@@ -663,8 +663,8 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
 function visNetworkdataframeToD3(df, type) {
 
   // variables we have specially to control
-  var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties"];
-  var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling"];
+  var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties", "chosen", "heightConstraint", "image", "margin", "widthConstraint"];
+  var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling", "chosen", "widthConstraint"];
   
   var names = [];
   var colnames = [];
