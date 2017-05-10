@@ -30,18 +30,14 @@ server <- shinyServer(function(input, output) {
      
      edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
                          to = trunc(runif(15)*(15-1))+1)
-     
-     ###################  
-     # highlight nearest
-     ###################
-     
+
      visNetwork(nodes, edges) %>% visOptions(highlightNearest = T, collapse = T) %>% visEdges(arrows = "to")
      
    })
    
    observe({
      if(input$goCol > 0){
-       visNetworkProxy("distPlot") %>% visCollapse(nodes = c(10,3), clusterOptions = list( shape ="square", label = "alors"))
+       visNetworkProxy("distPlot") %>% visCollapse(nodes = c(10,3), clusterOptions = list( shape ="square", label = "and so ?"))
      }
    })
    

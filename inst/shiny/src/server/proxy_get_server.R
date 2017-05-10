@@ -52,21 +52,21 @@ output$code_proxy_get  <- renderText({
   })
   
   observe({
-  input$getNodes
-  visNetworkProxy("network_proxy_get") %>%
-  visGetNodes()
+    input$getNodes
+    visNetworkProxy("network_proxy_get") %>%
+    visGetNodes()
   })
   
   output$edges_data_from_shiny <- renderPrint({
-  if(!is.null(input$network_proxy_get_edges)){
-  input$network_proxy_get_edges
-  }
+    if(!is.null(input$network_proxy_get_edges)){
+    input$network_proxy_get_edges
+    }
   })
   
   output$nodes_data_from_shiny <- renderPrint({
-  if(!is.null(input$network_proxy_get_nodes)){
-  input$network_proxy_get_nodes
-  }
+    if(!is.null(input$network_proxy_get_nodes)){
+    input$network_proxy_get_nodes
+    }
   })
  '
 })

@@ -15,7 +15,6 @@ shiny::tabPanel(
       sliderInput("opasel", "Opacity selection :", min = 0, max = 1, value = 0.5),
       hr(),
       checkboxInput("collapse", "Enable collapse", FALSE),
-      textInput("nodes_to_collapse","List of nodes to collapse: use format c(4,5)"),
       checkboxInput("fit_collapse", "Fit after collapse", FALSE),
       checkboxInput("reset_collapse", "Reset highlight after collapse", FALSE),
       checkboxInput("open_collapse", "Enable open cluster", FALSE)

@@ -47,24 +47,9 @@ observe({
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
-    visCollapse(nodes = input$nodes_to_collapse)
-})
-
-observe({
-  visNetworkProxy("network_proxy_options") %>%
     visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, resetHighlight = input$reset_collapse))
 })
 
-# observe({
-#   if(length(input$selectedby) > 0){
-#     visNetworkProxy("network_proxy_options") %>%
-#       visOptions(selectedBy = list(variable = "group", values = input$selectedby, selected = input$selectedby[1]))
-#   }else{
-#     visNetworkProxy("network_proxy_options") %>%
-#       visOptions(selectedBy = NULL)
-#   }
-# 
-# })
 
 output$code_proxy_options  <- renderText({
   '
