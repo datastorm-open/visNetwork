@@ -57,7 +57,7 @@
 #'  \item{"strokeWidth"}{ : Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
 #'  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
 #'  \item{"align"}{ : String. Default to 'center'. This can be set to 'left' to make the label left-aligned}
-#'  \item{"vadjust, multi, bold, ital, boldital, mono"}{○ See \link{\code{visDocumentation}}}
+#'  \item{"vadjust, multi, bold, ital, boldital, mono"}{See \link{visDocumentation}}
 #'}
 #'
 #' @param icon : Named list. These options are only used when the shape is set to 'icon'.
@@ -102,10 +102,10 @@
 #'  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 #'}
 #'  
-#' @param heightConstraint : See \link{\code{visDocumentation}}  
-#' @param widthConstraint : See \link{\code{visDocumentation}}  
-#' @param margin : See \link{\code{visDocumentation}}  
-#' @param chosen : See \link{\code{visDocumentation}}  
+#' @param heightConstraint : See \link{visDocumentation}  
+#' @param widthConstraint : See \link{visDocumentation}  
+#' @param margin : See \link{visDocumentation} 
+#' @param chosen : See \link{visDocumentation}  
 #'   
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 

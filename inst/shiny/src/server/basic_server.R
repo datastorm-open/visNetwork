@@ -32,11 +32,11 @@ output$network_icon <- renderVisNetwork({
     visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
     visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
     addFontAwesome() %>%
-    visLegend(addNodes = list(
-      list(label = "A", shape = "icon", icon = list(code = "f0c0", size = 25)),
-      list(label = "B", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
-    ),
-    addEdges = data.frame(label = "link"), useGroups = FALSE)
+    visLegend(addNodes = data.frame(label = c("A", "B"), shape = "icon", 
+                                    icon.code = c("f0c0", "f007"), 
+                                    icon.size = c(25,50), 
+                                    icon.color = c(NA, "red")),
+      addEdges = data.frame(label = "link"), useGroups = FALSE)
 })
 
 output$code_network_icon <- renderText({
@@ -48,10 +48,10 @@ output$code_network_icon <- renderText({
     visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
     visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
     addFontAwesome() %>%
-    visLegend(addNodes = list(
-      list(label = "A", shape = "icon", icon = list(code = "f0c0", size = 25)),
-      list(label = "B", shape = "icon", icon = list(code = "f007", size = 50, color = "red"))
-    ),
-    addEdges = data.frame(label = "link"), useGroups = FALSE)
+    visLegend(addNodes = data.frame(label = c("A", "B"), shape = "icon", 
+                                    icon.code = c("f0c0", "f007"), 
+                                    icon.size = c(25,50), 
+                                    icon.color = c(NA, "red")),
+            addEdges = data.frame(label = "link"), useGroups = FALSE)
  '
 })

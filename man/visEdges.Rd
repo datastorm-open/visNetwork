@@ -58,7 +58,7 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
  \item{"strokeWidth"}{ : Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
  \item{"align"}{ : String. Default to 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.}
- \item{"vadjust, multi, bold, ital, boldital, mono"}{○ See \link{\code{visDocumentation}}}
+ \item{"vadjust, multi, bold, ital, boldital, mono"}{See \link{visDocumentation}}
 }}
 
 \item{arrows}{: Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. If you want to control the size of the arrowheads, you can supply an object.
@@ -114,7 +114,7 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
   \item{"maximum"}{ : Boolean. If a number is specified, the maximum width of the edge's label is set to the value. The edge's label's lines will be broken on spaces to stay below the maximum.}
 }}
 
-\item{chosen}{: See \link{\code{visDocumentation}}}
+\item{chosen}{: See \link{visDocumentation}}
 }
 \description{
 Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.

@@ -89,7 +89,7 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"strokeWidth"}{ : Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
  \item{"align"}{ : String. Default to 'center'. This can be set to 'left' to make the label left-aligned}
- \item{"vadjust, multi, bold, ital, boldital, mono"}{○ See \link{\code{visDocumentation}}}
+ \item{"vadjust, multi, bold, ital, boldital, mono"}{See \link{visDocumentation}}
 }}
 
 \item{icon}{: Named list. These options are only used when the shape is set to 'icon'.
@@ -134,13 +134,13 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
  \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
 }}
 
-\item{heightConstraint}{: See \link{\code{visDocumentation}}}
+\item{heightConstraint}{: See \link{visDocumentation}}
 
-\item{widthConstraint}{: See \link{\code{visDocumentation}}}
+\item{widthConstraint}{: See \link{visDocumentation}}
 
-\item{margin}{: See \link{\code{visDocumentation}}}
+\item{margin}{: See \link{visDocumentation}}
 
-\item{chosen}{: See \link{\code{visDocumentation}}}
+\item{chosen}{: See \link{visDocumentation}}
 }
 \description{
 Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.
