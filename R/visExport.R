@@ -49,13 +49,15 @@ visExport <- function(graph, type = "png", name = "network",
   
   if(is.null(style)){
     css <- paste0("float:", float, 
-                  ";background: #3498db;background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
-                  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
-                  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
-                  background-image: -o-linear-gradient(top, #3498db, #2980b9);
-                  background-image: linear-gradient(to bottom, #3498db, #2980b9);
-                  -webkit-border-radius: 28;-moz-border-radius: 28;border-radius: 28px;
-                  font-family: Arial;color: #ffffff;font-size: 10px;padding: 1px 3px 1px 3px;text-decoration: none;")
+                  ";-webkit-border-radius: 10;
+                  -moz-border-radius: 10;
+                  border-radius: 10px;
+                  font-family: Arial;
+                  color: #ffffff;
+                  font-size: 12px;
+                  background: #090a0a;
+                  padding: 4px 8px 4px 4px;
+                  text-decoration: none;")
   }else{
     css <- paste0("float:", float, ";", style)
   }
