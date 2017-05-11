@@ -3301,7 +3301,7 @@ HTMLWidgets.widget({
     div_footer.id = "footer"+el.id;
     div_footer.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;');
     div_footer.style.display = 'none';
-    document.getElementById(el.id).appendChild(div_footer);  
+    document.getElementById("graph" + el.id).appendChild(div_footer);  
     if(x.footer !== null){
       div_footer.innerHTML = x.footer.text;
       div_footer.setAttribute('style',  x.footer.style);
@@ -3318,6 +3318,7 @@ HTMLWidgets.widget({
       
       var downloadbutton = document.createElement("button");
       downloadbutton.setAttribute('style', x.export.css);
+      downloadbutton.style.position = "relative";
       downloadbutton.id = "download"+el.id;
       downloadbutton.appendChild(document.createTextNode(x.export.label)); 
       downloaddiv.appendChild(downloadbutton);
