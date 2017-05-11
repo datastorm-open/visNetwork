@@ -39,13 +39,13 @@
 #'@param submain : For add a subtitle. Character or a named list.
 #'\itemize{
 #'  \item{"text"}{ : Character. Subtitle.}
-#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'  \item{"style"}{ : Optional. Character. HTML style of submain. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
 #'}
 #'
 #'@param footer : For add a footer. Character or a named list.
 #'\itemize{
 #'  \item{"text"}{ : Character. footer.}
-#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'  \item{"style"}{ : Optional. Character. HTML style of footer. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
 #'}
 #' @param ... : Don't use.
 #' 

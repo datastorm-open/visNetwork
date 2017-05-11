@@ -1798,6 +1798,88 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+    // remove edges
+  Shiny.addCustomMessageHandler('visShinySetTitle', function(data){
+    if(data.main !== null){
+      var div_title = document.getElementById("title" + data.id);
+      if(div_title !== null){
+        if(data.main.hidden === true){
+          div_title.style.display = 'none';
+        } else {
+          if(data.main.text !== undefined){
+            if(data.main.text !== null){
+              if(data.main.text.length > 0){
+                div_title.innerHTML = data.main.text;
+              } else {
+                div_title.innerHTML = "";
+              }
+            }
+          }
+          if(data.main.style !== undefined){
+            if(data.main.style !== null){
+              if(data.main.style.length > 0){
+                div_title.setAttribute('style',  data.main.style);
+              }
+            }
+          }
+          div_title.style.display = 'block';
+        } 
+      }
+    }
+    if(data.submain !== null){
+      var div_subtitle = document.getElementById("subtitle" + data.id);
+      if(div_subtitle !== null){
+        if(data.submain.hidden === true){
+          div_subtitle.style.display = 'none';
+        } else {
+          if(data.submain.text !== undefined){
+            if(data.submain.text !== null){
+              if(data.submain.text.length > 0){
+                div_subtitle.innerHTML = data.submain.text;
+              } else {
+                div_subtitle.innerHTML = "";
+              }
+            }
+          }
+          if(data.submain.style !== undefined){
+            if(data.submain.style !== null){
+              if(data.submain.style.length > 0){
+                div_subtitle.setAttribute('style',  data.submain.style);
+              }
+            }
+          }
+          div_subtitle.style.display = 'block';
+        }
+      }
+    }
+    if(data.footer !== null){
+      var div_footer = document.getElementById("footer" + data.id);
+      if(div_footer !== null){
+        if(data.footer.hidden === true){
+          div_footer.style.display = 'none';
+        } else {
+          if(data.footer.text !== undefined){
+            if(data.footer.text !== null){
+              if(data.footer.text.length > 0){
+                div_footer.innerHTML = data.footer.text;
+              } else {
+                div_footer.innerHTML = "";
+              }
+            }
+          }
+          if(data.footer.style !== undefined){
+            if(data.footer.style !== null){
+              if(data.footer.style.length > 0){
+                div_footer.setAttribute('style',  data.footer.style);
+              }
+            }
+          }
+          div_footer.style.display = 'block';
+        } 
+      }
+    }
+  });
+
 }
 
 //----------------------------------------------------------------
@@ -1888,21 +1970,29 @@ HTMLWidgets.widget({
     //*************************
     //title
     //*************************
+    var div_title = document.createElement('div');
+    div_title.id = "title"+el.id;
+    div_title.setAttribute('style','font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;');
+    div_title.style.display = 'none';
+    document.getElementById(el.id).appendChild(div_title);  
     if(x.main !== null){
-      var div_title = document.createElement('div');
       div_title.innerHTML = x.main.text;
       div_title.setAttribute('style',  x.main.style);
-      document.getElementById(el.id).appendChild(div_title);  
+      div_title.style.display = 'block';
     }
     
     //*************************
     //subtitle
     //*************************
+    var div_subtitle = document.createElement('div');
+    div_subtitle.id = "subtitle"+el.id;
+    div_subtitle.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;');
+    div_subtitle.style.display = 'none';
+    document.getElementById(el.id).appendChild(div_subtitle); 
     if(x.submain !== null){
-      var div_subtitle = document.createElement('div');
       div_subtitle.innerHTML = x.submain.text;
       div_subtitle.setAttribute('style',  x.submain.style);
-      document.getElementById(el.id).appendChild(div_subtitle);  
+      div_title.style.display = 'block';
     }
  
     //*************************
@@ -3207,11 +3297,15 @@ HTMLWidgets.widget({
     //*************************
     //footer
     //*************************
+    var div_footer = document.createElement('div');
+    div_footer.id = "footer"+el.id;
+    div_footer.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;');
+    div_footer.style.display = 'none';
+    document.getElementById(el.id).appendChild(div_footer);  
     if(x.footer !== null){
-      var div_footer = document.createElement('div');
       div_footer.innerHTML = x.footer.text;
       div_footer.setAttribute('style',  x.footer.style);
-      document.getElementById("graph"+el.id).appendChild(div_footer);  
+      div_footer.style.display = 'block'; 
     }
     
     //*************************

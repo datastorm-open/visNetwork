@@ -38,6 +38,7 @@
 #'  \item{\code{\link{visNearestNodes}}}{ : Get nearest nodes}
 #'  \item{\code{\link{visCollapse}}}{ : Collapse nodes}
 #'  \item{\code{\link{visUncollapse}}}{ : Uncollpase nodes}
+#'  \item{\code{\link{visSetTitle}}}{ : Set and update main, submain, footer}
 #'  \item{and also...}{ : \code{\link{visGetSelectedEdges}}, \code{\link{visGetSelectedNodes}}, \code{\link{visGetSelection}},
 #'     \code{\link{visGetConnectedEdges}}, \code{\link{visGetConnectedNodes}}, \code{\link{visRedraw}}, \code{\link{visStabilize}}, 
 #'     \code{\link{visSetData}}, \code{\link{visGetPositions}}, \code{\link{visMoveNode}}, \code{\link{visUnselectAll}},
