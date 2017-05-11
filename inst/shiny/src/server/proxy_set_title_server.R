@@ -7,7 +7,7 @@ datatitle <- reactive({
 })
 
 output$network_proxy_set_title <- renderVisNetwork({
-  visNetwork(datatitle()$nodes, datatitle()$edges)
+  visNetwork(datatitle()$nodes, datatitle()$edges) %>% visExport()
 })
 
 observe({

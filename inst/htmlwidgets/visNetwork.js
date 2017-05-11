@@ -3332,18 +3332,19 @@ HTMLWidgets.widget({
 
       // height control for export
       var addHeightExport = document.getElementById("graph" + el.id).offsetHeight + idList.offsetHeight + byList.offsetHeight + downloaddiv.offsetHeight;
-      if(x.main !== null){
+      if(div_title.style.display !== 'none'){
         addHeightExport = addHeightExport + div_title.offsetHeight;
       }
-      if(x.submain !== null){
+      if(div_subtitle.style.display !== 'none'){
         addHeightExport = addHeightExport + div_subtitle.offsetHeight;
       }
-      if(x.footer !== null){
+      if(div_footer.style.display !== 'none'){
         addHeightExport = addHeightExport + div_footer.offsetHeight;
       } else {
         addHeightExport = addHeightExport + 15;
       }
 
+      downloadbutton.style.display = 'none';
       if(x.export.type !== "pdf"){
         html2canvas(document.getElementById(el.id), {
           background: x.export.background,
@@ -3369,6 +3370,7 @@ HTMLWidgets.widget({
         });
       }
 
+      downloadbutton.style.display = 'block';
       };
     }
 
