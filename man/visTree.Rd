@@ -4,9 +4,9 @@
 \alias{visTree}
 \title{Plotting rpart objects}
 \usage{
-visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
-  rules = TRUE, simplifyRules = TRUE, shapeVar = "dot",
-  shapeY = "square", colorVar = NULL, colorY = NULL,
+visTree(object, main = "", submain = "", footer = "", direction = "UD",
+  fallenLeaves = FALSE, rules = TRUE, simplifyRules = TRUE,
+  shapeVar = "dot", shapeY = "square", colorVar = NULL, colorY = NULL,
   colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
   edgesFontAlign = "horizontal", legendNodesSize = 22,
   legendFontSize = 16, legend = TRUE, legendWidth = 0.1, legendNcol = 1,
@@ -20,7 +20,11 @@ visTree(object, main = "", direction = "UD", fallenLeaves = FALSE,
 \arguments{
 \item{object}{\code{rpart}, rpart object}
 
-\item{main}{\code{character}, title}
+\item{main}{For add a title see \link{visNetwork}}
+
+\item{submain}{For add a subtitle see \link{visNetwork}}
+
+\item{footer}{For add a footer see \link{visNetwork}}
 
 \item{direction}{\code{character}, The direction of the hierarchical layout.
 The available options are: UD, DU, LR, RL. To simplify:

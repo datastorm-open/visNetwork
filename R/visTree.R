@@ -3,7 +3,9 @@
 #' Function to plot rpart objects
 #' 
 #' @param object \code{rpart}, rpart object
-#' @param main \code{character}, title
+#' @param main For add a title see \link{visNetwork}
+#' @param submain For add a subtitle see \link{visNetwork}
+#' @param footer For add a footer see \link{visNetwork}
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
 #' up-down, down-up, left-right, right-left. Default UD
@@ -95,6 +97,8 @@
 #' 
 visTree <- function(object,
                     main = "",
+                    submain = "",
+                    footer = "",
                     direction = "UD",
                     fallenLeaves = FALSE,
                     rules = TRUE,
@@ -127,7 +131,6 @@ visTree <- function(object,
                     width = "100%"){
   
   stopifnot("rpart"%in%class(object))
-  stopifnot("character"%in%class(main))
   stopifnot("character"%in%class(direction))
   stopifnot(direction%in% c("UD", "LR", "RL", "DU"))
   stopifnot(length(direction) == 1)
@@ -410,7 +413,10 @@ visTree <- function(object,
   nodes <- data.frame(id = as.numeric(rowNam), label =vardecided,
                       level = level, color = colNod, value = value,
                       shape = shape, title = labelsNode, fixed = TRUE,
-                      colorClust = colNodClust, labelClust = vardecidedClust,Leaf = 0) 
+                      colorClust = colNodClust, labelClust = vardecidedClust,Leaf = 0,
+                      font.size = nodesFontSize,
+                      scaling.min = minNodeSize,
+                      scaling.max = maxNodeSize) 
   nodes$Leaf[ind_terminal] <- 1
   if(fallenLeaves){
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
@@ -422,9 +428,13 @@ visTree <- function(object,
                       label = decision,
                       value = eff,
                       title = decisionLabels,
-                      color = colorEdges)
+                      color = colorEdges,
+                      font.size = edgesFontSize,
+                      font.align = edgesFontAlign,
+                      smooth = smooth)
   
-  net <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main)%>% 
+  net <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main,
+                    submain = submain, footer = footer)%>% 
     visHierarchicalLayout(direction = direction) %>%
     visLegend(addNodes = legelDvIS, 
               useGroups = FALSE, enabled = legend,
@@ -437,10 +447,7 @@ visTree <- function(object,
                       white-space: nowrap;
                       font-family: cursive;font-size:12px;font-color:purple;background-color: #E6E6E6;
                       border-radius: 15px;') %>% 
-    visEdges(font = list(size = edgesFontSize, align = edgesFontAlign), value = 3, smooth = smooth,
-             scaling = list(label = list(enabled = FALSE))) %>%
-    visNodes(font = list(size = nodesFontSize),
-             scaling = list(min = minNodeSize, max = maxNodeSize)) %>%
+    visEdges(scaling = list(label = list(enabled = FALSE))) %>%
     visEvents(type = "once", stabilized = "function() { 
         this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});
   }")
