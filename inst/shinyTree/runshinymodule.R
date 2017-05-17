@@ -1,13 +1,48 @@
-data <- diamonds
-shinyApp(ui = fluidPage(AllAppUI("id1", FALSE)), 
+
+
+
+
+
+
+
+data <- iris
+shinyApp(ui = fluidPage(treeUi("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(treeFromrpart, "id1", data = reactive(rpart(data)))
+           callModule(treeServLigth, "id1", data = reactive(rpart(data)))
            })
 
 
 
 data <- iris
-shinyApp(ui = fluidPage(AllAppUI("id1", TRUE)), 
+shinyApp(ui = fluidPage(treeUi("id1", TRUE)), 
          server = function(input, output, session) {
-           callModule(AllApp, "id1", data = reactive(data))
+           callModule(treeServ, "id1", data = reactive(data))
          })
+
+library(ggplot2)
+data(diamonds)
+shinyApp(ui = 
+           navbarPage("Menu",tabPanel(
+             "tt1",fluidPage(treeUi("id1", TRUE))
+             ),
+                      tabPanel(
+                        "tt2",fluidPage(treeUi("id2", TRUE)))
+             ), 
+         server = function(input, output, session) {
+           callModule(treeServ, "id1", data = reactive(diamonds))
+           callModule(treeServ, "id2", data = reactive(iris))
+         })
+
+data <- diamonds
+shinyApp(ui = fluidPage(treeUi("id1", FALSE, FALSE)), 
+         server = function(input, output, session) {
+           callModule(treeServLigth, "id1", data = reactive(rpart(data)))
+         })
+
+
+data <- diamonds
+shinyApp(ui = fluidPage(treeUi("id1", FALSE, FALSE)), 
+         server = function(input, output, session) {
+           callModule(treeServ, "id1", data = reactive(data))
+         })
+

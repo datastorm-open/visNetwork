@@ -44,6 +44,7 @@
 #' @param simplifyRules \code{boolean}, simplify rules writing
 #' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
 #' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
+#' @param export \code{boolean}, add export button
 #' 
 #' @return a visNetwork object 
 #' 
@@ -120,7 +121,7 @@ visTree <- function(object,
                     minNodeSize = 15,
                     maxNodeSize = 30,
                     highlightNearest =  list(enabled = TRUE,
-                                             degree = list(from = 50000, to = 0), hover = TRUE,
+                                             degree = list(from = 50000, to = 0), hover = FALSE,
                                              algorithm = "hierarchical"),
                     collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, 
                                     clusterOptions = list(fixed = TRUE, physics = FALSE)),
@@ -128,7 +129,8 @@ visTree <- function(object,
                     tooltipDelay = 500,
                     digits = 3, 
                     height = "500px",
-                    width = "100%"){
+                    width = "100%",
+                    export = FALSE){
   
   stopifnot("rpart"%in%class(object))
   stopifnot("character"%in%class(direction))
@@ -454,6 +456,11 @@ visTree <- function(object,
   
   # rajout informations class tree
   net$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, shapeY = shapeY)
+  
+  if(export){
+    
+    net <- net%>%visExport()
+  }
   
   net
 }
