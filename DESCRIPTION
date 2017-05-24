@@ -21,10 +21,13 @@ Imports:
     jsonlite,
     magrittr,
     utils,
-    methods
+    methods,
+    grDevices
 License: MIT + file LICENSE
 Suggests:
     knitr,
-    igraph
+    igraph,
+    rpart,
+    shiny
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
