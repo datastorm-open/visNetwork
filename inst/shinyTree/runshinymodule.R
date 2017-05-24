@@ -1,20 +1,14 @@
-
-
-
-
-
-
+require(shiny)
+require(visNetwork)
 
 data <- iris
-shinyApp(ui = fluidPage(treeUi("id1", FALSE)), 
+shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(treeServLigth, "id1", data = reactive(rpart(data)))
+           callModule(treeServLigth, "id1", data = reactive(rpart(data)), legend = reactive(FALSE))
            })
 
-
-
 data <- iris
-shinyApp(ui = fluidPage(treeUi("id1", TRUE)), 
+shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
          server = function(input, output, session) {
            callModule(treeServ, "id1", data = reactive(data))
          })
@@ -23,10 +17,10 @@ library(ggplot2)
 data(diamonds)
 shinyApp(ui = 
            navbarPage("Menu",tabPanel(
-             "tt1",fluidPage(treeUi("id1", TRUE))
+             "tt1",fluidPage(visTreeModuleUI("id1", TRUE))
              ),
                       tabPanel(
-                        "tt2",fluidPage(treeUi("id2", TRUE)))
+                        "tt2",fluidPage(visTreeModuleUI("id2", TRUE)))
              ), 
          server = function(input, output, session) {
            callModule(treeServ, "id1", data = reactive(diamonds))
@@ -34,7 +28,7 @@ shinyApp(ui =
          })
 
 data <- diamonds
-shinyApp(ui = fluidPage(treeUi("id1", FALSE, FALSE)), 
+shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE, FALSE)), 
          server = function(input, output, session) {
            callModule(treeServLigth, "id1", data = reactive(rpart(data)))
          })
