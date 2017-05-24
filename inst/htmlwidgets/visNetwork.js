@@ -2462,12 +2462,14 @@ HTMLWidgets.widget({
       } else { // data in list
         tmpedges = x.edges;
       }
-      // only one element   
-      if(tmpedges.length === undefined){
-        tmpedges = new Array(tmpedges);
+      // only one element
+      if(tmpedges !== null){
+        if(tmpedges.length === undefined){
+          tmpedges = new Array(tmpedges);
+        }
+        edges.add(tmpedges);  
       }
-      edges.add(tmpedges);
-
+      
       // reset tmpnodes
       tmpnodes = null;
       

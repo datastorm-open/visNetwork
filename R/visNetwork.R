@@ -221,6 +221,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     }else{
       stop("nodes must be a data.frame or a list")
     }
+  } else {
+    nodesToDataframe <- FALSE
   }
   
   if(!is.null(edges)){
@@ -234,6 +236,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     }else{
       stop("edges must be a data.frame or a list")
     }
+  } else {
+    edgesToDataframe <- FALSE
   }
 
   # main

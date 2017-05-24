@@ -184,14 +184,6 @@ visTree <- function(object,
   # get information from rpart object
   rpartNodesNames <- row.names(object$frame)
   
-  rpartHier <- sapply(as.numeric(rpartNodesNames[2:length(rpartNodesNames)]), function(X){
-    info <- .parent(X)
-    list(info[length(info)-1], info[length(info)], length(info))
-  })
-  
-  from <- unlist(rpartHier[1,])
-  to <- unlist(rpartHier[2,])
-  level <- c(1, unlist(rpartHier[3,]))
   infoClass <- NULL
   parentsDec <- list(lapply(rpartNodesNames, function(X)(.parent(as.numeric(X)))))
   infoVar <- object$frame$var
@@ -201,38 +193,57 @@ visTree <- function(object,
   colClass <- attributes(object$terms)$dataClasses
   colClass <- colClass[names(colClass)%in%colLabels]
   
-  # ------------------------------
-  # build edge info (label + tootip)
-  edgesLabels <- character(length(to))
-  edgesTooltip <- character(length(to))
-  lapply(1:length(to), function(i){
-    cur_rule <- strsplit(infoRules[paste0("Node", to[i])], ",")[[1]]
-    sens <- substr(cur_rule, 1, 1)
-    ind_rule <- as.numeric(substr(cur_rule, 2, nchar(cur_rule)))
-    rule <- detailRules[[sens]][[ind_rule]]
-    operator <- attributes(rule)$compare
-    if(names(operator) %in% names(colClass[which(colClass %in% c("factor", "character", "ordered"))])){
-      operator <- NULL
-      edgesLabels[i] <<- paste(rule, collapse = ", ")
-    }else{
-      rule <- round(rule, digits)
-      edgesLabels[i] <<- paste(operator, paste(rule, collapse = ", "))
-    }
+  if(length(rpartNodesNames) > 1){
+    rpartHier <- sapply(as.numeric(rpartNodesNames[2:length(rpartNodesNames)]), function(X){
+      info <- .parent(X)
+      list(info[length(info)-1], info[length(info)], length(info))
+    })
     
-    edgesTooltip[i] <<- paste0('<div style="text-align:center;"><b>', names(attr(rule, "compare")),  "</b></div>", 
-                               paste0('<div style="text-align:center;">', operator, rule, "</div>", collapse = ""))
-    invisible()
-  })
-
-  edgesLabelsFull <- edgesLabels
-  formatLabels <- function(x){
-    ifelse(nchar(x)  >10, paste0(substr(x, 1, 7), "..."), x)
+    from <- unlist(rpartHier[1,])
+    to <- unlist(rpartHier[2,])
+    level <- c(1, unlist(rpartHier[3,]))
+    
+    # ------------------------------
+    # build edge info (label + tootip)
+    edgesLabels <- character(length(to))
+    edgesTooltip <- character(length(to))
+    lapply(1:length(to), function(i){
+      cur_rule <- strsplit(infoRules[paste0("Node", to[i])], ",")[[1]]
+      sens <- substr(cur_rule, 1, 1)
+      ind_rule <- as.numeric(substr(cur_rule, 2, nchar(cur_rule)))
+      rule <- detailRules[[sens]][[ind_rule]]
+      operator <- attributes(rule)$compare
+      # if(names(operator) %in% names(colClass[which(colClass %in% c("factor", "character", "ordered"))])){
+      if(operator %in% "="){
+        operator <- NULL
+        edgesLabels[i] <<- paste(rule, collapse = ", ")
+      }else{
+        rule <- round(rule, digits)
+        edgesLabels[i] <<- paste(operator, paste(rule, collapse = ", "))
+      }
+      
+      edgesTooltip[i] <<- paste0('<div style="text-align:center;"><b>', names(attr(rule, "compare")),  "</b></div>", 
+                                 paste0('<div style="text-align:center;">', operator, rule, "</div>", collapse = ""))
+      invisible()
+    })
+    
+    edgesLabelsFull <- edgesLabels
+    formatLabels <- function(x){
+      ifelse(nchar(x)  >10, paste0(substr(x, 1, 7), "..."), x)
+    }
+    edgesLabels <- sapply(edgesLabels, formatLabels)
+    
+  } else {
+    level <- 1
   }
-  edgesLabels <- sapply(edgesLabels, formatLabels)
   
   # ------------------------------
   # nodes
-  nodes_pop <- object$frame$n[match(to, rpartNodesNames)]
+  if(length(rpartNodesNames) > 1){
+    nodes_pop <- object$frame$n[match(to, rpartNodesNames)]
+  } else {
+    nodes_pop <- object$frame$n
+  }
   nodes_var <- ifelse(infoVar != "<leaf>", as.character(infoVar), "Terminal")
   shape <- ifelse(infoVar != "<leaf>", shapeVar, shapeY)
   SortLabel <-  sort(unique(nodes_var))
@@ -250,13 +261,13 @@ visTree <- function(object,
     infoClass <- attributes(object)$ylevels
     nlevelsClass <- length(infoClass)
     probaClass <- object$frame[,"yval2"]
-    effectif <- data.frame(probaClass[,2:(nlevelsClass+1)])
-    probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1)])
+    effectif <- data.frame(probaClass[,2:(nlevelsClass+1), drop = F])
+    probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1), drop = F])
     probsHtml <- probs
     for(i in 1:length(infoClass)){
       probsHtml[,i] <- paste0(infoClass[i], " : <b>",
-                          round(probsHtml[,i], digits)*100, "%</b>",
-                          " (", effectif[,i], ")")
+                              round(probsHtml[,i], digits)*100, "%</b>",
+                              " (", effectif[,i], ")")
     }
     statsNodes <- apply(probsHtml, 1, function(x){paste0(x, collapse = "<br>")})
     statsNodes <- paste('<hr>', statsNodes)
@@ -265,54 +276,56 @@ visTree <- function(object,
     varNodes <- round(object$frame$dev/(object$frame$n - 1),digits)
     varNodes[which(varNodes == Inf)] <- NA
     statsNodes <- paste0("Mean : <b>" , round(object$frame$yval,digits),
-                       "</b><br>Variance : <b>",varNodes, "</b>")
+                         "</b><br>Variance : <b>",varNodes, "</b>")
   }
   
   # ------------------------------
   # Build rules for tooltip
-  tooltipRules <- list()
-  for(i in 2:length(parentsDec[[1]])){
-    use <- parentsDec[[1]][[i]]
-    varDecisions <- nodes_var[match(as.character(use[-length(use)]), rpartNodesNames)]
-    decisionsrules <- edgesLabelsFull[match(as.character(use), rpartNodesNames)-1]
-    varDecisionBegin <- unique(varDecisions)
-    if(simplifyRules){
-      filtre <- paste0(varDecisions, substr(decisionsrules, 1 ,1))
-      tabFiltre <- table(filtre)>1
-      if(length(which(tabFiltre))>0){
-        filtres <- names(tabFiltre)[which(tabFiltre)]
-        filtreOut <- NULL
-        for(j in filtres){
-          filtreOut <- c(filtreOut, max(which(j== filtre)))
+  tooltipRules <- list(NULL)
+  if(length(parentsDec[[1]]) > 1){
+    for(i in 2:length(parentsDec[[1]])){
+      use <- parentsDec[[1]][[i]]
+      varDecisions <- nodes_var[match(as.character(use[-length(use)]), rpartNodesNames)]
+      decisionsrules <- edgesLabelsFull[match(as.character(use), rpartNodesNames)-1]
+      varDecisionBegin <- unique(varDecisions)
+      if(simplifyRules){
+        filtre <- paste0(varDecisions, substr(decisionsrules, 1 ,1))
+        tabFiltre <- table(filtre)>1
+        if(length(which(tabFiltre))>0){
+          filtres <- names(tabFiltre)[which(tabFiltre)]
+          filtreOut <- NULL
+          for(j in filtres){
+            filtreOut <- c(filtreOut, max(which(j== filtre)))
+          }
+          keeprules <- sort(c(which(!filtre%in%filtres), filtreOut))
+          varDecisions <- varDecisions[keeprules]
+          decisionsrules <- decisionsrules[keeprules]
         }
-        keeprules <- sort(c(which(!filtre%in%filtres), filtreOut))
-        varDecisions <- varDecisions[keeprules]
-        decisionsrules <- decisionsrules[keeprules]
-      }
-      
-      filtre <- varDecisions
-      varDecisionsOrder <- varDecisions
-      tabFiltre <- table(filtre)>1
-      if(length(which(tabFiltre))>0){
-        filtres <- names(tabFiltre)[which(tabFiltre)]
-        for(j in filtres){
-          rulesNumSimpl <-decisionsrules[which(varDecisions == j)] 
-          down <- which(substr(rulesNumSimpl,1,1) == ">")
-          newLib <- paste0("", substr(rulesNumSimpl[down], 4, nchar(rulesNumSimpl[down])),
-                           " <= <b>", j, "</b> < ", substr(rulesNumSimpl[-down], 3, 
-                                                           nchar(rulesNumSimpl[-down])))
-          decisionsrules <- decisionsrules[-which(varDecisions == j)]
-          varDecisions <- varDecisions[-which(varDecisions == j)]
-          varDecisionsOrder <- varDecisionsOrder[-which(varDecisionsOrder == j)]
-          varDecisionsOrder <- c(varDecisionsOrder, j)
-          varDecisions <- c(varDecisions, "")
-          decisionsrules <- c(decisionsrules, newLib)
+        
+        filtre <- varDecisions
+        varDecisionsOrder <- varDecisions
+        tabFiltre <- table(filtre)>1
+        if(length(which(tabFiltre))>0){
+          filtres <- names(tabFiltre)[which(tabFiltre)]
+          for(j in filtres){
+            rulesNumSimpl <-decisionsrules[which(varDecisions == j)] 
+            down <- which(substr(rulesNumSimpl,1,1) == ">")
+            newLib <- paste0("", substr(rulesNumSimpl[down], 4, nchar(rulesNumSimpl[down])),
+                             " <= <b>", j, "</b> < ", substr(rulesNumSimpl[-down], 3, 
+                                                             nchar(rulesNumSimpl[-down])))
+            decisionsrules <- decisionsrules[-which(varDecisions == j)]
+            varDecisions <- varDecisions[-which(varDecisions == j)]
+            varDecisionsOrder <- varDecisionsOrder[-which(varDecisionsOrder == j)]
+            varDecisionsOrder <- c(varDecisionsOrder, j)
+            varDecisions <- c(varDecisions, "")
+            decisionsrules <- c(decisionsrules, newLib)
+          }
         }
+        varDecisions <- varDecisions[match(varDecisionBegin, varDecisionsOrder )]
+        decisionsrules <- decisionsrules[match(varDecisionBegin, varDecisionsOrder )]
       }
-      varDecisions <- varDecisions[match(varDecisionBegin, varDecisionsOrder )]
-      decisionsrules <- decisionsrules[match(varDecisionBegin, varDecisionsOrder )]
+      tooltipRules[[i]] <- paste0(paste("<b>",varDecisions, "</b>", decisionsrules), collapse = "<br>")
     }
-    tooltipRules[[i]] <- paste0(paste("<b>",varDecisions, "</b>", decisionsrules), collapse = "<br>")
   }
   
   # ------------------------------
@@ -336,9 +349,12 @@ visTree <- function(object,
     vardecidedClust <- round(object$frame$yval, digits)
     
     # palette
-    meanV <- object$frame$yval-min(object$frame$yval)
-    meanV <- meanV/max(meanV)
-    
+    if(length(rpartNodesNames) > 1){
+      meanV <- object$frame$yval-min(object$frame$yval)
+      meanV <- meanV/max(meanV)
+    } else {
+      meanV <- 1
+    }
     colRamp <- .creatColorRampY(colorY)
     colorTerm <- grDevices::rgb(colRamp(meanV), maxColorValue=255)
     
@@ -411,7 +427,9 @@ visTree <- function(object,
   })
   
   legendFinal <- do.call(rbind,(lapply(c(legendX, legendY), data.frame)))
-  legendFinal$id <- 10000:(10000 + (nrow(legendFinal))-1)
+  if(!is.null(legendFinal)){
+    legendFinal$id <- 10000:(10000 + (nrow(legendFinal))-1)
+  }
   
   # ------------------------------
   # Final data for visNetwork
@@ -426,16 +444,18 @@ visTree <- function(object,
     nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
   }
   
-  smooth <- list(enabled = TRUE, type = "cubicBezier", roundness = 0.5)
-  edges <- data.frame(id = paste0("edge", 1:length(from)),from = from, to = to, label = edgesLabels, 
-                      value = nodes_pop, title = edgesTooltip, color = colorEdges,
-                      font.size = edgesFontSize, font.align = edgesFontAlign, smooth = smooth)
+  if(length(rpartNodesNames) > 1){
+    smooth <- list(enabled = TRUE, type = "cubicBezier", roundness = 0.5)
+    edges <- data.frame(id = paste0("edge", 1:length(from)),from = from, to = to, label = edgesLabels, 
+                        value = nodes_pop, title = edgesTooltip, color = colorEdges,
+                        font.size = edgesFontSize, font.align = edgesFontAlign, smooth = smooth)
+  } else {
+    edges <- NULL
+  }
   
   tree <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main,
-                    submain = submain, footer = footer) %>% 
+                     submain = submain, footer = footer) %>% 
     visHierarchicalLayout(direction = direction) %>%
-    visLegend(addNodes = legendFinal, useGroups = FALSE, enabled = legend,
-              width = legendWidth, ncol = legendNcol) %>%
     visOptions(highlightNearest =  highlightNearest, collapse = collapse) %>% 
     visInteraction(tooltipDelay = tooltipDelay,
                    dragNodes = FALSE, selectConnectedEdges = FALSE,
@@ -447,6 +467,11 @@ visTree <- function(object,
     visEvents(type = "once", stabilized = "function() { 
         this.setOptions({layout:{hierarchical:false}, physics:{solver:'barnesHut', enabled:true, stabilization : false}, nodes : {physics : false, fixed : true}});
     }")
+  
+  if(!is.null(legendFinal)){
+    tree <- visLegend(tree, addNodes = legendFinal, useGroups = FALSE, enabled = legend,
+                      width = legendWidth, ncol = legendNcol)
+  }
   
   # rajout informations class tree
   tree$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, shapeY = shapeY)
@@ -472,10 +497,10 @@ visTree <- function(object,
     c(Recall(if (x %% 2 == 0L) x / 2 else (x - 1) / 2), x)
   } else {
     x
-  } 
+  }
 }
 
-.vis_give_rules <- function (object) 
+.vis_give_rules <- function (object)
 {
   frame <- object$frame
   ruleNums <- as.numeric(row.names(frame))
@@ -497,11 +522,11 @@ visTree <- function(object,
   return(out)
 }
 
-.rpart_lists <- function (object) 
+.rpart_lists <- function (object)
 {
   ff <- object$frame
   n <- nrow(ff)
-  if (n == 1L) 
+  if (n == 1L)
     return("root")
   is.leaf <- (ff$var == "<leaf>")
   whichrow <- !is.leaf
@@ -523,16 +548,16 @@ visTree <- function(object,
     jrow <- seq_along(ncat)[ncat > 1L]
     crow <- object$splits[irow[ncat > 1L], 4L]
     cindex <- (match(vnames, names(xlevels)))[ncat > 1L]
-    lsplit[jrow] <- lapply(seq_along(jrow), function(i) xlevels[[cindex[i]]][object$csplit[crow[i], 
+    lsplit[jrow] <- lapply(seq_along(jrow), function(i) xlevels[[cindex[i]]][object$csplit[crow[i],
                                                                                            ] == 1L])
-    rsplit[jrow] <- lapply(seq_along(jrow), function(i) xlevels[[cindex[i]]][object$csplit[crow[i], 
+    rsplit[jrow] <- lapply(seq_along(jrow), function(i) xlevels[[cindex[i]]][object$csplit[crow[i],
                                                                                            ] == 3L])
   }
-  lsplit <- lapply(seq_along(lsplit), function(i) structure(lsplit[[i]], 
-                                                            compare = ifelse(ncat[i] < 2L, ifelse(ncat[i] < 0, "<", 
+  lsplit <- lapply(seq_along(lsplit), function(i) structure(lsplit[[i]],
+                                                            compare = ifelse(ncat[i] < 2L, ifelse(ncat[i] < 0, "<",
                                                                                                   ">="), "=")))
-  rsplit <- lapply(seq_along(lsplit), function(i) structure(rsplit[[i]], 
-                                                            compare = ifelse(ncat[i] < 2L, ifelse(ncat[i] < 0, ">=", 
+  rsplit <- lapply(seq_along(lsplit), function(i) structure(rsplit[[i]],
+                                                            compare = ifelse(ncat[i] < 2L, ifelse(ncat[i] < 0, ">=",
                                                                                                   "<"), "=")))
   names(lsplit) <- vnames
   names(rsplit) <- vnames
@@ -558,10 +583,12 @@ visTree <- function(object,
   }
   colRamp
 }
-
-# object =rpart(Species~., data=iris)
 # 
-# object =rpart(Petal.Length~., data=iris)
+# # object =rpart(Species~., data=iris,control = rpart.control(cp = 1))
+# object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 1))
+# object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
+# # #
+# # # object =rpart(Petal.Length~., data=iris)
 # main = ""
 # submain = ""
 # footer = ""
