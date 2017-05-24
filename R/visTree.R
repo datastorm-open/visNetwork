@@ -39,8 +39,8 @@
 #' @param digits \code{numeric}, number of digits. Default to 3
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
-#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15.
-#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30.
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
 #' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
 #' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
 #' @param export \code{boolean}, add export button. Default to TRUE
@@ -137,12 +137,8 @@ visTree <- function(object,
   stopifnot(direction %in% c("UD", "LR", "RL", "DU"))
   stopifnot(length(direction) == 1)
   stopifnot("logical" %in% class(nodesPopSize))
-  if(!is.null(minNodeSize)){
-    stopifnot("numeric" %in% class(minNodeSize) | "integer" %in% class(minNodeSize))
-  }
-  if(!is.null(maxNodeSize)){
-    stopifnot("numeric" %in% class(maxNodeSize) | "integer" %in% class(maxNodeSize))
-  }
+  stopifnot("numeric" %in% class(minNodeSize) | "integer" %in% class(minNodeSize))
+  stopifnot("numeric" %in% class(maxNodeSize) | "integer" %in% class(maxNodeSize))
   stopifnot("logical" %in% class(fallenLeaves))
   stopifnot("logical" %in% class(simplifyRules))
   stopifnot("numeric" %in% class(nodesFontSize) | "integer" %in% class(nodesFontSize))
@@ -388,22 +384,13 @@ visTree <- function(object,
   
   # ------------------------------
   # Nodes sier on population
+  value = object$frame$n
   if(nodesPopSize){
-    value = object$frame$n
-    if(is.null(minNodeSize)){
-      minNodeSize = min(object$frame$n)
-    }
-    if(is.null(maxNodeSize)){
-      maxNodeSize = max(object$frame$n)
-    }
+    minNodeSize = minNodeSize
+    maxNodeSize = maxNodeSize
   }else{
-    value = 1
-    if(is.null(minNodeSize)){
-      minNodeSize = 25
-    }
-    if(is.null(maxNodeSize)){
-      maxNodeSize = 25
-    }
+    minNodeSize = (minNodeSize + maxNodeSize) / 2
+    maxNodeSize = minNodeSize
   }
   
   # ------------------------------
@@ -436,7 +423,7 @@ visTree <- function(object,
   nodes <- data.frame(id = as.numeric(rpartNodesNames), label =nodes_var,
                       level = level, color = nodes_color, value = value,
                       shape = shape, title = finalNodesTooltip, fixed = TRUE,
-                      colorClust = colNodClust, labelClust = vardecidedClust,Leaf = 0,
+                      colorClust = colNodClust, labelClust = vardecidedClust, Leaf = 0,
                       font.size = nodesFontSize, scaling.min = minNodeSize, scaling.max = maxNodeSize)
   
   nodes$Leaf[ind_terminal] <- 1
