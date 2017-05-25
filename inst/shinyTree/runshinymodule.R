@@ -6,8 +6,8 @@ shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)),
          server = function(input, output, session) {
            callModule(treeServLigth, "id1", data = reactive(rpart(data)), legend = reactive(FALSE))
            })
-
-data <- iris
+data("solder")
+data <- solder
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
          server = function(input, output, session) {
            callModule(treeServ, "id1", data = reactive(data))

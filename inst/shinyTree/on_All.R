@@ -23,7 +23,6 @@ treeServ <- function(input, output, session, data) {
   # Get reactive rpart
   rPart <- shiny::reactive({
     input$runTree
-    input$downloadNetwork
     shiny::req(input$runTree > 0)
     shiny::isolate({
       formule <- paste(input$y, "~", paste0(input$x, collapse = "+")) %>% as.formula()
@@ -137,10 +136,14 @@ treeServLigth <- function(input, output, session, data,
   # Get rpart from reactive data
   rPart <- shiny::reactive({
     input$runTree
-    input$downloadNetwork
     data()
   })
   
+  # output$is_rpart <- shiny::reactive({
+  #   !is.null(rPart())
+  # })
+  # 
+  # outputOptions(output, "is_rpart", suspendWhenHidden = FALSE)
   
   shiny::observe({
     input$y
@@ -182,7 +185,6 @@ treeServLigth <- function(input, output, session, data,
   
   # Build tree (visTree)
   treeBuild <- shiny::reactive({
-    input$downloadNetwork
     res <- rPart()
     shiny::isolate({
       
@@ -203,6 +205,9 @@ treeServLigth <- function(input, output, session, data,
       
       legendFontSize <- input$legendFontSize
       legendFontSize <- ifelse(is.null(legendFontSize),16,legendFontSize)
+      
+      legendPosition <- input$legendPosition
+      legendPosition <- ifelse(is.null(legendPosition), "left", legendPosition)
       
       minNodeSize <- input$minNodeSize
       minNodeSize <- ifelse(is.null(minNodeSize),15,minNodeSize)
@@ -250,6 +255,7 @@ treeServLigth <- function(input, output, session, data,
               legendWidth = legendWidth,
               legendNodesSize = legendNodesSize,
               legendFontSize = legendFontSize,
+              legendPosition = legendPosition,
               legendNcol = legendNcol,
               edgesFontSize = input$edgesFontSize,
               edgesFontAlign = input$edgesFontAlign,
@@ -479,6 +485,26 @@ treeServLigth <- function(input, output, session, data,
     }
   })
   
+  # Update legend node size
+  shiny::observe({
+    m <- treeBuild()
+    if(!is.null(m$x$legend)){
+      change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, size = input$legendNodesSize)
+      visNetworkProxy(ns("tree")) %>%
+        visUpdateNodes(change_legend_nodes, legend = TRUE)
+    }
+  })
+  
+  # Update legend font size
+  shiny::observe({
+    m <- treeBuild()
+    if(!is.null(m$x$legend)){
+      change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, font.size = input$legendFontSize)
+      visNetworkProxy(ns("tree")) %>%
+        visUpdateNodes(change_legend_nodes, legend = TRUE)
+    }
+  })
+  
   # Update edges color
   shiny::observe({
     m <- treeBuild()
@@ -559,9 +585,14 @@ treeServLigth <- function(input, output, session, data,
   # Update shape Ynodes
   shiny::observe({
     m <- treeBuild()
-    ret <- data.frame(id = m$x$nodes$id, shape = ifelse(m$x$nodes$Leaf == 0, input$shapeX,input$shapeY))
+    # nodes
+    change_nodes <- data.frame(id = m$x$nodes$id, shape = ifelse(m$x$nodes$Leaf == 0, input$shapeX,input$shapeY))
     visNetworkProxy(ns("tree")) %>%
-      visUpdateNodes(ret)
+      visUpdateNodes(change_nodes)
+    # legend
+    change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, shape = ifelse(m$x$legend$nodes$Leaf == 0, input$shapeX,input$shapeY))
+    visNetworkProxy(ns("tree")) %>%
+      visUpdateNodes(change_legend_nodes, legend = TRUE)
   })
   
   # Update highlightNearest
@@ -611,7 +642,7 @@ treeServLigth <- function(input, output, session, data,
       simpRules <- ifelse(is.null(simpRules),FALSE,simpRules)
       
       legendWidth <- input$legendWidth
-      legendWidth <- ifelse(is.null(legendWidth),0.1,legendWidth)
+      legendWidth <- ifelse(is.null(legendWidth), 0.1, legendWidth)
       
       legendNcol <- input$legendNcol
       legendNcol <- ifelse(is.null(legendNcol),1,legendNcol)
@@ -622,12 +653,40 @@ treeServLigth <- function(input, output, session, data,
       legendFontSize <- input$legendFontSize
       legendFontSize <- ifelse(is.null(legendFontSize),16,legendFontSize)
       
+      legendPosition <- input$legendPosition
+      legendPosition <- ifelse(is.null(legendPosition), "left", legendPosition)
+      
       minNodeSize <- input$minNodeSize
       minNodeSize <- ifelse(is.null(minNodeSize),15,minNodeSize)
       
       maxNodeSize <- input$maxNodeSize
       maxNodeSize <- ifelse(is.null(maxNodeSize),30,maxNodeSize)
       
+      direction <- input$direction
+      direction <- ifelse(is.null(direction), "UD",direction)
+      
+      legend <- legend()
+      rules <- rules()
+      tooltipDelay <- tooltipDelay()
+      updateShape <- updateShape()
+      fallenLeaves <- fallenLeaves()
+      digits <- digits()
+      heigth <- heigth()
+      nodesPopSize <- nodesPopSize()
+      export <- export()
+      if("runTree" %in% names(input)){
+        if(input$runTree > 0){
+          legend <- input$legend
+          rules <- input$rules
+          tooltipDelay <- input$tooltipDelay
+          updateShape <- input$updateShape
+          fallenLeaves <- input$fallenLeaves
+          digits <- input$digits
+          heigth <- input$heigth
+          nodesPopSize <- input$nodesPopSize
+          export <- input$export
+        }
+      }
       
       out <- visTree(res,
                      main = getMain(),
@@ -637,29 +696,30 @@ treeServLigth <- function(input, output, session, data,
                      shapeVar = input$shapeX,
                      colorVar = colorVar,
                      colorY = colorY,
-                     rules = rules(),
+                     rules = rules,
                      simplifyRules = simpRules,
-                     legend = legend(),
+                     legend = legend,
                      legendWidth = legendWidth,
                      legendNodesSize = legendNodesSize,
                      legendFontSize = legendFontSize,
+                     legendPosition = legendPosition,
                      legendNcol = legendNcol,
                      edgesFontSize = input$edgesFontSize,
                      edgesFontAlign = input$edgesFontAlign,
                      nodesFontSize = input$nodesFontSize,
-                     nodesPopSize = nodesPopSize(),
+                     nodesPopSize = nodesPopSize,
                      minNodeSize = minNodeSize,
                      maxNodeSize = maxNodeSize,
-                     tooltipDelay = tooltipDelay(),
-                     digits = digits(),
-                     direction = direction(),
-                     fallenLeaves = fallenLeaves(),
-                     updateShape = updateShape(),
+                     tooltipDelay = tooltipDelay,
+                     digits = digits,
+                     direction = direction,
+                     fallenLeaves = fallenLeaves,
+                     updateShape = updateShape,
                      colorEdges = input$colorEdges,
-                     height = paste0(900, "px"),
-                     export = export())
+                     height = paste0(input$export_height, "px"),
+                     export = export)
       
-      out %>% visExport() %>% visSave(con)
+      out %>% visExport() %>% visSave(con, input$export_self, input$export_background)
       
     }
   )
@@ -751,10 +811,11 @@ visTreeModuleUI <- function(id, rpartParam = TRUE, generalParam = TRUE) {
                                                      shiny::selectInput(ns("x"), "X :", NULL, multiple = TRUE, selected = NULL, width = "100%")
                                        ),
                                        shiny::column(2,
-                                                     shiny::numericInput(ns("complexity"), "Complexity :", value = 0.005, step = 0.001)
+                                                     shiny::sliderInput(ns("complexity"), "Complexity :",
+                                                                        min = 0, max = 1, value = 0.005, step = 0.005)
                                        ),
                                        shiny::column(2,
-                                                     shiny::numericInput(ns("minsplit"), "Minsplit", value = 20, min = 2)
+                                                     shiny::numericInput(ns("minsplit"), "Minsplit : ", value = 20, min = 2)
                                        )
                                        
                             )
@@ -794,33 +855,24 @@ visTreeModuleUI <- function(id, rpartParam = TRUE, generalParam = TRUE) {
                           )
           )
         }else{""},
-
+        
         if(generalParam){
           shiny::tabPanel("Legend",
                           shiny::fluidRow(
                             shiny::column(2, offset = 1, 
-                                          shiny::br(),
-                                          shinyWidgets::materialSwitch(ns("legend"),"Display legend", value = TRUE, status = "info")
+                                          shiny::br(), shinyWidgets::awesomeCheckbox(ns("legend"),"Display legend", value = TRUE)
                             ),
-                            shiny::conditionalPanel(paste0("input['",ns("legend"),"'] == true"),
-                                                    shiny::column(2,
-                                                                  shiny::numericInput(ns("legendWidth"), "Width :",
-                                                                                      value = 0.1, min = 0, max = 1, step = 0.01)
-                                                    ),
-                                                    shiny::column(2,
-                                                                  shiny::numericInput(ns("legendNcol"), "Number of columns :",
-                                                                                      value = 1, min = 1, max = 50, step = 1)
-                                                    ),
-                                                    shiny::column(2,
-                                                                  shiny::numericInput(ns("legendNodesSize"), "Nodes size :",
-                                                                                      value = 22, min = 1)
-                                                    ),
-                                                    shiny::column(2,
-                                                                  shiny::numericInput(ns("legendFontSize"), "Font size :",
-                                                                                      value = 16, min = 1)
-                                                    )
-                                                    
-                                                    
+                            # shiny::conditionalPanel(paste0("input['",ns("legend"),"'] == true"),
+                            shiny::column(2,
+                                          shiny::numericInput(ns("legendWidth"), "Width :",
+                                                              value = 0.1, min = 0, max = 0.5, step = 0.05)
+                            ),
+                            shiny::column(2,
+                                          shiny::numericInput(ns("legendNcol"), "Number of columns :",
+                                                              value = 1, min = 1, max = 50, step = 1)
+                            ),
+                            shiny::column(2,
+                                          shiny::selectInput(ns("legendPosition"),"Position",choices = c("left", "right"))
                             )
                           )
           )
@@ -839,153 +891,185 @@ visTreeModuleUI <- function(id, rpartParam = TRUE, generalParam = TRUE) {
     
     # Show a plot of the generated distribution
     # shiny::uiOutput("treeUI"),
-    shiny::fluidRow(
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = "Node",status = "danger",width = 400,
-                                                 shiny::fluidRow(
-                                                   shiny::column(6,
-                                                                 shiny::selectInput(ns("shapeY"), "shape Y :", 
-                                                                                    choices = c("diamond",
-                                                                                                "dot",
-                                                                                                "star",
-                                                                                                "triangle",
-                                                                                                "triangleDown",
-                                                                                                "square",
-                                                                                                "ellipse", 
-                                                                                                "circle", 
-                                                                                                "database", 
-                                                                                                "box", 
-                                                                                                "text"),
-                                                                                    selected = "square"),
-                                                                 shiny::numericInput(ns("nodesFontSize"), "Nodes font size :",
-                                                                                     value = 16, min = 1)
-                                                   ),
-                                                   shiny::column(6,
-                                                                 shiny::selectInput(ns("shapeX"), "shape X :", 
-                                                                                    choices = c("diamond",
-                                                                                                "dot",
-                                                                                                "star",
-                                                                                                "triangle",
-                                                                                                "triangleDown",
-                                                                                                "square",
-                                                                                                "ellipse", 
-                                                                                                "circle", 
-                                                                                                "database", 
-                                                                                                "box", 
-                                                                                                "text"),
-                                                                                    selected = "dot"),
-                                                                 shiny::numericInput(ns("nodesSize"), "Nodes size :",
-                                                                                     value = 22, min = 1)),
-                                                   shiny::column(12,
-                                                                 shiny::br(),
-                                                                 shinyWidgets::materialSwitch(ns("nodesPopSize"), 
-                                                                                              "Nodes size use population", status = "info")
-                                                   ),
-                                                   shiny::column(12,             
-                                                                 shiny::conditionalPanel(paste0("input['", ns("nodesPopSize"),"'] == true"),
-                                                                                         shiny::column(6,
-                                                                                                       shiny::numericInput(ns("minNodeSize"), "Min nodes size",
-                                                                                                                           value = 15, min = 1)
-                                                                                         ),                          
-                                                                                         shiny::column(6,
-                                                                                                       shiny::numericInput(ns("maxNodeSize"), "Max nodes size",
-                                                                                                                           value = 30, min = 1))
-                                                                 )
-                                                                 
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::br(), 
-                                                                 shinyWidgets::materialSwitch(ns("usecolornodes"),"Color nodes", status = "info")
-                                                   ),
-                                                   shiny::uiOutput(ns("colornodes")),
-                                                   
-                                                   shiny::column(12, 
-                                                                 shiny::br(), 
-                                                                 shinyWidgets::materialSwitch(ns("usecolorY"),"Color Y", status = "info")
-                                                   ),
-                                                   shiny::uiOutput(ns("colorY")))
-                    )
-      ),
-      
-      shiny::column(1,
-                    shinyWidgets::dropdownButton(icon = "Edge", status = "warning", width = 300,
-                                                 shiny::fluidRow(
-                                                   shiny::column(12,
-                                                                 colourpicker::colourInput(ns("colorEdges"), "Color edges :",
-                                                                                           value = "#8181F7")
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::numericInput(ns("edgesFontSize"), "Edges font size :",
-                                                                                     value = 14, min = 1)
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::selectInput(ns("edgesFontAlign"),"Edges font align",choices = c(
-                                                                   "horizontal", "top", "middle", "bottom"))
-                                                   )
-                                                 )
-                    )
-      ),
-      
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = "Title",status = "info", width = 400,
-                                                 shiny::fluidRow(
-                                                   shiny::column(4,
-                                                                 textInput(ns("main"), "Main :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourMain"), 
-                                                                                           "Main color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("mainsize"), "Main size :",
-                                                                                     value = 20, min = 1)
-                                                   ),
-                                                   shiny::column(4,
-                                                                 textInput(ns("submain"), "Subtitle :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourSubMain"),
-                                                                                           "subtitle color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("Submainsize"), "subtitle size :",
-                                                                                     value = 12, min = 1)
-                                                   ),
-                                                   shiny::column(4,
-                                                                 textInput(ns("footer"), "Footer :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourFooterMain"),
-                                                                                           "subtitle color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("Footermainsize"), "subtitle size :",
-                                                                                     value = 12, min = 1))
-                                                 )
-                    )
-      ),
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = "Other",status = "success",width = 300,
-                                                 shiny:: fluidRow(
-                                                   shiny::column(12,
-                                                                 shinyWidgets::materialSwitch(ns("highlightNearest"),
-                                                                                              "highlight nearest", status = "info", value = TRUE),
-                                                                 shinyWidgets::materialSwitch(ns("highlightHover"),
-                                                                                              "highlight hover", status = "info", value = FALSE),  
-                                                                 shinyWidgets::materialSwitch(ns("collapse"),
-                                                                                              "Collapse", status = "info", value = TRUE),
-                                                                 shiny::selectInput(ns("direction"), "Direction :", 
-                                                                                    choices = c("up-down" = "UD", "down-up" = "DU",
-                                                                                                "left-right" = "LR", "right-left" = "RL"), 
-                                                                                    selected = "UD")
-                                                   )
-                                                 )
-                    )
-      )
-    ),
+    # shiny::conditionalPanel(condition = paste0("output['", ns("is_rpart"), "'] === true"),
+                            shiny::fluidRow(
+                              shiny::column(1, 
+                                            shinyWidgets::dropdownButton(icon = icon("share-alt"),status = "danger",width = 500, circle = T, 
+                                                                         label = "Update nodes properties", tooltip = TRUE,
+                                                                         shiny::fluidRow(
+                                                                           shiny::column(4,
+                                                                                         shiny::selectInput(ns("shapeY"), "shape Y", 
+                                                                                                            choices = c("diamond",
+                                                                                                                        "dot",
+                                                                                                                        "star",
+                                                                                                                        "triangle",
+                                                                                                                        "triangleDown",
+                                                                                                                        "square",
+                                                                                                                        "ellipse", 
+                                                                                                                        "circle", 
+                                                                                                                        "database", 
+                                                                                                                        "box", 
+                                                                                                                        "text"),
+                                                                                                            selected = "square"),
+                                                                                         
+                                                                                         shiny::selectInput(ns("shapeX"), "shape X", 
+                                                                                                            choices = c("diamond",
+                                                                                                                        "dot",
+                                                                                                                        "star",
+                                                                                                                        "triangle",
+                                                                                                                        "triangleDown",
+                                                                                                                        "square",
+                                                                                                                        "ellipse", 
+                                                                                                                        "circle", 
+                                                                                                                        "database", 
+                                                                                                                        "box", 
+                                                                                                                        "text"),
+                                                                                                            selected = "dot")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         shiny::numericInput(ns("nodesSize"), "Nodes size",
+                                                                                                             value = 22, min = 1),
+                                                                                         
+                                                                                         shiny::numericInput(ns("legendNodesSize"), "Legend size",
+                                                                                                             value = 22, min = 1)
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         shiny::numericInput(ns("nodesFontSize"), "Nodes font",
+                                                                                                             value = 16, min = 1),
+                                                                                         
+                                                                                         shiny::numericInput(ns("legendFontSize"), "Legend font",
+                                                                                                             value = 16, min = 1)
+                                                                           ),
+                                                                           shiny::column(12,
+                                                                                         shiny::br(),
+                                                                                         shinyWidgets::materialSwitch(ns("nodesPopSize"), 
+                                                                                                                      "Nodes size use population", status = "info")
+                                                                           ),
+                                                                           shiny::column(12,             
+                                                                                         shiny::conditionalPanel(paste0("input['", ns("nodesPopSize"),"'] == true"),
+                                                                                                                 shiny::column(6,
+                                                                                                                               shiny::numericInput(ns("minNodeSize"), "Min nodes size",
+                                                                                                                                                   value = 15, min = 1)
+                                                                                                                 ),                          
+                                                                                                                 shiny::column(6,
+                                                                                                                               shiny::numericInput(ns("maxNodeSize"), "Max nodes size",
+                                                                                                                                                   value = 30, min = 1))
+                                                                                         )
+                                                                                         
+                                                                           ),
+                                                                           shiny::column(12,
+                                                                                         shiny::br(), 
+                                                                                         shinyWidgets::materialSwitch(ns("usecolornodes"),"Color nodes", status = "info")
+                                                                           ),
+                                                                           shiny::uiOutput(ns("colornodes")),
+                                                                           
+                                                                           shiny::column(12, 
+                                                                                         shiny::br(), 
+                                                                                         shinyWidgets::materialSwitch(ns("usecolorY"),"Color Y", status = "info")
+                                                                           ),
+                                                                           shiny::uiOutput(ns("colorY")))
+                                            )
+                              ),
+                              
+                              shiny::column(1,
+                                            shinyWidgets::dropdownButton(icon = icon("exchange"), status = "warning", width = 300, circle = T, 
+                                                                         label = "Update edges properties", tooltip = TRUE,
+                                                                         shiny::fluidRow(
+                                                                           shiny::column(12,
+                                                                                         colourpicker::colourInput(ns("colorEdges"), "Edges color",
+                                                                                                                   value = "#8181F7")
+                                                                           ),
+                                                                           shiny::column(12,
+                                                                                         shiny::numericInput(ns("edgesFontSize"), "Edges font",
+                                                                                                             value = 14, min = 1)
+                                                                           ),
+                                                                           shiny::column(12,
+                                                                                         shiny::selectInput(ns("edgesFontAlign"),"Edges font align",choices = c(
+                                                                                           "horizontal", "top", "middle", "bottom"))
+                                                                           )
+                                                                         )
+                                            )
+                              ),
+                              
+                              shiny::column(1, 
+                                            shinyWidgets::dropdownButton(icon = icon("header"), status = "info", width = 400, circle = T, 
+                                                                         label = "Set title, subtitle and footer", tooltip = TRUE,
+                                                                         shiny::fluidRow(
+                                                                           shiny::column(4,
+                                                                                         textInput(ns("main"), "Main :", "")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         colourpicker::colourInput(ns("colourMain"), 
+                                                                                                                   "Main color :", value = "black")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         shiny::numericInput(ns("mainsize"), "Main size :",
+                                                                                                             value = 20, min = 1)
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         textInput(ns("submain"), "Subtitle :", "")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         colourpicker::colourInput(ns("colourSubMain"),
+                                                                                                                   "Subtitle color :", value = "black")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         shiny::numericInput(ns("Submainsize"), "Subtitle size :",
+                                                                                                             value = 12, min = 1)
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         textInput(ns("footer"), "Footer :", "")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         colourpicker::colourInput(ns("colourFooterMain"),
+                                                                                                                   "Footer color :", value = "black")
+                                                                           ),
+                                                                           shiny::column(4,
+                                                                                         shiny::numericInput(ns("Footermainsize"), "Footer size :",
+                                                                                                             value = 12, min = 1))
+                                                                         )
+                                            )
+                              ),
+                              shiny::column(1, 
+                                            shinyWidgets::dropdownButton(icon = icon("gear"),status = "success",width = 300,circle = T, 
+                                                                         label = "Interaction and layout", tooltip = TRUE,
+                                                                         shiny:: fluidRow(
+                                                                           shiny::column(12,
+                                                                                         shinyWidgets::materialSwitch(ns("highlightNearest"),
+                                                                                                                      "highlight nearest", status = "info", value = TRUE),
+                                                                                         shinyWidgets::materialSwitch(ns("highlightHover"),
+                                                                                                                      "highlight hover", status = "info", value = FALSE),  
+                                                                                         shinyWidgets::materialSwitch(ns("collapse"),
+                                                                                                                      "Collapse", status = "info", value = TRUE),
+                                                                                         shiny::selectInput(ns("direction"), "Direction :", 
+                                                                                                            choices = c("up-down" = "UD", "down-up" = "DU",
+                                                                                                                        "left-right" = "LR", "right-left" = "RL"), 
+                                                                                                            selected = "UD")
+                                                                           )
+                                                                         )
+                                            )
+                              ),
+                              shiny::column(1, 
+                                            shinyWidgets::dropdownButton(icon = icon("download"),status = "default", width = 300, circle = T, 
+                                                                         label = "Download the network as html", tooltip = TRUE,
+                                                                         shiny:: fluidRow(
+                                                                           shiny::column(12,
+                                                                                         shiny::sliderInput(ns("export_height"), "Height:",
+                                                                                                            min = 200, max = 1400, value = 900),
+                                                                                         shinyWidgets::materialSwitch(ns("export_self"),
+                                                                                                                      "selfcontained ?", status = "info", value = TRUE),
+                                                                                         colourpicker::colourInput(ns("export_background"),
+                                                                                                                   "Background color :", value = "white"),
+                                                                                         shiny::downloadLink(ns('downloadNetwork'), 'Download Tree as html')
+                                                                           )
+                                                                         )
+                                            )
+                              )
+                            ),
+                            
+                            shiny::uiOutput(ns("treeUI"))
+    # )
     
-    shiny::uiOutput(ns("treeUI")),
-    shiny::downloadLink(ns('downloadNetwork'), 'Download Tree')
   )
 }
 
