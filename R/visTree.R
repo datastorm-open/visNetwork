@@ -27,9 +27,10 @@
 #' }
 #' if regression tree : \code{character}, 2 colors (min and max, in hexa)
 #' @param colorEdges \code{character} color of edges, in hexa. Default to #8181F7
-#' @param legend \code{boolean}, add legend ? Default TRUE
+#' @param legend \code{boolean}, add legend ? Default TRUE. \link{visLegend}
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of columns in legend. Default 1
+#' @param legendPosition \code{character}, one of "left" (Default) or "right"
 #' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
 #' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
 #' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE
@@ -111,11 +112,12 @@ visTree <- function(object,
                     nodesFontSize = 16,
                     edgesFontSize = 14,
                     edgesFontAlign = "horizontal",
+                    legend = TRUE,
                     legendNodesSize = 22,
                     legendFontSize = 16,
-                    legend = TRUE,
                     legendWidth = 0.1,
                     legendNcol = 1,
+                    legendPosition = "left",
                     nodesPopSize = FALSE,
                     minNodeSize = 15,
                     maxNodeSize = 30,
@@ -166,6 +168,7 @@ visTree <- function(object,
   stopifnot("logical" %in% class(legend))
   stopifnot("numeric" %in% class(legendWidth) | "integer" %in% class(legendWidth))
   stopifnot("numeric" %in% class(legendNcol) | "integer" %in% class(legendNcol))
+  stopifnot("character" %in% class(legendPosition))
   stopifnot("list" %in% class(highlightNearest))
   stopifnot("list" %in% class(collapse))
   stopifnot("numeric" %in% class(tooltipDelay)| "integer" %in% class(tooltipDelay))
@@ -401,7 +404,8 @@ visTree <- function(object,
     }else{
       col <- as.character(colorVar$color[match(x, colorVar$variable)])
     }
-    list(label = x, color = col, shape = "dot", size = legendNodesSize, font = list(size = legendFontSize))
+    list(label = x, color = col, shape = shapeVar, size = legendNodesSize, 
+         Leaf = 0, font.size = legendFontSize)
   })
   
   legendY <- lapply(infoClass, function(X){
@@ -410,7 +414,8 @@ visTree <- function(object,
     }else{
       col <- as.character(colorY$color[match(X, colorY$modality)])
     }
-    list(label = X, color = col, shape = "square", size = legendNodesSize, font = list(size = legendFontSize))
+    list(label = X, color = col, shape = shapeY, size = legendNodesSize, 
+         Leaf = 1, font.size = legendFontSize)
   })
   
   legendFinal <- do.call(rbind,(lapply(c(legendX, legendY), data.frame)))
@@ -457,7 +462,7 @@ visTree <- function(object,
   
   if(!is.null(legendFinal)){
     tree <- visLegend(tree, addNodes = legendFinal, useGroups = FALSE, enabled = legend,
-                      width = legendWidth, ncol = legendNcol)
+                      width = legendWidth, ncol = legendNcol, position = legendPosition)
   }
   
   # rajout informations class tree
