@@ -4,16 +4,16 @@
 \alias{visSave}
 \title{Save a a visNetwork object to an HTML file}
 \usage{
-visSave(graph, file, selfcontained = TRUE)
+visSave(graph, file, selfcontained = TRUE, background = "white")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{file}{File to save HTML into}
+\item{file}{: File to save HTML into. See \link{saveWidget}}
 
-\item{selfcontained}{Whether to save the HTML as a single self-contained file
-(with external resources base64 encoded) or a file with external resources
-placed in an adjacent directory.}
+\item{selfcontained}{: Whether to save the HTML as a single self-contained file (with external resources base64 encoded) or a file with external resources placed in an adjacent directory.}
+
+\item{background}{: Text string giving the html background color of the widget. Defaults to white.}
 }
 \description{
 Save a a visNetwork object to an HTML file for sharing with others. The HTML can
