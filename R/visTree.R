@@ -152,14 +152,14 @@ visTree <- function(object,
     stopifnot("data.frame" %in% class(colorVar))
   }
   
-  if(object$method == "class"){
-    if(!is.null(colorY)){
+  
+  if(!is.null(colorY)){
+    if(object$method == "class"){
       stopifnot("data.frame" %in% class(colorY))
     }
-  }
-  
-  if(object$method == "anova"){
-    if(!is.null(colorY))stopifnot("character"%in%class(colorY))
+    if(object$method == "anova"){
+      stopifnot("character"%in%class(colorY))
+    }
   }
   
   if(!is.null(colorEdges)){
@@ -433,7 +433,7 @@ visTree <- function(object,
   
   nodes$Leaf[ind_terminal] <- 1
   if(fallenLeaves){
-    nodes$level[which(nodes$shape %in%"square")] <- max(nodes$level)
+    nodes$level[which(nodes$shape %in% shapeY)] <- max(nodes$level)
   }
   
   if(length(rpartNodesNames) > 1){
