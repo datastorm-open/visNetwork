@@ -2,7 +2,7 @@ visNetwork 1.0.4
 --------------------------------------------------------------------------------
 
   * add support for edges color/label using highlight/selectedBy
-  * to vis.js 4.19.1
+  * to vis.js 4.20.0
   * new proxy methods : visGetBoundingBox, visGetConnectedEdges, visGetConnectedNodes, visGetEdges, visGetNodes, visGetPositions, visGetScale, visGetSelectedEdges, visGetSelectedNodes, visGetSelection, visGetViewPosition
   * fix visOptions passing nodes as list rather data.frame
   * init visTree, to visualize rpart object

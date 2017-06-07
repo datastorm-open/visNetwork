@@ -615,3 +615,6 @@ visTree <- function(object,
 # height = "500px"
 # width = "100%"
 # export = T
+
+# r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
+# r
