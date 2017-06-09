@@ -15,12 +15,12 @@
 #' @param legendFontSize \code{numeric}, size of labels of nodes in legend. Default to 16
 #' @param legendNodesSize \code{numeric}, size of nodes in legend. Default to 22
 #' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link{visEdges}  
-#' @param colorVar \code{data.frame} To set color of variables. 2 columns :
+#' @param colorVar \code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
 #' \itemize{
 #'   \item{"variable"}{ : names of variables}
 #'   \item{"color"}{ : colors (in hexa). See examples}
 #' }
-#' @param colorY if classification tree : \code{data.frame} 2 columns :
+#' @param colorY if classification tree : \code{character} colors to use or \code{data.frame} 2 columns :
 #' \itemize{
 #'   \item{"modality"}{ : levels of Y}
 #'   \item{"color"}{ : colors (in hexa)}
@@ -79,7 +79,7 @@
 #'  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
 #'  hover = FALSE, algorithm = "hierarchical"))
 #' 
-#' # Change color
+#' # Change color with data.frame
 #' colorVar <- data.frame(variable = names(solder), 
 #'  color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
 #'  
@@ -87,6 +87,11 @@
 #'  color = c("#AA00AA", "#CDAD15", "#213478"))
 #' 
 #' visTree(res, colorEdges = "#000099", colorVar = colorVar, colorY = colorY)
+#' 
+#' # Change color with vector
+#' visTree(res, colorEdges = "#000099", 
+#'     colorVar = substring(rainbow(6), 1, 7), 
+#'     colorY = c("blue", "green", "orange"))
 #' 
 #' }
 #' 
@@ -149,16 +154,16 @@ visTree <- function(object,
   stopifnot("character" %in% class(edgesFontAlign))
   
   if(!is.null(colorVar)){
-    stopifnot("data.frame" %in% class(colorVar))
+    stopifnot(any(c("data.frame", "character") %in% class(colorVar)))
   }
-  
   
   if(!is.null(colorY)){
     if(object$method == "class"){
-      stopifnot("data.frame" %in% class(colorY))
+      stopifnot(any(c("data.frame", "character") %in% class(colorY)))
     }
     if(object$method == "anova"){
       stopifnot("character"%in%class(colorY))
+      stopifnot(length(colorY) <= 2)
     }
   }
   
@@ -169,8 +174,8 @@ visTree <- function(object,
   stopifnot("numeric" %in% class(legendWidth) | "integer" %in% class(legendWidth))
   stopifnot("numeric" %in% class(legendNcol) | "integer" %in% class(legendNcol))
   stopifnot("character" %in% class(legendPosition))
-  stopifnot("list" %in% class(highlightNearest))
-  stopifnot("list" %in% class(collapse))
+  stopifnot(any(c("logical", "list") %in% class(highlightNearest)))
+  stopifnot(any(c("logical", "list") %in% class(collapse)))
   stopifnot("numeric" %in% class(tooltipDelay)| "integer" %in% class(tooltipDelay))
   stopifnot("logical" %in% class(rules))
   stopifnot("numeric" %in% class(digits)| "integer" %in% class(digits))
@@ -243,15 +248,13 @@ visTree <- function(object,
   } else {
     nodes_pop <- object$frame$n
   }
-  nodes_var <- ifelse(infoVar != "<leaf>", as.character(infoVar), "Terminal")
+  nodes_var <- as.character(infoVar)
+  nodes_var_color <- nodes_var[nodes_var != "<leaf>"]
   shape <- ifelse(infoVar != "<leaf>", shapeVar, shapeY)
-  SortLabel <-  sort(unique(nodes_var))
-  if(is.null(colorVar)){
-    color <- .generateVarColor(nodes_var = nodes_var, SortLabel = SortLabel)
-    nodes_color <- color[match(nodes_var, SortLabel)]
-  }else{
-    nodes_color <- as.character(colorVar$color[match(nodes_var, colorVar$variable)])
-  }
+  SortLabel <-  sort(unique(nodes_var_color))
+  colorVar <- .generateVarColor(colorVar, nodes_var_color, SortLabel)
+  nodes_color <- as.character(colorVar$color[match(nodes_var, colorVar$variable)])
+  
   
   # get stats for nodes (mean / variance / proba)
   statsNodes <- NULL
@@ -329,7 +332,7 @@ visTree <- function(object,
   
   # ------------------------------
   # Terminal nodes colors
-  ind_terminal <- which(nodes_var=="Terminal")
+  ind_terminal <- which(nodes_var == "<leaf>")
   if(!is.null(attributes(object)$ylevels)){
     # Classification tree
     vardecidedClust <- infoClass[apply(probs, 1, which.max)]
@@ -338,6 +341,16 @@ visTree <- function(object,
       colNodClust <- colorTerm[match(vardecidedClust, infoClass)]
       nodes_color[ind_terminal] <- colNodClust[ind_terminal]
     }else{
+      if("data.frame" %in% class(colorY)){
+        miss_y <- setdiff(infoClass, colorY$modality)
+        if(length(miss_y) > 0){
+          miss_color <- data.frame(modality = miss_y, color = .generateYColor(miss_y))
+          colorY <- rbind.data.frame(colorY, miss_color)
+        }
+      }else if("character" %in% class(colorY)){
+        colorY <- data.frame(modality = infoClass, 
+                               color = rep(colorY, length(infoClass))[1:length(infoClass)])
+      }
       colNodClust <- as.character(colorY$color[match(vardecidedClust, colorY$modality)])
       nodes_color[ind_terminal] <- colNodClust[ind_terminal]
     }
@@ -398,9 +411,9 @@ visTree <- function(object,
   
   # ------------------------------
   # Legend
-  legendX <- lapply(SortLabel[SortLabel!="Terminal"], function(x){
+  legendX <- lapply(SortLabel[SortLabel != "<leaf>"], function(x){
     if(is.null(colorVar)){
-      col <- color[which(SortLabel== x)]
+      col <- color[which(SortLabel == x)]
     }else{
       col <- as.character(colorVar$color[match(x, colorVar$variable)])
     }
@@ -557,11 +570,26 @@ visTree <- function(object,
   return(results)
 }
 
-.generateVarColor <- function(nodes_var, SortLabel){
-  grDevices::hcl(seq(0, 250, length = length(unique(nodes_var))), l = 80)
+.generateVarColor <- function(colorVar, nodes_var, SortLabel){
+  if(is.null(colorVar)){
+    colorVar <- data.frame(variable = unique(nodes_var), color = grDevices::hcl(seq(0, 250, length = length(unique(nodes_var))), l = 80))
+  }else{
+    if("data.frame" %in% class(colorVar)){
+      miss_var <- setdiff(setdiff(SortLabel, "<leaf>"), colorVar$variable)
+      if(length(miss_var) > 0){
+        miss_color <- data.frame(variable = miss_var, color = .generateVarColor(nodes_var = miss_var))
+        colorVar <- rbind.data.frame(colorVar, miss_color)
+      }
+    }else if("character" %in% class(colorVar)){
+      colorVar <- data.frame(variable = setdiff(SortLabel, "<leaf>"), 
+                             color = rep(colorVar, length(SortLabel))[1:length(setdiff(SortLabel, "<leaf>"))])
+    }
+  }
+  colorVar
 }
 
 .generateYColor <- function(nodes_var){
+  
   grDevices::hcl(seq(250, 360, length = length(unique(nodes_var))), l = 60)
 }
 
@@ -571,7 +599,12 @@ visTree <- function(object,
   {
     colRamp <- grDevices::colorRamp(c("#E6E0F8", "#8904B1"))
   }else{
-    colRamp <- grDevices::colorRamp(c(colorY[1],colorY[2]))
+    if(length(colorY) > 1){
+      colRamp <- grDevices::colorRamp(c(colorY[1],colorY[2]))
+    } else {
+      colRamp <- grDevices::colorRamp(c(NA,colorY[1]))
+    }
+    
   }
   colRamp
 }
@@ -579,8 +612,10 @@ visTree <- function(object,
 # # object =rpart(Species~., data=iris,control = rpart.control(cp = 1))
 # object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 1))
 # object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
+
+# object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
 # # #
-# # # object =rpart(Petal.Length~., data=iris)
+# object =rpart(Petal.Length~., data=iris)
 # main = ""
 # submain = ""
 # footer = ""
@@ -592,6 +627,14 @@ visTree <- function(object,
 # shapeY = "square"
 # colorVar = NULL
 # colorY = NULL
+# 
+# colorVar <- data.frame(variable = names(solder), 
+#   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+# colorVar <- colorVar[1:2,]
+# colorY <- data.frame(modality = unique(solder$Opening), 
+#  color = c("#AA00AA", "#CDAD15", "#213478"))
+# colorY <- colorY[1, ]
+# 
 # colorEdges = "#8181F7"
 # nodesFontSize = 16
 # edgesFontSize = 14

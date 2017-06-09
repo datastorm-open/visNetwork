@@ -8,14 +8,15 @@ visTree(object, main = "", submain = "", footer = "", direction = "UD",
   fallenLeaves = FALSE, rules = TRUE, simplifyRules = TRUE,
   shapeVar = "dot", shapeY = "square", colorVar = NULL, colorY = NULL,
   colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
-  edgesFontAlign = "horizontal", legendNodesSize = 22,
-  legendFontSize = 16, legend = TRUE, legendWidth = 0.1, legendNcol = 1,
-  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
-  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
-  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
-  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
-  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
-  height = "600px", width = "100\%", export = TRUE)
+  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
+  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
+  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
+  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
+  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
+  clusterOptions = list(fixed = TRUE, physics = FALSE)), updateShape = TRUE,
+  tooltipDelay = 500, digits = 3, height = "600px", width = "100\%",
+  export = TRUE)
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
@@ -40,13 +41,13 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 
 \item{shapeY}{\code{character}, shape for terminal nodes See \link{visNodes}}
 
-\item{colorVar}{\code{data.frame} To set color of variables. 2 columns :
+\item{colorVar}{\code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
 \itemize{
   \item{"variable"}{ : names of variables}
   \item{"color"}{ : colors (in hexa). See examples}
 }}
 
-\item{colorY}{if classification tree : \code{data.frame} 2 columns :
+\item{colorY}{if classification tree : \code{character} colors to use or \code{data.frame} 2 columns :
 \itemize{
   \item{"modality"}{ : levels of Y}
   \item{"color"}{ : colors (in hexa)}
@@ -61,15 +62,17 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 
 \item{edgesFontAlign}{\code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link{visEdges}}
 
+\item{legend}{\code{boolean}, add legend ? Default TRUE. \link{visLegend}}
+
 \item{legendNodesSize}{\code{numeric}, size of nodes in legend. Default to 22}
 
 \item{legendFontSize}{\code{numeric}, size of labels of nodes in legend. Default to 16}
 
-\item{legend}{\code{boolean}, add legend ? Default TRUE}
-
 \item{legendWidth}{\code{numeric}, legend width, between 0 and 1. Default 0.1}
 
 \item{legendNcol}{\code{numeric}, number of columns in legend. Default 1}
+
+\item{legendPosition}{\code{character}, one of "left" (Default) or "right"}
 
 \item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to FALSE}
 
@@ -130,7 +133,7 @@ visTree(res, rules = FALSE, tooltipDelay = 0,
  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
  hover = FALSE, algorithm = "hierarchical"))
 
-# Change color
+# Change color with data.frame
 colorVar <- data.frame(variable = names(solder), 
  color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
  
@@ -138,6 +141,11 @@ colorY <- data.frame(modality = unique(solder$Opening),
  color = c("#AA00AA", "#CDAD15", "#213478"))
 
 visTree(res, colorEdges = "#000099", colorVar = colorVar, colorY = colorY)
+
+# Change color with vector
+visTree(res, colorEdges = "#000099", 
+    colorVar = substring(rainbow(6), 1, 7), 
+    colorY = c("blue", "green", "orange"))
 
 }
 
