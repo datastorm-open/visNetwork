@@ -804,57 +804,56 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   })
   
   # Give names of variables
-  varNodes <- shiny::reactive({
+  infoRpartNodes <- shiny::reactive({
     res <- rPart()
-    var <- as.character(res$frame$var)
-    var <- var[var != "<leaf>"]
-    var
+    nodes_var <- as.character(res$frame$var)
+    nodes_var_x <- nodes_var[nodes_var != "<leaf>"]
+    sortLabels <- unique(nodes_var_x)
+    
+    if(!is.null(attributes(object)$ylevels)){
+      infoClass <- attributes(object)$ylevels
+      probaClass <- object$frame[,"yval2"]
+      effectif <- data.frame(probaClass[,2:(nlevelsClass+1), drop = F])
+      probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1), drop = F])
+    } else {
+      infoClass <- NULL
+      probs <- NULL
+    }
+    
+    list(nodes_var = nodes_var, nodes_var_x = nodes_var_x, sortLabels = sortLabels, 
+         infoClass = infoClass, probs = probs)
   })
   
-  sortLabels <- shiny::reactive({
-    sort(unique(varNodes()))
-  })
-  
-  # data.frame with varialbes colors
+  # data.frame with variables colors
   colorVarData <- shiny::reactive({
+    print("colorVarData")
     visNetwork:::.generateVarColor(colorVar = get_colorVar(),
-                                   nodes_var = varNodes(), SortLabel = sortLabels())
+                                   nodes_var = infoRpartNodes()$nodes_var_x, SortLabel = infoRpartNodes()$sortLabels)
   })
   
   # Get color
   updateColorVar <- shiny::reactive({
     newColorVar <- colorVarData()
-    dest <- gsub(" ", "", paste0(sortLabels(), "var"))
+    dest <- gsub(" ", "", paste0(infoRpartNodes()$sortLabels, "var"))
     if(!is.null(isolate(input[[dest[1]]]))){
       colorVect <- sapply(dest, function(X)input[[X]])
       newColorVar$color <- colorVect
     }
+    print("newColorVar")
+    print(newColorVar)
     newColorVar
   })
   
   # Color for Y
-  up_colorY <- shiny::reactive({
-    clas <- attributes(rPart())$ylevels
-    if(!is.null(clas)){
-      nbClas <- length(clas)
-      VAL <- rPart()$frame[,"yval2"]
-      effectif <- VAL[, 2:(nbClas+1)]
-      effectif <- data.frame(effectif)
-      probs <- VAL[, (nbClas+2):(ncol(VAL)-1)]
-      probs <- data.frame(probs)
-      probs2 <- data.frame(probs)
-      vardecidedClust <- clas[apply(probs2, 1, which.max)]
-      colorTerm <- visNetwork:::.generateYColor(clas)
-      data.frame(modality = clas, color = colorTerm)
-    }else{
-      c("#E6E0F8", "#8904B1")
-    }
+  # data.frame with variables colors
+  colorYData <- shiny::reactive({
+    visNetwork:::.generateYColor(object = isolate(rPart()), colorY = get_colorY(),
+                                 nodes_var = infoRpartNodes()$nodes_var_x, 
+                                 infoClass = infoRpartNodes()$infoClass, probs = infoRpartNodes()$probs)
   })
-  
-  
-  
+
   updateColorY <- shiny::reactive({
-    colorY <- up_colorY()
+    colorY <- colorYData()$colorY
     clas <- attributes(rPart())$ylevels
     if(!is.null(clas)){
       dest <- paste0(gsub(" ", "", paste0(colorY$modality, "Y")))
@@ -913,7 +912,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   # Update color VarNodes
   shiny::observe({
     print("varNodes update")
-    m <- isolate(treeBuild())
+    m <- treeBuild() 
     oldId <- m$x$nodes$id
     colorIn <- m$x$nodes$color
     
@@ -949,7 +948,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     clas <- attributes(isolate(rPart()))$ylevels
     
     if(!is.null(input$minY) & is.null(clas)){
-      coloramp <- visNetwork:::.creatColorRampY(c(isolate(input$minY), isolate(input$maxY)))
+      coloramp <- visNetwork:::.creatColorRampY(c(input$minY, input$maxY))
       if(nrow(m$x$nodes) > 1){
         meanV <- (m$x$nodes$labelClust-min(m$x$nodes$labelClust))/(max(m$x$nodes$labelClust-min(m$x$nodes$labelClust)))
       } else {
@@ -964,7 +963,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(endf)
     }
-    if(!is.null(input[[gsub(" ", "", paste0(m$x$nodes[1,]$label,"var"))]])){
+    # if(!is.null(input[[gsub(" ", "", paste0(m$x$nodes[1,]$label, "Y"))]])){
       oldId <- m$x$nodes$id
       legId <- m$x$legend$nodes$id
       colorIn <- m$x$nodes$color
@@ -994,7 +993,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
         id = legId[outColorLeg != "NoChange" & ifelse(outColorLeg == colorInLeg, FALSE, TRUE)],
         color = outColorLeg[outColorLeg != "NoChange" & ifelse(outColorLeg == colorInLeg, FALSE, TRUE)]
       )
-    }
+    # }
     
     if(exists("newColor") & exists("newColorGraph")){
       Gcol <- rbind(newColorGraph, newColor)

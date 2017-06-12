@@ -335,52 +335,27 @@ visTree <- function(object,
   ind_terminal <- which(nodes_var == "<leaf>")
   if(!is.null(attributes(object)$ylevels)){
     # Classification tree
-    vardecidedClust <- infoClass[apply(probs, 1, which.max)]
-    if(is.null(colorY)){
-      colorTerm <- .generateYColor(infoClass)
-      colNodClust <- colorTerm[match(vardecidedClust, infoClass)]
-      nodes_color[ind_terminal] <- colNodClust[ind_terminal]
-    }else{
-      if("data.frame" %in% class(colorY)){
-        miss_y <- setdiff(infoClass, colorY$modality)
-        if(length(miss_y) > 0){
-          miss_color <- data.frame(modality = miss_y, color = .generateYColor(miss_y))
-          colorY <- rbind.data.frame(colorY, miss_color)
-        }
-      }else if("character" %in% class(colorY)){
-        colorY <- data.frame(modality = infoClass, 
-                               color = rep(colorY, length(infoClass))[1:length(infoClass)])
-      }
-      colNodClust <- as.character(colorY$color[match(vardecidedClust, colorY$modality)])
-      nodes_color[ind_terminal] <- colNodClust[ind_terminal]
-    }
-    nodes_var[ind_terminal] <- vardecidedClust[ind_terminal]
+    listColorY <- .generateYColor(object, colorY, nodes_var, digits = digits, infoClass = infoClass, probs = probs)
+
+    colNodClust <- as.character(listColorY$colorY$color[match(listColorY$vardecidedClust, listColorY$colorY$modality)])
+    nodes_color[ind_terminal] <- colNodClust[ind_terminal]
+    nodes_var[ind_terminal] <- listColorY$vardecidedClust[ind_terminal]
     
   }else{
-    # Regression tree
-    vardecidedClust <- round(object$frame$yval, digits)
-    
-    # palette
-    if(length(rpartNodesNames) > 1){
-      meanV <- object$frame$yval-min(object$frame$yval)
-      meanV <- meanV/max(meanV)
-    } else {
-      meanV <- 1
-    }
-    colRamp <- .creatColorRampY(colorY)
-    colorTerm <- grDevices::rgb(colRamp(meanV), maxColorValue=255)
+    # regression tree
+    listColorY <- .generateYColor(object, colorY, nodes_var, digits = digits)
     
     # for legend color
-    colorMin <-  grDevices::rgb(colRamp(0), maxColorValue=255)
-    colorMax <-   grDevices::rgb(colRamp(1), maxColorValue=255)
+    colorMin <-  grDevices::rgb(listColorY$colRamp(0), maxColorValue=255)
+    colorMax <-   grDevices::rgb(listColorY$colRamp(1), maxColorValue=255)
     
     # terminal nodes
-    nodes_color[ind_terminal] <- colorTerm[ind_terminal]
+    nodes_color[ind_terminal] <- listColorY$colorTerm[ind_terminal]
     classTerminal <- round(object$frame$yval, digits)
-    nodes_var[ind_terminal] <- vardecidedClust[ind_terminal]
+    nodes_var[ind_terminal] <- listColorY$vardecidedClust[ind_terminal]
     
     # cluster
-    colNodClust <- colorTerm
+    colNodClust <- listColorY$colorTerm
   }
   
   if(rules) {
@@ -399,7 +374,7 @@ visTree <- function(object,
     ifelse(!unlist(lapply(tooltipRules, is.null)), finalHtmlRules, ""), '</div>')
   
   # ------------------------------
-  # Nodes sier on population
+  # Nodes size on population
   value = object$frame$n
   if(nodesPopSize){
     minNodeSize = minNodeSize
@@ -422,11 +397,11 @@ visTree <- function(object,
   })
   
   legendY <- lapply(infoClass, function(X){
-    if(is.null(colorY)){
-      col <- colorTerm[which(infoClass== X)]
-    }else{
-      col <- as.character(colorY$color[match(X, colorY$modality)])
-    }
+    # if(is.null(colorY)){
+    #   col <- colorTerm[which(infoClass== X)]
+    # }else{
+      col <- as.character(listColorY$colorY$color[match(X, listColorY$colorY$modality)])
+    # }
     list(label = X, color = col, shape = shapeY, size = legendNodesSize, 
          Leaf = 1, font.size = legendFontSize)
   })
@@ -441,7 +416,7 @@ visTree <- function(object,
   nodes <- data.frame(id = as.numeric(rpartNodesNames), label =nodes_var,
                       level = level, color = nodes_color, value = value,
                       shape = shape, title = finalNodesTooltip, fixed = TRUE,
-                      colorClust = colNodClust, labelClust = vardecidedClust, Leaf = 0,
+                      colorClust = colNodClust, labelClust = listColorY$vardecidedClust, Leaf = 0,
                       font.size = nodesFontSize, scaling.min = minNodeSize, scaling.max = maxNodeSize)
   
   nodes$Leaf[ind_terminal] <- 1
@@ -588,9 +563,60 @@ visTree <- function(object,
   colorVar
 }
 
-.generateYColor <- function(nodes_var){
+.generateYColor <- function(object, colorY, nodes_var, digits = 3, infoClass = NULL, probs = NULL){
   
-  grDevices::hcl(seq(250, 360, length = length(unique(nodes_var))), l = 60)
+  if(!is.null(attributes(object)$ylevels)){
+    if(is.null(infoClass)){
+      infoClass <- attributes(object)$ylevels
+    }
+    if(is.null(probs)){
+      probaClass <- object$frame[,"yval2"]
+      effectif <- data.frame(probaClass[,2:(nlevelsClass+1), drop = F])
+      probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1), drop = F])
+    }
+    
+    # Classification tree
+    vardecidedClust <- infoClass[apply(probs, 1, which.max)]
+    if(is.null(colorY)){
+      colorY <- data.frame(modality = unique(infoClass),
+                              color = grDevices::hcl(seq(250, 360, length = length(unique(infoClass))), l = 60))
+    }else{
+      if("data.frame" %in% class(colorY)){
+        miss_y <- setdiff(infoClass, colorY$modality)
+        if(length(miss_y) > 0){
+          miss_color <- data.frame(modality = miss_y, 
+                                   color = grDevices::hcl(seq(250, 360, length = length(unique(miss_y))), l = 60))
+          colorY <- rbind.data.frame(colorY, miss_color)
+        }
+      }else if("character" %in% class(colorY)){
+        colorY <- data.frame(modality = infoClass, 
+                             color = rep(colorY, length(infoClass))[1:length(infoClass)])
+      }
+    }
+    list(colorY = colorY, vardecidedClust = vardecidedClust)
+  } else {
+    # Regression tree
+    vardecidedClust <- round(object$frame$yval, digits)
+    
+    # palette
+    if(length(row.names(object$frame)) > 1){
+      meanV <- object$frame$yval-min(object$frame$yval)
+      meanV <- meanV/max(meanV)
+    } else {
+      meanV <- 1
+    }
+    colRamp <- .creatColorRampY(colorY)
+    colorTerm <- grDevices::rgb(colRamp(meanV), maxColorValue=255)
+    
+    if(is.null(colorY)){
+      colorY <- c("#E6E0F8", "#8904B1")
+    } else if(length(colorY) > 1){
+      colorY <- c(colorY[1],colorY[2])
+    } else {
+      colorY <- c(NA,colorY[1])
+    }
+    list(colRamp = colRamp, colorTerm = colorTerm, colorY = colorY, vardecidedClust = vardecidedClust)
+  }
 }
 
 .creatColorRampY <- function(colorY)
@@ -604,13 +630,12 @@ visTree <- function(object,
     } else {
       colRamp <- grDevices::colorRamp(c(NA,colorY[1]))
     }
-    
   }
   colRamp
 }
 # 
-# # object =rpart(Species~., data=iris,control = rpart.control(cp = 1))
-# object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 1))
+# # object =rpart(Species~., data=iris,control = rpart.control(cp = 0.02))
+# object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 0.02))
 # object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
 
 # object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
@@ -628,12 +653,12 @@ visTree <- function(object,
 # colorVar = NULL
 # colorY = NULL
 # 
-# colorVar <- data.frame(variable = names(solder), 
-#   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
-# colorVar <- colorVar[1:2,]
-# colorY <- data.frame(modality = unique(solder$Opening), 
-#  color = c("#AA00AA", "#CDAD15", "#213478"))
-# colorY <- colorY[1, ]
+# # colorVar <- data.frame(variable = names(solder),
+# #   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+# # colorVar <- colorVar[1:2,]
+# # colorY <- data.frame(modality = unique(solder$Opening),
+# #  color = c("#AA00AA", "#CDAD15", "#213478"))
+# colorY <- c("red", "green")
 # 
 # colorEdges = "#8181F7"
 # nodesFontSize = 16
@@ -658,6 +683,6 @@ visTree <- function(object,
 # height = "500px"
 # width = "100%"
 # export = T
-
-# r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
-# r
+# 
+# # # r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
+# # # r
