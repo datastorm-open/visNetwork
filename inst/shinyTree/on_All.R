@@ -482,7 +482,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     shapeVar <- get_shapeVar()
     isolate({
       if("shapeX" %in% names(input)){
-        shiny::updateSelectInput(session, "shapeX", "Position", choices = c("diamond",
+        shiny::updateSelectInput(session, "shapeX", "shape X", choices = c("diamond",
                                                                             "dot",
                                                                             "star",
                                                                             "triangle",
