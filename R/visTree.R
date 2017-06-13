@@ -291,8 +291,10 @@ visTree <- function(object,
       decisionsrules <- edgesLabelsFull[match(as.character(use), rpartNodesNames)-1]
       varDecisionBegin <- unique(varDecisions)
       if(simplifyRules){
-        filtre <- paste0(varDecisions, substr(decisionsrules, 1 ,1))
-        tabFiltre <- table(filtre)>1
+        filtre <- ifelse(colClass[varDecisions]%in% c("character", "factor"), 
+                         varDecisions,
+                         paste0(varDecisions, substr(decisionsrules, 1 ,1)))
+        tabFiltre <- table(filtre) > 1
         if(length(which(tabFiltre))>0){
           filtres <- names(tabFiltre)[which(tabFiltre)]
           filtreOut <- NULL
@@ -310,7 +312,7 @@ visTree <- function(object,
         if(length(which(tabFiltre))>0){
           filtres <- names(tabFiltre)[which(tabFiltre)]
           for(j in filtres){
-            rulesNumSimpl <-decisionsrules[which(varDecisions == j)] 
+            rulesNumSimpl <- decisionsrules[which(varDecisions == j)] 
             down <- which(substr(rulesNumSimpl,1,1) == ">")
             newLib <- paste0("", substr(rulesNumSimpl[down], 4, nchar(rulesNumSimpl[down])),
                              " <= <b>", j, "</b> < ", substr(rulesNumSimpl[-down], 3, 
@@ -639,9 +641,10 @@ visTree <- function(object,
 # object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 0.02))
 # object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
 
-# object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
-# # # #
-# # object =rpart(Petal.Length~., data=iris)
+# object <- rpart(Solder~., data = solder, control = rpart.control(cp = 0.005))
+# # object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
+# # # # #
+# # # object =rpart(Petal.Length~., data=iris)
 # main = ""
 # submain = ""
 # footer = ""
@@ -653,14 +656,14 @@ visTree <- function(object,
 # shapeY = "square"
 # colorVar = NULL
 # colorY = NULL
-# 
-# colorVar <- data.frame(variable = names(solder),
-#   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
-# colorVar <- colorVar[1:2,]
-# # colorY <- data.frame(modality = unique(solder$Opening),
-# #  color = c("#AA00AA", "#CDAD15", "#213478"))
-# # colorY <- c("red", "green")
-# 
+# # 
+# # colorVar <- data.frame(variable = names(solder),
+# #   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+# # colorVar <- colorVar[1:2,]
+# # # colorY <- data.frame(modality = unique(solder$Opening),
+# # #  color = c("#AA00AA", "#CDAD15", "#213478"))
+# # # colorY <- c("red", "green")
+# # 
 # colorEdges = "#8181F7"
 # nodesFontSize = 16
 # edgesFontSize = 14
@@ -684,6 +687,6 @@ visTree <- function(object,
 # height = "500px"
 # width = "100%"
 # export = T
-# 
+# # 
 # # # # r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
 # # # # r
