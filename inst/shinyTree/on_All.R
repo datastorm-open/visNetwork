@@ -810,9 +810,10 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     nodes_var_x <- nodes_var[nodes_var != "<leaf>"]
     sortLabels <- unique(nodes_var_x)
     
-    if(!is.null(attributes(object)$ylevels)){
-      infoClass <- attributes(object)$ylevels
-      probaClass <- object$frame[,"yval2"]
+    if(!is.null(attributes(res)$ylevels)){
+      infoClass <- attributes(res)$ylevels
+      nlevelsClass <- length(infoClass)
+      probaClass <- res$frame[,"yval2"]
       effectif <- data.frame(probaClass[,2:(nlevelsClass+1), drop = F])
       probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1), drop = F])
     } else {
@@ -839,8 +840,6 @@ visTreeModuleServerRpart <- function(input, output, session, data,
       colorVect <- sapply(dest, function(X)input[[X]])
       newColorVar$color <- colorVect
     }
-    print("newColorVar")
-    print(newColorVar)
     newColorVar
   })
   
@@ -1305,7 +1304,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
                      height = paste0(input$export_height, "px"),
                      export = export)
       
-      out %>% visExport() %>% visSave(con, input$export_self, input$export_background)
+      out %>% visExport() %>% visSave(con, TRUE, input$export_background)
       
     }
   )
@@ -1629,8 +1628,8 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE) {
                                                    shiny::column(12,
                                                                  shiny::sliderInput(ns("export_height"), "Height:",
                                                                                     min = 200, max = 1400, value = 900),
-                                                                 shinyWidgets::materialSwitch(ns("export_self"),
-                                                                                              "selfcontained ?", status = "info", value = TRUE),
+                                                                 # shinyWidgets::materialSwitch(ns("export_self"),
+                                                                 #                              "selfcontained ?", status = "info", value = TRUE),
                                                                  colourpicker::colourInput(ns("export_background"),
                                                                                            "Background color :", value = "white"),
                                                                  shiny::downloadLink(ns('downloadNetwork'), 'Download Tree as html')

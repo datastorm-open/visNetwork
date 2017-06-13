@@ -552,7 +552,8 @@ visTree <- function(object,
     if("data.frame" %in% class(colorVar)){
       miss_var <- setdiff(setdiff(SortLabel, "<leaf>"), colorVar$variable)
       if(length(miss_var) > 0){
-        miss_color <- data.frame(variable = miss_var, color = .generateVarColor(nodes_var = miss_var))
+        miss_color <- data.frame(variable = miss_var, 
+                                 color = grDevices::hcl(seq(0, 250, length = length(unique(miss_var))), l = 80))
         colorVar <- rbind.data.frame(colorVar, miss_color)
       }
     }else if("character" %in% class(colorVar)){
@@ -639,8 +640,8 @@ visTree <- function(object,
 # object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
 
 # object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
-# # #
-# object =rpart(Petal.Length~., data=iris)
+# # # #
+# # object =rpart(Petal.Length~., data=iris)
 # main = ""
 # submain = ""
 # footer = ""
@@ -653,12 +654,12 @@ visTree <- function(object,
 # colorVar = NULL
 # colorY = NULL
 # 
-# # colorVar <- data.frame(variable = names(solder),
-# #   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
-# # colorVar <- colorVar[1:2,]
+# colorVar <- data.frame(variable = names(solder),
+#   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
+# colorVar <- colorVar[1:2,]
 # # colorY <- data.frame(modality = unique(solder$Opening),
 # #  color = c("#AA00AA", "#CDAD15", "#213478"))
-# colorY <- c("red", "green")
+# # colorY <- c("red", "green")
 # 
 # colorEdges = "#8181F7"
 # nodesFontSize = 16
@@ -684,5 +685,5 @@ visTree <- function(object,
 # width = "100%"
 # export = T
 # 
-# # # r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
-# # # r
+# # # # r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
+# # # # r

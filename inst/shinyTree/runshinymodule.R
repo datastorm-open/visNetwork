@@ -17,7 +17,8 @@ shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)),
 data <- iris
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(visTreeModuleServerRpart, "id1", data = reactive(rpart(data)), legend = reactive(TRUE), colorY = c("orange", "red"),
+           callModule(visTreeModuleServerRpart, "id1", data = reactive(rpart(data)), legend = reactive(TRUE), 
+                      colorY = c("orange", "red"),
                       updateShape = FALSE, rules = reactive(FALSE),
                       export = FALSE, digits = 0, height = 700, tooltipDelay = 100, 
                       legendPosition = "right", legendNcol = 2, legendWidth = 0.2,
@@ -27,7 +28,7 @@ shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)),
            })
 
 data("solder")
-data <- iris
+data <- solder
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
          server = function(input, output, session) {
            callModule(visTreeModuleServerData, "id1", data = reactive(data))
