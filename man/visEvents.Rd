@@ -110,7 +110,21 @@ visNetwork(nodes, edges) \%>\%
   visEvents(type = "once", startStabilizing = "function() {
             this.moveTo({scale:0.1})}") \%>\%
   visPhysics(stabilization = FALSE)
-  
+
+# shift+click, .....
+visNetwork(nodes, edges) \%>\%
+    visEvents(click = "function(e) {
+            if(e.event.srcEvent.shiftKey){
+              alert('shift+click event')
+            } else if(e.event.srcEvent.ctrlKey){
+              alert('ctrl+click event')
+            }else if(e.event.srcEvent.altKey){
+              alert('alt+click event')
+            } else {
+              alert('click event')
+            }
+          }")
+          
 }
 \references{
 See online documentation \url{http://datastorm-open.github.io/visNetwork/}

@@ -63,7 +63,21 @@
 #'   visEvents(type = "once", startStabilizing = "function() {
 #'             this.moveTo({scale:0.1})}") %>%
 #'   visPhysics(stabilization = FALSE)
-#'   
+#' 
+#' # shift+click, .....
+#' visNetwork(nodes, edges) %>%
+#'     visEvents(click = "function(e) {
+#'             if(e.event.srcEvent.shiftKey){
+#'               alert('shift+click event')
+#'             } else if(e.event.srcEvent.ctrlKey){
+#'               alert('ctrl+click event')
+#'             }else if(e.event.srcEvent.altKey){
+#'               alert('alt+click event')
+#'             } else {
+#'               alert('click event')
+#'             }
+#'           }")
+#'           
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
