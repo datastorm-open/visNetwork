@@ -24,7 +24,13 @@ shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)),
                       legendPosition = "right", legendNcol = 2, legendWidth = 0.2,
                       maxNodeSize = 50, shapeY = "diamond", direction = "DU",
                       colorEdges = "black", edgesFontAlign = "middle", edgesFontSize = 20,
-                      collapse = FALSE, highlightNearest = FALSE, colorVar = c("red", "blue"))
+                      collapse = FALSE, highlightNearest = FALSE, colorVar = c("red", "blue"), 
+                      main = list(text = "visNetwork minimal example",
+                                         style = "font-family:Comic Sans MS;color:#ff0000;font-size:15px;text-align:center;"),
+                      footer  = list(text = "visNetwork minimal example",
+                                           style = "font-family:Comic Sans MS;color:#ff0000;font-size:5px;text-align:center;"), 
+                      submain = list(text = "visNetwork minimal example",
+                                  style = "font-family:Comic Sans MS;color:#ff0000;font-size:5px;text-align:center;"))
            })
 
 data("solder")

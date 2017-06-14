@@ -583,7 +583,6 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   observe({
     highlightNearest <- get_highlightNearest()
     isolate({
-      # print(highlightNearest)
       nearest <- TRUE
       hover <- FALSE
       
@@ -625,6 +624,92 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     })
   })
   
+  # update main
+  observe({
+    main <- get_main()
+    isolate({
+      if(any(c("character", "factor") %in% class(main))){
+        shiny::updateTextInput(session, "main", value = main)
+      } else {
+        if(is.list(main)){
+          if(!is.null(main$text)){
+            shiny::updateTextInput(session, "main", value = main$text)
+          }f
+          
+          if(!is.null(main$style)){
+            find_size <- gregexpr("(font-size:)[[:digit:]]*", main$style)
+            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(main$style, find_size))))[1]
+            if(!is.na(size)){
+              shiny::updateNumericInput(session, "mainsize", value = size)
+            }
+            find_color <- gregexpr("(color:#)[[:alnum:]]*", main$style)
+            color <- gsub("color:", "", unlist(regmatches(main$style, find_color)))[1]
+            if(!is.na(color)){
+              colourpicker::updateColourInput(session, "colourMain", value = color)
+            }
+          }
+        }
+      }
+    })
+  })
+  
+  # update submain
+  observe({
+    submain <- get_submain()
+    isolate({
+      if(any(c("character", "factor") %in% class(submain))){
+        shiny::updateTextInput(session, "submain", value = submain)
+      } else {
+        if(is.list(submain)){
+          if(!is.null(submain$text)){
+            shiny::updateTextInput(session, "submain", value = submain$text)
+          }
+          
+          if(!is.null(submain$style)){
+            find_size <- gregexpr("(font-size:)[[:digit:]]*", submain$style)
+            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(submain$style, find_size))))[1]
+            if(!is.na(size)){
+              shiny::updateNumericInput(session, "Submainsize", value = size)
+            }
+            find_color <- gregexpr("(color:#)[[:alnum:]]*", submain$style)
+            color <- gsub("color:", "", unlist(regmatches(submain$style, find_color)))[1]
+            if(!is.na(color)){
+              colourpicker::updateColourInput(session, "colourSubMain", value = color)
+            }
+          }
+        }
+      }
+    })
+  })
+  
+  # update footer
+  observe({
+    footer <- get_footer()
+    isolate({
+      if(any(c("character", "factor") %in% class(footer))){
+        shiny::updateTextInput(session, "footer", value = footer)
+      } else {
+        if(is.list(footer)){
+          if(!is.null(footer$text)){
+            shiny::updateTextInput(session, "footer", value = footer$text)
+          }
+          
+          if(!is.null(footer$style)){
+            find_size <- gregexpr("(font-size:)[[:digit:]]*", footer$style)
+            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(footer$style, find_size))))[1]
+            if(!is.na(size)){
+              shiny::updateNumericInput(session, "Footermainsize", value = size)
+            }
+            find_color <- gregexpr("(color:#)[[:alnum:]]*", footer$style)
+            color <- gsub("color:", "", unlist(regmatches(footer$style, find_color)))[1]
+            if(!is.na(color)){
+              colourpicker::updateColourInput(session, "colourFooterMain", value = color)
+            }
+          }
+        }
+      }
+    })
+  })
   # Get rpart from reactive data
   rPart <- shiny::reactive({
     input$runTree
@@ -639,6 +724,9 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     shiny::updateCheckboxInput(session,"usecolornodes", value = FALSE )
     shiny::updateCheckboxInput(session,"usecolorY", value = FALSE )
   })
+  
+  # data.frame with variables colors
+  infoColors <- reactiveValues(colorVar = NULL)
   
   # Build tree (visTree)
   treeBuild <- shiny::reactive({
@@ -693,6 +781,10 @@ visTreeModuleServerRpart <- function(input, output, session, data,
           colorVar <- updateColorVar()
           colorY <- updateColorY()
           # 
+          main = build_main()
+          submain = build_submain()
+          footer = build_footer()
+          
           simplifyRules <- ifelse(is.null(input$simpRules), simplifyRules, input$simpRules)
           legendWidth <- ifelse(is.null(input$legendWidth), legendWidth, input$legendWidth)
           legendNcol <- ifelse(is.null(input$legendNcol), legendNcol, input$legendNcol)
@@ -710,62 +802,11 @@ visTreeModuleServerRpart <- function(input, output, session, data,
           colorEdges <- ifelse(is.null(input$colorEdges), colorEdges, input$colorEdges)
         }
       }
-      
-      # print("shapeY")
-      # print(shapeY)
-      # print("shapeVar")
-      # print(shapeVar)
-      # print("colorVar")
-      # print(colorVar)
-      # print("colorY")
-      # print(colorY)
-      # print("rules")
-      # print(rules)
-      # print("simplifyRules")
-      # print(simplifyRules)
-      # print("legend")
-      # print(legend)
-      # print("legendWidth")
-      # print(legendWidth)
-      # print("legendNodesSize")
-      # print(legendNodesSize)
-      # print("legendFontSize")
-      # print(legendFontSize)
-      # print("legendPosition")
-      # print(legendPosition)
-      # print("legendNcol")
-      # print(legendNcol)
-      # print("edgesFontSize")
-      # print(edgesFontSize)
-      # print("edgesFontAlign")
-      # print(edgesFontAlign)
-      # print("nodesFontSize")
-      # print(nodesFontSize)
-      # print("nodesPopSize")
-      # print(nodesPopSize)
-      # print("minNodeSize")
-      # print(minNodeSize)
-      # print("maxNodeSize")
-      # print(maxNodeSize)
-      # print("tooltipDelay")
-      # print(tooltipDelay)
-      # print("digits")
-      # print(digits)
-      # print("direction")
-      # print(direction)
-      # print("fallenLeaves")
-      # print(fallenLeaves)
-      # print("updateShape")
-      # print(updateShape)
-      # print("colorEdges")
-      # print(colorEdges)
-      # print("height")
-      # print(height)
-      
-      visTree(res,
-              main = getMain(),
-              submain = getSubMain(),
-              footer = getFooter(),
+
+      tree <- visTree(res,
+              main = main,
+              submain = submain,
+              footer = footer,
               shapeY = shapeY,
               shapeVar = shapeVar,
               colorVar = colorVar,
@@ -795,6 +836,11 @@ visTreeModuleServerRpart <- function(input, output, session, data,
               height = paste0(height, "px"),
               export = export)  %>%
         visEvents(type = "on", doubleClick = "networkOpenCluster")
+      
+      infoColors$colorVar <- tree$x$tree$colorVar
+      infoColors$colorY <- tree$x$tree$colorY
+      
+      tree
     })
   })
   
@@ -825,22 +871,23 @@ visTreeModuleServerRpart <- function(input, output, session, data,
          infoClass = infoClass, probs = probs)
   })
   
-  # data.frame with variables colors
-  colorVarData <- shiny::reactive({
-    print("colorVarData")
-    visNetwork:::.generateVarColor(colorVar = get_colorVar(),
-                                   nodes_var = infoRpartNodes()$nodes_var_x, SortLabel = infoRpartNodes()$sortLabels)
-  })
-  
   # Get color
   updateColorVar <- shiny::reactive({
-    newColorVar <- colorVarData()
-    dest <- gsub(" ", "", paste0(infoRpartNodes()$sortLabels, "var"))
-    if(!is.null(isolate(input[[dest[1]]]))){
-      colorVect <- sapply(dest, function(X)input[[X]])
-      newColorVar$color <- colorVect
+    newColorVar <- infoColors$colorVar
+    if(!is.null(newColorVar)){
+      input_name <- gsub(" ", "", paste0(infoRpartNodes()$sortLabels, "var"))
+      newColorVar$color <- as.character(newColorVar$color)
+      if(!is.null(input[[input_name[1]]])){
+        colorVect <- sapply(input_name, function(X){
+          tmp <- input[[X]]
+          ifelse(is.null(tmp), "", tmp)
+        })
+        newColorVar$color[colorVect != ""] <- colorVect[colorVect != ""]
+      }
+      newColorVar
+    } else {
+      NULL
     }
-    newColorVar
   })
   
   # Color for Y
@@ -1113,7 +1160,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   })
   
   # reactive for title
-  getMain <- shiny::reactive({
+  build_main <- shiny::reactive({
     text <- input$main
     style <- paste0("font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:",input$mainsize,"px;text-align:center;color:", input$colourMain, ";")
     list(text = text, style = style)
@@ -1122,11 +1169,11 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   # Update title
   shiny::observe({
     visNetworkProxy(ns("tree")) %>%
-      visSetTitle(main = getMain())
+      visSetTitle(main = build_main())
   })
   
   
-  getSubMain <- shiny::reactive({
+  build_submain <- shiny::reactive({
     text <- input$submain
     style <- paste0("font-family:Georgia, Times New Roman, Times, serif;font-size:",input$Submainsize,"px;text-align:center;color:", input$colourSubMain, ";")
     list(text = text, style = style)
@@ -1134,10 +1181,10 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   
   shiny::observe({
     visNetworkProxy(ns("tree")) %>%
-      visSetTitle(submain =  getSubMain())
+      visSetTitle(submain =  build_submain())
   })
   
-  getFooter <- shiny::reactive({
+  build_footer <- shiny::reactive({
     text <- input$footer
     style <- paste0("font-family:Georgia, Times New Roman, Times, serif;font-size:",input$Footermainsize,"px;text-align:center;color:", input$colourFooterMain, ";")
     list(text = text, style = style)
@@ -1145,7 +1192,7 @@ visTreeModuleServerRpart <- function(input, output, session, data,
   
   shiny::observe({
     visNetworkProxy(ns("tree")) %>%
-      visSetTitle(footer = getFooter())
+      visSetTitle(footer = build_footer())
   })
   
   # Update shape Ynodes
@@ -1210,71 +1257,37 @@ visTreeModuleServerRpart <- function(input, output, session, data,
     content = function(con) {
       
       res <- rPart()
-      
-      main <- get_main()
-      submain <- get_submain()
-      footer <- get_footer()
-      direction <- get_direction()
-      fallenLeaves <- get_fallenLeaves()
-      rules <- get_rules()
-      simplifyRules <- get_simplifyRules()
-      shapeVar <- get_shapeVar()
-      shapeY <- get_shapeY()
-      colorVar <- get_colorVar()
-      colorY <- get_colorY()
-      colorEdges <- get_colorEdges()
-      nodesFontSize <- get_nodesFontSize()
-      edgesFontSize <- get_edgesFontSize()
-      edgesFontAlign <- get_edgesFontAlign()
-      legend <- get_legend()
-      legendNodesSize <- get_legendNodesSize()
-      legendFontSize <- get_legendFontSize()
-      legendWidth <- get_legendWidth()
-      legendNcol <- get_legendNcol()
-      legendPosition <- get_legendPosition()
-      nodesPopSize <- get_nodesPopSize()
-      minNodeSize <- get_minNodeSize()
-      maxNodeSize <- get_maxNodeSize()
-      highlightNearest <- get_highlightNearest()
-      collapse <- get_collapse()
-      updateShape <- get_updateShape()
-      tooltipDelay <- get_tooltipDelay()
-      digits <- get_digits()
-      height <- get_height()
-      width <- get_width()
-      export <- get_export()
-      
-      legend <- ifelse(is.null(input$legend), legend, input$legend)
-      rules <- ifelse(is.null(input$rules), rules, input$rules)
-      tooltipDelay <- ifelse(is.null(input$tooltipDelay), tooltipDelay, input$tooltipDelay)
-      updateShape <- ifelse(is.null(input$updateShape), updateShape, input$updateShape)
-      fallenLeaves <- ifelse(is.null(input$fallenLeaves), fallenLeaves, input$fallenLeaves)
-      digits <- ifelse(is.null(input$digits), digits, input$digits)
-      height <- ifelse(is.null(input$height), height, input$height)
-      nodesPopSize <- ifelse(is.null(input$nodesPopSize), nodesPopSize, input$nodesPopSize)
-      export <- ifelse(is.null(input$export), export, input$export)
+
+      legend <- ifelse(is.null(input$legend), get_legend(), input$legend)
+      rules <- ifelse(is.null(input$rules), get_rules(), input$rules)
+      tooltipDelay <- ifelse(is.null(input$tooltipDelay), get_tooltipDelay(), input$tooltipDelay)
+      updateShape <- ifelse(is.null(input$updateShape), get_updateShape(), input$updateShape)
+      fallenLeaves <- ifelse(is.null(input$fallenLeaves), get_fallenLeaves(), input$fallenLeaves)
+      digits <- ifelse(is.null(input$digits), get_digits(), input$digits)
+      nodesPopSize <- ifelse(is.null(input$nodesPopSize), get_nodesPopSize(), input$nodesPopSize)
+      export <- ifelse(is.null(input$export), get_export(), input$export)
+      simplifyRules <- ifelse(is.null(input$simpRules), get_simplifyRules(), input$simpRules)
+      legendWidth <- ifelse(is.null(input$legendWidth), get_legendWidth(), input$legendWidth)
+      legendNcol <- ifelse(is.null(input$legendNcol), get_legendNcol(), input$legendNcol)
+      legendNodesSize <- ifelse(is.null(input$legendNodesSize), get_legendNodesSize(), input$legendNodesSize)
+      legendFontSize <- ifelse(is.null(input$legendFontSize), get_legendFontSize(), input$legendFontSize)
+      legendPosition <- ifelse(is.null(input$legendPosition), get_legendPosition(), input$legendPosition)
+      minNodeSize <- ifelse(is.null(input$minNodeSize),  get_minNodeSize(), input$minNodeSize)
+      maxNodeSize <- ifelse(is.null(input$maxNodeSize), get_maxNodeSize(), input$maxNodeSize)
+      direction <- ifelse(is.null(input$direction), get_direction(), input$direction)
+      shapeY <- ifelse(is.null(input$shapeY), get_shapeY(), input$shapeY)
+      shapeVar <- ifelse(is.null(input$shapeX), get_shapeVar(), input$shapeX)
+      edgesFontSize <- ifelse(is.null(input$edgesFontSize), get_edgesFontSize(), input$edgesFontSize)
+      edgesFontAlign <- ifelse(is.null(input$edgesFontAlign), get_edgesFontAlign(), input$edgesFontAlign)
+      nodesFontSize <- ifelse(is.null(input$nodesFontSize), get_nodesFontSize(), input$nodesFontSize)
+      colorEdges <- ifelse(is.null(input$colorEdges), get_colorEdges(), input$colorEdges)
       colorVar <- updateColorVar()
       colorY <- updateColorY()
-      simplifyRules <- ifelse(is.null(input$simpRules), simplifyRules, input$simpRules)
-      legendWidth <- ifelse(is.null(input$legendWidth), legendWidth, input$legendWidth)
-      legendNcol <- ifelse(is.null(input$legendNcol), legendNcol, input$legendNcol)
-      legendNodesSize <- ifelse(is.null(input$legendNodesSize), legendNodesSize, input$legendNodesSize)
-      legendFontSize <- ifelse(is.null(input$legendFontSize), legendFontSize, input$legendFontSize)
-      legendPosition <- ifelse(is.null(input$legendPosition), legendPosition, input$legendPosition)
-      minNodeSize <- ifelse(is.null(input$minNodeSize), minNodeSize, input$minNodeSize)
-      maxNodeSize <- ifelse(is.null(input$maxNodeSize), maxNodeSize, input$maxNodeSize)
-      direction <- ifelse(is.null(input$direction), direction, input$direction)
-      shapeY <- ifelse(is.null(input$shapeY), shapeY, input$shapeY)
-      shapeVar <- ifelse(is.null(input$shapeX), shapeVar, input$shapeX)
-      edgesFontSize <- ifelse(is.null(input$edgesFontSize), edgesFontSize, input$edgesFontSize)
-      edgesFontAlign <- ifelse(is.null(input$edgesFontAlign), edgesFontAlign, input$edgesFontAlign)
-      nodesFontSize <- ifelse(is.null(input$nodesFontSize), nodesFontSize, input$nodesFontSize)
-      colorEdges <- ifelse(is.null(input$colorEdges), colorEdges, input$colorEdges)
       
       out <- visTree(res,
-                     main = getMain(),
-                     submain = getSubMain(),
-                     footer = getFooter(),
+                     main = build_main(),
+                     submain = build_submain(),
+                     footer = build_footer(),
                      shapeY = shapeY,
                      shapeVar = shapeVar,
                      colorVar = colorVar,
@@ -1299,8 +1312,8 @@ visTreeModuleServerRpart <- function(input, output, session, data,
                      fallenLeaves = fallenLeaves,
                      updateShape = updateShape,
                      colorEdges = colorEdges,
-                     highlightNearest = highlightNearest,
-                     collapse = collapse,
+                     highlightNearest = update_highlightNearest(),
+                     collapse = update_collapse(),
                      height = paste0(input$export_height, "px"),
                      export = export)
       

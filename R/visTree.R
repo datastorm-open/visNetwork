@@ -456,7 +456,9 @@ visTree <- function(object,
   }
   
   # rajout informations class tree
-  tree$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, shapeY = shapeY)
+  tree$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, 
+                      shapeY = shapeY, colorVar = colorVar, colorY = colorY)
+  
   
   if(export){
     tree <- tree%>%visExport()
@@ -554,8 +556,9 @@ visTree <- function(object,
     if("data.frame" %in% class(colorVar)){
       miss_var <- setdiff(setdiff(SortLabel, "<leaf>"), colorVar$variable)
       if(length(miss_var) > 0){
+        tmp_color <- setdiff(grDevices::hcl(seq(0, 250, length = nrow(colorVar) + length(miss_var)), l = 80), colorVar$color)
         miss_color <- data.frame(variable = miss_var, 
-                                 color = grDevices::hcl(seq(0, 250, length = length(unique(miss_var))), l = 80))
+                                 color = tmp_color[1:length(unique(miss_var))])
         colorVar <- rbind.data.frame(colorVar, miss_color)
       }
     }else if("character" %in% class(colorVar)){
