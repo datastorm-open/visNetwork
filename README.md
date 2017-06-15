@@ -57,7 +57,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 ```` 
 install.packages("visNetwork")
 
-# devtools::install_github("datastorm-open/visNetwork") for developpement version
+# devtools::install_github("datastorm-open/visNetwork") for development version
 
 require(visNetwork)
 ?visNetwork
