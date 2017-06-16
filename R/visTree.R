@@ -554,6 +554,10 @@ visTree <- function(object,
     colorVar <- data.frame(variable = unique(nodes_var), color = grDevices::hcl(seq(0, 250, length = length(unique(nodes_var))), l = 80))
   }else{
     if("data.frame" %in% class(colorVar)){
+      unused_var <- setdiff(colorVar$variable, setdiff(SortLabel, "<leaf>"))
+      if(length(unused_var) > 0){
+        colorVar <- colorVar[-which(colorVar$variable %in% unused_var), ]
+      }
       miss_var <- setdiff(setdiff(SortLabel, "<leaf>"), colorVar$variable)
       if(length(miss_var) > 0){
         tmp_color <- setdiff(grDevices::hcl(seq(0, 250, length = nrow(colorVar) + length(miss_var)), l = 80), colorVar$color)
@@ -561,6 +565,7 @@ visTree <- function(object,
                                  color = tmp_color[1:length(unique(miss_var))])
         colorVar <- rbind.data.frame(colorVar, miss_color)
       }
+      
     }else if("character" %in% class(colorVar)){
       colorVar <- data.frame(variable = setdiff(SortLabel, "<leaf>"), 
                              color = rep(colorVar, length(SortLabel))[1:length(setdiff(SortLabel, "<leaf>"))])
