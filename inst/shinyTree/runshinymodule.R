@@ -4,20 +4,20 @@ require(visNetwork)
 data <- iris
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(visTreeModuleServerRpart, "id1", data = reactive(rpart(data)))
+           callModule(visTreeModuleServer, "id1", data = reactive(rpart(data)))
          })
 
 data("solder")
 res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(visTreeModuleServerRpart, "id1", data = reactive(res))
+           callModule(visTreeModuleServer, "id1", data = reactive(res))
          })
 
 data <- iris
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
          server = function(input, output, session) {
-           callModule(visTreeModuleServerRpart, "id1", data = reactive(rpart(data)), legend = reactive(TRUE), 
+           callModule(visTreeModuleServer, "id1", data = reactive(rpart(data)), legend = reactive(TRUE), 
                       colorY = c("orange", "red"),
                       updateShape = FALSE, rules = reactive(FALSE),
                       export = FALSE, digits = 0, height = 700, tooltipDelay = 100, 
@@ -37,7 +37,7 @@ data("solder")
 data <- solder
 shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
          server = function(input, output, session) {
-           callModule(visTreeModuleServerData, "id1", data = reactive(data))
+           callModule(visTreeModuleServer, "id1", data = reactive(data))
          })
 
 library(ggplot2)
