@@ -293,7 +293,7 @@ visTree <- function(object,
       decisionsrules <- edgesLabelsFull[match(as.character(use), rpartNodesNames)-1]
       varDecisionBegin <- unique(varDecisions)
       if(simplifyRules){
-        filtre <- ifelse(colClass[varDecisions]%in% c("character", "factor"), 
+        filtre <- ifelse(colClass[varDecisions]%in% c("character", "factor", "ordered"), 
                          varDecisions,
                          paste0(varDecisions, substr(decisionsrules, 1 ,1)))
         tabFiltre <- table(filtre) > 1
@@ -506,14 +506,13 @@ visTree <- function(object,
   ruleNums <- as.numeric(row.names(frame))
   is.leaf <- (frame$var == "<leaf>")
   frame[!is.leaf, "order"] <- seq_along(which(!is.leaf))
-  ret <- sapply(as.numeric(row.names(frame))[-1], function(X){
-    if (X%%2 == 0) {
-      rules <- paste0("L", frame[as.character(X/2), "order"])
-    }else{
-      rules <- paste0("R", frame[as.character((X - 1)/2), "order"])
-    }
-    rules
-  })
+  TF <- as.numeric(row.names(frame))[-1]%%2==0
+  ret <- ifelse(TF,
+                as.numeric(row.names(frame))[-1]/2,
+                (as.numeric(row.names(frame))[-1] - 1)/2)
+  ordeR <- frame[as.character(ret),"order"]
+  ret <- ifelse(TF, paste0("L", ordeR), paste0("R", ordeR))
+  
   ret <- c("No", ret)
   rpartNodesNames <- as.numeric(row.names(frame))
   
