@@ -14,13 +14,13 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``1.0.4`` dev version
+## ``2.0.0`` dev version
 
 * #### Add support for edges color/label using ``highlightNearest/selectedBy``
 
 * #### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
 
-* #### init ``visTree``, to visualize rpart object
+* #### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
 
 ## ``1.0.3`` available on CRAN
 

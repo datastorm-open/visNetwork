@@ -2,10 +2,10 @@ require(shiny)
 require(visNetwork)
 
 data <- iris
-shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)), 
+t <- runApp(shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE, TRUE, TRUE)), 
          server = function(input, output, session) {
            callModule(visTreeModuleServer, "id1", data = reactive(rpart(data)))
-         })
+         }))
 
 data("solder")
 res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))

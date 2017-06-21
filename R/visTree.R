@@ -1,5 +1,6 @@
 #' Visualize Recursive Partitioning and Regression Trees (rpart object)
 #' 
+#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param main For add a title. See \link{visNetwork}
@@ -48,6 +49,7 @@
 #' 
 #' @return a visNetwork object 
 #' 
+#' @seealso \link{visTreeEditor}, \link{visTreeModuleServer}
 #' @examples
 #' 
 #' \dontrun{
@@ -338,7 +340,7 @@ visTree <- function(object,
   if(!is.null(attributes(object)$ylevels)){
     # Classification tree
     listColorY <- .generateYColor(object, colorY, nodes_var, digits = digits, infoClass = infoClass, probs = probs)
-
+    
     colNodClust <- as.character(listColorY$colorY$color[match(listColorY$vardecidedClust, listColorY$colorY$modality)])
     nodes_color[ind_terminal] <- colNodClust[ind_terminal]
     nodes_var[ind_terminal] <- listColorY$vardecidedClust[ind_terminal]
@@ -402,7 +404,7 @@ visTree <- function(object,
     # if(is.null(colorY)){
     #   col <- colorTerm[which(infoClass== X)]
     # }else{
-      col <- as.character(listColorY$colorY$color[match(X, listColorY$colorY$modality)])
+    col <- as.character(listColorY$colorY$color[match(X, listColorY$colorY$modality)])
     # }
     list(label = X, color = col, shape = shapeY, size = legendNodesSize, 
          Leaf = 1, font.size = legendFontSize)
@@ -590,7 +592,7 @@ visTree <- function(object,
     vardecidedClust <- infoClass[apply(probs, 1, which.max)]
     if(is.null(colorY)){
       colorY <- data.frame(modality = unique(infoClass),
-                              color = grDevices::hcl(seq(250, 360, length = length(unique(infoClass))), l = 60))
+                           color = grDevices::hcl(seq(250, 360, length = length(unique(infoClass))), l = 60))
     }else{
       if("data.frame" %in% class(colorY)){
         miss_y <- setdiff(infoClass, colorY$modality)
@@ -644,6 +646,40 @@ visTree <- function(object,
   }
   colRamp
 }
+
+
+#' Run and edit a visTree, and get back in R
+#'
+#' @param  data  \code{rpart or data.drame}
+#' @param  ...  all arguments except \code{object} present in \link{visTree}
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' net <- visTreeEditor(data = iris)
+#' net <- visTreeEditor(data = rpart(iris), main = "visTree Editor")
+#' net
+#' 
+#' }
+#' 
+#' @export
+visTreeEditor <- function(data, ...){
+  if(!require(shiny)){
+    stop("visTreeEditor requires 'shiny' package")
+  }
+  if("rpart" %in% class(data)){
+    rpartParams <- FALSE
+  } else if("data.frame" %in% class(data)){
+    rpartParams <- TRUE
+  }
+  return(shiny::runApp(shiny::shinyApp(ui = shiny::fluidPage(
+    visTreeModuleUI(id = "visTreeEditor", rpartParams = rpartParams, visTreeParams = TRUE, quitButton = TRUE)), 
+    server = function(input, output, session) {
+      shiny::callModule(visTreeModuleServer, id = "visTreeEditor" ,data = shiny::reactive(data), ...)
+    })))
+}
+
+
 # 
 # # object =rpart(Species~., data=iris,control = rpart.control(cp = 0.02))
 # object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 0.02))

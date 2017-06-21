@@ -1,18 +1,104 @@
-library(shiny)
-library(visNetwork)
-library(rpart)
-library(colourpicker)
-library(shinyWidgets)
-
-
-#' Generate server of shiny module from rpart reactive
+#' Module shiny for visualize and customize a \code{rpart} tree
 #'
+#' @param  id \code{character} id of module, linked to  \link{visTreeModuleServer}
+#' @param  rpartParams \code{boolean}, add tabs for rpart parameters (in case of \code{data.frame} in input)
+#' @param  visTreeParams \code{boolean}, add tabs for visTree parameters. Default to TRUE. Force to TRUE if \code{rpartParams}
+#' @param  quitButton \code{boolean}, add a button to quit module and get back network in R ?
+#' 
 #' @param  input  \code{list} shiny input
 #' @param  output \code{list}, shiny output
 #' @param  session  \code{list}, shiny session
-#' @param  data \code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object
+#' @param data \code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object
+#' @param main For add a title. See \link{visNetwork}
+#' @param submain For add a subtitle. See \link{visNetwork}
+#' @param footer For add a footer. See \link{visNetwork}
+#' @param direction \code{character}, The direction of the hierarchical layout.
+#' The available options are: UD, DU, LR, RL. To simplify:
+#' up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalLayout} 
+#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to FALSE
+#' @param fallenLeaves \code{boolean} leaf nodes at the bottom of the graph ? Default to FALSE
+#' @param nodesFontSize \code{numeric}, size of labels of nodes. Default to 16
+#' @param edgesFontSize \code{numeric}, size of labels of edges Default to 14
+#' @param legendFontSize \code{numeric}, size of labels of nodes in legend. Default to 16
+#' @param legendNodesSize \code{numeric}, size of nodes in legend. Default to 22
+#' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link{visEdges}  
+#' @param colorVar \code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
+#' \itemize{
+#'   \item{"variable"}{ : names of variables}
+#'   \item{"color"}{ : colors (in hexa). See examples}
+#' }
+#' @param colorY if classification tree : \code{character} colors to use or \code{data.frame} 2 columns :
+#' \itemize{
+#'   \item{"modality"}{ : levels of Y}
+#'   \item{"color"}{ : colors (in hexa)}
+#' }
+#' if regression tree : \code{character}, 2 colors (min and max, in hexa)
+#' @param colorEdges \code{character} color of edges, in hexa. Default to #8181F7
+#' @param legend \code{boolean}, add legend ? Default TRUE. \link{visLegend}
+#' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
+#' @param legendNcol \code{numeric}, number of columns in legend. Default 1
+#' @param legendPosition \code{character}, one of "left" (Default) or "right"
+#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
+#' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
+#' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE
+#' @param tooltipDelay \code{numeric}, delay for tooltips in millisecond. Default 500
+#' @param rules \code{boolean}, add rules in tooltips ? Default to TRUE
+#' @param simplifyRules \code{boolean}, simplify rules writing
+#' @param digits \code{numeric}, number of digits. Default to 3
+#' @param height \code{character}, default to "600px"
+#' @param width \code{character}, default to "100\%"
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
+#' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
+#' @param export \code{boolean}, add export button. Default to TRUE
 #' 
-#' @seealso \link{visTreeModuleUI}
+#' 
+#' @examples
+#' \dontrun{
+#' 
+#' # simple module editor on rpart
+#' data <- iris
+#' shiny::shinyApp(ui = shiny::fluidPage(
+#' visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = FALSE)), 
+#'  server = function(input, output, session) {
+#'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+#' })
+#' 
+#' # full module editor on rpart
+#' data <- iris
+#' shiny::shinyApp(ui = shiny::fluidPage(
+#'  visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = TRUE)), 
+#'  server = function(input, output, session) {
+#'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+#' })
+#' 
+#' # module on data.frame
+#' shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = "id1",
+#'  rpartParams = TRUE)), 
+#'  server = function(input, output, session) {
+#'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(data))
+#' })
+#' 
+#' # multiple modules
+#' shiny::shinyApp(ui = 
+#' navbarPage("Menu",shiny::tabPanel(
+#'   "tt1",shiny::fluidPage(visTreeModuleUI(id = "id1", 
+#'   rpartParams = TRUE,
+#'   visTreeParams = TRUE))
+#' ),
+#' shiny::tabPanel(
+#'   "tt2",shiny::fluidPage(visTreeModuleUI(id = "id2", 
+#'   rpartParams = FALSE,
+#'   visTreeParams = FALSE)))
+#' ), 
+#' server = function(input, output, session) {
+#'   shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(iris))
+#'   shiny::callModule(visTreeModuleServer, "id2", data = shiny::reactive(rpart(iris)))
+#' })
+#' }
+#' @name visNetwork-treeModule
+#' 
 #' 
 #' @export
 visTreeModuleServer <- function(input, output, session, data,
@@ -53,6 +139,18 @@ visTreeModuleServer <- function(input, output, session, data,
                                 export = TRUE) {
   
   ns <- session$ns
+  
+  if(!require(shiny)){
+    stop("visTreeModule require 'shiny' package")
+  }
+  
+  if(!require(colourpicker)){
+    stop("visTreeModule require 'colourpicker' package")
+  }
+  
+  if(!require(shinyWidgets)){
+    stop("visTreeModule require 'shinyWidgets' package")
+  }
   
   # reactive controls
   if (!shiny::is.reactive(main)){
@@ -247,237 +345,227 @@ visTreeModuleServer <- function(input, output, session, data,
     get_export <- export
   }
   
-  # update input
-  shiny::observe({
+  # create input
+  output$input_legend <- shiny::renderUI({
     legend <- get_legend()
     shiny::isolate({
-      if("legend" %in% names(input)){
-        shiny::updateCheckboxInput(session, "legend", "Display legend", value = legend)
-      }
+      shiny::checkboxInput(ns("legend"), "Display legend", value = legend)
     })
   })
+  shiny::outputOptions(output, "input_legend", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_fallenLeaves <- shiny::renderUI({
     fallenLeaves <- get_fallenLeaves()
     shiny::isolate({
-      if("fallenLeaves" %in% names(input)){
-        shiny::updateCheckboxInput(session, "fallenLeaves", "Fallen leaves", fallenLeaves)
-      }
+      shiny::checkboxInput(ns("fallenLeaves"), "Fallen leaves", fallenLeaves)
     })
   })
+  shiny::outputOptions(output, "input_fallenLeaves", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_rules <- shiny::renderUI({
     rules <- get_rules()
     shiny::isolate({
-      if("rules" %in% names(input)){
-        shiny::updateCheckboxInput(session, "rules","Display rules", value = rules)
-      }
+      shiny::checkboxInput(ns("rules"),"Display rules", value = rules)
     })
   })
+  shiny::outputOptions(output, "input_rules", suspendWhenHidden = FALSE)
   
-  shiny::observe({
-    simplifyRules <- get_simplifyRules()
-    shiny::isolate({
-      if("simpRules" %in% names(input)){
-        shiny::updateCheckboxInput(session, "simpRules", "Simplify rules", value = simplifyRules)
-      }
-    })
-  })
-  
-  shiny::observe({
+  output$input_updateShape <- shiny::renderUI({
     updateShape <- get_updateShape()
     isolate({
-      if("updateShape" %in% names(input)){
-        shiny::updateCheckboxInput(session, "updateShape", "Update shape", value = updateShape)
-      }
+      shiny::checkboxInput(ns("updateShape"), "Update shape", value = updateShape)
     })
   })
+  shiny::outputOptions(output, "input_updateShape", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_export <- shiny::renderUI({
     export <- get_export()
     shiny::isolate({
-      if("export" %in% names(input)){
-        shiny::updateCheckboxInput(session, "export", "Export", value = export)
-      }
+      shiny::checkboxInput(ns("export"), "Export", value = export)
     })
   })
+  shiny::outputOptions(output, "input_export", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_height <- shiny::renderUI({
     height <- get_height()
     shiny::isolate({
-      if("height" %in% names(input)){
-        shiny::updateNumericInput(session, "height", "Height :", value = height)
-      }
+      shiny::numericInput(ns("height"), "Height :", value = height)
     })
   })
+  shiny::outputOptions(output, "input_height", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_digits <- shiny::renderUI({
     digits <- get_digits()
     shiny::isolate({
-      if("digits" %in% names(input)){
-        shiny::updateNumericInput(session, "digits", "Digits : ", value = digits, min = 0)
-      }
+      shiny::numericInput(ns("digits"), "Digits : ", value = digits, min = 0)
     })
   })
+  shiny::outputOptions(output, "input_digits", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_tooltipDelay <- shiny::renderUI({
     tooltipDelay <- get_tooltipDelay()
     shiny::isolate({
-      if("tooltipDelay" %in% names(input)){
-        shiny::updateNumericInput(session, "tooltipDelay", "Tooltip delay :", value = tooltipDelay, min = 0, step = 100)
-      }
+      shiny::numericInput(ns("tooltipDelay"), "Tooltip delay :", value = tooltipDelay, min = 0, step = 100)
     })
   })
+  shiny::outputOptions(output, "input_tooltipDelay", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_legendWidth <- shiny::renderUI({
     legendWidth <- get_legendWidth()
     shiny::isolate({
-      if("legendWidth" %in% names(input)){
-        shiny::updateNumericInput(session, "legendWidth", "Width :", value = legendWidth, min = 0, max = 0.5, step = 0.05)
-      }
+      shiny::numericInput(ns("legendWidth"), "Width :", value = legendWidth, min = 0, max = 0.5, step = 0.05)
     })
   })
+  shiny::outputOptions(output, "input_legendWidth", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_legendNcol <- shiny::renderUI({
     legendNcol <- get_legendNcol()
     shiny::isolate({
-      if("legendNcol" %in% names(input)){
-        shiny::updateNumericInput(session, "legendNcol", "Number of columns :", value = legendNcol, min = 1, max = 50, step = 1)
-      }
+      shiny::numericInput(ns("legendNcol"), "Number of columns :", value = legendNcol, min = 1, max = 50, step = 1)
     })
   })
+  shiny::outputOptions(output, "input_legendNcol", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_legendPosition <- shiny::renderUI({
     legendPosition <- get_legendPosition()
     shiny::isolate({
-      if("legendPosition" %in% names(input)){
-        shiny::updateSelectInput(session, "legendPosition", "Position", choices = c("left", "right"), selected = legendPosition)
-      }
+      shiny::selectInput(ns("legendPosition"), "Position", choices = c("left", "right"), selected = legendPosition)
     })
   })
+  shiny::outputOptions(output, "input_legendPosition", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_shapeY <- shiny::renderUI({
     shapeY <- get_shapeY()
     shiny::isolate({
-      if("shapeY" %in% names(input)){
-        shiny::updateSelectInput(session, "shapeY", "shape Y", choices = c("diamond",
-                                                                           "dot",
-                                                                           "star",
-                                                                           "triangle",
-                                                                           "triangleDown",
-                                                                           "square",
-                                                                           "ellipse", 
-                                                                           "circle", 
-                                                                           "database", 
-                                                                           "box", 
-                                                                           "text"), selected = shapeY)
-      }
+      shiny::selectInput(ns("shapeY"), "shape Y", choices = c("diamond",
+                                                              "dot",
+                                                              "star",
+                                                              "triangle",
+                                                              "triangleDown",
+                                                              "square",
+                                                              "ellipse", 
+                                                              "circle", 
+                                                              "database", 
+                                                              "box", 
+                                                              "text"), selected = shapeY)
     })
   })
+  shiny::outputOptions(output, "input_shapeY", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_shapeX <- shiny::renderUI({
     shapeVar <- get_shapeVar()
     shiny::isolate({
-      if("shapeX" %in% names(input)){
-        shiny::updateSelectInput(session, "shapeX", "shape X", choices = c("diamond",
-                                                                           "dot",
-                                                                           "star",
-                                                                           "triangle",
-                                                                           "triangleDown",
-                                                                           "square",
-                                                                           "ellipse", 
-                                                                           "circle", 
-                                                                           "database", 
-                                                                           "box", 
-                                                                           "text"), selected = shapeVar)
-      }
+      shiny::selectInput(ns("shapeX"), "shape X", choices = c("diamond",
+                                                              "dot",
+                                                              "star",
+                                                              "triangle",
+                                                              "triangleDown",
+                                                              "square",
+                                                              "ellipse", 
+                                                              "circle", 
+                                                              "database", 
+                                                              "box", 
+                                                              "text"), selected = shapeVar)
     })
   })
+  shiny::outputOptions(output, "input_shapeX", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_nodesSize <- shiny::renderUI({
     nodesSize <- (get_maxNodeSize() + get_minNodeSize()) / 2
     shiny::isolate({
-      if("nodesSize" %in% names(input)){
-        shiny::updateNumericInput(session, "nodesSize", "Nodes size", value = nodesSize, min = 1)
-      }
-      if("maxNodeSize" %in% names(input)){
-        shiny::updateNumericInput(session, "maxNodeSize", "Max nodes size", value = get_maxNodeSize(), min = 1)
-      }
-      if("minNodeSize" %in% names(input)){
-        shiny::updateNumericInput(session, "minNodeSize", "Min nodes size", value = get_minNodeSize(), min = 1)
-      }
+      shiny::numericInput(ns("nodesSize"), "Nodes size", value = nodesSize, min = 1)
     })
   })
+  shiny::outputOptions(output, "input_nodesSize", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_maxNodeSize <- shiny::renderUI({
+    value = get_maxNodeSize()
+    shiny::isolate({
+      shiny::numericInput(ns("maxNodeSize"), "Max nodes size", value = value, min = 1)
+    })
+  })
+  shiny::outputOptions(output, "input_maxNodeSize", suspendWhenHidden = FALSE)
+  
+  output$input_minNodeSize <- shiny::renderUI({
+    value = get_minNodeSize()
+    shiny::isolate({
+      shiny::numericInput(ns("minNodeSize"), "Min nodes size", value = value, min = 1)
+    })
+  })
+  shiny::outputOptions(output, "input_minNodeSize", suspendWhenHidden = FALSE)
+  
+  output$input_legendNodesSize <- shiny::renderUI({
     legendNodesSize <- get_legendNodesSize()
     shiny::isolate({
-      if("legendNodesSize" %in% names(input)){
-        shiny::updateNumericInput(session, "legendNodesSize", "Legend size", value = legendNodesSize, min = 1)
-      }
+      shiny::numericInput(ns("legendNodesSize"), "Legend size", value = legendNodesSize, min = 1)
     })
   })
+  shiny::outputOptions(output, "input_legendNodesSize", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_nodesFontSize <- shiny::renderUI({
     nodesFontSize <- get_nodesFontSize()
     shiny::isolate({
-      if("nodesFontSize" %in% names(input)){
-        shiny::updateNumericInput(session, "nodesFontSize", "Nodes font", value = nodesFontSize, min = 1)
-      }
+      shiny::numericInput(ns("nodesFontSize"), "Nodes font", value = nodesFontSize, min = 1)
     })
   })
+  shiny::outputOptions(output, "input_nodesFontSize", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_legendFontSize <- shiny::renderUI({
     legendFontSize <- get_legendFontSize()
     shiny::isolate({
-      if("legendFontSize" %in% names(input)){
-        shiny::updateNumericInput(session, "legendFontSize", "Legend font", value = legendFontSize, min = 1)
-      }
+      shiny::numericInput(ns("legendFontSize"), "Legend font", value = legendFontSize, min = 1)
     })
   })
+  shiny::outputOptions(output, "input_legendFontSize", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_colorEdges <- shiny::renderUI({
     colorEdges <- get_colorEdges()
     shiny::isolate({
-      if("colorEdges" %in% names(input)){
-        colourpicker::updateColourInput(session, "colorEdges", "Edges color", value = colorEdges)
-      }
+      colourpicker::colourInput(ns("colorEdges"), "Edges color", value = colorEdges)
     })
   })
+  shiny::outputOptions(output, "input_colorEdges", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_edgesFontSize <- shiny::renderUI({
     edgesFontSize <- get_edgesFontSize()
     shiny::isolate({
-      if("edgesFontSize" %in% names(input)){
-        shiny::updateNumericInput(session, "edgesFontSize", "Edges font", value = edgesFontSize, min = 1)
-      }
+      shiny::numericInput(ns("edgesFontSize"), "Edges font", value = edgesFontSize, min = 1)
     })
   })
+  shiny::outputOptions(output, "input_edgesFontSize", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_edgesFontAlign <- shiny::renderUI({
     edgesFontAlign <- get_edgesFontAlign()
     shiny::isolate({
-      if("edgesFontAlign" %in% names(input)){
-        shiny::updateSelectInput(session, "edgesFontAlign", "Edges font align",
-                                 choices = c("horizontal", "top", "middle", "bottom"), 
-                                 selected = edgesFontAlign)
-      }
+      shiny::selectInput(ns("edgesFontAlign"), "Edges font align",
+                         choices = c("horizontal", "top", "middle", "bottom"), 
+                         selected = edgesFontAlign)
     })
   })
+  shiny::outputOptions(output, "input_edgesFontAlign", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_direction <- shiny::renderUI({
     direction <- get_direction()
     shiny::isolate({
-      if("direction" %in% names(input)){
-        shiny::updateSelectInput(session, "direction", "Direction :",
-                                 choices = c("up-down" = "UD", "down-up" = "DU",
-                                             "left-right" = "LR", "right-left" = "RL"), 
-                                 selected = direction)
-      }
+      shiny::selectInput(ns("direction"), "Direction :",
+                         choices = c("up-down" = "UD", "down-up" = "DU",
+                                     "left-right" = "LR", "right-left" = "RL"), 
+                         selected = direction)
     })
   })
+  shiny::outputOptions(output, "input_direction", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_edgesFontAlign <- shiny::renderUI({
+    edgesFontAlign <- get_edgesFontAlign()
+    shiny::isolate({
+      shiny::selectInput(ns("edgesFontAlign"), "Edges font align",
+                         choices = c("horizontal", "top", "middle", "bottom"), 
+                         selected = edgesFontAlign)
+    })
+  })
+  shiny::outputOptions(output, "input_edgesFontAlign", suspendWhenHidden = FALSE)
+  
+  output$input_highlight <- shiny::renderUI({
     highlightNearest <- get_highlightNearest()
     shiny::isolate({
       nearest <- TRUE
@@ -495,16 +583,17 @@ visTreeModuleServer <- function(input, output, session, data,
         }
       }
       
-      if("highlightNearest" %in% names(input)){
-        shinyWidgets::updateMaterialSwitch(session, "highlightNearest", value = nearest)
-      }
-      if("highlightHover" %in% names(input)){
-        shinyWidgets::updateMaterialSwitch(session, "highlightHover", value = hover)
-      }
+      shiny::fluidRow(
+        shiny::column(12,
+                      shinyWidgets::materialSwitch(ns("highlightNearest"), "highlight nearest", status = "info", value = nearest),
+                      shinyWidgets::materialSwitch(ns("highlightHover"), "highlight hover", status = "info", value = hover)
+        )
+      )
     })
   })
+  shiny::outputOptions(output, "input_highlight", suspendWhenHidden = FALSE)
   
-  shiny::observe({
+  output$input_collapse <- shiny::renderUI({
     collapse <- get_collapse()
     shiny::isolate({
       value <- TRUE
@@ -515,98 +604,151 @@ visTreeModuleServer <- function(input, output, session, data,
           value <- collapse$enabled
         }
       }
-      if("collapse" %in% names(input)){
-        shinyWidgets::updateMaterialSwitch(session, "collapse", value = value)
-      }
+      shinyWidgets::materialSwitch(ns("collapse"), "Collapse", status = "info", value = value)
     })
   })
+  shiny::outputOptions(output, "input_collapse", suspendWhenHidden = FALSE)
   
   # update main
-  shiny::observe({
+  output$input_main <- shiny::renderUI({
     main <- get_main()
     shiny::isolate({
+      text <- ""
+      color <- "black"
+      size <- 20
       if(any(c("character", "factor") %in% class(main))){
-        shiny::updateTextInput(session, "main", value = main)
+        text <- main
       } else {
         if(is.list(main)){
           if(!is.null(main$text)){
-            shiny::updateTextInput(session, "main", value = main$text)
+            text <- main$text
           }
           
           if(!is.null(main$style)){
             find_size <- gregexpr("(font-size:)[[:digit:]]*", main$style)
-            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(main$style, find_size))))[1]
+            tmp_size <- as.numeric(gsub("font-size:", "", unlist(regmatches(main$style, find_size))))[1]
             if(!is.na(size)){
-              shiny::updateNumericInput(session, "mainsize", value = size)
+              size <- tmp_size
             }
             find_color <- gregexpr("(color:#)[[:alnum:]]*", main$style)
-            color <- gsub("color:", "", unlist(regmatches(main$style, find_color)))[1]
+            tmp_color <- gsub("color:", "", unlist(regmatches(main$style, find_color)))[1]
             if(!is.na(color)){
-              colourpicker::updateColourInput(session, "colourMain", value = color)
+              color <- tmp_color
             }
           }
         }
       }
+      
+      shiny::fluidRow(
+        shiny::column(4,
+                      textInput(ns("main"), "Main :", text)
+        ),
+        shiny::column(4,
+                      colourpicker::colourInput(ns("colourMain"),
+                                                "Main color :", value = color)
+        ),
+        shiny::column(4,
+                      shiny::numericInput(ns("mainsize"), "Main size :",
+                                          value = size, min = 1)
+        )
+      )
     })
   })
+  shiny::outputOptions(output, "input_main", suspendWhenHidden = FALSE)
   
   # update submain
-  shiny::observe({
+  output$input_submain <- shiny::renderUI({
     submain <- get_submain()
     shiny::isolate({
+      text <- ""
+      color <- "black"
+      size <- 12
       if(any(c("character", "factor") %in% class(submain))){
-        shiny::updateTextInput(session, "submain", value = submain)
+        text <- submain
       } else {
         if(is.list(submain)){
           if(!is.null(submain$text)){
-            shiny::updateTextInput(session, "submain", value = submain$text)
+            text <- submain$text
           }
           
           if(!is.null(submain$style)){
             find_size <- gregexpr("(font-size:)[[:digit:]]*", submain$style)
-            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(submain$style, find_size))))[1]
+            tmp_size <- as.numeric(gsub("font-size:", "", unlist(regmatches(submain$style, find_size))))[1]
             if(!is.na(size)){
-              shiny::updateNumericInput(session, "Submainsize", value = size)
+              size <- tmp_size
             }
             find_color <- gregexpr("(color:#)[[:alnum:]]*", submain$style)
-            color <- gsub("color:", "", unlist(regmatches(submain$style, find_color)))[1]
+            tmp_color <- gsub("color:", "", unlist(regmatches(submain$style, find_color)))[1]
             if(!is.na(color)){
-              colourpicker::updateColourInput(session, "colourSubMain", value = color)
+              color <- tmp_color
             }
           }
         }
       }
+      
+      shiny::fluidRow(
+        shiny::column(4,
+                      textInput(ns("submain"), "Submain :", text)
+        ),
+        shiny::column(4,
+                      colourpicker::colourInput(ns("colourSubMain"),
+                                                "Submain color :", value = color)
+        ),
+        shiny::column(4,
+                      shiny::numericInput(ns("Submainsize"), "Submain size :",
+                                          value = size, min = 1)
+        )
+      )
     })
   })
+  shiny::outputOptions(output, "input_submain", suspendWhenHidden = FALSE)
   
   # update footer
-  shiny::observe({
+  output$input_footer <- shiny::renderUI({
     footer <- get_footer()
     shiny::isolate({
+      text <- ""
+      color <- "black"
+      size <- 12
       if(any(c("character", "factor") %in% class(footer))){
-        shiny::updateTextInput(session, "footer", value = footer)
+        text <- footer
       } else {
         if(is.list(footer)){
           if(!is.null(footer$text)){
-            shiny::updateTextInput(session, "footer", value = footer$text)
+            text <- footer$text
           }
           
           if(!is.null(footer$style)){
             find_size <- gregexpr("(font-size:)[[:digit:]]*", footer$style)
-            size <- as.numeric(gsub("font-size:", "", unlist(regmatches(footer$style, find_size))))[1]
+            tmp_size <- as.numeric(gsub("font-size:", "", unlist(regmatches(footer$style, find_size))))[1]
             if(!is.na(size)){
-              shiny::updateNumericInput(session, "Footermainsize", value = size)
+              size <- tmp_size
             }
             find_color <- gregexpr("(color:#)[[:alnum:]]*", footer$style)
-            color <- gsub("color:", "", unlist(regmatches(footer$style, find_color)))[1]
+            tmp_color <- gsub("color:", "", unlist(regmatches(footer$style, find_color)))[1]
             if(!is.na(color)){
-              colourpicker::updateColourInput(session, "colourFooterMain", value = color)
+              color <- tmp_color
             }
           }
         }
       }
+      
+      shiny::fluidRow(
+        shiny::column(4,
+                      textInput(ns("footer"), "Footer :", text)
+        ),
+        shiny::column(4,
+                      colourpicker::colourInput(ns("colourFooterMain"),
+                                                "Footer color :", value = color)
+        ),
+        shiny::column(4,
+                      shiny::numericInput(ns("Footermainsize"), "Footer size :",
+                                          value = size, min = 1)
+        )
+      )
     })
   })
+  shiny::outputOptions(output, "input_footer", suspendWhenHidden = FALSE)
   
   shiny::observe({
     if("data.frame" %in% class(data())){
@@ -838,7 +980,7 @@ visTreeModuleServer <- function(input, output, session, data,
     clas <- attributes(rpart_tree())$ylevels
     if(!is.null(clas)){
       dest <- paste0(gsub(" ", "", paste0(colorY$modality, "Y")))
-      if(!is.null(shiny::isolate(input[[dest[1]]]))){
+      if(!is.null(input[[dest[1]]])){
         colorVect <- sapply(dest, function(X)input[[X]])
         colorY$color <- colorVect
       }
@@ -875,7 +1017,7 @@ visTreeModuleServer <- function(input, output, session, data,
         res <- apply(corY, 1, function(x){
           as.character(shiny::column(6,colourpicker::colourInput(ns(gsub(" ", "", paste0(x[1],"Y"))), paste0(x[1]," :"), x[2])))
         })%>%
-          paste0(collapse = "")%>%
+          paste0(collapse = "") %>%
           HTML()
       }else{
         res <- list()
@@ -883,7 +1025,7 @@ visTreeModuleServer <- function(input, output, session, data,
                                                colourpicker::colourInput(ns("minY"), "Min y : ", corY[1])))
         res[[2]] <- as.character(shiny::column(6,
                                                colourpicker::colourInput(ns("maxY"), "Max y : ", corY[2])))
-        res <- paste0(res, collapse = "")%>%
+        res <- paste0(res, collapse = "") %>%
           HTML()
       }
     }
@@ -896,10 +1038,10 @@ visTreeModuleServer <- function(input, output, session, data,
     if(!is.null(m)){
       oldId <- m$x$nodes$id
       colorIn <- m$x$nodes$color
-
+      
       legOldId <- m$x$legend$nodes$id
       legColorIn <- m$x$legend$nodes$color
-
+      
       outColor <- unlist(sapply(m$x$nodes$label, function(x){
         if(is.null(input[[gsub(" ", "", paste0(x[1],"var"))]])){
           "NoChange"
@@ -907,7 +1049,7 @@ visTreeModuleServer <- function(input, output, session, data,
           input[[gsub(" ", "", paste0(x[1],"var"))]]
         }
       }))
-
+      
       legOutColor <- unlist(sapply(m$x$legend$nodes$label, function(x){
         if(is.null(input[[gsub(" ", "", paste0(x[1], "var"))]])){
           "NoChange"
@@ -915,19 +1057,19 @@ visTreeModuleServer <- function(input, output, session, data,
           input[[gsub(" ", "", paste0(x[1], "var"))]]
         }
       }))
-
+      
       newColor <- data.frame(
         id = oldId[outColor != "NoChange" & ifelse(outColor == colorIn, FALSE, TRUE)],
         color = outColor[outColor != "NoChange" & ifelse(outColor == colorIn, FALSE, TRUE)]
       )
-
+      
       legNewColor <- data.frame(
         id = legOldId[legOutColor != "NoChange" & ifelse(legOutColor == legColorIn, FALSE, TRUE)],
         color = legOutColor[legOutColor != "NoChange" & ifelse(legOutColor == legColorIn, FALSE, TRUE)]
       )
-
+      
       clas <- attributes(isolate(rpart_tree()))$ylevels
-
+      
       if(!is.null(input$minY) & is.null(clas)){
         coloramp <- visNetwork:::.creatColorRampY(c(input$minY, input$maxY))
         if(nrow(m$x$nodes) > 1){
@@ -940,7 +1082,7 @@ visTreeModuleServer <- function(input, output, session, data,
         endf$color <- as.character(endf$color)
         endf$color[m$x$nodes$Leaf == 1] <- as.character(colorTerm[m$x$nodes$Leaf == 1])
         endf$color[m$x$nodes$Leaf == 0] <- as.character(m$x$nodes$color[m$x$nodes$Leaf == 0])
-
+        
         visNetworkProxy(ns("tree")) %>%
           visUpdateNodes(endf)
       }
@@ -956,7 +1098,7 @@ visTreeModuleServer <- function(input, output, session, data,
           input[[gsub(" ", "", paste0(x[1],"Y"))]]
         }
       }))
-
+      
       outColorLeg <- unlist(sapply(m$x$legend$nodes$label, function(x){
         if(is.null(input[[gsub(" ", "", paste0(x[1],"Y"))]])){
           "NoChange"
@@ -964,18 +1106,18 @@ visTreeModuleServer <- function(input, output, session, data,
           input[[gsub(" ", "", paste0(x[1],"Y"))]]
         }
       }))
-
+      
       newColorGraph <- data.frame(
         id = oldId[outColor != "NoChange" & ifelse(outColor == colorIn, FALSE, TRUE)],
         color = outColor[outColor != "NoChange" & ifelse(outColor == colorIn, FALSE, TRUE)]
       )
-
+      
       newColorLegend <- data.frame(
         id = legId[outColorLeg != "NoChange" & ifelse(outColorLeg == colorInLeg, FALSE, TRUE)],
         color = outColorLeg[outColorLeg != "NoChange" & ifelse(outColorLeg == colorInLeg, FALSE, TRUE)]
       )
       # }
-
+      
       if(exists("newColor") & exists("newColorGraph")){
         Gcol <- rbind(newColorGraph, newColor)
       }else{
@@ -987,7 +1129,7 @@ visTreeModuleServer <- function(input, output, session, data,
           }
         }
       }
-
+      
       if(exists("legNewColor") & exists("newColorLegend")){
         Lcol <- rbind(newColorLegend, legNewColor)
       }else{
@@ -999,7 +1141,7 @@ visTreeModuleServer <- function(input, output, session, data,
           }
         }
       }
-
+      
       if(exists("Gcol")){
         visNetworkProxy(ns("tree")) %>%
           visUpdateNodes(Gcol) %>%
@@ -1007,16 +1149,19 @@ visTreeModuleServer <- function(input, output, session, data,
       }
     }
   })
-
+  
   # Update direction
-  shiny::observe({
-    print("udpate direction")
+  shiny::observeEvent({!is.null(input$direction)}, {
+    # print("update direction")
     visNetworkProxy(ns("tree")) %>%
       visHierarchicalLayout(direction = input$direction)
-  })
-
+  }, ignoreNULL = TRUE, ignoreInit = TRUE)
+  
   # Update node size
-  shiny::observe({
+  shiny::observeEvent({
+    !is.null(input$minNodeSize) & !is.null(input$maxNodeSize) & input$nodesPopSize
+  }, {
+    # print("update nodes size")
     minNodeSize <- input$minNodeSize
     maxNodeSize <- input$maxNodeSize
     m <- shiny::isolate(treeBuild())
@@ -1025,10 +1170,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(newNodes)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update node size
-  shiny::observe({
+  shiny::observeEvent({!is.null(input$nodesSize) & input$nodesPopSize == FALSE}, {
     nodesSize <- input$nodesSize
     m <- shiny::isolate(treeBuild())
     if(!input$nodesPopSize & !is.null(m)){
@@ -1036,10 +1181,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(newNodes)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update legend node size
-  shiny::observe({
+  shiny::observeEvent(input$legendNodesSize, {
     legendNodesSize <- input$legendNodesSize
     m <- shiny::isolate(treeBuild())
     if(!is.null(m$x$legend)){
@@ -1047,10 +1192,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(change_legend_nodes, legend = TRUE)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update legend font size
-  shiny::observe({
+  shiny::observeEvent(input$legendFontSize, {
     legendFontSize <- input$legendFontSize
     m <- shiny::isolate(treeBuild())
     if(!is.null(m$x$legend)){
@@ -1058,10 +1203,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(change_legend_nodes, legend = TRUE)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update edges color
-  shiny::observe({
+  shiny::observeEvent(input$colorEdges, {
     colorEdges <- input$colorEdges
     m <- shiny::isolate(treeBuild())
     if(!is.null(m$x$edges)){
@@ -1070,10 +1215,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateEdges(newEdges)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update edges font size
-  shiny::observe({
+  shiny::observeEvent(input$edgesFontSize, {
     edgesFontSize <- input$edgesFontSize
     m <- shiny::isolate(treeBuild())
     if(!is.null(m$x$edges)){
@@ -1082,10 +1227,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateEdges(newEdges)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update edges font align
-  shiny::observe({
+  shiny::observeEvent(input$edgesFontAlign, {
     edgesFontAlign <- input$edgesFontAlign
     m <- shiny::isolate(treeBuild())
     if(!is.null(m$x$edges)){
@@ -1094,10 +1239,10 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateEdges(newEdges)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # Update nodes font size
-  shiny::observe({
+  shiny::observeEvent(input$nodesFontSize, {
     nodesFontSize <- input$nodesFontSize
     m <- shiny::isolate(treeBuild())
     if(!is.null(m)){
@@ -1105,8 +1250,8 @@ visTreeModuleServer <- function(input, output, session, data,
       visNetworkProxy(ns("tree")) %>%
         visUpdateNodes(newNodes)
     }
-  })
-
+  }, ignoreInit = TRUE)
+  
   # reactive for title
   build_main <- shiny::reactive({
     text <- input$main
@@ -1114,90 +1259,81 @@ visTreeModuleServer <- function(input, output, session, data,
                     input$mainsize,"px;text-align:center;color:", input$colourMain, ";")
     list(text = text, style = style)
   })
-
+  
   # Update title
-  shiny::observe({
+  shiny::observeEvent({!is.null(input$main) & !is.null(input$mainsize) & !is.null(input$colourMain)}, {
+    # print("update main")
     visNetworkProxy(ns("tree")) %>%
       visSetTitle(main = build_main())
-  })
-
-
+  }, ignoreInit = TRUE)
+  
+  
   build_submain <- shiny::reactive({
     text <- input$submain
     style <- paste0("font-family:Georgia, Times New Roman, Times, serif;font-size:", 
                     input$Submainsize,"px;text-align:center;color:", input$colourSubMain, ";")
     list(text = text, style = style)
   })
-
+  
   shiny::observe({
     visNetworkProxy(ns("tree")) %>%
       visSetTitle(submain =  build_submain())
   })
-
+  
   build_footer <- shiny::reactive({
     text <- input$footer
     style <- paste0("font-family:Georgia, Times New Roman, Times, serif;font-size:", 
                     input$Footermainsize,"px;text-align:center;color:", input$colourFooterMain, ";")
     list(text = text, style = style)
   })
-
+  
   shiny::observe({
     visNetworkProxy(ns("tree")) %>%
       visSetTitle(footer = build_footer())
   })
   
   # Update shape Ynodes
-  shiny::observe({
+  shiny::observeEvent({!is.null(input$shapeX) & !is.null(input$shapeY)},{
     shapeX <- input$shapeX
     shapeY <- input$shapeY
     m <- shiny::isolate(treeBuild())
     if(!is.null(m)){
-    # nodes
-    change_nodes <- data.frame(id = m$x$nodes$id, shape = ifelse(m$x$nodes$Leaf == 0, shapeX, shapeY))
-    visNetworkProxy(ns("tree")) %>%
-      visUpdateNodes(change_nodes)
-    # legend
-    change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, shape = ifelse(m$x$legend$nodes$Leaf == 0, shapeX, shapeY))
-    visNetworkProxy(ns("tree")) %>%
-      visUpdateNodes(change_legend_nodes, legend = TRUE)
+      # nodes
+      change_nodes <- data.frame(id = m$x$nodes$id, shape = ifelse(m$x$nodes$Leaf == 0, shapeX, shapeY))
+      visNetworkProxy(ns("tree")) %>%
+        visUpdateNodes(change_nodes)
+      # legend
+      change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, shape = ifelse(m$x$legend$nodes$Leaf == 0, shapeX, shapeY))
+      visNetworkProxy(ns("tree")) %>%
+        visUpdateNodes(change_legend_nodes, legend = TRUE)
     }
-  })
+  }, ignoreInit = TRUE)
   
   # Update highlightNearest
   update_highlightNearest <- shiny::reactive({
     list(enabled = input$highlightNearest, degree = list(from = 50000, to = 0),
          hover = input$highlightHover, algorithm = "hierarchical")
-
+    
   })
-
-  shiny::observe({
+  
+  shiny::observeEvent({!is.null(input$highlightNearest) & !is.null(input$highlightHover)}, {
     visNetworkProxy(ns("tree")) %>%
-      visOptions(highlightNearest = update_highlightNearest())
-  })
-
+      visOptions(highlightNearest = list(enabled = input$highlightNearest, degree = list(from = 50000, to = 0),
+                                         hover = input$highlightHover, algorithm = "hierarchical"))
+  }, ignoreInit = TRUE)
+  
   # Update collapse
   update_collapse <- shiny::reactive({
     list(enabled = input$collapse, fit = TRUE, resetHighlight = TRUE, 
          clusterOptions = list(fixed = TRUE, physics= FALSE))
   })
-
-  shiny::observe({
-    visNetworkProxy(ns("tree")) %>%
-      visOptions(collapse = update_collapse())
-  })
   
-  # Update highlightNearest
-  update_highlightNearest <- shiny::reactive({
-    list(enabled = input$highlightNearest, degree = list(from = 50000, to = 0),
-         hover = input$highlightHover, algorithm = "hierarchical")
-
-  })
-
-  shiny::observe({
+  shiny::observeEvent({!is.null(input$collapse)}, {
     visNetworkProxy(ns("tree")) %>%
-      visOptions(highlightNearest = update_highlightNearest())
-  })
-
+      visOptions(collapse = list(enabled = input$collapse, fit = TRUE, resetHighlight = TRUE, 
+                                 clusterOptions = list(fixed = TRUE, physics= FALSE)))
+  }, ignoreInit = TRUE)
+  
   # Update height
   output$treeUI <- shiny::renderUI({
     res <- rpart_tree()
@@ -1285,61 +1421,29 @@ visTreeModuleServer <- function(input, output, session, data,
       out  %>% visSave(con, TRUE, input$export_background)
     }
   )
+  
+  # quit and get back network
+  observe({
+    if(!is.null(input$quit_btn)){
+      if(input$quit_btn > 0){
+        stopApp(build_export_tree())
+      }
+    }
+  })
+  
 }
 
 
-#' Generate ui for visTree shiny module. 
-#'
-#' @param  id \code{character} id of module, refear to id in \link{treeServLigth} or \link{treeServ}
-#' @param  visTreeParams \code{boolean}, add tabs for visTree parameters
-#' 
-#' @return \code{html} html of shiny module
-#' 
-#' @examples
-#' \dontrun{
-#' data <- iris
-#' shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = "id1",
-#'  rpartParams = FALSE,
-#'  visTreeParams = FALSE)), 
-#'  server = function(input, output, session) {
-#'  shiny::callModule(treeServLigth, "id1", data = shiny::reactive(rpart(data)))
-#' })
-#' 
-#' shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = "id1",
-#'  rpartParams = TRUE,
-#'  visTreeParams = FALSE)), 
-#'  server = function(input, output, session) {
-#'  shiny::callModule(treeServ, "id1", data = shiny::reactive(data))
-#' })
-#' 
-#' 
-#' shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = "id1",
-#'  rpartParams = TRUE,
-#'  visTreeParams = TRUE)), 
-#'  server = function(input, output, session) {
-#'  shiny::callModule(treeServ, "id1", data = shiny::reactive(data))
-#' })
-#' 
-#' shiny::shinyApp(ui = 
-#' navbarPage("Menu",shiny::tabPanel(
-#'   "tt1",shiny::fluidPage(visTreeModuleUI(id = "id1", 
-#'   rpartParams = TRUE,
-#'   visTreeParams = TRUE))
-#' ),
-#' shiny::tabPanel(
-#'   "tt2",shiny::fluidPage(visTreeModuleUI(id = "id2", 
-#'   rpartParams = FALSE,
-#'   visTreeParams = FALSE)))
-#' ), 
-#' server = function(input, output, session) {
-#'   shiny::callModule(treeServ, "id1", data = shiny::reactive(iris))
-#'   shiny::callModule(treeServLigth, "id2", data = shiny::reactive(rpart(iris)))
-#' })
-#' }
+#' @rdname visNetwork-treeModule
 #' 
 #' @export
-visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE) {
+visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitButton = FALSE) {
   ns <- shiny::NS(id)
+  
+  if(rpartParams){
+    visTreeParams <- TRUE
+  }
+  
   selectedTabs <- ifelse(rpartParams, "rpart", "visTree options")
   
   shiny::fluidPage(
@@ -1376,29 +1480,33 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE) {
                           #Params graph
                           shiny::fluidRow(
                             shiny::column(1, 
-                                          shiny::numericInput(ns("height"), "Height :",650)
+                                          shiny::uiOutput(ns("input_height"))
                             ),
                             shiny::column(1,
-                                          shiny::numericInput(ns("digits"), "Digits : ", value = 3, min = 0)
+                                          shiny::uiOutput(ns("input_digits"))
                             ),
                             shiny::column(1, 
-                                          shiny::numericInput(ns("tooltipDelay"), "Tooltip delay :", value = 500, min = 0, step = 100)
+                                          shiny::uiOutput(ns("input_tooltipDelay"))
                             ),
                             shiny::column(2,
-                                          shiny::br(), shiny::checkboxInput(ns("fallenLeaves"), "Fallen leaves")
+                                          shiny::br(), shiny::uiOutput(ns("input_fallenLeaves"))
                             ),
                             shiny::column(2,
-                                          shiny::br(), shiny::checkboxInput(ns("updateShape"), "Update shape",value = TRUE)
+                                          shiny::br(), 
+                                          shiny::uiOutput(ns("input_updateShape"))
                             ),
                             shiny::column(2,
-                                          shiny::br(), shiny::checkboxInput(ns("rules"),"Display rules", value = TRUE)
+                                          shiny::br(), 
+                                          shiny::uiOutput(ns("input_rules"))
                             ),
                             shiny::conditionalPanel(paste0("input['",ns("rules"),"'] == true"),
                                                     shiny::column(2,
-                                                                  shiny::br(), shiny::checkboxInput(ns("simpRules"),"Simplify rules", value = TRUE))
+                                                                  shiny::br(), 
+                                                                  shiny::checkboxInput(ns("simpRules"),"Simplify rules", value = TRUE))
                             ),
                             shiny::column(1,
-                                          shiny::br(), shiny::checkboxInput(ns("export"), "Export", value = TRUE)
+                                          shiny::br(), 
+                                          shiny::uiOutput(ns("input_export"))
                             )
                           )
           )
@@ -1408,19 +1516,18 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE) {
           shiny::tabPanel("Legend",
                           shiny::fluidRow(
                             shiny::column(2, offset = 1, 
-                                          shiny::br(), shiny::checkboxInput(ns("legend"),"Display legend", value = TRUE)
+                                          shiny::br(), 
+                                          shiny::uiOutput(ns("input_legend"))
                             ),
                             # shiny::conditionalPanel(paste0("input['",ns("legend"),"'] == true"),
                             shiny::column(2,
-                                          shiny::numericInput(ns("legendWidth"), "Width :",
-                                                              value = 0.1, min = 0, max = 0.5, step = 0.05)
+                                          shiny::uiOutput(ns("input_legendWidth"))
                             ),
                             shiny::column(2,
-                                          shiny::numericInput(ns("legendNcol"), "Number of columns :",
-                                                              value = 1, min = 1, max = 50, step = 1)
+                                          shiny::uiOutput(ns("input_legendNcol"))
                             ),
                             shiny::column(2,
-                                          shiny::selectInput(ns("legendPosition"),"Position",choices = c("left", "right"))
+                                          shiny::uiOutput(ns("input_legendPosition"))
                             )
                           )
           )
@@ -1441,228 +1548,115 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE) {
     # shiny::uiOutput("treeUI"),
     # shiny::conditionalPanel(condition = paste0("output['", ns("is_rpart"), "'] === true"),
     conditionalPanel(condition = paste0("output['", ns("is_tree"), "'] === true"),
-    shiny::fluidRow(
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = icon("share-alt"),status = "danger",width = 500, circle = T, 
-                                                 label = "Update nodes properties", tooltip = TRUE,
-                                                 shiny::fluidRow(
-                                                   shiny::column(4,
-                                                                 shiny::selectInput(ns("shapeY"), "shape Y", 
-                                                                                    choices = c("diamond",
-                                                                                                "dot",
-                                                                                                "star",
-                                                                                                "triangle",
-                                                                                                "triangleDown",
-                                                                                                "square",
-                                                                                                "ellipse", 
-                                                                                                "circle", 
-                                                                                                "database", 
-                                                                                                "box", 
-                                                                                                "text"),
-                                                                                    selected = "square"),
-                                                                 
-                                                                 shiny::selectInput(ns("shapeX"), "shape X", 
-                                                                                    choices = c("diamond",
-                                                                                                "dot",
-                                                                                                "star",
-                                                                                                "triangle",
-                                                                                                "triangleDown",
-                                                                                                "square",
-                                                                                                "ellipse", 
-                                                                                                "circle", 
-                                                                                                "database", 
-                                                                                                "box", 
-                                                                                                "text"),
-                                                                                    selected = "dot")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("nodesSize"), "Nodes size",
-                                                                                     value = 22, min = 1),
-                                                                 
-                                                                 shiny::numericInput(ns("legendNodesSize"), "Legend size",
-                                                                                     value = 22, min = 1)
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("nodesFontSize"), "Nodes font",
-                                                                                     value = 16, min = 1),
-                                                                 
-                                                                 shiny::numericInput(ns("legendFontSize"), "Legend font",
-                                                                                     value = 16, min = 1)
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::br(),
-                                                                 shinyWidgets::materialSwitch(ns("nodesPopSize"), 
-                                                                                              "Nodes size use population", status = "info")
-                                                   ),
-                                                   shiny::column(12,             
-                                                                 shiny::conditionalPanel(paste0("input['", ns("nodesPopSize"),"'] == true"),
-                                                                                         shiny::column(6,
-                                                                                                       shiny::numericInput(ns("minNodeSize"), "Min nodes size",
-                                                                                                                           value = 15, min = 1)
-                                                                                         ),                          
-                                                                                         shiny::column(6,
-                                                                                                       shiny::numericInput(ns("maxNodeSize"), "Max nodes size",
-                                                                                                                           value = 30, min = 1))
-                                                                 )
-                                                                 
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::br(), 
-                                                                 shinyWidgets::materialSwitch(ns("usecolornodes"),"Color nodes", status = "info")
-                                                   ),
-                                                   shiny::uiOutput(ns("colornodes")),
-                                                   
-                                                   shiny::column(12, 
-                                                                 shiny::br(), 
-                                                                 shinyWidgets::materialSwitch(ns("usecolorY"),"Color Y", status = "info")
-                                                   ),
-                                                   shiny::uiOutput(ns("colorY")))
-                    )
-      ),
-      
-      shiny::column(1,
-                    shinyWidgets::dropdownButton(icon = icon("exchange"), status = "warning", width = 300, circle = T, 
-                                                 label = "Update edges properties", tooltip = TRUE,
-                                                 shiny::fluidRow(
-                                                   shiny::column(12,
-                                                                 colourpicker::colourInput(ns("colorEdges"), "Edges color",
-                                                                                           value = "#8181F7")
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::numericInput(ns("edgesFontSize"), "Edges font",
-                                                                                     value = 14, min = 1)
-                                                   ),
-                                                   shiny::column(12,
-                                                                 shiny::selectInput(ns("edgesFontAlign"),"Edges font align",choices = c(
-                                                                   "horizontal", "top", "middle", "bottom"))
-                                                   )
-                                                 )
-                    )
-      ),
-      
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = icon("header"), status = "info", width = 400, circle = T, 
-                                                 label = "Set title, subtitle and footer", tooltip = TRUE,
-                                                 shiny::fluidRow(
-                                                   shiny::column(4,
-                                                                 textInput(ns("main"), "Main :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourMain"), 
-                                                                                           "Main color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("mainsize"), "Main size :",
-                                                                                     value = 20, min = 1)
-                                                   ),
-                                                   shiny::column(4,
-                                                                 textInput(ns("submain"), "Subtitle :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourSubMain"),
-                                                                                           "Subtitle color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("Submainsize"), "Subtitle size :",
-                                                                                     value = 12, min = 1)
-                                                   ),
-                                                   shiny::column(4,
-                                                                 textInput(ns("footer"), "Footer :", "")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 colourpicker::colourInput(ns("colourFooterMain"),
-                                                                                           "Footer color :", value = "black")
-                                                   ),
-                                                   shiny::column(4,
-                                                                 shiny::numericInput(ns("Footermainsize"), "Footer size :",
-                                                                                     value = 12, min = 1))
-                                                 )
-                    )
-      ),
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = icon("gear"),status = "success",width = 300,circle = T, 
-                                                 label = "Interaction and layout", tooltip = TRUE,
-                                                 shiny:: fluidRow(
-                                                   shiny::column(12,
-                                                                 shinyWidgets::materialSwitch(ns("highlightNearest"),
-                                                                                              "highlight nearest", status = "info", value = TRUE),
-                                                                 shinyWidgets::materialSwitch(ns("highlightHover"),
-                                                                                              "highlight hover", status = "info", value = FALSE),  
-                                                                 shinyWidgets::materialSwitch(ns("collapse"),
-                                                                                              "Collapse", status = "info", value = TRUE),
-                                                                 shiny::selectInput(ns("direction"), "Direction :", 
-                                                                                    choices = c("up-down" = "UD", "down-up" = "DU",
-                                                                                                "left-right" = "LR", "right-left" = "RL"), 
-                                                                                    selected = "UD")
-                                                   )
-                                                 )
-                    )
-      ),
-      shiny::column(1, 
-                    shinyWidgets::dropdownButton(icon = icon("download"),status = "default", width = 300, circle = T, 
-                                                 label = "Download the network as html", tooltip = TRUE,
-                                                 shiny:: fluidRow(
-                                                   shiny::column(12,
-                                                                 shiny::sliderInput(ns("export_height"), "Height:",
-                                                                                    min = 200, max = 1400, value = 900),
-                                                                 # shinyWidgets::materialSwitch(ns("export_self"),
-                                                                 #                              "selfcontained ?", status = "info", value = TRUE),
-                                                                 colourpicker::colourInput(ns("export_background"),
-                                                                                           "Background color :", value = "white"),
-                                                                 shiny::downloadLink(ns('downloadNetwork'), 'Download Tree as html')
-                                                   )
-                                                 )
-                    )
-      )
-    ),
-    
-    
-                     shiny::uiOutput(ns("treeUI"))
+                     shiny::fluidRow(
+                       shiny::column(1, 
+                                     shinyWidgets::dropdownButton(icon = icon("share-alt"),status = "danger",width = 500, circle = T, 
+                                                                  label = "Update nodes properties", tooltip = TRUE,
+                                                                  shiny::fluidRow(
+                                                                    shiny::column(4,
+                                                                                  shiny::uiOutput(ns("input_shapeY")),
+                                                                                  shiny::uiOutput(ns("input_shapeX"))
+                                                                    ),
+                                                                    shiny::column(4,
+                                                                                  shiny::uiOutput(ns("input_nodesSize")),
+                                                                                  shiny::uiOutput(ns("input_legendNodesSize"))
+                                                                    ),
+                                                                    shiny::column(4,
+                                                                                  shiny::uiOutput(ns("input_nodesFontSize")),
+                                                                                  shiny::uiOutput(ns("input_legendFontSize"))
+                                                                    )
+                                                                  ),
+                                                                  shiny::column(12,
+                                                                                shiny::br(),
+                                                                                shinyWidgets::materialSwitch(ns("nodesPopSize"), 
+                                                                                                             "Nodes size use population", status = "info"),
+                                                                                shiny::conditionalPanel(paste0("input['", ns("nodesPopSize"),"'] == true"),
+                                                                                                        shiny::column(6,
+                                                                                                                      shiny::uiOutput(ns("input_minNodeSize"))
+                                                                                                        ),                          
+                                                                                                        shiny::column(6,
+                                                                                                                      shiny::uiOutput(ns("input_maxNodeSize"))
+                                                                                                        )
+                                                                                                        
+                                                                                ),
+                                                                                
+                                                                                shiny::br(), 
+                                                                                shinyWidgets::materialSwitch(ns("usecolornodes"),"Color nodes", status = "info"),
+                                                                                
+                                                                                shiny::uiOutput(ns("colornodes")),
+                                                                                
+                                                                                
+                                                                                shiny::br(), 
+                                                                                shinyWidgets::materialSwitch(ns("usecolorY"),"Color Y", status = "info"),
+                                                                                
+                                                                                shiny::uiOutput(ns("colorY"))
+                                                                  )
+                                     )
+                       ),
+                       
+                       shiny::column(1,
+                                     shinyWidgets::dropdownButton(icon = icon("exchange"), status = "warning", width = 300, circle = T, 
+                                                                  label = "Update edges properties", tooltip = TRUE,
+                                                                  shiny::fluidRow(
+                                                                    shiny::column(12,
+                                                                                  shiny::uiOutput(ns("input_colorEdges")),
+                                                                                  shiny::uiOutput(ns("input_edgesFontSize")),
+                                                                                  shiny::uiOutput(ns("input_edgesFontAlign"))
+                                                                    )
+                                                                  )
+                                     )
+                       ),
+                       
+                       shiny::column(1, 
+                                     shinyWidgets::dropdownButton(icon = icon("header"), status = "info", width = 400, circle = T, 
+                                                                  label = "Set title, subtitle and footer", tooltip = TRUE,
+                                                                  shiny::fluidRow(
+                                                                    shiny::column(12,
+                                                                                  shiny::uiOutput(ns("input_main")),
+                                                                                  shiny::uiOutput(ns("input_submain")),
+                                                                                  shiny::uiOutput(ns("input_footer"))
+                                                                    )
+                                                                  )
+                                     )
+                       ),
+                       shiny::column(1, 
+                                     shinyWidgets::dropdownButton(icon = icon("gear"),status = "success",width = 300,circle = T, 
+                                                                  label = "Interaction and layout", tooltip = TRUE,
+                                                                  shiny:: fluidRow(
+                                                                    shiny::column(12,
+                                                                                  shiny::uiOutput(ns("input_highlight")),
+                                                                                  shiny::uiOutput(ns("input_collapse")),
+                                                                                  shiny::uiOutput(ns("input_direction"))
+                                                                    )
+                                                                  )
+                                     )
+                       ),
+                       shiny::column(1, 
+                                     shinyWidgets::dropdownButton(icon = icon("download"),status = "default", width = 300, circle = T, 
+                                                                  label = "Download the network as html", tooltip = TRUE,
+                                                                  shiny:: fluidRow(
+                                                                    shiny::column(12,
+                                                                                  shiny::sliderInput(ns("export_height"), "Height:",
+                                                                                                     min = 200, max = 1400, value = 900),
+                                                                                  # shinyWidgets::materialSwitch(ns("export_self"),
+                                                                                  #                              "selfcontained ?", status = "info", value = TRUE),
+                                                                                  colourpicker::colourInput(ns("export_background"),
+                                                                                                            "Background color :", value = "white"),
+                                                                                  shiny::downloadLink(ns('downloadNetwork'), 'Download Tree as html')
+                                                                    )
+                                                                  )
+                                     )
+                       )
+                     ),
+                     
+                     
+                     shiny::uiOutput(ns("treeUI")), 
+                     
+                     if(quitButton){
+                       actionButton(ns("quit_btn"), "Quit and get back network in R")
+                     }
     )
     # )
     
   )
-}
-
-
-#' run tree app
-#'
-#' @param  data  \code{rpart or data.drame} data in shiny app
-#' @param  rpartParams \code{boolean}, add tabs for rpart parameters
-#' @param  visTreeParams \code{boolean}, add tabs for visTree parameters
-#' @param  id \code{character} id of module
-#' @examples
-#' \dontrun{
-#' treeApp(data = iris)
-#' treeApp(data = iris, visTreeParams = FALSE)
-#' treeApp(data = rpart(iris), rpartParams = FALSE)
-#' treeApp(data = rpart(iris), rpartParams = FALSE, visTreeParams = FALSE)
-#' }
-#' 
-#' @export
-treeApp <- function(data, id = "id1", rpartParams = TRUE, visTreeParams = TRUE){
-  if("rpart" %in% class(data)){
-    if(rpartParams == TRUE){
-      stop("data is of class rpart and rpartParams is TRUE, you must pass a data.frame or rpartParams to FALSE")
-    }
-    return(shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = id,
-                                                                 rpartParams = rpartParams,
-                                                                 visTreeParams = visTreeParams)), 
-                           server = function(input, output, session) {
-                             shiny::callModule(treeServLigth, id ,data = shiny::reactive(data))
-                           }))
-  }
-  
-  if("data.frame" %in% class(data)){
-    if(rpartParams == FALSE){
-      stop("data is of class data.frame and rpartParams is FALSE, you must pass a rpart or rpartParams to TRUE")
-    }
-    
-    return( shiny::shinyApp(ui = shiny::fluidPage(visTreeModuleUI(id = id,
-                                                                  rpartParams = rpartParams,
-                                                                  visTreeParams = visTreeParams)), 
-                            server = function(input, output, session) {
-                              shiny::callModule(treeServ, id ,data = shiny::reactive(data))
-                            }))
-  }
 }

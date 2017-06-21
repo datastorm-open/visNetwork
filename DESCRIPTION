@@ -1,7 +1,7 @@
 Package: visNetwork
 Title: Network Visualization using 'vis.js' Library
-Version: 1.0.4
-Date: 2017-01-03
+Version: 2.0.0
+Date: 2017-06-21
 Authors@R: c(
     person(family = "Almende B.V.", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
@@ -28,6 +28,8 @@ Suggests:
     knitr,
     igraph,
     rpart,
-    shiny
+    shiny,
+    shinyWidgets,
+    colourpicker
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
