@@ -1246,7 +1246,7 @@ if (HTMLWidgets.shinyMode){
         network.stabilize(data.options);
       }
   });
-  
+
   // startSimulation on network
   Shiny.addCustomMessageHandler('visShinyStartSimulation', function(data){
       // get container id
@@ -1798,7 +1798,7 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
-    // remove edges
+  // remove edges
   Shiny.addCustomMessageHandler('visShinySetTitle', function(data){
     if(data.main !== null){
       var div_title = document.getElementById("title" + data.id);
@@ -1880,6 +1880,22 @@ if (HTMLWidgets.shinyMode){
     }
   });
 
+  // updateTree
+  Shiny.addCustomMessageHandler('visShinyUpdateTree', function(data){
+      // get container id
+      var el = document.getElementById(data.id);
+      if(el){
+        if(data.tree.updateShape != undefined){
+          el.tree.updateShape = data.tree.updateShape
+        }
+        if(data.tree.shapeVar != undefined){
+          el.tree.shapeVar = data.tree.shapeVar
+        }
+        if(data.tree.shapeY != undefined){
+          el.tree.shapeY = data.tree.shapeY
+        }
+      }
+  });
 }
 
 //----------------------------------------------------------------
@@ -1961,6 +1977,10 @@ HTMLWidgets.widget({
       document.getElementById(el.id).collapseFit = false;
       document.getElementById(el.id).collapseResetHighlight = false;
       document.getElementById(el.id).clusterOptions = undefined;
+    }
+    
+    if(x.tree !== undefined){
+      document.getElementById(el.id).tree = x.tree;
     }
 
     var changeInput = function(id, data) {
@@ -3288,7 +3308,8 @@ HTMLWidgets.widget({
     //*************************
     instance.network.on("doubleClick", function(params){
       if(document.getElementById(el.id).collapse){
-        collapsedNetwork(params.nodes, document.getElementById(el.id).collapseFit, document.getElementById(el.id).collapseResetHighlight, document.getElementById(el.id).clusterOptions, x.tree, instance.network, el.id) 
+        collapsedNetwork(params.nodes, document.getElementById(el.id).collapseFit, document.getElementById(el.id).collapseResetHighlight, document.getElementById(el.id).clusterOptions, 
+        document.getElementById(el.id).tree, instance.network, el.id) 
       }
     }); 
     

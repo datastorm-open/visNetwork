@@ -1311,7 +1311,8 @@ visTreeModuleServer <- function(input, output, session, data,
       # nodes
       change_nodes <- data.frame(id = m$x$nodes$id, shape = ifelse(m$x$nodes$Leaf == 0, shapeX, shapeY))
       visNetworkProxy(ns("tree")) %>%
-        visUpdateNodes(change_nodes)
+        visUpdateNodes(change_nodes) %>%
+        .visUpdateTree(shapeY = shapeY)
       # legend
       change_legend_nodes <- data.frame(id = m$x$legend$nodes$id, shape = ifelse(m$x$legend$nodes$Leaf == 0, shapeX, shapeY))
       visNetworkProxy(ns("tree")) %>%

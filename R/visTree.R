@@ -464,6 +464,24 @@ visTree <- function(object,
   tree
 }
 
+.visUpdateTree <- function(graph, updateShape = NULL, shapeVar = NULL, shapeY = NULL){
+  
+  if(!any(class(graph) %in% "visNetwork_Proxy")){
+    stop("Can't use visFocus with visNetwork object. Only within shiny & using visNetworkProxy")
+  }
+  
+  tree <- list()
+  tree$updateShape <- updateShape
+  tree$shapeVar <- shapeVar
+  tree$shapeY <- shapeY
+  
+  data <- list(id = graph$id, tree = tree)
+  
+  graph$session$sendCustomMessage("visShinyUpdateTree", data)
+  
+  graph
+}
+
 #Legend regression tree gradient color, still in dev
 # ' <div style= "background: red;
 # background: -webkit-linear-gradient(colorMax,',',colorMin,');
