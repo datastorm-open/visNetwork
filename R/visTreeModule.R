@@ -1,5 +1,7 @@
 #' Module shiny for visualize and customize a \code{rpart} tree
 #'
+#' Packages : shiny, rpart, colourpicker, shinyWidgets
+#' 
 #' @param  id \code{character} id of module, linked to  \link{visTreeModuleServer}
 #' @param  rpartParams \code{boolean}, add tabs for rpart parameters (in case of \code{data.frame} in input)
 #' @param  visTreeParams \code{boolean}, add tabs for visTree parameters. Default to TRUE. Force to TRUE if \code{rpartParams}
@@ -140,16 +142,24 @@ visTreeModuleServer <- function(input, output, session, data,
   
   ns <- session$ns
   
-  if(!require(shiny)){
+  if(!requireNamespace("shiny")){
     stop("visTreeModule require 'shiny' package")
+  } else {
+    if(packageVersion("shiny") < '1.0.0'){
+      stop("visTreeModule require 'shiny' 1.0.0 or more")
+    }
   }
   
-  if(!require(colourpicker)){
+  if(!requireNamespace("colourpicker")){
     stop("visTreeModule require 'colourpicker' package")
   }
   
-  if(!require(shinyWidgets)){
+  if(!requireNamespace("shinyWidgets")){
     stop("visTreeModule require 'shinyWidgets' package")
+  }
+  
+  if(!requireNamespace("rpart")){
+    stop("visTreeModule require 'rpart' package")
   }
   
   # reactive controls
@@ -372,7 +382,7 @@ visTreeModuleServer <- function(input, output, session, data,
   
   output$input_updateShape <- shiny::renderUI({
     updateShape <- get_updateShape()
-    isolate({
+    shiny::isolate({
       shiny::checkboxInput(ns("updateShape"), "Update shape", value = updateShape)
     })
   })
@@ -641,7 +651,7 @@ visTreeModuleServer <- function(input, output, session, data,
       
       shiny::fluidRow(
         shiny::column(4,
-                      textInput(ns("main"), "Main :", text)
+                      shiny::textInput(ns("main"), "Main :", text)
         ),
         shiny::column(4,
                       colourpicker::colourInput(ns("colourMain"),
@@ -688,7 +698,7 @@ visTreeModuleServer <- function(input, output, session, data,
       
       shiny::fluidRow(
         shiny::column(4,
-                      textInput(ns("submain"), "Submain :", text)
+                      shiny::textInput(ns("submain"), "Submain :", text)
         ),
         shiny::column(4,
                       colourpicker::colourInput(ns("colourSubMain"),
@@ -735,7 +745,7 @@ visTreeModuleServer <- function(input, output, session, data,
       
       shiny::fluidRow(
         shiny::column(4,
-                      textInput(ns("footer"), "Footer :", text)
+                      shiny::textInput(ns("footer"), "Footer :", text)
         ),
         shiny::column(4,
                       colourpicker::colourInput(ns("colourFooterMain"),
@@ -772,8 +782,8 @@ visTreeModuleServer <- function(input, output, session, data,
       if(input$runTree > 0){
         shiny::isolate({
           formule <- paste(input$y, "~", paste0(input$x, collapse = "+")) %>% as.formula()
-          rpart(formule, data = data(), 
-                control = rpart.control(cp = input$complexity, minsplit = input$minsplit))
+          rpart::rpart(formule, data = data(), 
+                control = rpart::rpart.control(cp = input$complexity, minsplit = input$minsplit))
         })
       } else {
         NULL
@@ -970,7 +980,7 @@ visTreeModuleServer <- function(input, output, session, data,
   # Color for Y
   # data.frame with variables colors
   colorYData <- shiny::reactive({
-    visNetwork:::.generateYColor(object = shiny::isolate(rpart_tree()), colorY = get_colorY(),
+    .generateYColor(object = shiny::isolate(rpart_tree()), colorY = get_colorY(),
                                  nodes_var = infoRpartNodes()$nodes_var_x, 
                                  infoClass = infoRpartNodes()$infoClass, probs = infoRpartNodes()$probs)
   })
@@ -1068,10 +1078,10 @@ visTreeModuleServer <- function(input, output, session, data,
         color = legOutColor[legOutColor != "NoChange" & ifelse(legOutColor == legColorIn, FALSE, TRUE)]
       )
       
-      clas <- attributes(isolate(rpart_tree()))$ylevels
+      clas <- attributes(shiny::isolate(rpart_tree()))$ylevels
       
       if(!is.null(input$minY) & is.null(clas)){
-        coloramp <- visNetwork:::.creatColorRampY(c(input$minY, input$maxY))
+        coloramp <- .creatColorRampY(c(input$minY, input$maxY))
         if(nrow(m$x$nodes) > 1){
           meanV <- (m$x$nodes$labelClust-min(m$x$nodes$labelClust))/(max(m$x$nodes$labelClust-min(m$x$nodes$labelClust)))
         } else {
@@ -1423,10 +1433,10 @@ visTreeModuleServer <- function(input, output, session, data,
   )
   
   # quit and get back network
-  observe({
+  shiny::observe({
     if(!is.null(input$quit_btn)){
       if(input$quit_btn > 0){
-        stopApp(build_export_tree())
+        shiny::stopApp(build_export_tree())
       }
     }
   })
@@ -1547,10 +1557,10 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
     # Show a plot of the generated distribution
     # shiny::uiOutput("treeUI"),
     # shiny::conditionalPanel(condition = paste0("output['", ns("is_rpart"), "'] === true"),
-    conditionalPanel(condition = paste0("output['", ns("is_tree"), "'] === true"),
+    shiny::conditionalPanel(condition = paste0("output['", ns("is_tree"), "'] === true"),
                      shiny::fluidRow(
                        shiny::column(1, 
-                                     shinyWidgets::dropdownButton(icon = icon("share-alt"),status = "danger",width = 500, circle = T, 
+                                     shinyWidgets::dropdownButton(icon = shiny::icon("share-alt"),status = "danger",width = 500, circle = T, 
                                                                   label = "Update nodes properties", tooltip = TRUE,
                                                                   shiny::fluidRow(
                                                                     shiny::column(4,
@@ -1595,7 +1605,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                        ),
                        
                        shiny::column(1,
-                                     shinyWidgets::dropdownButton(icon = icon("exchange"), status = "warning", width = 300, circle = T, 
+                                     shinyWidgets::dropdownButton(icon = shiny::icon("exchange"), status = "warning", width = 300, circle = T, 
                                                                   label = "Update edges properties", tooltip = TRUE,
                                                                   shiny::fluidRow(
                                                                     shiny::column(12,
@@ -1608,7 +1618,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                        ),
                        
                        shiny::column(1, 
-                                     shinyWidgets::dropdownButton(icon = icon("header"), status = "info", width = 400, circle = T, 
+                                     shinyWidgets::dropdownButton(icon = shiny::icon("header"), status = "info", width = 400, circle = T, 
                                                                   label = "Set title, subtitle and footer", tooltip = TRUE,
                                                                   shiny::fluidRow(
                                                                     shiny::column(12,
@@ -1620,7 +1630,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                      )
                        ),
                        shiny::column(1, 
-                                     shinyWidgets::dropdownButton(icon = icon("gear"),status = "success",width = 300,circle = T, 
+                                     shinyWidgets::dropdownButton(icon = shiny::icon("gear"),status = "success",width = 300,circle = T, 
                                                                   label = "Interaction and layout", tooltip = TRUE,
                                                                   shiny:: fluidRow(
                                                                     shiny::column(12,
@@ -1632,7 +1642,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                      )
                        ),
                        shiny::column(1, 
-                                     shinyWidgets::dropdownButton(icon = icon("download"),status = "default", width = 300, circle = T, 
+                                     shinyWidgets::dropdownButton(icon = shiny::icon("download"),status = "default", width = 300, circle = T, 
                                                                   label = "Download the network as html", tooltip = TRUE,
                                                                   shiny:: fluidRow(
                                                                     shiny::column(12,
@@ -1653,7 +1663,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                      shiny::uiOutput(ns("treeUI")), 
                      
                      if(quitButton){
-                       actionButton(ns("quit_btn"), "Quit and get back network in R")
+                       shiny::actionButton(ns("quit_btn"), "Quit and get back network in R")
                      }
     )
     # )

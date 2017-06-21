@@ -391,11 +391,7 @@ visTree <- function(object,
   # ------------------------------
   # Legend
   legendX <- lapply(SortLabel[SortLabel != "<leaf>"], function(x){
-    if(is.null(colorVar)){
-      col <- color[which(SortLabel == x)]
-    }else{
-      col <- as.character(colorVar$color[match(x, colorVar$variable)])
-    }
+    col <- as.character(colorVar$color[match(x, colorVar$variable)])
     list(label = x, color = col, shape = shapeVar, size = legendNodesSize, 
          Leaf = 0, font.size = legendFontSize)
   })
@@ -584,6 +580,7 @@ visTree <- function(object,
     }
     if(is.null(probs)){
       probaClass <- object$frame[,"yval2"]
+      nlevelsClass <- length(infoClass)
       effectif <- data.frame(probaClass[,2:(nlevelsClass+1), drop = F])
       probs <- data.frame(probaClass[,(nlevelsClass+2):(ncol(probaClass)-1), drop = F])
     }
@@ -650,6 +647,8 @@ visTree <- function(object,
 
 #' Run and edit a visTree, and get back in R
 #'
+#' Packages : shiny, rpart, colourpicker, shinyWidgets
+#' 
 #' @param  data  \code{rpart or data.drame}
 #' @param  ...  all arguments except \code{object} present in \link{visTree}
 #' 
@@ -664,9 +663,27 @@ visTree <- function(object,
 #' 
 #' @export
 visTreeEditor <- function(data, ...){
-  if(!require(shiny)){
-    stop("visTreeEditor requires 'shiny' package")
+
+  if(!requireNamespace("shiny")){
+    stop("visTreeModule require 'shiny' package")
+  } else {
+    if(packageVersion("shiny") < '1.0.0'){
+      stop("visTreeModule require 'shiny' 1.0.0 or more")
+    }
   }
+  
+  if(!requireNamespace("colourpicker")){
+    stop("visTreeModule require 'colourpicker' package")
+  }
+  
+  if(!requireNamespace("shinyWidgets")){
+    stop("visTreeModule require 'shinyWidgets' package")
+  }
+  
+  if(!requireNamespace("rpart")){
+    stop("visTreeModule require 'rpart' package")
+  }
+  
   if("rpart" %in% class(data)){
     rpartParams <- FALSE
   } else if("data.frame" %in% class(data)){

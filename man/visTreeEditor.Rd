@@ -12,7 +12,7 @@ visTreeEditor(data, ...)
 \item{...}{all arguments except \code{object} present in \link{visTree}}
 }
 \description{
-Run and edit a visTree, and get back in R
+Packages : shiny, rpart, colourpicker, shinyWidgets
 }
 \examples{
 \dontrun{

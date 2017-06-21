@@ -116,7 +116,7 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 \item{quitButton}{\code{boolean}, add a button to quit module and get back network in R ?}
 }
 \description{
-Module shiny for visualize and customize a \code{rpart} tree
+Packages : shiny, rpart, colourpicker, shinyWidgets
 }
 \examples{
 \dontrun{
