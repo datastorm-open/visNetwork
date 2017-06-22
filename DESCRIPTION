@@ -22,7 +22,8 @@ Imports:
     magrittr,
     utils,
     methods,
-    grDevices
+    grDevices, 
+    stats
 License: MIT + file LICENSE
 Suggests:
     knitr,

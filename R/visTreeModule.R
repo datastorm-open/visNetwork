@@ -103,6 +103,9 @@
 #' 
 #' 
 #' @export
+#' 
+#' @importFrom  stats as.formula
+#' 
 visTreeModuleServer <- function(input, output, session, data,
                                 main = "",
                                 submain = "",
@@ -854,8 +857,14 @@ visTreeModuleServer <- function(input, output, session, data,
             export <- input$export
             
             colorVar <- updateColorVar()
-            colorY <- updateColorY()
-            # 
+            
+            tmp_colorY <- updateColorY()
+            if("class" %in% res$method & is.data.frame(tmp_colorY)){
+              colorY <- tmp_colorY
+            } else if("anova" %in% res$method & "character" %in% class(tmp_colorY)){
+              colorY <- tmp_colorY
+            } 
+            
             main = build_main()
             submain = build_submain()
             footer = build_footer()
@@ -978,17 +987,9 @@ visTreeModuleServer <- function(input, output, session, data,
   })
   
   # Color for Y
-  # data.frame with variables colors
-  colorYData <- shiny::reactive({
-    .generateYColor(object = shiny::isolate(rpart_tree()), colorY = get_colorY(),
-                                 nodes_var = infoRpartNodes()$nodes_var_x, 
-                                 infoClass = infoRpartNodes()$infoClass, probs = infoRpartNodes()$probs)
-  })
-  
   updateColorY <- shiny::reactive({
-    colorY <- colorYData()$colorY
-    clas <- attributes(rpart_tree())$ylevels
-    if(!is.null(clas)){
+    colorY <- infoColors$colorY$colorY
+    if(is.data.frame(colorY)){
       dest <- paste0(gsub(" ", "", paste0(colorY$modality, "Y")))
       if(!is.null(input[[dest[1]]])){
         colorVect <- sapply(dest, function(X)input[[X]])

@@ -129,17 +129,12 @@ visNetwork(nodes, edges, width = "100%") %>%
   visLegend() %>%
   addFontAwesome()
 
-## ---- eval = TRUE, echo = TRUE-------------------------------------------
-nodes <- data.frame(id = 1:10, label = paste("Label", 1:10), 
-   group = sample(c("A", "B"), 10, replace = TRUE))
-
-edges <- data.frame(from = c(2,5,10), to = c(1,2,10))
-
-visNetwork(nodes, edges, width = "100%") %>%
-   visGroups(groupname = "A", color = "red", shape = "square") %>%
-   visGroups(groupname = "B", color = "yellow", shape = "triangle") %>%
-   visClusteringByColor(colors = c("red")) %>%
-   visClusteringByGroup(groups = c("B"))
+## ---- eval = T-----------------------------------------------------------
+library(rpart)
+# Complex tree
+data("solder")
+res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))
+visTree(res, height = "800px", nodesPopSize = TRUE, minNodeSize = 10, maxNodeSize = 30)
 
 
 ## ---- eval = FALSE-------------------------------------------------------

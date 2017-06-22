@@ -33,15 +33,14 @@ shinyApp(ui = fluidPage(visTreeModuleUI("id1", FALSE)),
                                   style = "font-family:Comic Sans MS;color:#ff0000;font-size:5px;text-align:center;"))
            })
 
-data("solder")
-data <- solder
-shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
-         server = function(input, output, session) {
-           callModule(visTreeModuleServer, "id1", data = reactive(data))
-         })
 
 library(ggplot2)
 data(diamonds)
+shinyApp(ui = fluidPage(visTreeModuleUI("id1", TRUE)), 
+         server = function(input, output, session) {
+           callModule(visTreeModuleServer, "id1", data = reactive(diamonds))
+         })
+
 
 
 

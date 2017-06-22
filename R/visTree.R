@@ -1,6 +1,6 @@
 #' Visualize Recursive Partitioning and Regression Trees (rpart object)
 #' 
-#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
+#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \code{visTreeEditor} to edity and get back network, or to \code{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param main For add a title. See \link{visNetwork}
@@ -455,7 +455,7 @@ visTree <- function(object,
   
   # rajout informations class tree
   tree$x$tree <- list(updateShape = updateShape, shapeVar = shapeVar, 
-                      shapeY = shapeY, colorVar = colorVar, colorY = colorY)
+                      shapeY = shapeY, colorVar = colorVar, colorY = listColorY)
   
   
   if(export){
@@ -680,6 +680,10 @@ visTree <- function(object,
 #' }
 #' 
 #' @export
+#' 
+#' @importFrom  utils packageVersion
+#' 
+#' 
 visTreeEditor <- function(data, ...){
 
   if(!requireNamespace("shiny")){

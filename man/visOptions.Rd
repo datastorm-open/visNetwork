@@ -162,6 +162,14 @@ nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"),
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = list(variable = "group", multiple = TRUE))
   
+##########################
+# collapse
+##########################
+visNetwork(nodes, edges) \%>\% 
+ visEdges(arrows = "to") \%>\% 
+ visOptions(collapse = list(enabled = TRUE, 
+   clusterOptions = list(shape = "square")))
+  
 }
 \references{
 See online documentation \url{http://datastorm-open.github.io/visNetwork/}
