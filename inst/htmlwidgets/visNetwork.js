@@ -177,11 +177,13 @@ function resetAllEdges(edges, hideColor1, hideColor2, network){
         return false;
     }
   });
-
+  
   if(is_cluster_edges){
     if(edges_in_clusters_ctrl.length > 0){
        for (var j = 0; j < edges_in_clusters_ctrl.length; j++) {
-          resetOneEdge(network.body.edges[edges_in_clusters_ctrl[j]].options, hideColor1, hideColor2, type = "cluster");
+         if(network.body.edges[edges_in_clusters_ctrl[j]] !== undefined){
+           resetOneEdge(network.body.edges[edges_in_clusters_ctrl[j]].options, hideColor1, hideColor2, type = "cluster");
+         }
         }
     }
   }
