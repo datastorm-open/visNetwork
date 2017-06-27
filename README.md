@@ -14,7 +14,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``2.0.0`` dev version
+## ``2.0.0`` available on CRAN
 
 * #### Add support for edges color/label using ``highlightNearest/selectedBy``
 
@@ -22,7 +22,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
 
-## ``1.0.3`` available on CRAN
+## ``1.0.3``
 
 * #### New ``hideColor`` argument to control hidden nodes & edges using ``highlightNearest/selectedBy``
 
@@ -34,7 +34,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### Add delay on tooltip popup (so you can click on a link...!)
 
-## ``1.0.2`` available on CRAN
+## ``1.0.2``
 
 * #### Update network in shiny using  ````visNetworkProxy```` (lot of functionalities,  ````?visNetworkProxy````)
 
