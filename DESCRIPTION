@@ -6,7 +6,9 @@ Authors@R: c(
     person(family = "Almende B.V.", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, http://visjs.org, http://www.almende.com/home"),
     person("Benoit", "Thieurmel", role = c("aut", "cre"),
-       comment = "R interface", email = "benoit.thieurmel@datastorm.fr")
+       comment = "R interface", email = "benoit.thieurmel@datastorm.fr"),
+    person(given = "Titouan", family = "Robert", 
+    email = "titouan.robert@datastorm.fr", role = c("aut", "ctb"))
     )
 Maintainer: Benoit Thieurmel <benoit.thieurmel@datastorm.fr>
 Description: Provides an R interface to the 'vis.js' JavaScript charting
@@ -22,7 +24,8 @@ Imports:
     magrittr,
     utils,
     methods,
-    grDevices
+    grDevices, 
+    stats
 License: MIT + file LICENSE
 Suggests:
     knitr,

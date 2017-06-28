@@ -121,6 +121,28 @@ visNetwork(nodes, edges) \%>\%
    outline:none;'))   
  
 ##########################
+# collapse
+##########################
+ 
+nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
+ group = sample(LETTERS[1:3], 15, replace = TRUE))
+
+edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
+ to = trunc(runif(15)*(15-1))+1)
+ 
+# keeping all parent node attributes  
+visNetwork(nodes, edges) \%>\% visEdges(arrows = "to") \%>\%
+ visOptions(collapse = TRUE)
+
+# setting some properties  
+visNetwork(nodes, edges) \%>\% visEdges(arrows = "to") \%>\%
+ visOptions(collapse = list(enabled = TRUE, clusterOptions = list(shape = "square"))) 
+   
+# enable / disable open cluster (proxy only) : 
+# visEvents(type = "off", doubleClick = "networkOpenCluster")
+# visEvents(type = "on", doubleClick = "networkOpenCluster")  
+ 
+##########################
 # selectedBy
 ##########################
 nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
@@ -161,6 +183,14 @@ nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"),
  
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = list(variable = "group", multiple = TRUE))
+  
+##########################
+# collapse
+##########################
+visNetwork(nodes, edges) \%>\% 
+ visEdges(arrows = "to") \%>\% 
+ visOptions(collapse = list(enabled = TRUE, 
+   clusterOptions = list(shape = "square")))
   
 }
 \references{
