@@ -107,7 +107,7 @@ visIgraphLayout <- function(graph,
   
   igraphlayout <- list(type = type)
   
-  ig <- igraph::graph_from_data_frame(graph$x$edges, directed = TRUE, 
+  ig <- igraph::graph_from_data_frame(graph$x$edges[,c("from", "to")], directed = TRUE, 
                                       vertices = graph$x$nodes[,c("id", setdiff(names(graph$x$nodes), "id"))])
 
   if(!is.null(randomSeed)){
