@@ -782,7 +782,7 @@ function clone(obj) {
 // update a list
 function update(source, target) {
 	Object.keys(target).forEach(function (k) {
-		if (typeof target[k] === 'object') {
+		if (typeof target[k] === 'object' && k !== "container") {
 			source[k] = source[k] || {};
 			update(source[k], target[k]);
 		} else {
@@ -1195,6 +1195,18 @@ if (HTMLWidgets.shinyMode){
       if(el){
         var network = el.chart;
         var options = el.options;
+        // configure
+        if(data.options.configure !== undefined){
+          if(data.options.configure.container !== undefined){
+            var dom_conf = document.getElementById(data.options.configure.container);
+            if(dom_conf !== null){
+              data.options.configure.container = dom_conf;
+            } else {
+              data.options.configure.container = undefined;
+            }
+          }
+        }
+    
         update(options, data.options);
         network.setOptions(options);
       }
@@ -1985,6 +1997,18 @@ HTMLWidgets.widget({
       document.getElementById(el.id).tree = x.tree;
     }
 
+    // configure
+    if(x.options.configure !== undefined){
+      if(x.options.configure.container !== undefined){
+        var dom_conf = document.getElementById(x.options.configure.container);
+        if(dom_conf !== null){
+          x.options.configure.container = dom_conf;
+        } else {
+          x.options.configure.container = undefined;
+        }
+      }
+    }
+    
     var changeInput = function(id, data) {
             Shiny.onInputChange(el.id + '_' + id, data);
     };
