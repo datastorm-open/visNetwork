@@ -8,9 +8,9 @@
 #' @param container : DOM element. This allows you to put the configure list in another HTML container than below the network.
 #' @param showButton : Boolean. Default to true. Show the generate options button at the bottom of the configurator.
 #'
-#' @examples
+#'@examples
 #'
-#' \donrun{
+#'\dontrun{
 #' 
 #' nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
 #' edges <- data.frame(from = c(1,2), to = c(1,3))
