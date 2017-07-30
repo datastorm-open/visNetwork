@@ -22,6 +22,9 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
 
+![alt text](https://github.com/datastorm-open/visNetwork/blob/master/inst/img/tree_example.png)
+
+
 ## ``1.0.3``
 
 * #### New ``hideColor`` argument to control hidden nodes & edges using ``highlightNearest/selectedBy``
