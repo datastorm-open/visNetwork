@@ -2391,8 +2391,9 @@ HTMLWidgets.widget({
         // set coordinates and options
         for (var edg = 0; edg < (legendedges.length); edg++){
           
-          legendedges[edg].from = edg*2+1;
-          legendedges[edg].to = edg*2+2;
+          var tmp_int = Math.floor(Math.random() * 1001);
+          legendedges[edg].from = edg + "tmp_leg_edges_" + tmp_int + "_1";
+          legendedges[edg].to = edg + "tmp_leg_edges_" + tmp_int + "_2";
           legendedges[edg].physics = false;
           legendedges[edg].smooth = false;
           legendedges[edg].value = undefined;
@@ -2426,8 +2427,8 @@ HTMLWidgets.widget({
             tmp_lx2 = 1
           }
           
-          legendnodes.add({id: edg*2+1, x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
-          legendnodes.add({id: edg*2+2, x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
+          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_1", x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
+          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_2", x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
         }
       }
       
