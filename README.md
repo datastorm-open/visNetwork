@@ -16,13 +16,13 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 ## ``2.0.0`` available on CRAN
 
-* #### Add support for edges color/label using ``highlightNearest/selectedBy``
+* ### Add support for edges color/label using ``highlightNearest/selectedBy``
 
 * ### New ``collapse`` features (``?visOptions``)
 
-* #### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
+* ### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
 
-* #### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
+* ### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
 
 ![alt text](https://github.com/datastorm-open/visNetwork/blob/master/inst/img/tree_example.png)
 
