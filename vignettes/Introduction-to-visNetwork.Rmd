@@ -60,7 +60,7 @@ head(nodes)
 * Adding more variables on edges data.frame. See **_visEdges_** for available options.
 
 ```{r}
-edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
+edges <- data.frame(from = sample(1:10, 8), to = sample(1:10, 8),
                     label = paste("Edge", 1:8),                                 # add labels on edges
                     length = c(100,500),                                        # length
                     arrows = c("to", "from", "middle", "middle;to"),            # arrows
@@ -85,7 +85,7 @@ edges <- data.frame(from = c(2,5,3,3), to = c(1,2,4,2))
 
 visNetwork(nodes, edges, width = "100%") %>% 
   visNodes(shape = "square") %>%                        # square for all nodes
-  visEdges(arrows ="to") %>%                             # arrow "to" for all edges
+  visEdges(arrows ="to") %>%                            # arrow "to" for all edges
   visGroups(groupname = "A", color = "darkblue") %>%    # darkblue for group "A"
   visGroups(groupname = "B", color = "red")             # red for group "B"
 ```
@@ -93,8 +93,8 @@ visNetwork(nodes, edges, width = "100%") %>%
 # Network configuration
 Configuration options are available in *visOptions*, *visInteraction*, *visLayout*, *visHierarchicalLayout*, *visPhysics* :
 
-
-```{r, echo=FALSE}
+## Example Data
+```{r, echo=TRUE}
 nb <- 10
 nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
  group = sample(LETTERS[1:3], nb, replace = TRUE), value = 1:nb,
@@ -125,14 +125,15 @@ visNetwork(nodes, edges, width = "100%") %>%
 You can highlight nearest nodes and edges clicking on a node with **highlightNearest** option :
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(highlightNearest = TRUE)
 ```
 
 It's now possible to control the degree of depth (visNetwork >= 0.1.2) : 
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = list(enabled =TRUE,
-                                                        degree = 2))
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(highlightNearest = list(enabled =TRUE, degree = 2))
 ```
 
 
@@ -166,38 +167,46 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
 ```
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = 'from')
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = 'from')
 ```
 
 ## Custom navigation
 *vis.js* propose some navigation tools :
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visInteraction(navigationButtons = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visInteraction(navigationButtons = TRUE)
 ```
 
 ## Data Manipulation
 And some data manipulation tools :
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visOptions(manipulation = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(manipulation = TRUE)
 ```
 
 ## Hierarchical Layout
 You can use and control hierarchical layout with *visHierarchicalLayout* and *visLayout* :
 
-```{r, echo = FALSE}
+```{r, echo = TRUE}
 nodes <- data.frame(id = 1:7)
 
-edges <- data.frame(from = c(1,2,2,2,3,3),
- to = c(2,3,4,5,6,7))
+edges <- data.frame(
+  from = c(1,2,2,2,3,3),
+  to = c(2,3,4,5,6,7)
+)
 ```
 
 ```{r}
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
-  visHierarchicalLayout() # same as   visLayout(hierarchical = TRUE) 
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = "from") %>% 
+  visHierarchicalLayout() 
+# same as   visLayout(hierarchical = TRUE) 
 
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = "from") %>% 
   visHierarchicalLayout(direction = "LR")
 ```
 

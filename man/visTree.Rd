@@ -105,6 +105,7 @@ Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look 
 \examples{
 
 \dontrun{
+
 library(rpart)
 
 # Basic classification tree

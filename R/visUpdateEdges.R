@@ -1,17 +1,17 @@
-#' Function to update edges information, with shiny only.
+#' Function to update the information of edges, with shiny only.
 #'
-#' Function to update edges information, with shiny only. You can also use this function passing new edges.
+#' Function to update the information of edges, with shiny only. You can also use this function passing new edges.
 #' The link is based on id.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
-#'@param edges : data.frame with edges informations. See \link{visEdges}
+#'@param edges : data.frame with the information of edges. See \link{visEdges}
 #' \itemize{
 #'  \item{"id"}{ : edge id, for update}
-#'  \item{"from"}{ : node id of begin of the edge}
-#'  \item{"to"}{ : node id of end of the edge}
-#'  \item{"label"}{ : label of the edge}
-#'  \item{"value"}{ : size of the node}
-#'  \item{"title"}{ : tooltip of the node}
+#'  \item{"from"}{ : node id, begin of the edge}
+#'  \item{"to"}{ : node id, end of the edge}
+#'  \item{"label"}{ : label}
+#'  \item{"value"}{ : size}
+#'  \item{"title"}{ : tooltip}
 #'  \item{...}{}
 #'}
 #'@param legend : Boolean. Update edges on legend ? Default to FALSE

@@ -25,7 +25,7 @@ nodes <- data.frame(id = 1:10,
 head(nodes)
 
 ## ------------------------------------------------------------------------
-edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
+edges <- data.frame(from = sample(1:10, 8), to = sample(1:10, 8),
                     label = paste("Edge", 1:8),                                 # add labels on edges
                     length = c(100,500),                                        # length
                     arrows = c("to", "from", "middle", "middle;to"),            # arrows
@@ -44,11 +44,11 @@ edges <- data.frame(from = c(2,5,3,3), to = c(1,2,4,2))
 
 visNetwork(nodes, edges, width = "100%") %>% 
   visNodes(shape = "square") %>%                        # square for all nodes
-  visEdges(arrows ="to") %>%                             # arrow "to" for all edges
+  visEdges(arrows ="to") %>%                            # arrow "to" for all edges
   visGroups(groupname = "A", color = "darkblue") %>%    # darkblue for group "A"
   visGroups(groupname = "B", color = "red")             # red for group "B"
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=TRUE----------------------------------------------------------
 nb <- 10
 nodes <- data.frame(id = 1:nb, label = paste("Label", 1:nb),
  group = sample(LETTERS[1:3], nb, replace = TRUE), value = 1:nb,
@@ -68,11 +68,12 @@ visNetwork(nodes, edges, width = "100%") %>%
             addEdges = data.frame(label = "link", color = "black"))
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(highlightNearest = TRUE)
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visOptions(highlightNearest = list(enabled =TRUE,
-                                                        degree = 2))
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(highlightNearest = list(enabled =TRUE, degree = 2))
 
 ## ------------------------------------------------------------------------
 visNetwork(nodes, edges, width = "100%") %>% 
@@ -94,25 +95,33 @@ edges <- data.frame(from = trunc(runif(nb)*(nb-1))+1,
  title = paste0("<p>", 1:nb,"<br>Edge Tooltip !</p>"))
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = 'from')
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = 'from')
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visInteraction(navigationButtons = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visInteraction(navigationButtons = TRUE)
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visOptions(manipulation = TRUE)
+visNetwork(nodes, edges, width = "100%") %>% 
+  visOptions(manipulation = TRUE)
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = TRUE--------------------------------------------------------
 nodes <- data.frame(id = 1:7)
 
-edges <- data.frame(from = c(1,2,2,2,3,3),
- to = c(2,3,4,5,6,7))
+edges <- data.frame(
+  from = c(1,2,2,2,3,3),
+  to = c(2,3,4,5,6,7)
+)
 
 ## ------------------------------------------------------------------------
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
-  visHierarchicalLayout() # same as   visLayout(hierarchical = TRUE) 
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = "from") %>% 
+  visHierarchicalLayout() 
+# same as   visLayout(hierarchical = TRUE) 
 
-visNetwork(nodes, edges, width = "100%") %>% visEdges(arrows = "from") %>% 
+visNetwork(nodes, edges, width = "100%") %>% 
+  visEdges(arrows = "from") %>% 
   visHierarchicalLayout(direction = "LR")
 
 ## ------------------------------------------------------------------------

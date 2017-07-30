@@ -2,28 +2,28 @@
 % Please edit documentation in R/visUpdateEdges.R
 \name{visUpdateEdges}
 \alias{visUpdateEdges}
-\title{Function to update edges information, with shiny only.}
+\title{Function to update the information of edges, with shiny only.}
 \usage{
 visUpdateEdges(graph, edges, legend = FALSE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
 
-\item{edges}{: data.frame with edges informations. See \link{visEdges}
+\item{edges}{: data.frame with the information of edges. See \link{visEdges}
 \itemize{
  \item{"id"}{ : edge id, for update}
- \item{"from"}{ : node id of begin of the edge}
- \item{"to"}{ : node id of end of the edge}
- \item{"label"}{ : label of the edge}
- \item{"value"}{ : size of the node}
- \item{"title"}{ : tooltip of the node}
+ \item{"from"}{ : node id, begin of the edge}
+ \item{"to"}{ : node id, end of the edge}
+ \item{"label"}{ : label}
+ \item{"value"}{ : size}
+ \item{"title"}{ : tooltip}
  \item{...}{}
 }}
 
 \item{legend}{: Boolean. Update edges on legend ? Default to FALSE}
 }
 \description{
-Function to update edges information, with shiny only. You can also use this function passing new edges.
+Function to update the information of edges, with shiny only. You can also use this function passing new edges.
 The link is based on id.
 }
 \examples{

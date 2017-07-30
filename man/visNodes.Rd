@@ -146,18 +146,22 @@ visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
 Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
+
 nodes <- data.frame(id = 1:3)
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges) \%>\% visNodes(shape = "square", title = "I'm a node", borderWidth = 3)
+visNetwork(nodes, edges) \%>\% 
+  visNodes(shape = "square", title = "I'm a node", borderWidth = 3)
 
-visNetwork(nodes, edges) \%>\% visNodes(color = list(hover = "green")) \%>\%
- visInteraction(hover = TRUE)
+visNetwork(nodes, edges) \%>\% 
+  visNodes(color = list(hover = "green")) \%>\%
+  visInteraction(hover = TRUE)
 
 visNetwork(nodes, edges) \%>\% visNodes(color = "red")
 
-visNetwork(nodes, edges) \%>\% visNodes(color = list(background = "red", border = "blue", 
- highlight = "yellow"))
+visNetwork(nodes, edges) \%>\% 
+  visNodes(color = list(background = "red", border = "blue", 
+    highlight = "yellow"))
 
 visNetwork(nodes, edges) \%>\% visNodes(shadow = TRUE)
 

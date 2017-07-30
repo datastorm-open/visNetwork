@@ -69,7 +69,7 @@ visNetwork(nodes, edges) \%>\%
 visInteraction(tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;
  font-family: cursive;font-size:18px;font-color:purple;background-color: red;')
 
-#frozen network
+# frozen network
 visNetwork(nodes, edges) \%>\%
  visInteraction(dragNodes = FALSE, dragView = FALSE, zoomView = FALSE)
 
@@ -79,7 +79,7 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\%
  visInteraction(hover = TRUE)
  
-#navigation button  
+# navigation button  
 visNetwork(nodes, edges) \%>\%
  visInteraction(navigationButtons = TRUE)
  

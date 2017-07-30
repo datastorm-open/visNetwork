@@ -30,18 +30,13 @@
 #'   visGroups(groupname = "B", color = "lightblue") %>%
 #'   visLegend()
 #'   
-#' # default, on group, adjust width + change position
+#' # on group, adding options
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "red") %>%
 #'   visGroups(groupname = "B", color = "lightblue") %>%
-#'   visLegend(width = 0.05, position = "right")
-#' 
-#' # add a title
-#' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "red") %>%
-#'   visGroups(groupname = "B", color = "lightblue") %>%
-#'   visLegend(main = "Legend")
+#'   visLegend(width = 0.05, position = "right", main = "Legend")
 #'   
+#' # css on main   
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "red") %>%
 #'   visGroups(groupname = "B", color = "lightblue") %>%
@@ -51,21 +46,16 @@
 #' # passing custom nodes and/or edges
 #' lnodes <- data.frame(label = c("Group A", "Group B"), 
 #'  shape = c( "ellipse"), color = c("red", "lightblue"),
-#'  title = "Informations", id = 1:2) 
+#'  title = "Informations") 
 #'    
-#' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "red") %>%
-#'   visGroups(groupname = "B", color = "lightblue") %>%
-#'   visLegend(addNodes = lnodes, useGroups = FALSE)
-#'   
 #' ledges <- data.frame(color = c("lightblue", "red"), 
 #'  label = c("reverse", "depends"), arrows =c("to", "from"), 
 #'  font.align = "top") 
 #'  
 #' visNetwork(nodes, edges) %>%
-#'   visGroups(groupname = "A", color = "lightblue") %>%
-#'   visGroups(groupname = "B", color = "red") %>%
-#'   visLegend(addEdges = ledges)   
+#'   visGroups(groupname = "A", color = "red") %>%
+#'   visGroups(groupname = "B", color = "lightblue") %>%
+#'   visLegend(addNodes = lnodes, addEdges = ledges, useGroups = FALSE)
 #'    
 #' # divide in columns
 #' visNetwork(nodes, edges) %>%

@@ -11,6 +11,7 @@
 #' @examples
 #'
 #' \donrun{
+#' 
 #' nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
 #' edges <- data.frame(from = c(1,2), to = c(1,3))
 #' 
@@ -19,8 +20,7 @@
 #'  visConfigure(enabled = TRUE, filter = "interaction")
 #'  
 #' # shiny
-#' 
-#'   # Define UI
+#' # Define UI
 #' ui <- shinyUI(fluidPage(
 #'   fluidRow(column(4, div(id = "config")), 
 #'            column(8,visNetworkOutput("network"))
@@ -44,7 +44,8 @@
 #' # Run the application 
 #' shinyApp(ui = ui, server = server)  
 #'  
-# }
+#'}
+#' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,

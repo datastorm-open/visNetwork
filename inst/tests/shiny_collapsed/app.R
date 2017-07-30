@@ -16,7 +16,9 @@ ui <- shinyUI(fluidPage(
   actionButton("goUC", "uncollapse!"),
   actionButton("goRm", "remove event!"),
   actionButton("goAdd", "add event!"),
-  visNetworkOutput("distPlot")
+  fluidRow(column(4, div(id = "conf")), 
+           column(8,   visNetworkOutput("distPlot")))
+
       
 ))
 
@@ -31,7 +33,8 @@ server <- shinyServer(function(input, output) {
      edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
                          to = trunc(runif(15)*(15-1))+1)
 
-     visNetwork(nodes, edges) %>% visOptions(highlightNearest = T, collapse = T) %>% visEdges(arrows = "to")
+     visNetwork(nodes, edges) %>% visOptions(highlightNearest = T, collapse = T) %>% 
+       visEdges(arrows = "to") %>% visConfigure(container = "conf")
      
    })
    

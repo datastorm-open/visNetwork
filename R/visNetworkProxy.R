@@ -42,9 +42,8 @@
 #'  \item{and also...}{ : \code{\link{visGetSelectedEdges}}, \code{\link{visGetSelectedNodes}}, \code{\link{visGetSelection}},
 #'     \code{\link{visGetConnectedEdges}}, \code{\link{visGetConnectedNodes}}, \code{\link{visRedraw}}, \code{\link{visStabilize}}, 
 #'     \code{\link{visSetData}}, \code{\link{visGetPositions}}, \code{\link{visMoveNode}}, \code{\link{visUnselectAll}},
-#'     \code{\link{visGetScale}}, \code{\link{visGetBoundingBox}}, \code{\link{visGetViewPosition}}}
+#'     \code{\link{visGetScale}}, \code{\link{visGetBoundingBox}}, \code{\link{visGetViewPosition}},\code{\link{visSetOptions}}}
 #'}
-#' 
 #' 
 #' @examples 
 #'\dontrun{

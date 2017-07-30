@@ -1,4 +1,4 @@
-#' Network visualization collapse /uncollapsed method
+#' Network visualization collapse / uncollapsed method
 #'
 #'@param graph : a \code{\link{visNetworkProxy}}  object
 #'@param nodes : a vector of nodes id. NULL for \code{visUncollapse} for open all collapsed nodes
@@ -19,7 +19,6 @@
 #'shiny::runApp(system.file("shiny", package = "visNetwork"))
 #'
 #'# You can also disable / enabled the double-click event opening cluster
-#'
 #'visNetworkProxy("network_id") %>% visEvents(type = "off", doubleClick = "networkOpenCluster")
 #'visNetworkProxy("network_id") %>% visEvents(type = "on", doubleClick = "networkOpenCluster")
 #'

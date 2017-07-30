@@ -1,12 +1,12 @@
-#' Function to update nodes information, with shiny only.
+#' Function to update the information of nodes, with shiny only.
 #'
-#' Function to update nodes information, with shiny only. You can also use this function passing new nodes.
+#' Function to update the information of nodes, with shiny only. You can also use this function passing new nodes.
 #' The link is based on id.
 #' 
 #'@param graph : a \code{\link{visNetworkProxy}}  object
-#'@param nodes : data.frame with nodes informations. Needed at least column "id". See \link{visNodes} 
+#'@param nodes : data.frame with the information of nodes. Needed at least column "id". See \link{visNodes} 
 #' \itemize{
-#'  \item{"id"}{ : id of the node, needed in edges information and for update nodes}
+#'  \item{"id"}{ : id of the node, needed in the definition of edges and for update nodes}
 #'  \item{"label"}{ : label of the node}
 #'  \item{"group"}{ : group of the node. Groups can be configure with \link{visGroups}}
 #'  \item{"value"}{ : size of the node}
