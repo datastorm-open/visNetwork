@@ -18,42 +18,13 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 * #### Add support for edges color/label using ``highlightNearest/selectedBy``
 
+* ### New ``collapse`` features (``?visOptions``)
+
 * #### New proxy methods : ``visGetBoundingBox``, ``visGetConnectedEdges``, ``visGetConnectedNodes``, ``visGetEdges``, ``visGetNodes``, ``visGetPositions``, ``visGetScale``, ``visGetSelectedEdges``, ``visGetSelectedNodes``, ``visGetSelection``, ``visGetViewPosition``
 
 * #### init ``visTree``, to visualize rpart object, ``visTreeEditor`` and ``visTreeModuleServer``
 
 ![alt text](https://github.com/datastorm-open/visNetwork/blob/master/inst/img/tree_example.png)
-
-
-## ``1.0.3``
-
-* #### New ``hideColor`` argument to control hidden nodes & edges using ``highlightNearest/selectedBy``
-
-* #### Add ``pdf export``
-
-* #### New ``visNearestNodes`` function
-
-* #### Store positions of nodes before rendering with ``visGetNodes``
-
-* #### Add delay on tooltip popup (so you can click on a link...!)
-
-## ``1.0.2``
-
-* #### Update network in shiny using  ````visNetworkProxy```` (lot of functionalities,  ````?visNetworkProxy````)
-
-* #### Enabled ``highlightNearest`` & ``selectedBy`` with ``icons`` and / or ``image``
-
-* #### Enabled hover for``highlightNearest`` and fix/improve performance with high ``degree``
-
-* ####   multiple groups selection / title to network & legend / ionicons icons possibilities. See ?addIonicons
-
-* #### new function ````visSave```` to save as html and ````visExport```` to save as png/jpeg (shiny and browser only)
-
-* #### Better performance with ````visIgraphLayout````
-
-* #### have a look to ````visIgraph```` to plot visNetwork object from igraph object (Little bit experimental)
-
-* #### Add custom legend with ````visLegend````
 
 # Example
 
