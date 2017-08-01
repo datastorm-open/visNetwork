@@ -1,4 +1,4 @@
-visNetwork 1.0.4
+visNetwork 2.0.0
 --------------------------------------------------------------------------------
 
   * add support for edges color/label using highlight/selectedBy

@@ -434,6 +434,22 @@ visTree <- function(object,
     edges <- NULL
   }
   
+  # ------------------------------
+  # Coordinate
+  # if(coordinates){
+    # rpartcoParams <- list(uniform = TRUE, branch = 0.2, nspace = 0.2, minbranch = 0.3)
+    # Xp <- rpart:::rpartco(object, rpartcoParams)$x
+    # nodes$x <- Xp * 100
+    # nodes$y <- nodes$level * 150
+    # nodes$y <- nodes$y - mean(nodes$y)
+    # nodes$x <- nodes$x - mean(nodes$x)
+    # 
+    # intervalPositionX <- max(nodes$x)
+    # CorrectPosition <- legendWidth*intervalPositionX
+    # nodes$x <- nodes$x + CorrectPosition / 8
+    # nodes$x <- nodes$x  / (1 + legendWidth)
+  # }
+
   tree <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main,
                      submain = submain, footer = footer) %>% 
     visHierarchicalLayout(direction = direction) %>%
@@ -490,8 +506,6 @@ visTree <- function(object,
 #                        background: -moz-linear-gradient(colorMax,',',colorMin,');
 #                        background: linear-gradient(colorMax,',',colorMin,');">Test gradient color</div>'
 # ,
-
-
 
 .parent <- function(x) {
   if (x[1] != 1) {
@@ -687,19 +701,19 @@ visTree <- function(object,
 visTreeEditor <- function(data, ...){
 
   if(!requireNamespace("shiny")){
-    stop("visTreeModule require 'shiny' package")
+    stop("visTreeEditor require 'shiny' package")
   } else {
     if(packageVersion("shiny") < '1.0.0'){
-      stop("visTreeModule require 'shiny' 1.0.0 or more")
+      stop("visTreeEditor require 'shiny' 1.0.0 or more")
     }
   }
   
   if(!requireNamespace("colourpicker")){
-    stop("visTreeModule require 'colourpicker' package")
+    stop("visTreeEditor require 'colourpicker' package")
   }
   
   if(!requireNamespace("shinyWidgets")){
-    stop("visTreeModule require 'shinyWidgets' package")
+    stop("visTreeEditor require 'shinyWidgets' package")
   }
   
   if(!requireNamespace("rpart")){
