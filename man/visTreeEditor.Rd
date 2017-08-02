@@ -15,6 +15,7 @@ visTreeEditor(data, ...)
 Packages : shiny, rpart, colourpicker, shinyWidgets
 }
 \examples{
+
 \dontrun{
 
 net <- visTreeEditor(data = iris)
@@ -23,4 +24,10 @@ net
 
 }
 
+}
+\references{
+See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+}
+\seealso{
+\link{visTree}, \link{visTreeModuleServer}, \link{visNetworkEditor}
 }

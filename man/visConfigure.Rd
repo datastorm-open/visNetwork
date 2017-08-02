@@ -28,35 +28,15 @@ Network visualization configure options. For full documentation, have a look at 
 nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-# don't look in RStudio viewer
 visNetwork(nodes, edges) \%>\%
  visConfigure(enabled = TRUE, filter = "interaction")
  
-# shiny
-# Define UI
-ui <- shinyUI(fluidPage(
-  fluidRow(column(4, div(id = "config")), 
-           column(8,visNetworkOutput("network"))
-  )
-))
+# using visNetworkEditor
+custom_network <- visNetworkEditor(object = network)
+custom_network
 
-# Define SERVER
-server <- shinyServer(function(input, output) {
-  
-  output$network <- renderVisNetwork({
-    nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
-                        group = sample(LETTERS[1:3], 15, replace = TRUE))
-    
-    edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
-                        to = trunc(runif(15)*(15-1))+1)
-    
-    visNetwork(nodes, edges) \%>\% visConfigure(enabled = TRUE, container = "config")
-  })
-})
-
-# Run the application 
-shinyApp(ui = ui, server = server)  
- 
+custom_network <- visNetworkEditor(object = network, filter = "nodes,edges")
+custom_network
 }
 
 }
@@ -64,8 +44,5 @@ shinyApp(ui = ui, server = server)
 See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+\link{visConfigure}, \link{visTree}, \link{visNetworkEditor}
 }
