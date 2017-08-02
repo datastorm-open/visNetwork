@@ -190,7 +190,8 @@
 #' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
+#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} for play with network using shiny,
+#'\link{visTree} to visualize CART rpart tree, \link{visNetworkEditor} to edit your network, 
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #' @import htmlwidgets

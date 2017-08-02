@@ -1439,6 +1439,17 @@ if (HTMLWidgets.shinyMode){
       }
   });
   
+  // get view position
+  Shiny.addCustomMessageHandler('visShinyGetOptionsFromConfigurator', function(data){
+      // get container id
+      var el = document.getElementById("graph"+data.id);
+      if(el){
+        var network = el.chart;
+		    // return  in shiny
+        Shiny.onInputChange(data.input, network.getOptionsFromConfigurator());
+      }
+  });
+  
   // Redraw the network
   Shiny.addCustomMessageHandler('visShinyRedraw', function(data){
       // get container id
