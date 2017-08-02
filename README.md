@@ -14,6 +14,10 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
+## ``2.0.2`` dev on github
+
+  * #### New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
+  
 ## ``2.0.0`` available on CRAN
 
 * ### Add support for edges color/label using ``highlightNearest/selectedBy``
