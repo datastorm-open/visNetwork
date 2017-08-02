@@ -2257,7 +2257,7 @@ HTMLWidgets.widget({
           dragNodes: false,
           dragView: false,
           selectable: false,
-          zoomView: false
+          zoomView: x.legend.zoom
         },
         physics:{
           stabilization: false

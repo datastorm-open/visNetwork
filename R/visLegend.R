@@ -17,6 +17,7 @@
 #' @param ncol : Divide legend in multiple columns ? Defaut to 1 
 #' @param stepX : Experimental. Can use to control space between nodes. Defaut to 100
 #' @param stepY : Experimental. Can use to control space between nodes. Defaut to 100
+#' @param zoom : Boolean. Enable zoom on legend ? Defaut to TRUE
 #' 
 #' @examples
 #'
@@ -110,7 +111,8 @@ visLegend <- function(graph,
                       main = NULL,
                       ncol = 1, 
                       stepX = 100, 
-                      stepY = 100){
+                      stepY = 100, 
+                      zoom = TRUE){
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     stop("Can't use visLegend with visNetworkProxy object")
@@ -144,6 +146,8 @@ visLegend <- function(graph,
     
     legend$stepX <- stepX
     legend$stepY <- stepY
+    
+    legend$zoom <- zoom
     
     if(!is.null(addEdges)){
       legend$edges <- addEdges

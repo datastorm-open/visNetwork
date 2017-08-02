@@ -6,7 +6,7 @@
 \usage{
 visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
   addEdges = NULL, width = 0.2, position = "left", main = NULL,
-  ncol = 1, stepX = 100, stepY = 100)
+  ncol = 1, stepX = 100, stepY = 100, zoom = TRUE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -34,6 +34,8 @@ visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
 \item{stepX}{: Experimental. Can use to control space between nodes. Defaut to 100}
 
 \item{stepY}{: Experimental. Can use to control space between nodes. Defaut to 100}
+
+\item{zoom}{: Boolean. Enable zoom on legend ? Defaut to TRUE}
 }
 \description{
 Add a legend on a visNetwork object
