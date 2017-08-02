@@ -46,6 +46,7 @@
 #'}
 #' 
 #' @examples 
+#' 
 #'\dontrun{
 #'
 #' # have a look to : 
@@ -53,7 +54,9 @@
 #'
 #'}
 #' @export
+#' 
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' 
 visNetworkOutput <- function(outputId, width = '100%', height = '400px'){
   shinyWidgetOutput(outputId, 'visNetwork', width, height, package = 'visNetwork')
 }

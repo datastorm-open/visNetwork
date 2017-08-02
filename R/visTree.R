@@ -1,6 +1,6 @@
 #' Visualize Recursive Partitioning and Regression Trees (rpart object)
 #' 
-#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \code{visTreeEditor} to edity and get back network, or to \code{visTreeModuleServer} to use custom tree module in R
+#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param main For add a title. See \link{visNetwork}
@@ -49,7 +49,10 @@
 #' 
 #' @return a visNetwork object 
 #' 
-#' @seealso \link{visTreeEditor}, \link{visTreeModuleServer}
+#' @seealso \link{visTreeEditor}, \link{visTreeModuleServer}, \link{visNetworkEditor}
+#'
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'
 #' @examples
 #' 
 #' \dontrun{
@@ -685,6 +688,7 @@ visTree <- function(object,
 #' @param  ...  all arguments except \code{object} present in \link{visTree}
 #' 
 #' @examples
+#' 
 #' \dontrun{
 #' 
 #' net <- visTreeEditor(data = iris)
@@ -697,7 +701,10 @@ visTree <- function(object,
 #' 
 #' @importFrom  utils packageVersion
 #' 
-#' 
+#' @seealso \link{visTree}, \link{visTreeModuleServer}, \link{visNetworkEditor}
+#'
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'
 visTreeEditor <- function(data, ...){
 
   if(!requireNamespace("shiny")){

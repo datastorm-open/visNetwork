@@ -116,7 +116,7 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 \item{quitButton}{\code{boolean}, add a button to quit module and get back network in R ?}
 }
 \description{
-Packages : shiny, rpart, colourpicker, shinyWidgets
+Needed packages : shiny, rpart, colourpicker, shinyWidgets
 }
 \examples{
 \dontrun{
@@ -161,4 +161,8 @@ server = function(input, output, session) {
   shiny::callModule(visTreeModuleServer, "id2", data = shiny::reactive(rpart(iris)))
 })
 }
+
+}
+\references{
+See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 }

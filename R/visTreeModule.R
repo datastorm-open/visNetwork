@@ -1,6 +1,6 @@
 #' Module shiny for visualize and customize a \code{rpart} tree
 #'
-#' Packages : shiny, rpart, colourpicker, shinyWidgets
+#' Needed packages : shiny, rpart, colourpicker, shinyWidgets
 #' 
 #' @param  id \code{character} id of module, linked to  \link{visTreeModuleServer}
 #' @param  rpartParams \code{boolean}, add tabs for rpart parameters (in case of \code{data.frame} in input)
@@ -99,13 +99,15 @@
 #'   shiny::callModule(visTreeModuleServer, "id2", data = shiny::reactive(rpart(iris)))
 #' })
 #' }
-#' @name visNetwork-treeModule
 #' 
+#' @name visNetwork-treeModule
 #' 
 #' @export
 #' 
 #' @importFrom  stats as.formula
-#' 
+#'
+#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'
 visTreeModuleServer <- function(input, output, session, data,
                                 main = "",
                                 submain = "",

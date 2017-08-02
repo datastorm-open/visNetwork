@@ -100,7 +100,7 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 a visNetwork object
 }
 \description{
-Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \code{visTreeEditor} to edity and get back network, or to \code{visTreeModuleServer} to use custom tree module in R
+Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
 }
 \examples{
 
@@ -151,6 +151,9 @@ visTree(res, colorEdges = "#000099",
 }
 
 }
+\references{
+See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+}
 \seealso{
-\link{visTreeEditor}, \link{visTreeModuleServer}
+\link{visTreeEditor}, \link{visTreeModuleServer}, \link{visNetworkEditor}
 }

@@ -65,6 +65,7 @@ With \code{visNetworkProxy}, you can update your network and use various methods
 }
 }
 \examples{
+
 \dontrun{
 
 # have a look to : 
