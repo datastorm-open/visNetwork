@@ -2636,6 +2636,7 @@ HTMLWidgets.widget({
     
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
+    Shiny.onInputChange(el.id + '_initialized', true);
     
     //*************************
     //add values to idselection

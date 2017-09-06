@@ -16,9 +16,11 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 ## ``2.0.2`` dev on github
 
-  * #### New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
-  * #### Add ``zoom`` to ``visLegend``
-  * #### to vis.js 4.20.1
+  * ### New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
+  * ### Add ``zoom`` to ``visLegend``
+  * ### to vis.js 4.20.1
+  * ### Add ``input$network_initialized`` 
+  
 ## ``2.0.0`` available on CRAN
 
 * ### Add support for edges color/label using ``highlightNearest/selectedBy``
