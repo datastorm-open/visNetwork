@@ -1,6 +1,6 @@
 dependencies:
   - name: vis
-    version: 4.20.0
+    version: 4.20.1
     src: htmlwidgets/lib/vis
     script: vis.min.js
     stylesheet: vis.css
