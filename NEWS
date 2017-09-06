@@ -2,6 +2,7 @@ visNetwork 2.0.2 (dev)
 --------------------------------------------------------------------------------
 
   * New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
+  * Add ``zoom`` to ``visLegend``
   
 visNetwork 2.0.0
 --------------------------------------------------------------------------------

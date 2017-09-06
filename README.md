@@ -17,6 +17,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 ## ``2.0.2`` dev on github
 
   * #### New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
+  * #### Add ``zoom`` to ``visLegend``
   
 ## ``2.0.0`` available on CRAN
 
