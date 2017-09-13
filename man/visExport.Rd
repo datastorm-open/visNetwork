@@ -17,7 +17,7 @@ visExport(graph, type = "png", name = "network",
 
 \item{label}{: Label on button, default to "Export as png/jpeg/pdf"}
 
-\item{background}{: background color, default to white (#fff)}
+\item{background}{: background color, default to white (#fff). Work only if network background is transparent.}
 
 \item{float}{: button postion, default to "right"}
 

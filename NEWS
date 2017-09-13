@@ -5,6 +5,7 @@ visNetwork 2.0.2 (dev)
   * Add ``zoom`` to ``visLegend``
   * to vis.js 4.20.1
   * Add ``input$network_initialized`` 
+  * Add ``background`` to ``visNetwork``
   
 visNetwork 2.0.0
 --------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
   * ### Add ``zoom`` to ``visLegend``
   * ### to vis.js 4.20.1
   * ### Add ``input$network_initialized`` 
+  * ### Add ``background`` to ``visNetwork``
   
 ## ``2.0.0`` available on CRAN
 

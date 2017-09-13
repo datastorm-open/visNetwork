@@ -1953,59 +1953,65 @@ HTMLWidgets.widget({
     // legend control
     var addlegend = false;
 
+    // main div el.id
+    var el_id = document.getElementById(el.id);
+    
+    // test background
+    el_id.style.background = x.background;
+    
     // clear el.id (for shiny...)
-    document.getElementById(el.id).innerHTML = "";  
+    el_id.innerHTML = "";  
     
     // shared control with proxy function (is there a better way ?)
-    document.getElementById(el.id).highlightActive = false;
-    document.getElementById(el.id).selectActive = false;
-    document.getElementById(el.id).idselection = x.idselection.enabled;
-    document.getElementById(el.id).byselection = x.byselection.enabled;
+    el_id.highlightActive = false;
+    el_id.selectActive = false;
+    el_id.idselection = x.idselection.enabled;
+    el_id.byselection = x.byselection.enabled;
     
     if(x.highlight !== undefined){
-      document.getElementById(el.id).highlight = x.highlight.enabled;
-      document.getElementById(el.id).highlightColor = x.highlight.hideColor;
-      document.getElementById(el.id).hoverNearest = x.highlight.hoverNearest;
-      document.getElementById(el.id).degree = x.highlight.degree;
-      document.getElementById(el.id).highlightAlgorithm = x.highlight.algorithm;
-      document.getElementById(el.id).highlightLabelOnly = x.highlight.labelOnly;
+      el_id.highlight = x.highlight.enabled;
+      el_id.highlightColor = x.highlight.hideColor;
+      el_id.hoverNearest = x.highlight.hoverNearest;
+      el_id.degree = x.highlight.degree;
+      el_id.highlightAlgorithm = x.highlight.algorithm;
+      el_id.highlightLabelOnly = x.highlight.labelOnly;
     } else {
-      document.getElementById(el.id).highlight = false;
-      document.getElementById(el.id).hoverNearest = false;
-      document.getElementById(el.id).highlightColor = 'rgba(200,200,200,0.5)';
-      document.getElementById(el.id).degree = 1;
-      document.getElementById(el.id).highlightAlgorithm = "all";
-      document.getElementById(el.id).highlightLabelOnly = true;
+      el_id.highlight = false;
+      el_id.hoverNearest = false;
+      el_id.highlightColor = 'rgba(200,200,200,0.5)';
+      el_id.degree = 1;
+      el_id.highlightAlgorithm = "all";
+      el_id.highlightLabelOnly = true;
     }
 
     if(x.byselection.enabled){
-      document.getElementById(el.id).byselectionColor = x.byselection.hideColor;
+      el_id.byselectionColor = x.byselection.hideColor;
     } else {
-      document.getElementById(el.id).byselectionColor = 'rgba(200,200,200,0.5)';
+      el_id.byselectionColor = 'rgba(200,200,200,0.5)';
     }
     
     if(x.idselection.enabled){
-      document.getElementById(el.id).idselection_useLabels = true;
+      el_id.idselection_useLabels = true;
     } else {
-      document.getElementById(el.id).idselection_useLabels = false;
+      el_id.idselection_useLabels = false;
     }
     
     if(x.collapse !== undefined){
       if(x.collapse.enabled){
-        document.getElementById(el.id).collapse = true;
-        document.getElementById(el.id).collapseFit = x.collapse.fit;
-        document.getElementById(el.id).collapseResetHighlight = x.collapse.resetHighlight;
-        document.getElementById(el.id).clusterOptions = x.collapse.clusterOptions;
+        el_id.collapse = true;
+        el_id.collapseFit = x.collapse.fit;
+        el_id.collapseResetHighlight = x.collapse.resetHighlight;
+        el_id.clusterOptions = x.collapse.clusterOptions;
       }
     } else {
-      document.getElementById(el.id).collapse = false;
-      document.getElementById(el.id).collapseFit = false;
-      document.getElementById(el.id).collapseResetHighlight = false;
-      document.getElementById(el.id).clusterOptions = undefined;
+      el_id.collapse = false;
+      el_id.collapseFit = false;
+      el_id.collapseResetHighlight = false;
+      el_id.clusterOptions = undefined;
     }
     
     if(x.tree !== undefined){
-      document.getElementById(el.id).tree = x.tree;
+      el_id.tree = x.tree;
     }
 
     // configure
@@ -2031,10 +2037,10 @@ HTMLWidgets.widget({
     div_title.id = "title"+el.id;
     div_title.setAttribute('style','font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;');
     div_title.style.display = 'none';
-    document.getElementById(el.id).appendChild(div_title);  
+    el_id.appendChild(div_title);  
     if(x.main !== null){
       div_title.innerHTML = x.main.text;
-      div_title.setAttribute('style',  x.main.style);
+      div_title.setAttribute('style',  x.main.style + ";background-color: inherit;");
       div_title.style.display = 'block';
     }
     
@@ -2045,10 +2051,10 @@ HTMLWidgets.widget({
     div_subtitle.id = "subtitle"+el.id;
     div_subtitle.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;');
     div_subtitle.style.display = 'none';
-    document.getElementById(el.id).appendChild(div_subtitle); 
+    el_id.appendChild(div_subtitle); 
     if(x.submain !== null){
       div_subtitle.innerHTML = x.submain.text;
-      div_subtitle.setAttribute('style',  x.submain.style);
+      div_subtitle.setAttribute('style',  x.submain.style + ";background-color: inherit;");
       div_title.style.display = 'block';
     }
  
@@ -2061,8 +2067,8 @@ HTMLWidgets.widget({
       }else{
         instance.network.selectNodes([id]);
       }
-      if(document.getElementById(el.id).highlight){
-        neighbourhoodHighlight(instance.network.getSelection().nodes, "click", document.getElementById(el.id).highlightAlgorithm);
+      if(el_id.highlight){
+        neighbourhoodHighlight(instance.network.getSelection().nodes, "click", el_id.highlightAlgorithm);
       }else{
         if(init){
           selectNode = document.getElementById('nodeSelect'+el.id);
@@ -2080,7 +2086,7 @@ HTMLWidgets.widget({
       if (window.Shiny){
         changeInput('selected', document.getElementById("nodeSelect"+el.id).value);
       }
-      if(document.getElementById(el.id).byselection){
+      if(el_id.byselection){
         resetList('selectedBy', el.id, 'selectedBy');
       }
     }
@@ -2091,7 +2097,7 @@ HTMLWidgets.widget({
     idList.setAttribute('class', 'dropdown');
     idList.style.display = 'none';
     idList.id = "nodeSelect"+el.id;
-    document.getElementById(el.id).appendChild(idList);
+    el_id.appendChild(idList);
       
     idList.onchange =  function(){
       if(instance.network){
@@ -2101,7 +2107,7 @@ HTMLWidgets.widget({
       
     var hr = document.createElement("hr");
     hr.setAttribute('style', 'height:0px; visibility:hidden; margin-bottom:-1px;');
-    document.getElementById(el.id).appendChild(hr);  
+    el_id.appendChild(hr);  
       
     //*************************
     //selectedBy
@@ -2113,7 +2119,7 @@ HTMLWidgets.widget({
         if (window.Shiny){
           changeInput('selectedBy', value);
         }
-        if(document.getElementById(el.id).idselection){
+        if(el_id.idselection){
           resetList('nodeSelect', el.id, 'selected');
         }
     }
@@ -2125,17 +2131,17 @@ HTMLWidgets.widget({
     byList.setAttribute('class', 'dropdown');
     byList.style.display = 'none';
     byList.id = "selectedBy"+el.id;
-    document.getElementById(el.id).appendChild(byList);
+    el_id.appendChild(byList);
 
     byList.onchange =  function(){
       onByChange(document.getElementById("selectedBy"+el.id).value);
     };
       
-    if(document.getElementById(el.id).byselection){
+    if(el_id.byselection){
 
-      document.getElementById(el.id).byselection_values = x.byselection.values;
-      document.getElementById(el.id).byselection_variable = x.byselection.variable;
-      document.getElementById(el.id).byselection_multiple = x.byselection.multiple;
+      el_id.byselection_values = x.byselection.values;
+      el_id.byselection_variable = x.byselection.variable;
+      el_id.byselection_multiple = x.byselection.multiple;
       var option2;
       
       //Create and append select list
@@ -2193,8 +2199,8 @@ HTMLWidgets.widget({
     // divide page
     var maindiv  = document.createElement('div');
     maindiv.id = "maindiv"+el.id;
-    maindiv.setAttribute('style', 'height:95%');
-    document.getElementById(el.id).appendChild(maindiv);
+    maindiv.setAttribute('style', 'height:95%;background-color: inherit;');
+    el_id.appendChild(maindiv);
     
     var graph = document.createElement('div');
     graph.id = "graph"+el.id;
@@ -2234,9 +2240,9 @@ HTMLWidgets.widget({
       }
       
       document.getElementById("maindiv"+el.id).appendChild(legend);
-      graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%');
+      graph.setAttribute('style', 'float:' + pos2 + '; width:'+(100-legendwidth)+'%;height:100%;background-color: inherit;');
     }else{
-      graph.setAttribute('style', 'float:right; width:100%;height:100%');
+      graph.setAttribute('style', 'float:right; width:100%;height:100%;background-color: inherit;');
     }
     
     document.getElementById("maindiv"+el.id).appendChild(graph);
@@ -2494,14 +2500,14 @@ HTMLWidgets.widget({
           }
         } else {
           // current div not visibled....
-          igclientWidth = parseInt(document.getElementById(el.id).style.width);
+          igclientWidth = parseInt(el_id.style.width);
           if(igclientWidth !== 0){
             var factor = igclientWidth / 1890;
             zoomLevel = zoomLevel/factor;
             var scalex = (igclientWidth / 2) * zoomLevel;
             var scaley = scalex;
             if(x.igraphlayout.type !== "square"){
-              scaley = (parseInt(document.getElementById(el.id).style.height) / 2) * zoomLevel;
+              scaley = (parseInt(el_id.style.height) / 2) * zoomLevel;
             }
           }
         }
@@ -2575,7 +2581,7 @@ HTMLWidgets.widget({
       <input type="button" value="save" id="saveButton"></button>\
       <input type="button" value="cancel" id="cancelButton"></button>';
 
-      document.getElementById(el.id).appendChild(div);
+      el_id.appendChild(div);
 
       options.manipulation.addNode = function(data, callback) {
         document.getElementById('operation').innerHTML = "Add Node";
@@ -2644,7 +2650,7 @@ HTMLWidgets.widget({
     //add values to idselection
     //*************************
     
-    if(document.getElementById(el.id).idselection){  
+    if(el_id.idselection){  
       var selectList = document.getElementById("nodeSelect"+el.id)
       setNodeIdList(selectList, x.idselection, nodes)
       
@@ -2800,23 +2806,23 @@ HTMLWidgets.widget({
       var allNodes = nodes.get({returnType:"Object"});
        
       // first resetEdges
-      resetAllEdges(edges, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network);
+      resetAllEdges(edges, el_id.byselectionColor, el_id.highlightColor, instance.network);
       var connectedNodes = [];  
       
       // get variable
-      var sel = document.getElementById(el.id).byselection_variable;
+      var sel = el_id.byselection_variable;
       // need to make an update?
-      var update = !(document.getElementById(el.id).selectActive === false && value === "");
+      var update = !(el_id.selectActive === false && value === "");
 
       if (value !== "") {
         var updateArray = [];
-        document.getElementById(el.id).selectActive = true;
+        el_id.selectActive = true;
         
         // mark all nodes as hard to read.
         for (var nodeId in allNodes) {
           var value_in = false;
           // unique selection
-          if(document.getElementById(el.id).byselection_multiple === false){
+          if(el_id.byselection_multiple === false){
             if(sel == "label"){
               value_in = ((allNodes[nodeId]["label"] + "") === value) || ((allNodes[nodeId]["hiddenLabel"] + "") === value);
             }else if(sel == "color"){
@@ -2844,7 +2850,7 @@ HTMLWidgets.widget({
             }
           }
           if(value_in === false){ // not in selection, so as hard to read
-            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network, "node");
+            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, el_id.byselectionColor, el_id.highlightColor, instance.network, "node");
           } else { // in selection, so reset if needed
             connectedNodes = connectedNodes.concat(allNodes[nodeId].id);
             resetOneNode(allNodes[nodeId], instance.network.groups, options, instance.network);
@@ -2868,17 +2874,17 @@ HTMLWidgets.widget({
 
           // all in degree nodes get their own color and their label back
           for (i = 0; i < edgesHardToRead.length; i++) {
-            edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).byselectionColor, document.getElementById(el.id).highlightColor, instance.network, type = "edge")
+            edgeAsHardToRead(edgesHardToRead[i], el_id.byselectionColor, el_id.highlightColor, instance.network, type = "edge")
           }
           edges.update(edgesHardToRead);
             
           nodes.update(updateArray);
         }
       }
-      else if (document.getElementById(el.id).selectActive === true) {
+      else if (el_id.selectActive === true) {
         //reset nodes
         resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
-        document.getElementById(el.id).selectActive = false
+        el_id.selectActive = false
       }
     } 
   
@@ -2909,12 +2915,12 @@ HTMLWidgets.widget({
       var array_cluster_id;
       
       // update 
-      var update = !(document.getElementById(el.id).highlightActive === false && params.length === 0) | (document.getElementById(el.id).selectActive === true && params.length === 0);
+      var update = !(el_id.highlightActive === false && params.length === 0) | (el_id.selectActive === true && params.length === 0);
 
       if(!(action_type == "hover" && is_clicked)){
         
         // first resetEdges
-        resetAllEdges(edges, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network);
+        resetAllEdges(edges, el_id.highlightColor, el_id.byselectionColor, instance.network);
 
         if (params.length > 0) {
           var is_cluster = instance.network.isCluster(params[0]);
@@ -2927,7 +2933,7 @@ HTMLWidgets.widget({
           }
 
           var updateArray = [];
-          if(document.getElementById(el.id).idselection){
+          if(el_id.idselection){
             selectNode = document.getElementById('nodeSelect'+el.id);
             if(is_cluster === false){
               if(x.idselection.values !== undefined){
@@ -2945,18 +2951,18 @@ HTMLWidgets.widget({
             }
           }
           
-          document.getElementById(el.id).highlightActive = true;
+          el_id.highlightActive = true;
           var i,j;
-          var degrees = document.getElementById(el.id).degree;
+          var degrees = el_id.degree;
           
           // mark all nodes as hard to read.
           for (var nodeId in instance.network.body.nodes) {
             if(instance.network.isCluster(nodeId)){
-              nodeAsHardToRead(instance.network.body.nodes[nodeId], instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, "cluster");
+              nodeAsHardToRead(instance.network.body.nodes[nodeId], instance.network.groups, options, el_id.highlightColor, el_id.byselectionColor, instance.network, "cluster");
             }else {
               var tmp_node = allNodes[nodeId];
               if(tmp_node !== undefined){
-                nodeAsHardToRead(tmp_node, instance.network.groups, options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, "node");
+                nodeAsHardToRead(tmp_node, instance.network.groups, options, el_id.highlightColor, el_id.byselectionColor, instance.network, "node");
                 tmp_node.x = undefined;
                 tmp_node.y = undefined;
               }
@@ -2993,7 +2999,7 @@ HTMLWidgets.widget({
             }
             allConnectedNodes = uniqueArray(allConnectedNodes, true, instance.network);
 
-            if(document.getElementById(el.id).highlightLabelOnly === true){
+            if(el_id.highlightLabelOnly === true){
               // all higher degree nodes get a different color and their label back
               array_cluster_id = [];
               for (i = 0; i < allConnectedNodes.length; i++) {
@@ -3049,7 +3055,7 @@ HTMLWidgets.widget({
             array_cluster_id = [];
             var tmp_cluster_id;
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "edge")
+              edgeAsHardToRead(edgesHardToRead[i], el_id.highlightColor, el_id.byselectionColor, instance.network, type = "edge")
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
@@ -3063,7 +3069,7 @@ HTMLWidgets.widget({
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "cluster")
+                edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, el_id.highlightColor, el_id.byselectionColor, instance.network, type = "cluster")
               }
             }
             edges.update(edgesHardToRead);
@@ -3161,7 +3167,7 @@ HTMLWidgets.widget({
             allConnectedNodes = uniqueArray(allConnectedNodes, true, instance.network).concat(selectedNode);
 
             var nodesWithLabel = [];
-            if(document.getElementById(el.id).highlightLabelOnly === true){
+            if(el_id.highlightLabelOnly === true){
               if(degrees > 0){
                 // nodes to just label
                 for (j = 0; j < currentConnectedToNodes.length; j++) {
@@ -3228,7 +3234,7 @@ HTMLWidgets.widget({
 
             array_cluster_id = [];
             for (i = 0; i < edgesHardToRead.length; i++) {
-              edgeAsHardToRead(edgesHardToRead[i], document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "edge")
+              edgeAsHardToRead(edgesHardToRead[i], el_id.highlightColor, el_id.byselectionColor, instance.network, type = "edge")
               if(have_cluster_nodes){
                 if(indexOf.call(edges_in_clusters, edgesHardToRead[i].id, true) > -1){
                   var tmp_cluster_id = instance.network.clustering.getClusteredEdges(edgesHardToRead[i].id);
@@ -3242,7 +3248,7 @@ HTMLWidgets.widget({
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                 edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, document.getElementById(el.id).highlightColor, document.getElementById(el.id).byselectionColor, instance.network, type = "cluster");
+                 edgeAsHardToRead(instance.network.body.edges[array_cluster_id[i]].options, el_id.highlightColor, el_id.byselectionColor, instance.network, type = "cluster");
               }
             }
             
@@ -3267,26 +3273,26 @@ HTMLWidgets.widget({
           }
         
         }
-        else if (document.getElementById(el.id).highlightActive === true | document.getElementById(el.id).selectActive === true) {
+        else if (el_id.highlightActive === true | el_id.selectActive === true) {
           // reset nodeSelect list if actived
-          if(document.getElementById(el.id).idselection){
+          if(el_id.idselection){
             resetList("nodeSelect", el.id, 'selected');
           }
           //reset nodes
           resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
-          document.getElementById(el.id).highlightActive = false;
+          el_id.highlightActive = false;
           is_clicked = false;
         }
       }
       // reset selectedBy list if actived
-      if(document.getElementById(el.id).byselection){
+      if(el_id.byselection){
         resetList("selectedBy", el.id, 'selectedBy');
       }
     }
     
     function onClickIDSelection(selectedItems) {
       var selectNode;
-      if(document.getElementById(el.id).idselection){
+      if(el_id.idselection){
         if (selectedItems.nodes.length !== 0) {
           selectNode = document.getElementById('nodeSelect'+el.id);
           if(x.idselection.values !== undefined){
@@ -3305,7 +3311,7 @@ HTMLWidgets.widget({
           resetList("nodeSelect", el.id, 'selected');
         } 
       }
-      if(document.getElementById(el.id).byselection){
+      if(el_id.byselection){
         // reset selectedBy list if actived
         if (selectedItems.nodes.length === 0) {
           resetList("selectedBy", el.id, 'selectedBy');
@@ -3316,31 +3322,31 @@ HTMLWidgets.widget({
     
     // shared click function (selectedNodes)
     document.getElementById("graph"+el.id).myclick = function(params){
-        if(document.getElementById(el.id).highlight && x.nodes){
-          neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
-        }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
+        if(el_id.highlight && x.nodes){
+          neighbourhoodHighlight(params.nodes, "click", el_id.highlightAlgorithm);
+        }else if((el_id.idselection || el_id.byselection) && x.nodes){
           onClickIDSelection(params)
         } 
     };
     
     // Set event in relation with highlightNearest      
     instance.network.on("click", function(params){
-        if(document.getElementById(el.id).highlight && x.nodes){
-          neighbourhoodHighlight(params.nodes, "click", document.getElementById(el.id).highlightAlgorithm);
-        }else if((document.getElementById(el.id).idselection || document.getElementById(el.id).byselection) && x.nodes){
+        if(el_id.highlight && x.nodes){
+          neighbourhoodHighlight(params.nodes, "click", el_id.highlightAlgorithm);
+        }else if((el_id.idselection || el_id.byselection) && x.nodes){
           onClickIDSelection(params)
         } 
     });
     
     instance.network.on("hoverNode", function(params){
-      if(document.getElementById(el.id).hoverNearest && x.nodes){
-        neighbourhoodHighlight([params.node], "hover", document.getElementById(el.id).highlightAlgorithm);
+      if(el_id.hoverNearest && x.nodes){
+        neighbourhoodHighlight([params.node], "hover", el_id.highlightAlgorithm);
       } 
     });
 
     instance.network.on("blurNode", function(params){
-      if(document.getElementById(el.id).hoverNearest && x.nodes){
-        neighbourhoodHighlight([], "hover", document.getElementById(el.id).highlightAlgorithm);
+      if(el_id.hoverNearest && x.nodes){
+        neighbourhoodHighlight([], "hover", el_id.highlightAlgorithm);
       }      
     });
     
@@ -3348,13 +3354,13 @@ HTMLWidgets.widget({
     //collapse
     //*************************
     instance.network.on("doubleClick", function(params){
-      if(document.getElementById(el.id).collapse){
-        collapsedNetwork(params.nodes, document.getElementById(el.id).collapseFit, document.getElementById(el.id).collapseResetHighlight, document.getElementById(el.id).clusterOptions, 
-        document.getElementById(el.id).tree, instance.network, el.id) 
+      if(el_id.collapse){
+        collapsedNetwork(params.nodes, el_id.collapseFit, el_id.collapseResetHighlight, el_id.clusterOptions, 
+        el_id.tree, instance.network, el.id) 
       }
     }); 
     
-    if(document.getElementById(el.id).collapse){
+    if(el_id.collapse){
       instance.network.on("doubleClick", networkOpenCluster);
     }
     
@@ -3363,12 +3369,12 @@ HTMLWidgets.widget({
     //*************************
     var div_footer = document.createElement('div');
     div_footer.id = "footer"+el.id;
-    div_footer.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;');
+    div_footer.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;background-color: inherit;');
     div_footer.style.display = 'none';
     document.getElementById("graph" + el.id).appendChild(div_footer);  
     if(x.footer !== null){
       div_footer.innerHTML = x.footer.text;
-      div_footer.setAttribute('style',  x.footer.style);
+      div_footer.setAttribute('style',  x.footer.style + ';background-color: inherit;');
       div_footer.style.display = 'block'; 
     }
     
@@ -3378,7 +3384,7 @@ HTMLWidgets.widget({
     if(x.export !== undefined){
       
       var downloaddiv = document.createElement('div');
-      downloaddiv.setAttribute('style', 'float:right; width:100%');
+      downloaddiv.setAttribute('style', 'float:right; width:100%;background-color: inherit;');
       
       var downloadbutton = document.createElement("button");
       downloadbutton.setAttribute('style', x.export.css);
@@ -3410,9 +3416,14 @@ HTMLWidgets.widget({
       }
 
       downloadbutton.style.display = 'none';
+      var export_background = x.export.background;
+      if(x.background !== "transparent" && x.background !== "rgba(0, 0, 0, 0)"){
+        export_background = x.background
+      }
+      
       if(x.export.type !== "pdf"){
-        html2canvas(document.getElementById(el.id), {
-          background: x.export.background,
+        html2canvas(el_id, {
+          background: export_background,
           height : addHeightExport,
           onrendered: function(canvas) {
             canvas.toBlobHD(function(blob) {
@@ -3421,8 +3432,8 @@ HTMLWidgets.widget({
           }
         });
       } else {
-        html2canvas(document.getElementById(el.id), {
-          background: x.export.background,
+        html2canvas(el_id, {
+          background: export_background,
           height : addHeightExport,
           onrendered: function(canvas) {
             var myImage = canvas.toDataURL("image/png", 1.0);
@@ -3491,7 +3502,7 @@ HTMLWidgets.widget({
       clusterbutton.setAttribute('type', 'button');  
       clusterbutton.setAttribute('value', 'Reinitialize clustering'); 
       clusterbutton.setAttribute('style', 'background-color:#FFFFFF;border: none');
-      document.getElementById(el.id).appendChild(clusterbutton);
+      el_id.appendChild(clusterbutton);
       
       clusterbutton.onclick =  function(){
         instance.network.setData(data);
@@ -3744,11 +3755,11 @@ HTMLWidgets.widget({
     //******************
     // init selection
     //******************
-    if(document.getElementById(el.id).idselection && x.nodes && x.idselection.selected !== undefined){ 
+    if(el_id.idselection && x.nodes && x.idselection.selected !== undefined){ 
       onIdChange(''+ x.idselection.selected, true);
     }
       
-    if(document.getElementById(el.id).byselection && x.nodes && x.byselection.selected !== undefined){ 
+    if(el_id.byselection && x.nodes && x.byselection.selected !== undefined){ 
       onByChange(x.byselection.selected);
       selectNode = document.getElementById('selectedBy'+el.id);
       selectNode.value = x.byselection.selected;

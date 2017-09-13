@@ -47,6 +47,9 @@
 #'  \item{"text"}{ : Character. footer.}
 #'  \item{"style"}{ : Optional. Character. HTML style of footer. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
 #'}
+#'
+#'@param background : Background color. Default to 'rgba(0, 0, 0, 0)' (transparent). Can be a valid color name ("red"), a HEX value ("#ff0000") or rgb/rgba ("rgb(255,0,0)")
+#'
 #' @param ... : Don't use.
 #' 
 #' @examples
@@ -66,6 +69,9 @@
 #' visNetwork(nodes, edges, main = "visNetwork minimal example",
 #'  submain = "For add a subtitle", footer = "Fig.1 minimal example")
 #'  
+#' # change background color
+#' visNetwork(nodes, edges, background = "black")
+#' 
 #' # customization adding more variables (see visNodes and visEdges)
 #' nodes <- data.frame(id = 1:10, 
 #'                     label = paste("Node", 1:10),                                 # labels
@@ -97,7 +103,6 @@
 #'
 #' visNetwork(nodes, edges)
 #' 
-#'
 #' # highlight nearest
 #' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
 #'  group = sample(LETTERS[1:3], 15, replace = TRUE))
@@ -201,7 +206,8 @@
 #' @export
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
-                       width = NULL, height = NULL, main = NULL, submain = NULL, footer = NULL, ...) {
+                       width = NULL, height = NULL, main = NULL, submain = NULL, 
+                       footer = NULL, background = 'rgba(0, 0, 0, 0)', ...) {
   
   if(is.null(nodes) & is.null(edges) & is.null(dot) & is.null(gephi)){
     stop("Must 'dot' data, or 'gephi' data, or 'nodes' and 'edges' data.")
@@ -307,7 +313,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
+              byselection = list(enabled = FALSE), main = main, 
+              submain = submain, footer = footer, background = background)
     
   }else if(!is.null(gephi)){
     x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
@@ -315,7 +322,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
+              byselection = list(enabled = FALSE), main = main, 
+              submain = submain, footer = footer, background = background)
   }else{
     
     # forward options using x
@@ -329,7 +337,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
                              manipulation = list(enabled = FALSE)),
               groups = groups, width = width, height = height,
               idselection = list(enabled = FALSE),
-              byselection = list(enabled = FALSE), main = main, submain = submain, footer = footer)
+              byselection = list(enabled = FALSE), main = main, 
+              submain = submain, footer = footer, background = background)
   }
   
   # previous legend control

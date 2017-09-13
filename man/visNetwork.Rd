@@ -6,7 +6,7 @@
 \usage{
 visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
   width = NULL, height = NULL, main = NULL, submain = NULL,
-  footer = NULL, ...)
+  footer = NULL, background = "rgba(0, 0, 0, 0)", ...)
 }
 \arguments{
 \item{nodes}{: data.frame or a list with nodes informations. Needed at least column "id". See \link{visNodes} 
@@ -55,6 +55,8 @@ visNetwork(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
  \item{"style"}{ : Optional. Character. HTML style of footer. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
 }}
 
+\item{background}{: Background color. Default to 'rgba(0, 0, 0, 0)' (transparent). Can be a valid color name ("red"), a HEX value ("#ff0000") or rgb/rgba ("rgb(255,0,0)")}
+
 \item{...}{: Don't use.}
 }
 \description{
@@ -77,6 +79,9 @@ visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
 visNetwork(nodes, edges, main = "visNetwork minimal example",
  submain = "For add a subtitle", footer = "Fig.1 minimal example")
  
+# change background color
+visNetwork(nodes, edges, background = "black")
+
 # customization adding more variables (see visNodes and visEdges)
 nodes <- data.frame(id = 1:10, 
                     label = paste("Node", 1:10),                                 # labels
@@ -107,7 +112,6 @@ edges <- data.frame(from = c(1,2), to = c(1,3),
  label = LETTERS[1:2], font.color =c ("red", "blue"), font.size = c(10,20))
 
 visNetwork(nodes, edges)
-
 
 # highlight nearest
 nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
