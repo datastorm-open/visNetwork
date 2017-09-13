@@ -2331,7 +2331,7 @@ HTMLWidgets.widget({
             tmp_ly = 1
           }
           
-          legendnodes.add({id: null, x : tmp_lx, y : tmp_ly, label: x.groups[g1], group: x.groups[g1], value: 1, mass:0});
+          legendnodes.add({id: null, x : tmp_lx, y : tmp_ly, label: x.groups[g1], group: x.groups[g1], value: 1, mass:1});
           edge_ly = tmp_ly;
         }
         // control icon size
@@ -2382,7 +2382,7 @@ HTMLWidgets.widget({
           /*if(tmpnodes[g].id !== undefined){
             tmpnodes[g].id = null;
           }*/
-          tmpnodes[g].mass = 0;
+          tmpnodes[g].mass = 1;
           edge_ly = tmp_ly;
         }
         legendnodes.add(tmpnodes);
@@ -2438,8 +2438,8 @@ HTMLWidgets.widget({
             tmp_lx2 = 1
           }
           
-          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_1", x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
-          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_2", x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:0});
+          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_1", x : tmp_lx, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:1});
+          legendnodes.add({id: edg + "tmp_leg_edges_" + tmp_int + "_2", x : tmp_lx2, y : tmp_ly, size : 0.0001, hidden : false, shape : "square", mass:1});
         }
       }
       
@@ -2636,7 +2636,9 @@ HTMLWidgets.widget({
     
     // create network
     instance.network = new vis.Network(document.getElementById("graph"+el.id), data, options);
-    Shiny.onInputChange(el.id + '_initialized', true);
+    if (window.Shiny){
+      Shiny.onInputChange(el.id + '_initialized', true);
+    }
     
     //*************************
     //add values to idselection
