@@ -40,7 +40,7 @@ visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
 
 \item{labelHighlightBold}{: Boolean. Default to    true. Determines whether or not the label becomes bold when the edge is selected.}
 
-\item{color}{: Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' or 'red'.
+\item{color}{: Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' (hexa notation on 7 char without transparency) or 'red'.
 \itemize{
  \item{"color"}{ : String. Default to '#848484. The color of the edge when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
  \item{"highlight "}{ : String. Default to '#848484'. The color the edge when it is selected.}
