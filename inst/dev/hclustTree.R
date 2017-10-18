@@ -2,7 +2,11 @@ library(visNetwork)
 library(ggraph)
 
 res2 <- hclust(d = dist(iris[1:5, 1:4]))
-visHclust(hclust(d = dist(iris[1:150, 1:4])))%>%visGroups(groupname = "cluster" ,color = "red")
+visHclust(hclust(d = dist(iris[1:5, 1:4])))%>%visGroups(groupname = "cluster" ,color = "red")
+visHclust(hclust(d = dist(iris[1:150, 1:4])), cutree =7)
+
+
+
 
 #' vizNetwork for hclust
 #'
@@ -15,11 +19,68 @@ visHclust(hclust(d = dist(iris[1:150, 1:4])))%>%visGroups(groupname = "cluster" 
 
 ## Couleur noeuds taille noeuds 
 visHclust <- function(hcl, main = "", edgeColor = "black",
-                      highlightNearest = TRUE)
+                      highlightNearest = TRUE, cutree = NULL)
 {
-
+  color <- substr(rainbow(15),1, 7)
   res <- convertHclust(hcl)
   res$edges$color <- edgeColor
+  if(!is.null(cutree))
+  {
+    if(cutree > 1)
+    {
+  levelCut <- unique(sort(res$nodes$y))[(cutree) - 1] + diff(unique(sort(res$nodes$y))[(cutree)+(-1:0)])/2
+  Mid <- as.numeric(max(res$nodes$id))
+  res$nodes <- rbind(res$nodes, data.frame(id = c(Mid+852, Mid+853),
+                                           x = c(min(res$nodes$x) - 500, max(res$nodes$x) + 500),
+                                           y = rep(levelCut, 2),
+                                           label = NA,
+                                           members = NA,
+                                           ggraph.index = NA,
+                                           hidden = TRUE,
+                                           leaf = FALSE,
+                                           title = NA,
+                                           inertia = NA,
+                                           group = "cut"
+  ))
+  res$edges <- rbind(res$edges, data.frame(
+    from = Mid+852, 
+    to = Mid+853,
+    label = NA,
+    direction = "",
+    horizontal = TRUE,
+    width = 1,
+    title= NA,
+    color = "red"
+  ))
+  
+  res$nodes[match(res$edges$from ,res$nodes$id),]
+  
+  
+  
+  res$edges[res$edges$from < levelCut & res$edges$to > levelCut]
+  
+  
+    fromY <- merge(res$edges, res$nodes, by.x = "from", by.y = "id")[,c("from", "y")]
+     toY <- merge(res$edges, res$nodes, by.x = "from", by.y = "id")[,c("to", "y")]
+    names(toY)[which(names(toY) == "y")] <- "yt"
+     endY <- merge(fromY, toY, by.x = "from", by.y = "to")
+     nodesMainClass <- unique(endY[endY$y > levelCut & endY$yt < levelCut,]$from)
+     
+     nod <- nodesMainClass[1]
+     nod
+     
+    ndL <- sapply(nodesMainClass, function(nod)
+    {
+     FD <- nameChild(nod, res)
+     names(FD)
+     allNam <- names(unlist(FD))
+     nodeDep <- unique(unlist(strsplit(allNam, "[.]")))
+    }, simplify = FALSE)
+     for(i in 1:length(ndL)){
+       res$edges[res$edges$from %in% ndL[[i]] | res$edges$to %in% ndL[[i]],]$color <- color[i]
+     }
+  }}
+  
   vis <- visNetwork(res$nodes, res$edges, main = main) %>%
     visPhysics(enabled = FALSE) %>% 
     visEdges(smooth = FALSE, font = list(background = "white") )
@@ -32,7 +93,10 @@ visHclust <- function(hcl, main = "", edgeColor = "black",
                       degree = list(from = 0, to = 5000),
                       algorithm = "hierarchical"))
   }
+ 
+  
   vis
+  
 }
 
 #' Transform data from hclust to nodes and edges
@@ -123,6 +187,21 @@ convertHclust <- function(hcl)
   dta
 }
 
+
+
+nameChild <- function(child, res){
+  sapply(child, function(X){
+    child <- .givChild(X, res)
+    if(length(child)> 0 ){
+      nameChild(child, res)
+    }else{
+      ""
+    }
+  }, simplify = FALSE)}
+
+.givChild <- function(N, res){
+  res$edges[res$edges$from == N,]$to
+}
 
 # res2 <- hclust(d = dist(diamonds[1:1000, 5:9]))
 # res <- convertHclust(res2)
