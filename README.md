@@ -21,6 +21,8 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
   * ### to vis.js 4.20.1
   * ### Add ``input$network_initialized`` 
   * ### Add ``background`` to ``visNetwork``
+  * ### Fix ``visTreeEditor`` bug using rpart object
+  * ### ``visTreeEditor`` : add complexity parameters
   
 ## ``2.0.0`` available on CRAN
 

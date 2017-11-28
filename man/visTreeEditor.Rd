@@ -12,7 +12,7 @@ visTreeEditor(data, ...)
 \item{...}{all arguments except \code{object} present in \link{visTree}}
 }
 \description{
-Packages : shiny, rpart, colourpicker, shinyWidgets
+Neededd packages : shiny, rpart, colourpicker, shinyWidgets
 }
 \examples{
 

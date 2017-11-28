@@ -80,10 +80,10 @@
 #'  edgesFontAlign = "middle", edgesFontSize = 20)
 #' 
 #' # disable rules in tooltip, and render tooltip faster
-#' # disable hover highlight
+#' # enable hover highlight
 #' visTree(res, rules = FALSE, tooltipDelay = 0, 
 #'  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
-#'  hover = FALSE, algorithm = "hierarchical"))
+#'  hover = TRUE, algorithm = "hierarchical"))
 #' 
 #' # Change color with data.frame
 #' colorVar <- data.frame(variable = names(solder), 
@@ -682,7 +682,7 @@ visTree <- function(object,
 
 #' Run and edit a visTree, and get back in R
 #'
-#' Packages : shiny, rpart, colourpicker, shinyWidgets
+#' Neededd packages : shiny, rpart, colourpicker, shinyWidgets
 #' 
 #' @param  data  \code{rpart or data.drame}
 #' @param  ...  all arguments except \code{object} present in \link{visTree}
@@ -707,7 +707,7 @@ visTree <- function(object,
 #'
 visTreeEditor <- function(data, ...){
 
-  if(!requireNamespace("shiny")){
+  if(!requireNamespace("shiny", quietly = TRUE)){
     stop("visTreeEditor require 'shiny' package")
   } else {
     if(packageVersion("shiny") < '1.0.0'){
@@ -715,15 +715,15 @@ visTreeEditor <- function(data, ...){
     }
   }
   
-  if(!requireNamespace("colourpicker")){
+  if(!requireNamespace("colourpicker", quietly = TRUE)){
     stop("visTreeEditor require 'colourpicker' package")
   }
   
-  if(!requireNamespace("shinyWidgets")){
+  if(!requireNamespace("shinyWidgets", quietly = TRUE)){
     stop("visTreeEditor require 'shinyWidgets' package")
   }
   
-  if(!requireNamespace("rpart")){
+  if(!requireNamespace("rpart", quietly = TRUE)){
     stop("visTreeModule require 'rpart' package")
   }
   

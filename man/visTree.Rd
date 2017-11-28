@@ -129,10 +129,10 @@ visTree(res, fallenLeaves = TRUE, height = "500px",
  edgesFontAlign = "middle", edgesFontSize = 20)
 
 # disable rules in tooltip, and render tooltip faster
-# disable hover highlight
+# enable hover highlight
 visTree(res, rules = FALSE, tooltipDelay = 0, 
  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), 
- hover = FALSE, algorithm = "hierarchical"))
+ hover = TRUE, algorithm = "hierarchical"))
 
 # Change color with data.frame
 colorVar <- data.frame(variable = names(solder), 

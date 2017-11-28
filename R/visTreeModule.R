@@ -147,7 +147,7 @@ visTreeModuleServer <- function(input, output, session, data,
   
   ns <- session$ns
   
-  if(!requireNamespace("shiny")){
+  if(!requireNamespace("shiny", quietly = TRUE)){
     stop("visTreeModule require 'shiny' package")
   } else {
     if(packageVersion("shiny") < '1.0.0'){
@@ -155,15 +155,15 @@ visTreeModuleServer <- function(input, output, session, data,
     }
   }
   
-  if(!requireNamespace("colourpicker")){
+  if(!requireNamespace("colourpicker", quietly = TRUE)){
     stop("visTreeModule require 'colourpicker' package")
   }
   
-  if(!requireNamespace("shinyWidgets")){
+  if(!requireNamespace("shinyWidgets", quietly = TRUE)){
     stop("visTreeModule require 'shinyWidgets' package")
   }
   
-  if(!requireNamespace("rpart")){
+  if(!requireNamespace("rpart", quietly = TRUE)){
     stop("visTreeModule require 'rpart' package")
   }
   
@@ -1425,6 +1425,29 @@ visTreeModuleServer <- function(input, output, session, data,
                    export = export)
   })
   
+  # complexity update
+  cp_parameters <- shiny::reactiveValues(min = 0, max = 1,  step = 0.005)
+  
+  shiny::observeEvent(input$set_cp, {
+    shiny::showModal(shiny::modalDialog(
+      title = "Complexity parameters",
+      shiny::numericInput(ns("cp_min"), "Slider minimum :", shiny::isolate(cp_parameters$min)),
+      shiny::numericInput(ns("cp_max"), "Slider maximum :", shiny::isolate(cp_parameters$max)),
+      shiny::numericInput(ns("cp_step"), "Slider step :", shiny::isolate(cp_parameters$step)),
+      shiny::actionButton(ns("update_cp"), "Update complexity slider"),
+      easyClose = TRUE,
+      footer = NULL
+    ))
+  })
+  
+  shiny::observeEvent(input$update_cp, {
+    cp_parameters$min <- input$cp_min
+    cp_parameters$max <- input$cp_max
+    cp_parameters$step <- input$cp_step
+    shiny::updateSliderInput(session, "complexity", min = input$cp_min, max = input$cp_max, step = input$cp_step)
+  })
+    
+  
   # download tree
   output$downloadNetwork <- shiny::downloadHandler(
     filename = function() {
@@ -1473,12 +1496,15 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                        shiny::column(2, 
                                                      shiny::selectInput(ns("y"), "Y :",NULL)
                                        ),
-                                       shiny::column(6,
+                                       shiny::column(5,
                                                      shiny::selectInput(ns("x"), "X :", NULL, multiple = TRUE, selected = NULL, width = "100%")
                                        ),
                                        shiny::column(2,
-                                                     shiny::sliderInput(ns("complexity"), "Complexity :",
+                                                     shiny::sliderInput(ns("complexity"), "Complexity (cp) :",
                                                                         min = 0, max = 1, value = 0.005, step = 0.005)
+                                       ),
+                                       shiny::column(1,
+                                                     br(), br(), shiny::actionButton(ns("set_cp"), "Set cp")
                                        ),
                                        shiny::column(2,
                                                      shiny::numericInput(ns("minsplit"), "Minsplit : ", value = 20, min = 2)
@@ -1487,7 +1513,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                             )
                           )
           )
-        }else{""},
+        }else{shiny::div(style = "visibility: hidden")},
         
         if(visTreeParams){
           shiny::tabPanel("visTree options",
@@ -1524,7 +1550,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                             )
                           )
           )
-        }else{""},
+        }else{shiny::div(style = "visibility: hidden")},
         
         if(visTreeParams){
           shiny::tabPanel("Legend",
@@ -1545,22 +1571,34 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                             )
                           )
           )
-        }else{""}
+        }else{shiny::div(style = "visibility: hidden")}
         
       )
     },
     
     if(visTreeParams | rpartParams){
-      shiny::div(
-        shiny::actionButton(ns("runTree"), "Run tree", class = "btnruntree"), align = "center"
-      )
-    }else{""},
+      if(quitButton){
+        shiny::fluidRow(
+          shiny::column(width = 3, offset = 3, 
+                        shiny::div(
+                          shiny::actionButton(ns("runTree"), "Run / update tree", class = "btnruntree"), align = "center"
+                        )
+          ),
+          shiny::column(width = 3,
+                        shiny::div(
+                          shiny::actionButton(ns("quit_btn"), "Quit and get back network in R"), align = "center"
+                        )
+          )
+        )
+      } else {
+        shiny::div(
+          shiny::actionButton(ns("runTree"), "Run / update tree", class = "btnruntree"), align = "center"
+        )
+      }
+    }else{shiny::div(style = "visibility: hidden")},
     
-    shiny::br(),
+    shiny::hr(),
     
-    # Show a plot of the generated distribution
-    # shiny::uiOutput("treeUI"),
-    # shiny::conditionalPanel(condition = paste0("output['", ns("is_rpart"), "'] === true"),
     shiny::conditionalPanel(condition = paste0("output['", ns("is_tree"), "'] === true"),
                      shiny::fluidRow(
                        shiny::column(1, 
@@ -1664,13 +1702,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                      ),
                      
                      
-                     shiny::uiOutput(ns("treeUI")), 
-                     
-                     if(quitButton){
-                       shiny::actionButton(ns("quit_btn"), "Quit and get back network in R")
-                     }
+                     shiny::uiOutput(ns("treeUI"))
     )
-    # )
-    
   )
 }
