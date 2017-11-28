@@ -1635,8 +1635,9 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                                                                 shiny::br(), 
                                                                                 shinyWidgets::materialSwitch(ns("usecolornodes"),"Color nodes", status = "info"),
                                                                                 
-                                                                                shiny::uiOutput(ns("colornodes")),
-                                                                                
+                                                                                shiny::fluidRow(
+                                                                                  shiny::uiOutput(ns("colornodes"))
+                                                                                ),
                                                                                 
                                                                                 shiny::br(), 
                                                                                 shinyWidgets::materialSwitch(ns("usecolorY"),"Color Y", status = "info"),
