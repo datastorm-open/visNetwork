@@ -33,6 +33,8 @@ Suggests:
     rpart,
     shiny,
     shinyWidgets,
-    colourpicker
+    colourpicker,
+    sparkline,
+    ggraph
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
