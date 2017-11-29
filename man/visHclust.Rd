@@ -43,12 +43,13 @@ visNetwork for hclust
 
 \dontrun{
 
-visHclust(iris, cutree = 3, qualiSup = 5, nodeSize = 50)
+visHclust(iris, cutree = 3, nodeSize = 50)
 visHclust(iris, cutree = 3,
-  detailsOnTooltips = TRUE,
-  qualiSup = 5, labelDraw = c(1, 5), nodeSize = 30,
-  colorGroup = c("#DF0101", "#FF8000", "#D7DF01"))\%>\% 
-  visGroups(groupname = "cluster", color ="#00FF00")  \%>\% 
+  detailsOnTooltips = TRUE, labelDraw = c(1, 5), nodeSize = 30,
+  colorGroup = c("#DF0101", "#FF8000", "#D7DF01"))
+  
+  visHclust(iris, cutree = 8)\%>\% 
+  visGroups(groupname = "cluster", color ="#00FF00", shape = "square")  \%>\% 
   visGroups(groupname = "individual", color ="#FF0000")
 }
 
