@@ -2,10 +2,9 @@
 % Please edit documentation in R/hclustTree.R
 \name{visHclust}
 \alias{visHclust}
-\title{vizNetwork for hclust}
+\title{visNetwork for hclust}
 \usage{
-visHclust(data, qualiSup = NULL, quantiSup = NULL, main = "",
-  edgeColor = "black", colorNodes = "#A9E2F3", colorLeaf = "#8181F7",
+visHclust(data, colUseForDist = NULL, main = "", edgeColor = "black",
   nodeSize = 30, highlightNearest = TRUE, cutree = 0,
   detailsOnTooltips = TRUE, labelDraw = 1:ncol(data),
   colorGroup = substr(rainbow(cutree), 1, 7), hclustMethod = "complete",
@@ -14,47 +13,43 @@ visHclust(data, qualiSup = NULL, quantiSup = NULL, main = "",
 \arguments{
 \item{data}{\code{data.frame} data.}
 
-\item{qualiSup}{\code{numeric} indices for qualiSup varianbles. This variables will
-be used in tooltips but they not in hclust.}
+\item{colUseForDist}{\code{numeric} indice of columns to use for compute of dist.
+No numeric columns are automaticaly excludes.}
 
-\item{quantiSup}{\code{numeric} indices for quantiSup varianbles. This variables will
-be used in tooltips but they not in hclust.}
-
-\item{main}{\code{character} main title.}
+\item{main}{\code{character} title.}
 
 \item{edgeColor}{\code{character} color for edge.}
-
-\item{colorNodes}{\code{character} color for nodes.}
-
-\item{colorLeaf}{\code{character} color for leaf.}
 
 \item{nodeSize}{\code{numeric} size for nodes.}
 
 \item{highlightNearest}{\code{boolean} highlight branch when you click.}
 
-\item{cutree}{\code{numeric} number of group to draw.}
+\item{cutree}{\code{numeric} number of group.}
 
-\item{detailsOnTooltips}{\code{boolean} show details on tooltips (sparkline)}
+\item{detailsOnTooltips}{\code{boolean} show details on tooltips (sparkline).}
 
-\item{labelDraw}{\code{numeric} indice columns to add in label, default all.}
+\item{labelDraw}{\code{numeric} indice of columns to add in label, default all.}
 
-\item{colorGroup}{\code{character}, color for group in exa. Default rainbow.}
+\item{colorGroup}{\code{character}, color for group in exa ("#00FF00"). Default rainbow.}
 
 \item{hclustMethod}{\code{character} method for hclust function.}
 
 \item{distMethode}{\code{character} method for dist function.}
 }
 \description{
-vizNetwork for hclust
+visNetwork for hclust
 }
 \examples{
 
 \dontrun{
+
+visHclust(iris, cutree = 3, qualiSup = 5, nodeSize = 50)
 visHclust(iris, cutree = 3,
   detailsOnTooltips = TRUE,
   qualiSup = 5, labelDraw = c(1, 5), nodeSize = 30,
-  colorGroup = c("#DF0101", "#FF8000", "#D7DF01"),
-  colorNodes = c("#B45F04"))
+  colorGroup = c("#DF0101", "#FF8000", "#D7DF01"))\%>\% 
+  visGroups(groupname = "cluster", color ="#00FF00")  \%>\% 
+  visGroups(groupname = "individual", color ="#FF0000")
 }
 
 }

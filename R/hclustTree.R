@@ -1,49 +1,44 @@
-#' vizNetwork for hclust
+#' visNetwork for hclust
 #'
 #' @param data \code{data.frame} data.
-#' @param qualiSup \code{numeric} indices for qualiSup varianbles. This variables will
-#'  be used in tooltips but they not in hclust.
-#' @param quantiSup \code{numeric} indices for quantiSup varianbles. This variables will
-#'  be used in tooltips but they not in hclust.
-#' @param main \code{character} main title.
+#' @param colUseForDist \code{numeric} indice of columns to use for compute of dist.
+#'  No numeric columns are automaticaly excludes.
+#' @param main \code{character} title.
 #' @param edgeColor \code{character} color for edge.
-#' @param colorNodes \code{character} color for nodes.
-#' @param colorLeaf \code{character} color for leaf.
 #' @param nodeSize \code{numeric} size for nodes.
 #' @param highlightNearest \code{boolean} highlight branch when you click.
-#' @param cutree \code{numeric} number of group to draw.
-#' @param detailsOnTooltips \code{boolean} show details on tooltips (sparkline)
-#' @param labelDraw \code{numeric} indice columns to add in label, default all.
-#' @param colorGroup \code{character}, color for group in exa. Default rainbow.
+#' @param cutree \code{numeric} number of group.
+#' @param detailsOnTooltips \code{boolean} show details on tooltips (sparkline).
+#' @param labelDraw \code{numeric} indice of columns to add in label, default all.
+#' @param colorGroup \code{character}, color for group in exa ("#00FF00"). Default rainbow.
 #' @param hclustMethod \code{character} method for hclust function.
 #' @param distMethode \code{character} method for dist function.
 #' 
 #' @examples
 #' 
 #' \dontrun{
+#' 
+#' visHclust(iris, cutree = 3, qualiSup = 5, nodeSize = 50)
 #' visHclust(iris, cutree = 3,
 #'   detailsOnTooltips = TRUE,
 #'   qualiSup = 5, labelDraw = c(1, 5), nodeSize = 30,
-#'   colorGroup = c("#DF0101", "#FF8000", "#D7DF01"),
-#'   colorNodes = c("#B45F04"))
+#'   colorGroup = c("#DF0101", "#FF8000", "#D7DF01"))%>% 
+#'   visGroups(groupname = "cluster", color ="#00FF00")  %>% 
+#'   visGroups(groupname = "individual", color ="#FF0000")
 #' }
 #' 
 #' @importFrom grDevices rainbow
 #' @importFrom stats dist hclust na.omit
 #' 
 #' @export
-visHclust <- function(data, qualiSup = NULL, quantiSup = NULL, 
+visHclust <- function(data, colUseForDist = NULL, 
                       main = "", edgeColor = "black",
-                      colorNodes = "#A9E2F3",
-                      colorLeaf = "#8181F7",
                       nodeSize = 30,
                       highlightNearest = TRUE, cutree = 0,
                       detailsOnTooltips = TRUE, labelDraw = 1:ncol(data),
                       colorGroup = substr(rainbow(cutree),1, 7),
                       hclustMethod = "complete", distMethode = "euclidean")
 {
-  
-  
   
   if(!requireNamespace("sparkline")){
     stop("sparkline package is require")
@@ -64,13 +59,28 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
     }
   }
   
-  
   excludeFromhcl <- NULL
   
   drawNames <- names(data)[labelDraw]
-  if(!is.null(qualiSup)){
+  
+  if(is.null(colUseForDist)){
+    clas <-  unlist(lapply(data , function(X){class(X)[1]}))
+    clasNum <- which(clas%in%c("numeric", "integer"))
+    clasChr <- which(!clas%in%c("numeric", "integer"))
+  }
+  
+  qualiSup <- clasChr
+  
+  if(length(qualiSup) > 0){
     excludeFromhcl <- qualiSup
   }
+  quantiSup <- NULL
+  if(!is.null(colUseForDist))
+  {
+  quantiSup <- clasNum[!clasNum%in%colUseForDist]
+  if(length(quantiSup) == 0)quantiSup <- NULL
+  }
+
   if(!is.null(quantiSup)){
     excludeFromhcl <- c(excludeFromhcl, quantiSup)
   }
@@ -141,9 +151,7 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
   vis <- visNetwork(res$nodes, res$edges, main = main) %>%
     visPhysics(enabled = FALSE) %>% 
     visEdges(smooth = FALSE, font = list(background = "white") )%>%
-    visNodes(size = nodeSize) %>% 
-    visGroups(groupname = "cluster", color = colorLeaf)  %>% 
-    visGroups(groupname = "individual", color = colorNodes)
+    visNodes(size = nodeSize) 
   
   if(highlightNearest)
   {
@@ -164,7 +172,7 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
 #' @noRd
 .convertHclust <- function(hcl, data, detailsOnTooltips, drawNames, qualiSup, quantiSup)
 {
-  ig <- ggraph::den_to_igraph(hcl)
+  ig <- suppressMessages(ggraph::den_to_igraph(hcl))
   neig <- igraph::neighborhood(ig, 150000, mode = "out")
   neig <- sapply(1:length(neig), function(i){
     neig[[i]][!neig[[i]] == i]
@@ -185,7 +193,8 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
     
     dataNum <- data[,classDtaIn, drop = FALSE]
     dataNum <- dataNum[,names(dataNum)%in%drawNames, drop = FALSE]
-    if(ncol(dataNum)> 0 )
+
+    if(ncol(dataNum) > 0 )
     {
       minPop <- apply(dataNum, 2, min)
       maxPop <- apply(dataNum, 2, max)
@@ -220,7 +229,7 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
       namOrder <- lapply(dataOthr, function(X){
         names(sort(table(X)))
       })
-      
+      rNum <- 1:nrow(dataOthr)
       dta$nodes$labelComplete <- sapply(1:nrow(dta$nodes), function(Z){
         if(!dta$nodes[Z,]$leaf)
         {
@@ -236,7 +245,7 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
   dta$nodes$circular <- NULL
   dta$edges$circular <- NULL
   # dta$nodes$neib <- NULL
-  dta$nodes$label <- ggraph::create_layout(hcl, "dendrogram")$label
+  dta$nodes$label <- suppressMessages(ggraph::create_layout(hcl, "dendrogram")$label)
   
   names(dta$nodes) <- sub("layout.", "", names(dta$nodes))
   names(dta$nodes)[which(names(dta$nodes) == "leaf")] <- "hidden"
@@ -314,9 +323,10 @@ visHclust <- function(data, qualiSup = NULL, quantiSup = NULL,
   dta$edges$from[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[1]
   dta$edges$to[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[2]
   dta$nodes$group <- ifelse(dta$nodes$leaf, "cluster", "individual")
-  titlDetails <- ifelse(detailsOnTooltips, "<br><b>Details : </b><br>", "")
+  titlDetails <- ifelse(detailsOnTooltips, "<br><b>Details : </b>", "")
   dta$nodes$title <- paste(dta$nodes$title, titlDetails, dta$nodes$labelComplete)
   dta$nodes$labelComplete <- NULL
+  dta$nodes[dta$nodes$leaf & !dta$nodes$hidden,]$title <- as.character(dta$nodes[dta$nodes$leaf& !dta$nodes$hidden,]$label)
   dta
 }
 
