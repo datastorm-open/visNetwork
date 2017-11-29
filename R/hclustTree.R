@@ -40,6 +40,25 @@ visHclust <- function(data, colUseForDist = NULL,
                       hclustMethod = "complete", distMethode = "euclidean")
 {
   
+  ##Controles on inputs
+  
+  #colUseForDist
+  if(!is.null(colUseForDist))
+  {
+    if(!all(colUseForDist)%in%1:ncol(data)){
+      stop("all elements of colUseForDist should be in 1:ncol(data)")
+    }
+  }
+  
+  #cutree control
+  if(!is.numeric(cutree)){
+    stop("cutree should be numeric")
+  }else{
+    if(!cutree%in%0:ncol(data)){
+      stop("cutree sould be in 0:ncol(data)")
+    }
+  }
+  
   if(!requireNamespace("sparkline")){
     stop("sparkline package is require")
   }
@@ -51,7 +70,7 @@ visHclust <- function(data, colUseForDist = NULL,
   if(!requireNamespace("igraph")){
     stop("igraph package is require")
   }
-
+  
   if(length(colorGroup) != cutree){
     warning("Differant number of color specify in colorGroup than the number of group")
     if(length(colorGroup)<cutree){
@@ -77,10 +96,10 @@ visHclust <- function(data, colUseForDist = NULL,
   quantiSup <- NULL
   if(!is.null(colUseForDist))
   {
-  quantiSup <- clasNum[!clasNum%in%colUseForDist]
-  if(length(quantiSup) == 0)quantiSup <- NULL
+    quantiSup <- clasNum[!clasNum%in%colUseForDist]
+    if(length(quantiSup) == 0)quantiSup <- NULL
   }
-
+  
   if(!is.null(quantiSup)){
     excludeFromhcl <- c(excludeFromhcl, quantiSup)
   }
@@ -193,7 +212,7 @@ visHclust <- function(data, colUseForDist = NULL,
     
     dataNum <- data[,classDtaIn, drop = FALSE]
     dataNum <- dataNum[,names(dataNum)%in%drawNames, drop = FALSE]
-
+    
     if(ncol(dataNum) > 0 )
     {
       minPop <- apply(dataNum, 2, min)
@@ -340,7 +359,7 @@ visHclust <- function(data, colUseForDist = NULL,
     for(i in nm){
       re[[i]] <- paste0("<br>", popSpkl[[i]],' : On pop. mean(<b>', round(meanPop[i],2),"</b>)","<br>",
                         .addSparkLine(df[,i], type = "box",
-                                     min = minPop[[i]], max = maxPop[[i]]),
+                                      min = minPop[[i]], max = maxPop[[i]]),
                         " : On class mean(<b>", round(clM[i], 2),"</b>)")
     }
   }
