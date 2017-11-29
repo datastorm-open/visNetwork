@@ -11,8 +11,8 @@
 #' @param detailsOnTooltips \code{boolean} show details on tooltips (sparkline).
 #' @param labelDraw \code{numeric} indice of columns to add in label, default all.
 #' @param colorGroup \code{character}, color for group in exa ("#00FF00"). Default rainbow.
-#' @param hclustMethod \code{character} method for hclust function.
-#' @param distMethode \code{character} method for dist function.
+#' @param hclustMethod \code{character} method for hclust function. See \code{\link[stats]{hclust}} for help.
+#' @param distMethode \code{character} method for dist function. See \code{\link[stats]{dist}} for help.
 #' 
 #' @examples
 #' 

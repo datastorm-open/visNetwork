@@ -32,9 +32,9 @@ No numeric columns are automaticaly excludes.}
 
 \item{colorGroup}{\code{character}, color for group in exa ("#00FF00"). Default rainbow.}
 
-\item{hclustMethod}{\code{character} method for hclust function.}
+\item{hclustMethod}{\code{character} method for hclust function. See \code{\link[stats]{hclust}} for help.}
 
-\item{distMethode}{\code{character} method for dist function.}
+\item{distMethode}{\code{character} method for dist function. See \code{\link[stats]{dist}} for help.}
 }
 \description{
 visNetwork for hclust
