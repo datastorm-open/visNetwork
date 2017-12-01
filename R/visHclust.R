@@ -1,27 +1,42 @@
-#' visNetwork for hclust
-#'
+#' Visualize Hierarchical cluster analysis.
+#' 
+#' Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
+#' Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
+#' render the tree with visNetwork, adding informations.
+#' 
+#' 
 #' @param data \code{data.frame} data.
-#' @param colUseForDist \code{numeric} indice of columns to use for compute of dist.
-#'  No numeric columns are automaticaly excludes.
-#' @param main \code{character} title.
-#' @param edgeColor \code{character} color for edge.
-#' @param nodeSize \code{numeric} size for nodes.
-#' @param highlightNearest \code{boolean} highlight branch when you click.
-#' @param cutree \code{numeric} number of group.
-#' @param detailsOnTooltips \code{boolean} show details on tooltips (sparkline).
-#' @param labelDraw \code{numeric} indice of columns to add in label, default all.
-#' @param colorGroup \code{character}, color for group in exa ("#00FF00"). Default rainbow.
-#' @param hclustMethod \code{character} method for hclust function. See \code{\link[stats]{hclust}} for help.
-#' @param distMethode \code{character} method for dist function. See \code{\link[stats]{dist}} for help.
+#' @param main For add a title. See \link{visNetwork}
+#' @param submain For add a subtitle. See \link{visNetwork}
+#' @param footer For add a footer. See \link{visNetwork}
+#' @param distColumns \code{numeric} indice of columns used for compute distance. 
+#'  If NULL (default), keep all \code{numeric} and \code{integer} columns. 
+#'  If Not NULL, we keep only  \code{numeric} and \code{integer} columns
+#' @param distMethod \code{character} the distance measure to be used for dist function. Default to 'euclidean'. See \code{\link[stats]{dist}}.
+#' @param hclustMethod \code{character} the agglomeration method to be used for hclust function. Default to 'complete'. See \code{\link[stats]{hclust}}.
+#' @param cutree \code{numeric} or \code{integer} desired number of groups. Default to 0
+#' @param tooltipColumns \code{numeric} indice of columns used in tooltip. All by default.
+#' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
+#' @param colorEdges \code{character} color of edges. Default to 'black'
+#' @param colorGroups \code{character}, color for group in exa ("#00FF00"). Default rainbow.
+#' @param nodesSize \code{numeric} size for nodes. Default to 30
+#' @param highlightNearest \code{boolean} highlight sub-tree on click.
+#' @param height \code{character}, default to "600px"
+#' @param width \code{character}, default to "100\%"
 #' 
 #' @examples
 #' 
 #' \dontrun{
 #' 
-#' visHclust(iris, cutree = 3, nodeSize = 50)
+#' visHclust(iris, cutree = 3, nodesSize = 200)
+#' 
 #' visHclust(iris, cutree = 3,
-#'   detailsOnTooltips = TRUE, labelDraw = c(1, 5), nodeSize = 30,
-#'   colorGroup = c("#DF0101", "#FF8000", "#D7DF01"))
+#'   tooltipColumns = c(1, 5), nodesSize = 30,
+#'   colorGroups = c("red", "blue", "green"))
+#'   
+#' # no graphics on tooltip
+#' visHclust(iris, cutree = 3, main = "Hclust on iris", 
+#'   tooltipColumns = NULL)
 #'   
 #'   visHclust(iris, cutree = 8)%>% 
 #'   visGroups(groupname = "cluster", color ="#00FF00", shape = "square")  %>% 
@@ -32,96 +47,100 @@
 #' @importFrom stats dist hclust na.omit
 #' 
 #' @export
-visHclust <- function(data, colUseForDist = NULL, 
-                      main = "", edgeColor = "black",
-                      nodeSize = 30,
-                      highlightNearest = TRUE, cutree = 0,
-                      detailsOnTooltips = TRUE, labelDraw = 1:ncol(data),
-                      colorGroup = substr(rainbow(cutree),1, 7),
-                      hclustMethod = "complete", distMethode = "euclidean")
-{
+visHclust <- function(data, main = "", submain = "", footer = "",
+                      distColumns = NULL, 
+                      distMethod = "euclidean", 
+                      hclustMethod = "complete",
+                      cutree = 0,
+                      tooltipColumns = 1:ncol(data),
+                      colorEdges = "black",
+                      colorGroups = substr(rainbow(cutree),1, 7),
+                      nodesSize = 30,
+                      highlightNearest = TRUE, 
+                      height = "600px", width = "100%"){
   
-  ##Controles on inputs
+  # Controls on inputs
   
-  #colUseForDist
-  if(!is.null(colUseForDist))
+  # distColumns
+  if(!is.null(distColumns))
   {
-    if(!all(colUseForDist)%in%1:ncol(data)){
-      stop("all elements of colUseForDist should be in 1:ncol(data)")
+    if(!all(distColumns) %in% 1:ncol(data)){
+      stop("all elements of distColumns should be in 1:ncol(data)")
     }
   }
   
-  #cutree control
-  if(!is.numeric(cutree)){
-    stop("cutree should be numeric")
+  # cutree control
+  if(!(is.numeric(cutree) | is.integer(cutree))){
+    stop("cutree should be 'numeric' or 'integer'")
   }else{
-    if(!cutree%in%0:nrow(data)){
-      stop("cutree sould be in 0:ncol(data)")
+    if(!cutree %in% 0:nrow(data)){
+      stop("cutree should be in 0:ncol(data)")
     }
   }
   
-  if(!requireNamespace("sparkline")){
-    stop("sparkline package is require")
-  }
-  
-  if(!requireNamespace("ggraph")){
-    stop("ggraph package is require")
-  }
-  
-  if(!requireNamespace("igraph")){
-    stop("igraph package is require")
-  }
-  
-  if(length(colorGroup) != cutree){
-    warning("Differant number of color specify in colorGroup than the number of group")
-    if(length(colorGroup)<cutree){
-      colorGroup <- colorGroup[(0:(cutree-1)%%length(colorGroup))+1]
+  if(!is.null(tooltipColumns)){
+    if(!requireNamespace("sparkline", quietly = TRUE)){
+      stop("'sparkline' package is needed for this function")
     }
+  }
+  
+  if(!requireNamespace("ggraph", quietly = TRUE)){
+    stop("'ggraph' package is needed for this function")
+  }
+  
+  if(!requireNamespace("igraph", quietly = TRUE)){
+    stop("'igraph' package is needed for this function")
+  }
+  
+  if(!requireNamespace("flashClust", quietly = TRUE)){
+    f_hclust <- stats::hclust
+  } else {
+    f_hclust <- flashClust::hclust
+  }
+  
+  if(!isTRUE(all.equal("data.frame", class(data)))){
+    warning("data is coerced to data.frame")
+    data <- as.data.frame(data)
+  }
+  
+  if(length(colorGroups) != cutree){
+    colorGroups <- colorGroups[(0:(cutree-1)%%length(colorGroups))+1]
   }
   
   excludeFromhcl <- NULL
   
-  drawNames <- names(data)[labelDraw]
-  
-  if(is.null(colUseForDist)){
-    clas <-  unlist(lapply(data , function(X){class(X)[1]}))
-    clasNum <- which(clas%in%c("numeric", "integer"))
-    clasChr <- which(!clas%in%c("numeric", "integer"))
+  if(!is.null(tooltipColumns)){
+    drawNames <- names(data)[tooltipColumns]
+  } else  {
+    drawNames <- NULL
+  }
+
+  # columns for compute distance
+  clas <-  unlist(lapply(data , function(X){class(X)[1]}))
+  clasNum <- which(clas %in% c("numeric", "integer"))
+  if(!is.null(distColumns)){
+    indNotNum <- setdiff(distColumns, clasNum)
+    if(length(indNotNum) > 0){
+      warning("In distColumns : columns ", paste(indNotNum, collapse = ", "), " not numeric")
+    }
+    clasNum <- intersect(distColumns, clasNum)
+  }
+  if(length(clasNum) > 0){
+    dataForHcl <- data[, clasNum, drop = FALSE]
+  } else {
+    stop("No numeric or integer columns in data. Can't compute distance.")
   }
   
-  qualiSup <- clasChr
+  hcl <- f_hclust(d = dist(dataForHcl, method = distMethod), method = hclustMethod)
   
-  if(length(qualiSup) > 0){
-    excludeFromhcl <- qualiSup
-  }
-  quantiSup <- NULL
-  if(!is.null(colUseForDist))
-  {
-    quantiSup <- clasNum[!clasNum%in%colUseForDist]
-    if(length(quantiSup) == 0)quantiSup <- NULL
-  }
+  res <- .convertHclust(hcl, data, drawNames)
   
-  if(!is.null(quantiSup)){
-    excludeFromhcl <- c(excludeFromhcl, quantiSup)
-  }
-  if(!is.null(excludeFromhcl))
-  {
-    dataForHcl <- data[,-excludeFromhcl]
-  }else{
-    dataForHcl <- data
-  }
-  
-  hcl <- hclust(d = dist(dataForHcl, method = distMethode), method = hclustMethod)
-  
-  res <- .convertHclust(hcl, data, detailsOnTooltips, drawNames, qualiSup, quantiSup)
-  
-  
-  res$edges$color <- edgeColor
+  res$edges$color <- colorEdges
   if(!is.null(cutree))
   {
     if(cutree > 1)
     {
-      color <- colorGroup
+      color <- colorGroups
       levelCut <- unique(sort(res$nodes$y))[(cutree) - 1] + diff(unique(sort(res$nodes$y))[(cutree)+(-1:0)])/2
       Mid <- as.numeric(max(res$nodes$id))
       res$nodes <- rbind(res$nodes, data.frame(id = c(Mid+150000, Mid+150001),
@@ -168,10 +187,12 @@ visHclust <- function(data, colUseForDist = NULL,
     }
   }
   
-  vis <- visNetwork(res$nodes, res$edges, main = main) %>%
+  vis <- visNetwork(res$nodes, res$edges, height = height, width = width, main = main,
+                    submain = submain, footer = footer) %>%
     visPhysics(enabled = FALSE) %>% 
-    visEdges(smooth = FALSE, font = list(background = "white") )%>%
-    visNodes(size = nodeSize) 
+    visInteraction(dragNodes = FALSE, selectConnectedEdges = FALSE) %>%
+    visEdges(smooth = FALSE, font = list(background = "white")) %>%
+    visNodes(size = nodesSize) 
   
   if(highlightNearest)
   {
@@ -190,7 +211,7 @@ visHclust <- function(data, colUseForDist = NULL,
 #' Transform data from hclust to nodes and edges
 #'
 #' @noRd
-.convertHclust <- function(hcl, data, detailsOnTooltips, drawNames, qualiSup, quantiSup)
+.convertHclust <- function(hcl, data, drawNames)
 {
   ig <- suppressMessages(ggraph::den_to_igraph(hcl))
   neig <- igraph::neighborhood(ig, 150000, mode = "out")
@@ -205,7 +226,7 @@ visHclust <- function(data, colUseForDist = NULL,
   
   dta$nodes$labelComplete <- ""
   dta$nodes$neib <- I(neig)
-  if(detailsOnTooltips)
+  if(!is.null(drawNames))
   {
     
     classDtaIn <- unlist(lapply(data, function(X){class(X)[1]}))
@@ -343,8 +364,8 @@ visHclust <- function(data, colUseForDist = NULL,
   dta$edges$from[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[1]
   dta$edges$to[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[2]
   dta$nodes$group <- ifelse(dta$nodes$leaf, "cluster", "individual")
-  titlDetails <- ifelse(detailsOnTooltips, "<br><b>Details : </b>", "")
-  dta$nodes$title <- paste(dta$nodes$title, titlDetails, dta$nodes$labelComplete)
+  titleDetails <- ifelse(!is.null(drawNames), "<br><b>Details : </b>", "")
+  dta$nodes$title <- paste(dta$nodes$title, titleDetails, dta$nodes$labelComplete)
   dta$nodes$labelComplete <- NULL
   dta$nodes[dta$nodes$leaf & !dta$nodes$hidden,]$title <- as.character(dta$nodes[dta$nodes$leaf& !dta$nodes$hidden,]$label)
   dta
