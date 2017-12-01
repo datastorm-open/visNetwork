@@ -285,7 +285,7 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   
   dta$nodes$circular <- NULL
   dta$edges$circular <- NULL
-  # dta$nodes$neib <- NULL
+
   dta$nodes$label <- suppressMessages(ggraph::create_layout(hcl, "dendrogram")$label)
   
   names(dta$nodes) <- sub("layout.", "", names(dta$nodes))
@@ -348,7 +348,7 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   dta$nodes$y <- -dta$nodes$y * 2000
   
   
-  dta$nodes$title <- paste("Inertia : <b>", round(-dta$nodes$y/2000, 2), "</b><br>Number of individual : <b>", dta$nodes$members, "</b>")
+  dta$nodes$title <- paste("Inertia : <b>", round(-dta$nodes$y/2000, 2), "</b><br>Number of individuals : <b>", dta$nodes$members, "</b>")
   dta$nodes$inertia <-  round(-dta$nodes$y/2000, 2)
   dta$nodes$hidden <- NULL
   names(dta$nodes)[which(names(dta$nodes) == "hidden2")] <- "hidden"
@@ -363,7 +363,7 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   
   dta$edges$from[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[1]
   dta$edges$to[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[2]
-  dta$nodes$group <- ifelse(dta$nodes$leaf, "cluster", "individual")
+  dta$nodes$group <- ifelse(dta$nodes$leaf, "group", "individual")
   titleDetails <- ifelse(!is.null(drawNames), "<br><b>Details : </b>", "")
   dta$nodes$title <- paste(dta$nodes$title, titleDetails, dta$nodes$labelComplete)
   dta$nodes$labelComplete <- NULL
@@ -379,10 +379,10 @@ visHclust <- function(data, main = "", submain = "", footer = "",
     re <- list()
     # popSpkl2 <<- popSpkl
     for(i in nm){
-      re[[i]] <- paste0("<br>", popSpkl[[i]],' : On pop. mean(<b>', round(meanPop[i],2),"</b>)","<br>",
+      re[[i]] <- paste0("<br>", popSpkl[[i]],' : On pop. (mean:<b>', round(meanPop[i],2),"</b>)","<br>",
                         .addSparkLine(df[,i], type = "box",
                                       min = minPop[[i]], max = maxPop[[i]]),
-                        " : On class mean(<b>", round(clM[i], 2),"</b>)")
+                        " : On grp. (mean:<b>", round(clM[i], 2),"</b>)")
     }
   }
   re <- unlist(re)
@@ -409,7 +409,7 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   re <- unlist(re)
   dd <- paste(paste("<br> <b>",names(re), ": </b><br>",
                     popSpkl, "On pop.<br>",
-                    re, "On class Mode : <b>", tbl[which.max(tbl$Freq),]$Var1,"</b>", collapse = ""))
+                    re, "On grp. (mode:<b>", tbl[which.max(tbl$Freq),]$Var1,"</b>)", collapse = ""))
   dd
 }
 
