@@ -19,7 +19,9 @@
 #' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
 #' @param colorEdges \code{character} color of edges. Default to 'black'
 #' @param colorGroups \code{character}, color for group in exa ("#00FF00"). Default rainbow.
-#' @param nodesSize \code{numeric} size for nodes. Default to 30
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to FALSE
 #' @param highlightNearest \code{boolean} highlight sub-tree on click.
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
@@ -28,10 +30,10 @@
 #' 
 #' \dontrun{
 #' 
-#' visHclust(iris, cutree = 3, nodesSize = 200)
+#' visHclust(iris, cutree = 3)
 #' 
 #' visHclust(iris, cutree = 3,
-#'   tooltipColumns = c(1, 5), nodesSize = 30,
+#'   tooltipColumns = c(1, 5),
 #'   colorGroups = c("red", "blue", "green"))
 #'   
 #' # no graphics on tooltip
@@ -55,12 +57,22 @@ visHclust <- function(data, main = "", submain = "", footer = "",
                       tooltipColumns = 1:ncol(data),
                       colorEdges = "black",
                       colorGroups = substr(rainbow(cutree),1, 7),
-                      nodesSize = 30,
                       highlightNearest = TRUE, 
+                      minNodeSize = 50,
+                      maxNodeSize = 200,
+                      nodesPopSize = TRUE,
                       height = "600px", width = "100%"){
   
   # Controls on inputs
   
+  #Node size controle
+  if(nodesPopSize){
+    minNodeSize = minNodeSize
+    maxNodeSize = maxNodeSize
+  }else{
+    minNodeSize = (minNodeSize + maxNodeSize) / 2
+    maxNodeSize = minNodeSize
+  }
   # distColumns
   if(!is.null(distColumns))
   {
@@ -133,7 +145,8 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   
   hcl <- f_hclust(d = dist(dataForHcl, method = distMethod), method = hclustMethod)
   
-  res <- .convertHclust(hcl, data, drawNames)
+  res <- .convertHclust(hcl, data, drawNames,
+                        minNodeSize = minNodeSize, maxNodeSize = maxNodeSize)
   
   res$edges$color <- colorEdges
   if(!is.null(cutree))
@@ -154,7 +167,9 @@ visHclust <- function(data, main = "", submain = "", footer = "",
                                                title = NA,
                                                neib = I(rep(list(numeric()), 2)),
                                                inertia = NA,
-                                               group = "cut"))
+                                               group = "cut",
+                                               scaling.min = minNodeSize,
+                                               scaling.max = maxNodeSize))
       res$edges <- rbind(res$edges, data.frame(
         from = Mid+150000, 
         to = Mid+150001,
@@ -186,13 +201,12 @@ visHclust <- function(data, main = "", submain = "", footer = "",
       }
     }
   }
-  
+  res$nodes$value <- res$nodes$members
   vis <- visNetwork(res$nodes, res$edges, height = height, width = width, main = main,
                     submain = submain, footer = footer) %>%
     visPhysics(enabled = FALSE) %>% 
     visInteraction(dragNodes = FALSE, selectConnectedEdges = FALSE) %>%
-    visEdges(smooth = FALSE, font = list(background = "white")) %>%
-    visNodes(size = nodesSize) 
+    visEdges(smooth = FALSE, font = list(background = "white"))
   
   if(highlightNearest)
   {
@@ -211,7 +225,8 @@ visHclust <- function(data, main = "", submain = "", footer = "",
 #' Transform data from hclust to nodes and edges
 #'
 #' @noRd
-.convertHclust <- function(hcl, data, drawNames)
+.convertHclust <- function(hcl, data, drawNames,
+                           minNodeSize, maxNodeSize)
 {
   ig <- suppressMessages(ggraph::den_to_igraph(hcl))
   neig <- igraph::neighborhood(ig, 150000, mode = "out")
@@ -341,7 +356,7 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   dta$edges <- do.call("rbind",(lapply(outList, function(X){X[[2]]})))
   dta$edges <- do.call("rbind", (list(data.frame(from = tpNum-1 , to = tpNum, label = "",
                                                  direction = "", horizontal = TRUE), dta$edges)))
-  
+
   dta$nodes <- dta$nodes[!duplicated(dta$nodes$id),]
   dta$nodes$hidden <- !dta$nodes$hidden
   dta$nodes$x <- dta$nodes$x * 200
@@ -368,6 +383,8 @@ visHclust <- function(data, main = "", submain = "", footer = "",
   dta$nodes$title <- paste(dta$nodes$title, titleDetails, dta$nodes$labelComplete)
   dta$nodes$labelComplete <- NULL
   dta$nodes[dta$nodes$leaf & !dta$nodes$hidden,]$title <- as.character(dta$nodes[dta$nodes$leaf& !dta$nodes$hidden,]$label)
+  dta$nodes$scaling.min <- minNodeSize
+  dta$nodes$scaling.max <- maxNodeSize
   dta
 }
 

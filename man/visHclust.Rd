@@ -7,8 +7,9 @@
 visHclust(data, main = "", submain = "", footer = "",
   distColumns = NULL, distMethod = "euclidean", hclustMethod = "complete",
   cutree = 0, tooltipColumns = 1:ncol(data), colorEdges = "black",
-  colorGroups = substr(rainbow(cutree), 1, 7), nodesSize = 30,
-  highlightNearest = TRUE, height = "600px", width = "100\%")
+  colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
+  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
+  height = "600px", width = "100\%")
 }
 \arguments{
 \item{data}{\code{data.frame} data.}
@@ -36,9 +37,13 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 
 \item{colorGroups}{\code{character}, color for group in exa ("#00FF00"). Default rainbow.}
 
-\item{nodesSize}{\code{numeric} size for nodes. Default to 30}
-
 \item{highlightNearest}{\code{boolean} highlight sub-tree on click.}
+
+\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2}
+
+\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2}
+
+\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to FALSE}
 
 \item{height}{\code{character}, default to "600px"}
 
@@ -53,11 +58,15 @@ render the tree with visNetwork, adding informations.
 
 \dontrun{
 
-visHclust(iris, cutree = 3, nodesSize = 200)
+visHclust(iris, cutree = 3)
 
 visHclust(iris, cutree = 3,
-  tooltipColumns = c(1, 5), nodesSize = 30,
+  tooltipColumns = c(1, 5),
   colorGroups = c("red", "blue", "green"))
+  
+# no graphics on tooltip
+visHclust(iris, cutree = 3, main = "Hclust on iris", 
+  tooltipColumns = NULL)
   
   visHclust(iris, cutree = 8)\%>\% 
   visGroups(groupname = "cluster", color ="#00FF00", shape = "square")  \%>\% 
