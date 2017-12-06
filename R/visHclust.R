@@ -273,7 +273,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
         Y <- data.frame(Y)
         Y$X <- ifelse(nchar(as.character(Y$X) ) > 9, paste0(substr(Y$X, 1, 8), "..."), as.character(Y$X))
         modP <-  Y$X[length(Y$X)]
-        paste0(spl, "On pop. (mode: <b>", modP, "</b>)")
+        paste0(spl, " On pop. (mode: <b>", modP, "</b>)")
       })
       
       namOrder <- lapply(dataOthr, function(X){
