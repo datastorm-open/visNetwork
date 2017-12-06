@@ -2,17 +2,40 @@
 % Please edit documentation in R/visHclust.R
 \name{visHclust}
 \alias{visHclust}
+\alias{visHclust.default}
+\alias{visHclust.data.frame}
+\alias{visHclust.dist}
+\alias{visHclust.hclust}
 \title{Visualize Hierarchical cluster analysis.}
 \usage{
-visHclust(data, main = "", submain = "", footer = "",
-  distColumns = NULL, distMethod = "euclidean", hclustMethod = "complete",
-  cutree = 0, tooltipColumns = 1:ncol(data), colorEdges = "black",
+visHclust(object, ...)
+
+\method{visHclust}{default}(object, ...)
+
+\method{visHclust}{data.frame}(object, main = "", submain = "",
+  footer = "", distColumns = NULL, distMethod = "euclidean",
+  hclustMethod = "complete", cutree = 0, tooltipColumns = 1:ncol(object),
+  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
+  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
+  nodesPopSize = TRUE, height = "600px", width = "100\%", ...)
+
+\method{visHclust}{dist}(object, data = NULL, main = "", submain = "",
+  footer = "", cutree = 0, hclustMethod = "complete",
+  tooltipColumns = NULL, colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
   minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
-  height = "600px", width = "100\%")
+  height = "600px", width = "100\%", ...)
+
+\method{visHclust}{hclust}(object, data = NULL, main = "", submain = "",
+  footer = "", cutree = 0, tooltipColumns = NULL, colorEdges = "black",
+  colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
+  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
+  height = "600px", width = "100\%", ...)
 }
 \arguments{
-\item{data}{\code{data.frame} data.}
+\item{object}{\code{hclust | dist | data.frame}.}
+
+\item{...}{nothing}
 
 \item{main}{For add a title. See \link{visNetwork}}
 
@@ -48,6 +71,8 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 \item{height}{\code{character}, default to "600px"}
 
 \item{width}{\code{character}, default to "100\%"}
+
+\item{data}{\code{data.frame} data.frame with data.}
 }
 \description{
 Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
@@ -71,6 +96,14 @@ visHclust(iris, cutree = 3, main = "Hclust on iris",
   visHclust(iris, cutree = 8)\%>\% 
   visGroups(groupname = "cluster", color ="#00FF00", shape = "square")  \%>\% 
   visGroups(groupname = "individual", color ="#FF0000")
+  
+  #On dist
+  visHclust(dist(iris[,1:4]), cutree = 3, data = iris)
+  
+  #On hclust
+  visHclust(hclust(dist(iris[,1:4])), cutree = 3)
+  
+  
 }
 
 }
