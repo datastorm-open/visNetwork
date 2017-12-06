@@ -25,6 +25,7 @@
 #' @param highlightNearest \code{boolean} highlight sub-tree on click.
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
+#' @param export \code{boolean}, add button for export.
 #' @param ... nothing
 #' 
 #' @examples
@@ -79,7 +80,7 @@ visHclust.data.frame <- function(object, main = "", submain = "", footer = "",
                       minNodeSize = 50,
                       maxNodeSize = 200,
                       nodesPopSize = TRUE,
-                      height = "600px", width = "100%", ...){
+                      height = "600px", width = "100%", export = TRUE, ...){
   
   # Controls on inputs
   .ctrlArgsvisHcl(distColumns, cutree, object)
@@ -123,7 +124,7 @@ visHclust.data.frame <- function(object, main = "", submain = "", footer = "",
                  minNodeSize = minNodeSize,
                  maxNodeSize = maxNodeSize,
                  nodesPopSize = nodesPopSize,
-                 height = height, width = width)
+                 height = height, width = width, export = export)
   
 
 }
@@ -140,7 +141,7 @@ visHclust.dist <- function(object, data = NULL, main = "", submain = "", footer 
                            minNodeSize = 50,
                            maxNodeSize = 200,
                            nodesPopSize = TRUE,
-                           height = "600px", width = "100%", ...){
+                           height = "600px", width = "100%", export = TRUE, ...){
   
   #flashClust
   f_hclust <- .giveFhcl()
@@ -163,7 +164,7 @@ visHclust.dist <- function(object, data = NULL, main = "", submain = "", footer 
                    minNodeSize = minNodeSize,
                    maxNodeSize = maxNodeSize,
                    nodesPopSize = nodesPopSize,
-                   height = height, width = width)
+                   height = height, width = width, export = export)
 }
 
 #' @rdname visHclust
@@ -177,7 +178,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
                            minNodeSize = 50,
                            maxNodeSize = 200,
                            nodesPopSize = TRUE,
-                           height = "600px", width = "100%", ...){
+                           height = "600px", width = "100%", export = TRUE, ...){
   
   if(!is.null(data)){
     if(length(object$order)!=nrow(data)){
@@ -203,7 +204,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   .makeHlcGraph(res, nodesPopSize, minNodeSize, maxNodeSize,
                 colorEdges, cutree, colorGroups,
                 height, width, main,
-                submain, footer, highlightNearest)
+                submain, footer, highlightNearest, export)
   
 }
 
@@ -501,7 +502,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 
 .makeHlcGraph <- function(res, nodesPopSize, minNodeSize, maxNodeSize,
                           colorEdges, cutree, colorGroups,  height, width, main,
-                          submain, footer, highlightNearest)
+                          submain, footer, highlightNearest, export)
 {
   
   res$edges$color <- colorEdges
@@ -563,6 +564,10 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     visPhysics(enabled = FALSE) %>% 
     visInteraction(dragNodes = FALSE, selectConnectedEdges = FALSE) %>%
     visEdges(smooth = FALSE, font = list(background = "white"))
+  
+  if(export){
+    vis <- vis %>% visExport()
+  }
   
   if(highlightNearest)
   {

@@ -17,20 +17,21 @@ visHclust(object, ...)
   hclustMethod = "complete", cutree = 0, tooltipColumns = 1:ncol(object),
   colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
   highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
-  nodesPopSize = TRUE, height = "600px", width = "100\%", ...)
+  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
+  ...)
 
 \method{visHclust}{dist}(object, data = NULL, main = "", submain = "",
   footer = "", cutree = 0, hclustMethod = "complete",
   tooltipColumns = NULL, colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
   minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
-  height = "600px", width = "100\%", ...)
+  height = "600px", width = "100\%", export = TRUE, ...)
 
 \method{visHclust}{hclust}(object, data = NULL, main = "", submain = "",
   footer = "", cutree = 0, tooltipColumns = NULL, colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
   minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
-  height = "600px", width = "100\%", ...)
+  height = "600px", width = "100\%", export = TRUE, ...)
 }
 \arguments{
 \item{object}{\code{hclust | dist | data.frame}.}
@@ -72,6 +73,8 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 
 \item{width}{\code{character}, default to "100\%"}
 
+\item{export}{\code{boolean}, add button for export.}
+
 \item{data}{\code{data.frame} data.frame with data.}
 }
 \description{
@@ -94,7 +97,7 @@ visHclust(iris, cutree = 3, main = "Hclust on iris",
   tooltipColumns = NULL)
   
   visHclust(iris, cutree = 8)\%>\% 
-  visGroups(groupname = "cluster", color ="#00FF00", shape = "square")  \%>\% 
+  visGroups(groupname = "group", color ="#00FF00", shape = "square")  \%>\% 
   visGroups(groupname = "individual", color ="#FF0000")
   
   #On dist
