@@ -13,6 +13,12 @@ visNetworkEditorServer(input, output, session, object,
 visNetworkEditorUI(id, quitButton = FALSE, height = "700px")
 }
 \arguments{
+\item{input}{\code{list} shiny input}
+
+\item{output}{\code{list}, shiny output}
+
+\item{session}{\code{list}, shiny session}
+
 \item{object}{a \code{visNetwork} object. Must be a reactive.}
 
 \item{filter}{: see \link{visConfigure}. Must be a reactive.}

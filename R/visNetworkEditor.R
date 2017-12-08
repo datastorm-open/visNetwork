@@ -58,7 +58,9 @@ visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
 #' Module shiny for visualize and customize and get back a \code{visNetwork} object.
 #' Using the javascript interface \link{visConfigure}.
 #'
-#' 
+#' @param  input  \code{list} shiny input
+#' @param  output \code{list}, shiny output
+#' @param  session  \code{list}, shiny session
 #' @param  id \code{character} id of module, linked to  \link{visNetworkEditorUI}
 #' @param  object a \code{visNetwork} object. Must be a reactive.
 #' @param  filter : see \link{visConfigure}. Must be a reactive.
