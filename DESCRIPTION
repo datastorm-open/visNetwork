@@ -35,6 +35,7 @@ Suggests:
     shinyWidgets,
     colourpicker,
     sparkline,
-    ggraph
+    ggraph,
+    flashClust
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

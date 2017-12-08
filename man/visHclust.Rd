@@ -22,13 +22,15 @@ visHclust(object, ...)
 
 \method{visHclust}{dist}(object, data = NULL, main = "", submain = "",
   footer = "", cutree = 0, hclustMethod = "complete",
-  tooltipColumns = NULL, colorEdges = "black",
-  colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
-  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
-  height = "600px", width = "100\%", export = TRUE, ...)
+  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
+  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
+  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
+  ...)
 
 \method{visHclust}{hclust}(object, data = NULL, main = "", submain = "",
-  footer = "", cutree = 0, tooltipColumns = NULL, colorEdges = "black",
+  footer = "", cutree = 0, tooltipColumns = if (!is.null(data)) {    
+  1:ncol(data) } else {     NULL }, colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
   minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
   height = "600px", width = "100\%", export = TRUE, ...)
@@ -36,7 +38,7 @@ visHclust(object, ...)
 \arguments{
 \item{object}{\code{hclust | dist | data.frame}.}
 
-\item{...}{nothing}
+\item{...}{Nothing}
 
 \item{main}{For add a title. See \link{visNetwork}}
 
@@ -73,39 +75,62 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 
 \item{width}{\code{character}, default to "100\%"}
 
-\item{export}{\code{boolean}, add button for export.}
+\item{export}{\code{boolean}, add button for export. Default to TRUE}
 
-\item{data}{\code{data.frame} data.frame with data.}
+\item{data}{\code{data.frame} data.frame with data. Only for \code{hclust} or \code{dist} object.}
 }
 \description{
 Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
 Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
-render the tree with visNetwork, adding informations.
+render the tree with visNetwork, adding informations. Can also be called on a \code{hclust} or \code{dist} object.
 }
 \examples{
 
 \dontrun{
 
-visHclust(iris, cutree = 3)
+#--------------
+# data.frame
+#--------------
 
+# default call on data.frame
+visHclust(iris, cutree = 3, colorEdges = "red")
+
+# update some parameters
 visHclust(iris, cutree = 3,
   tooltipColumns = c(1, 5),
   colorGroups = c("red", "blue", "green"))
   
 # no graphics on tooltip
-visHclust(iris, cutree = 3, main = "Hclust on iris", 
-  tooltipColumns = NULL)
+visHclust(iris, cutree = 3,
+  tooltipColumns = NULL,
+  main = "Hclust on iris")
   
-  visHclust(iris, cutree = 8)\%>\% 
-  visGroups(groupname = "group", color ="#00FF00", shape = "square")  \%>\% 
-  visGroups(groupname = "individual", color ="#FF0000")
+# update group / individual nodes
+visHclust(iris, cutree = 8) \%>\% 
+ visGroups(groupname = "group", color ="#00FF00", shape = "square")  \%>\% 
+ visGroups(groupname = "individual", color ="#FF0000")
+
+#--------------
+# dist
+#--------------
+
+# without adding data & info in tooltip
+visHclust(dist(iris[,1:4]), cutree = 3)
   
-  #On dist
-  visHclust(dist(iris[,1:4]), cutree = 3, data = iris)
+# adding data & info in tooltip
+visHclust(dist(iris[,1:4]), cutree = 3, 
+    data = iris)
+
+#--------------
+# hclust
+#--------------
+
+# without adding data & info in tooltip
+visHclust(hclust(dist(iris[,1:4])), cutree = 3)
   
-  #On hclust
-  visHclust(hclust(dist(iris[,1:4])), cutree = 3)
-  
+# adding data & info in tooltip
+visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
+    data = iris) 
   
 }
 
