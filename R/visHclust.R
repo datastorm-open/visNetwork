@@ -3,6 +3,7 @@
 #' Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
 #' Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
 #' render the tree with visNetwork, adding informations. Can also be called on a \code{hclust} or \code{dist} object.
+#' Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
 #' 
 #' @param object \code{hclust | dist | data.frame}.
 #' @param data \code{data.frame} data.frame with data. Only for \code{hclust} or \code{dist} object.

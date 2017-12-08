@@ -83,6 +83,7 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
 Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
 render the tree with visNetwork, adding informations. Can also be called on a \code{hclust} or \code{dist} object.
+Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
 }
 \examples{
 

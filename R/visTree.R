@@ -682,7 +682,7 @@ visTree <- function(object,
 
 #' Run and edit a visTree, and get back in R
 #'
-#' Neededd packages : shiny, rpart, colourpicker, shinyWidgets
+#' Needed packages : shiny, rpart, colourpicker, shinyWidgets
 #' 
 #' @param  data  \code{rpart or data.drame}
 #' @param  ...  all arguments except \code{object} present in \link{visTree}
