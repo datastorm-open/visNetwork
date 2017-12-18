@@ -104,10 +104,6 @@ visIgraph <- function(igraph,
          install it before.")
   }
   
-  if(length(findFunction(layout)) == 0){
-    stop("Can't find '", layout, "' function. Please verify it")
-  }
-  
   visdata <- toVisNetworkData(igraph, idToLabel)
   
   directed <- FALSE

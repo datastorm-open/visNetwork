@@ -106,6 +106,10 @@ visIgraphLayout <- function(graph,
     stop("Can't find '", layout, "' function. Please verify it")
   }
   
+  if(!is.function(ctrl$objs[[1]])){
+    stop("'", layout, "' must be a function.")
+  }
+  
   igraphlayout <- list(type = type)
   
   ig <- igraph::graph_from_data_frame(graph$x$edges[, c("from", "to")], directed = TRUE, 
