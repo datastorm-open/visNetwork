@@ -1,15 +1,19 @@
+visNetwork 2.0.3
+--------------------------------------------------------------------------------
+  * Fix CRAN VIGNETTE BUILDER
+  
 visNetwork 2.0.2
 --------------------------------------------------------------------------------
 
-  * New ``visHclust`` for visualize Hierarchical cluster analysis
-  * New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
-  * Add ``zoom`` to ``visLegend``
+  * New visHclust for visualize Hierarchical cluster analysis
+  * New visNetworkEditor and module visNetworkEditorUI to use visConfigure javascript functionnalities in R and shiny
+  * Add zoom to visLegend
   * to vis.js 4.20.1
-  * Add ``input$network_initialized`` 
-  * Add ``background`` to ``visNetwork``
-  * Fix ``visTreeEditor`` bug using rpart object
-  * ``visTreeEditor`` : add complexity parameters
-  * Fix ``layout`` control in ``visIgraph`` & ``visIgraphLayout``
+  * Add input$network_initialized 
+  * Add background to visNetwork
+  * Fix visTreeEditor bug using rpart object
+  * visTreeEditor : add complexity parameters
+  * Fix layout control in visIgraph & visIgraphLayout
   
 visNetwork 2.0.0
 --------------------------------------------------------------------------------
@@ -86,7 +90,7 @@ visNetwork 0.2.2
   * new visUpdateNodes & visUpdateEdges to update data in shiny
   * enable visOptions with visNetworkProxy
   * add randomSeed to visIgraphLayout
-  * add quick support for label.cex and label.color with ``visIgraph``
+  * add quick support for label.cex and label.color with visIgraph
   * to vis.js 4.15.0
   
 visNetwork 0.2.1
