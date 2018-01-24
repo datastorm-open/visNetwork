@@ -3,6 +3,9 @@
 #' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
+#' @param data \code{data.frame}, use by sparkline, if NULL, sparkline are unavailable.
+#' @param tooltipColumns \code{numeric} indice of columns used in tooltip. All by default.
+#' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
 #' @param main For add a title. See \link{visNetwork}
 #' @param submain For add a subtitle. See \link{visNetwork}
 #' @param footer For add a footer. See \link{visNetwork}
@@ -61,7 +64,7 @@
 #' 
 #' # Basic classification tree
 #' res <- rpart(Species~., data=iris)
-#' visTree(res, main = "Iris classification Tree")
+#' visTree(res, data = iris, main = "Iris classification Tree")
 #' 
 #' # Basic regression tree
 #' res <- rpart(Petal.Length~., data=iris)
@@ -108,6 +111,8 @@
 #' @importFrom grDevices rgb
 #' 
 visTree <- function(object,
+                    data = NULL,
+                    tooltipColumns = NULL,
                     main = "",
                     submain = "",
                     footer = "",
@@ -176,6 +181,8 @@ visTree <- function(object,
   if(!is.null(colorEdges)){
     stopifnot("character" %in% class(colorEdges))
   }
+  
+  
   stopifnot("logical" %in% class(legend))
   stopifnot("numeric" %in% class(legendWidth) | "integer" %in% class(legendWidth))
   stopifnot("numeric" %in% class(legendNcol) | "integer" %in% class(legendNcol))
@@ -189,6 +196,12 @@ visTree <- function(object,
   stopifnot("character" %in% class(width))
   stopifnot("character" %in% class(shapeVar))
   stopifnot("character" %in% class(shapeY))
+  
+  if(!is.null(tooltipColumns))
+  {
+  stopifnot("numeric" %in% class(tooltipColumns))
+  }
+  
   
   # ------------------------------
   # get information from rpart object
@@ -339,6 +352,58 @@ visTree <- function(object,
   }
   
   # ------------------------------
+  # Sparklines for nodes
+  labelComplete <- NULL
+  if(!is.null(data))
+  {
+    
+    if(!is.null(tooltipColumns))
+    {
+      data <- data[, tooltipColumns, drop = FALSE]
+    }
+    # data <- data[,varInTooltips]
+    nodesNames <- as.integer(rownames(object$frame))
+    classDtaIn <- unlist(lapply(data, function(X){class(X)[1]}))
+    classDtaIn <- classDtaIn%in%c("numeric", "integer")
+    dataNum <- data[,classDtaIn, drop = FALSE]
+    
+    if(ncol(dataNum) > 0){
+      minPop <- apply(dataNum, 2, min)
+      maxPop <- apply(dataNum, 2, max)
+      meanPop <- colMeans(dataNum)
+      popSpkl <- apply(dataNum,2, function(X){
+        .addSparkLine(X, type = "box")
+      })
+      labelComplete <- sapply(nodesNames, function(Z){
+        .giveLabelsFromDf(subsetRpart(object, dataNum, Z),
+                          popSpkl, minPop, maxPop, meanPop)
+      })
+    }
+    
+    
+    dataOthr <- data[,!classDtaIn, drop = FALSE]
+    
+    if(ncol(dataOthr) > 0){
+      popSpkl <- apply(dataOthr,2, function(X){
+        Y <- sort(table(X))
+        spl <- .addSparkLine(Y , type = "pie", labels = names(Y))
+        Y <- data.frame(Y)
+        Y$X <- ifelse(nchar(as.character(Y$X) ) > 9,
+                      paste0(substr(Y$X, 1, 8), "..."), as.character(Y$X))
+        modP <-  Y$X[length(Y$X)]
+        paste0(spl, " On pop. (mode: <b>", modP, "</b>)")
+      })
+      
+      namOrder <- lapply(dataOthr, function(X){
+        names(sort(table(X)))
+      })
+      labelComplete <-paste(labelComplete, sapply(nodesNames, function(Z){
+        .giveLabelsFromDfChr(subsetRpart(object, dataOthr, Z),
+                             popSpkl, namOrder)} ) )
+    }
+  }
+  
+  # ------------------------------
   # Terminal nodes colors
   ind_terminal <- which(nodes_var == "<leaf>")
   if(!is.null(attributes(object)$ylevels)){
@@ -379,7 +444,8 @@ visTree <- function(object,
     "%</b> (", object$frame$n,")<br>", "Complexity : <b>",
     round(object$frame$complexity, digits),
     "</b><br>", statsNodes,
-    ifelse(!unlist(lapply(tooltipRules, is.null)), finalHtmlRules, ""), '</div>')
+    ifelse(!unlist(lapply(tooltipRules, is.null)), finalHtmlRules, ""), '</div>',
+    labelComplete)
   
   # ------------------------------
   # Nodes size on population
@@ -481,6 +547,10 @@ visTree <- function(object,
   if(export){
     tree <- tree%>%visExport()
   }
+  if(!is.null(labelComplete)){
+    tree <- tree %>% sparkline::spk_add_deps() 
+  }
+  
   tree
 }
 
@@ -581,6 +651,13 @@ visTree <- function(object,
   results <- list(L = lsplit, R = rsplit)
   return(results)
 }
+
+subsetRpart <- function(tree,data,  node = 1L) {
+  wh <- sapply(as.integer(rownames(tree$frame)), .parent)
+  wh <- unique(unlist(wh[sapply(wh, function(x) node %in% x)]))
+  data[rownames(tree$frame)[tree$where] %in% wh[wh >= node], , drop = FALSE]
+}
+
 
 .generateVarColor <- function(colorVar, nodes_var, SortLabel){
   if(is.null(colorVar)){
