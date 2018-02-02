@@ -473,7 +473,7 @@ $.sparkline_display_visible();
   }
   
   finalNodesTooltip <- paste0(
-    '<div style="text-align:center;">', "N% : <b>",
+    '<div style="text-align:center;">', "N : <b>",
     round(object$frame$n/object$frame$n[1],digits)*100, 
     "%</b> (", object$frame$n,")<br>", "Complexity : <b>",
     round(object$frame$complexity, digits),
