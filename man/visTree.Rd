@@ -4,9 +4,10 @@
 \alias{visTree}
 \title{Visualize Recursive Partitioning and Regression Trees (rpart object)}
 \usage{
-visTree(object, main = "", submain = "", footer = "", direction = "UD",
-  fallenLeaves = FALSE, rules = TRUE, simplifyRules = TRUE,
-  shapeVar = "dot", shapeY = "square", colorVar = NULL, colorY = NULL,
+visTree(object, data = NULL, tooltipColumns = NULL, main = "",
+  submain = "", footer = "", direction = "UD", fallenLeaves = FALSE,
+  rules = TRUE, simplifyRules = TRUE, shapeVar = "dot",
+  shapeY = "square", colorVar = NULL, colorY = NULL,
   colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
   edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
   legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
@@ -20,6 +21,11 @@ visTree(object, main = "", submain = "", footer = "", direction = "UD",
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
+
+\item{data}{\code{data.frame}, use by sparkline, if NULL, sparkline are unavailable.}
+
+\item{tooltipColumns}{\code{numeric} indice of columns used in tooltip. All by default.
+So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.}
 
 \item{main}{For add a title. See \link{visNetwork}}
 
@@ -110,7 +116,7 @@ library(rpart)
 
 # Basic classification tree
 res <- rpart(Species~., data=iris)
-visTree(res, main = "Iris classification Tree")
+visTree(res, data = iris, main = "Iris classification Tree")
 
 # Basic regression tree
 res <- rpart(Petal.Length~., data=iris)

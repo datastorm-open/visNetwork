@@ -20,8 +20,8 @@
 #' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
 #' @param colorEdges \code{character} color of edges. Default to 'black'
 #' @param colorGroups \code{character}, color for group in exa ("#00FF00"). Default rainbow.
-#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else, nodes size is minNodeSize + maxNodeSize / 2 
 #' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to FALSE
 #' @param highlightNearest \code{boolean} highlight sub-tree on click.
 #' @param height \code{character}, default to "600px"
@@ -568,6 +568,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     }
   }
   res$nodes$value <- res$nodes$members
+  res$edges$id <- 1:nrow( res$edges)
   vis <- visNetwork(res$nodes, res$edges, height = height, width = width, main = main,
                     submain = submain, footer = footer) %>%
     visPhysics(enabled = FALSE) %>% 

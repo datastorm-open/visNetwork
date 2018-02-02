@@ -1,9 +1,13 @@
-.rPartvisNetworkTooltipShowme{ 
+.classActivePointer:hover {
+    cursor: pointer;
+}
+
+/*.rPartvisNetworkTooltipShowme{ 
 display: none;
 }
 .rPartvisNetworkTooltipShowhim:hover .rPartvisNetworkTooltipShowme{
 display : block;
-}
+}*/
 
 hr.rPartvisNetwork{
 	margin: 0.1em auto;

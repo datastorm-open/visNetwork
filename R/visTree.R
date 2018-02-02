@@ -199,7 +199,7 @@ visTree <- function(object,
   
   if(!is.null(tooltipColumns))
   {
-  stopifnot("numeric" %in% class(tooltipColumns))
+    stopifnot("numeric" %in% class(tooltipColumns))
   }
   
   
@@ -252,7 +252,7 @@ visTree <- function(object,
     
     edgesLabelsFull <- edgesLabels
     formatLabels <- function(x){
-      ifelse(nchar(x)  >10, paste0(substr(x, 1, 7), "..."), x)
+      ifelse(nchar(x)  > 10, paste0(substr(x, 1, 7), "..."), x)
     }
     edgesLabels <- sapply(edgesLabels, formatLabels)
     
@@ -372,11 +372,12 @@ visTree <- function(object,
       maxPop <- apply(dataNum, 2, max)
       meanPop <- colMeans(dataNum)
       popSpkl <- apply(dataNum,2, function(X){
-        .addSparkLine(X, type = "box")
+        .addSparkLineOnlyJs(X, type = "box")
       })
+      
       labelComplete <- sapply(nodesNames, function(Z){
-        .giveLabelsFromDf(subsetRpart(object, dataNum, Z),
-                          popSpkl, minPop, maxPop, meanPop)
+        .giveLabelsFromDfWhichInvisible(subsetRpart(object, dataNum, Z),
+                                        popSpkl, minPop, maxPop, meanPop)
       })
     }
     
@@ -386,7 +387,7 @@ visTree <- function(object,
     if(ncol(dataOthr) > 0){
       popSpkl <- apply(dataOthr,2, function(X){
         Y <- sort(table(X))
-        spl <- .addSparkLine(Y , type = "pie", labels = names(Y))
+        spl <- .addSparkLineOnlyJs(Y , type = "pie", labels = names(Y))
         Y <- data.frame(Y)
         Y$X <- ifelse(nchar(as.character(Y$X) ) > 9,
                       paste0(substr(Y$X, 1, 8), "..."), as.character(Y$X))
@@ -398,10 +399,22 @@ visTree <- function(object,
         names(sort(table(X)))
       })
       labelComplete <-paste(labelComplete, sapply(nodesNames, function(Z){
-        .giveLabelsFromDfChr(subsetRpart(object, dataOthr, Z),
-                             popSpkl, namOrder)} ) )
+        .giveLabelsFromDfChrInvisible(subsetRpart(object, dataOthr, Z),
+                                      popSpkl, namOrder)} ) )
     }
   }
+  
+  labelComplete <- paste0('<div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">MINI CHARTS(s)</U></div>
+<div class="showMeRpartTTp" style="display:none;">
+           ',labelComplete,
+           '</script>',
+           '<script type="text/javascript">',
+           '$(document).ready(function(){
+           $(".showOnMe").click(function(){
+           $(".showMeRpartTTp").toggle();
+           $.sparkline_display_visible();
+           });
+});</script>','</div></div>')
   
   # ------------------------------
   # Terminal nodes colors
@@ -432,8 +445,29 @@ visTree <- function(object,
   }
   
   if(rules) {
-    finalHtmlRules <-  paste0('<hr class="rPartvisNetwork"><div class="rPartvisNetworkTooltipShowhim" style="color:blue;">
-          <U>RULES</U><div class="rPartvisNetworkTooltipShowme" style="color:black;">', tooltipRules,'</div></div>')
+    idToSample <- length(tooltipRules)
+    idS <- sapply(1:idToSample, function(X){paste0(sample(LETTERS, 15), collapse = "")})
+    idS <- paste0("myIdToDisplay", idS)
+    
+    # <div onclick="toggle_visibility(\'',idS,'\')">
+    #   <U>RULES</U></div><div id="',idS,'">', 
+    # tooltipRules,'</div>
+      
+    finalHtmlRules <-  paste0(
+'<hr class="rPartvisNetwork">
+<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">RULES</U></div>
+<div class="showMeRpartTTp2" style="display:none;">
+',tooltipRules,
+'</script>',
+'<script type="text/javascript">',
+'$(document).ready(function(){
+$(".showOnMe2").click(function(){
+$(".showMeRpartTTp2").toggle();
+$.sparkline_display_visible();
+});
+  });</script>','</div></div>
+
+')
   }else{
     finalHtmlRules <- ""
   }
@@ -506,19 +540,19 @@ visTree <- function(object,
   # ------------------------------
   # Coordinate
   # if(coordinates){
-    # rpartcoParams <- list(uniform = TRUE, branch = 0.2, nspace = 0.2, minbranch = 0.3)
-    # Xp <- rpart:::rpartco(object, rpartcoParams)$x
-    # nodes$x <- Xp * 100
-    # nodes$y <- nodes$level * 150
-    # nodes$y <- nodes$y - mean(nodes$y)
-    # nodes$x <- nodes$x - mean(nodes$x)
-    # 
-    # intervalPositionX <- max(nodes$x)
-    # CorrectPosition <- legendWidth*intervalPositionX
-    # nodes$x <- nodes$x + CorrectPosition / 8
-    # nodes$x <- nodes$x  / (1 + legendWidth)
+  # rpartcoParams <- list(uniform = TRUE, branch = 0.2, nspace = 0.2, minbranch = 0.3)
+  # Xp <- rpart:::rpartco(object, rpartcoParams)$x
+  # nodes$x <- Xp * 100
+  # nodes$y <- nodes$level * 150
+  # nodes$y <- nodes$y - mean(nodes$y)
+  # nodes$x <- nodes$x - mean(nodes$x)
+  # 
+  # intervalPositionX <- max(nodes$x)
+  # CorrectPosition <- legendWidth*intervalPositionX
+  # nodes$x <- nodes$x + CorrectPosition / 8
+  # nodes$x <- nodes$x  / (1 + legendWidth)
   # }
-
+  
   tree <- visNetwork(nodes = nodes, edges = edges, height = height, width = width, main = main,
                      submain = submain, footer = footer) %>% 
     visHierarchicalLayout(direction = direction) %>%
@@ -783,7 +817,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 #'
 visTreeEditor <- function(data, ...){
-
+  
   if(!requireNamespace("shiny", quietly = TRUE)){
     stop("visTreeEditor require 'shiny' package")
   } else {
@@ -815,6 +849,79 @@ visTreeEditor <- function(data, ...){
       shiny::callModule(visTreeModuleServer, id = "visTreeEditor" ,data = shiny::reactive(data), ...)
     })))
 }
+
+
+.giveLabelsFromDfWhichInvisible <- function(df, popSpkl = NULL, minPop = NULL, maxPop = NULL, meanPop = NULL){
+  df <- df[!is.na(df[,1]),, drop = FALSE]
+  clM <- colMeans(df)
+  if(!is.null(popSpkl)){
+    nm <- names(df)
+    re <- list()
+    for(i in nm){
+      re[[i]] <- paste0("<br>", popSpkl[[i]],' : On pop. (mean:<b>', round(meanPop[i],2),"</b>)","<br>",
+                        .addSparkLineOnlyJs(df[,i], type = "box",
+                                            min = minPop[[i]], max = maxPop[[i]]),
+                        " : On grp. (mean:<b>", round(clM[i], 2),"</b>)")
+    }
+  }
+  re <- unlist(re)
+  paste(paste("<br> <b>",names(clM), ": </b>", re, collapse = ""))
+  
+}
+
+
+.giveLabelsFromDfChrInvisible <- function(df, popSpkl, namOrder){
+  nm <- names(df)
+  re <- list()
+  for(i in nm){
+    tbl <- table(df[,i])
+    tbl <- tbl[na.omit(match(namOrder[[i]], names(tbl)))]
+    tbl <- data.frame(tbl)
+    newMod <- namOrder[[i]][!namOrder[[i]]%in%tbl$Var1]
+    if(length(newMod) > 0){
+      tbl <- rbind(tbl, data.frame(Var1 = newMod, Freq = 0))
+    }
+    namOrder
+    tbl$Var1 <- ifelse(nchar(as.character(tbl$Var1) ) > 9, paste0(substr(tbl$Var1, 1, 8), "..."), as.character(tbl$Var1))
+    re[[i]] <- paste0(.addSparkLineOnlyJs(tbl$Freq, type = "pie", labels = tbl$Var1))
+  }
+  re <- unlist(re)
+  paste(paste("<br> <b>",names(re), ": </b><br>",
+              popSpkl, "<br>",
+              re, "On grp. (mode:<b>", tbl[which.max(tbl$Freq),]$Var1,"</b>)", collapse = ""))
+}
+
+
+
+
+.addSparkLineOnlyJs <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
+  if(is.null(min))min <- min(vect)
+  if(is.null(max))max <- max(vect)
+  drun <- sample(LETTERS, 15, replace = TRUE)
+  drun <- paste0(drun, collapse = "")
+  if(!is.null(labels)){
+    tltp <- paste0((1:length(labels))-1, ": '", labels, "'", collapse = ",")
+    tltp <- paste0("
+                   tooltipFormat: \'{{offset:offset}} ({{percent.1}}%)\',   tooltipValueLookups: {
+                   \'offset\': { ", tltp, "}}")
+  }else{
+    tltp <- NULL
+  }
+  ttr <- paste0('
+         $(function() {
+         $(".inlinesparkline', drun,'").sparkline([',paste0(vect, collapse = ",") ,'], {
+         type: "',type , '", chartRangeMin: ', min,', chartRangeMax: ', max,'
+         , ', tltp, '
+         }); 
+         });
+         ')
+  
+  paste0('<div class="inlinesparkline', drun,'" style="display: inline-block;">&nbsp;</div>',
+         '<script type="text/javascript">',
+         ttr,
+         '</script>')
+}
+
 
 
 # 
