@@ -263,7 +263,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
       maxPop <- apply(dataNum, 2, max)
       meanPop <- colMeans(dataNum)
       popSpkl <- apply(dataNum,2, function(X){
-        .addSparkLine(X, type = "box")
+        .addSparkLineOnlyJs(X, type = "box")
       })
       rNum <- 1:nrow(dataNum)
       
@@ -272,7 +272,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
           nodeDep <- dta$nodes[Z,]$neib[[1]]
           nodeDep <- as.numeric(dta$nodes$label[dta$nodes$id%in%nodeDep])
           nodeDep <- nodeDep[nodeDep%in%rNum]
-          .giveLabelsFromDf(dataNum[nodeDep,, drop = FALSE], popSpkl, minPop, maxPop, meanPop)
+          .giveLabelsFromDfWhichInvisible(dataNum[nodeDep,, drop = FALSE], popSpkl, minPop, maxPop, meanPop)
         }else{""}
       })
     }
@@ -284,7 +284,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     if(ncol(dataOthr) > 0){
       popSpkl <- apply(dataOthr,2, function(X){
         Y <- sort(table(X))
-        spl <- .addSparkLine(Y , type = "pie", labels = names(Y))
+        spl <- .addSparkLineOnlyJs(Y , type = "pie", labels = names(Y))
         Y <- data.frame(Y)
         Y$X <- ifelse(nchar(as.character(Y$X) ) > 9, paste0(substr(Y$X, 1, 8), "..."), as.character(Y$X))
         modP <-  Y$X[length(Y$X)]
@@ -300,7 +300,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
           nodeDep <- dta$nodes[Z,]$neib[[1]]
           nodeDep <- as.numeric(dta$nodes$label[dta$nodes$id%in%nodeDep])
           nodeDep <- nodeDep[nodeDep%in%rNum]
-          paste(dta$nodes[Z,]$labelComplete,.giveLabelsFromDfChr(dataOthr[nodeDep,, drop = FALSE], popSpkl, namOrder) )
+          paste(dta$nodes[Z,]$labelComplete,.giveLabelsFromDfChrInvisible(dataOthr[nodeDep,, drop = FALSE], popSpkl, namOrder) )
         }else{""}
       })
     }
@@ -386,8 +386,27 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   dta$edges$from[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[1]
   dta$edges$to[1] <- dta$nodes[dta$nodes$y == min(dta$nodes$y),]$id[2]
   dta$nodes$group <- ifelse(dta$nodes$leaf, "individual", "group")
-  titleDetails <- ifelse(!is.null(drawNames), "<br><b>Details : </b>", "")
-  dta$nodes$title <- paste(dta$nodes$title, titleDetails, dta$nodes$labelComplete)
+  
+  # titleDetails <- ifelse(!is.null(drawNames), "<br><b>Details : </b>", "")
+  titleDetails <- ""
+  if(!is.null(drawNames)){
+    titleDetails <-  paste0(
+        '<hr class="rPartvisNetwork">
+        <div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details : </U></div>
+        <div class="showMeRpartTTp2" style="display:none;">
+        ', dta$nodes$labelComplete,
+        '</script>',
+        '<script type="text/javascript">',
+        '$(document).ready(function(){
+        $(".showOnMe2").click(function(){
+        $(".showMeRpartTTp2").toggle();
+        $.sparkline_display_visible();
+        });
+  });</script>','</div></div>
+        
+        ')
+  }
+  dta$nodes$title <- paste(dta$nodes$title, titleDetails)
   dta$nodes$labelComplete <- NULL
   dta$nodes[dta$nodes$leaf & !dta$nodes$hidden,]$title <- as.character(dta$nodes[dta$nodes$leaf& !dta$nodes$hidden,]$label)
   dta$nodes$scaling.min <- minNodeSize
