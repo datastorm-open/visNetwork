@@ -22,8 +22,8 @@
 #' @param colorGroups \code{character}, color for group in exa ("#00FF00"). Default rainbow.
 #' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else, nodes size is minNodeSize + maxNodeSize / 2 
 #' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to FALSE
-#' @param highlightNearest \code{boolean} highlight sub-tree on click.
+#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to TRUE
+#' @param highlightNearest \code{boolean} highlight sub-tree on click default TRUE.
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
 #' @param export \code{boolean}, add button for export. Default to TRUE
@@ -76,7 +76,18 @@
 #' # adding data & info in tooltip
 #' visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
 #'     data = iris) 
-#'   
+#'     
+#' #Title(s)
+#' visHclust(iris, cutree = 3,  main ="My_title",
+#'           submain = "My_sub_title", footer = "My_footer")
+#'           
+#' #Export
+#' visHclust(iris, cutree = 3, export = TRUE)
+#' 
+#' 
+#' #Colors on groups
+#' visHclust(iris, cutree = 3,
+#'            colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 #' }
 #' 
 #' @importFrom grDevices rainbow

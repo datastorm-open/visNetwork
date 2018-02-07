@@ -63,13 +63,13 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 
 \item{colorGroups}{\code{character}, color for group in exa ("#00FF00"). Default rainbow.}
 
-\item{highlightNearest}{\code{boolean} highlight sub-tree on click.}
+\item{highlightNearest}{\code{boolean} highlight sub-tree on click default TRUE.}
 
-\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else, nodes size is minNodeSize + maxNodeSize / 2}
 
-\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else, nodes size is minNodeSize + maxNodeSize / 2}
 
-\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to FALSE}
+\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to TRUE}
 
 \item{height}{\code{character}, default to "600px"}
 
@@ -132,7 +132,18 @@ visHclust(hclust(dist(iris[,1:4])), cutree = 3)
 # adding data & info in tooltip
 visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
     data = iris) 
-  
+    
+#Title(s)
+visHclust(iris, cutree = 3,  main ="My_title",
+          submain = "My_sub_title", footer = "My_footer")
+          
+#Export
+visHclust(iris, cutree = 3, export = TRUE)
+
+
+#Colors on groups
+visHclust(iris, cutree = 3,
+           colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 }
 
 }
