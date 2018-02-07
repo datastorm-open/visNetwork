@@ -101,6 +101,12 @@
 #' visTree(res, colorEdges = "#000099", 
 #'     colorVar = substring(rainbow(6), 1, 7), 
 #'     colorY = c("blue", "green", "orange"))
+#'     
+#'     
+#'  # And more you, can use visnetwork functions to add more options
+#' visTree(res) %>% 
+#' visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+#' 
 #' 
 #' }
 #' 
