@@ -1455,7 +1455,16 @@ visTreeModuleServer <- function(input, output, session, data,
     },
     content = function(con) {
       out <- build_export_tree()
-      out  %>% visSave(con, TRUE, input$export_background)
+      
+      background <- input$export_background
+      #Transform color
+      if (grepl("^#", background, perl = TRUE)) {
+        bgcol <- col2rgb(background, alpha = TRUE)
+        background <- sprintf("rgba(%d,%d,%d,%f)", bgcol[1,1], bgcol[2,1], bgcol[3,1], bgcol[4,1]/255)
+        }
+      
+      
+      out  %>% visSave(con, TRUE, background)
     }
   )
   
