@@ -1086,7 +1086,7 @@ function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
   }
 
   for (var inodes = 0; inodes < arr_nodes.length; inodes++) {
-    selectedNode = arr_nodes[inodes];
+    selectedNode = '' + arr_nodes[inodes];
     if(selectedNode !== undefined){
         if(network.isCluster(selectedNode)){
           network.openCluster(selectedNode)
