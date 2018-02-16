@@ -13,7 +13,10 @@
 #' 
 #' # use fontAwesome icons using groups or nodes options 
 #' # font-awesome is not part of dependencies. use addFontAwesome() if needed.
-#' # http://fortawesome.github.io/Font-Awesome/
+#' # https://fontawesome.com/v4.7.0/
+#' # Version in package (and compatible with vis.js) : 4.7.0
+#' # cheatsheet available in package: 
+#' # system.file("fontAwesome/Font Awesome Cheatsheet.pdf", package = "visNetwork")
 #' 
 #' # definition in groups
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
@@ -42,7 +45,7 @@ addFontAwesome <- function(graph){
   
   font_dep <- htmltools::htmlDependency(
     name = "font-awesome",
-    version = "4.5.0",
+    version = "4.7.0",
     src = c(file=system.file("htmlwidgets/lib/font-awesome", package="visNetwork")),
     stylesheet = "css/font-awesome.min.css"
   )
