@@ -2,6 +2,7 @@ visNetwork 2.0.4
 --------------------------------------------------------------------------------
   * Update to fontAwesome 4.7.0
   * Fix node's id bug on collapse
+  * add 'main' argument to 'selectedBy' and 'nodesIdSelection'
   
 visNetwork 2.0.3
 --------------------------------------------------------------------------------

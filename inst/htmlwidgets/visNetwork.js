@@ -1572,7 +1572,12 @@ if (HTMLWidgets.shinyMode){
             if(data.options.byselection.enabled === true){
               option2 = document.createElement("option");
               option2.value = "";
-              option2.text = "Select by " + data.options.byselection.variable;
+              if(data.options.byselection.main === undefined){
+                option2.text = "Select by " + data.options.byselection.variable;
+              } else {
+                option2.text = data.options.byselection.main;
+              }
+              
               selectList2.appendChild(option2);
       
               if(data.options.byselection.values !== undefined){
@@ -2157,7 +2162,12 @@ HTMLWidgets.widget({
       
       option2 = document.createElement("option");
       option2.value = "";
-      option2.text = "Select by " + x.byselection.variable;
+      if(x.byselection.main === undefined){
+        option2.text = "Select by " + x.byselection.variable;
+      } else {
+        option2.text = x.byselection.main;
+      }
+
       selectList2.appendChild(option2);
       
       //Create and append the options

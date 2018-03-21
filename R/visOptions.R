@@ -31,6 +31,7 @@
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
 #'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+#'  \item{"main"}{ : Optional. Default to "Select by variable"}
 #'}
 #'@param collapse : Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
 #'\itemize{
@@ -392,8 +393,8 @@ visOptions <- function(graph,
     
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor"))){
-          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor'")
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor", "main"))){
+          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor', 'main'")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
@@ -409,6 +410,12 @@ visOptions <- function(graph,
         
         byselection$variable <- selectedBy$variable
         
+        if("main" %in% names(selectedBy)){
+          byselection$main <- selectedBy$main
+        } else {
+          byselection$main <- paste0("Select by ", selectedBy$variable)
+        }
+ 
         if("style"%in%names(selectedBy)){
           byselection$style <- selectedBy$style
         }else if(any(class(graph) %in% "visNetwork_Proxy")){
@@ -423,6 +430,8 @@ visOptions <- function(graph,
         
       }else if(is.character(selectedBy)){
         byselection$variable <- selectedBy
+        
+        byselection$main <- paste0("Select by ", selectedBy)
         
         if(any(class(graph) %in% "visNetwork_Proxy")){
           byselection$style <- NULL
