@@ -125,7 +125,8 @@ visTree(res, edgesFontSize = 14, nodesFontSize = 16)
 # Complex tree
 data("solder")
 res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))
-visTree(res, height = "800px", nodesPopSize = TRUE, minNodeSize = 10, maxNodeSize = 30)
+visTree(res, data = solder, nodesPopSize = TRUE, minNodeSize = 10, 
+  maxNodeSize = 30, height = "800px")
 
 # ----- Options
 res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
