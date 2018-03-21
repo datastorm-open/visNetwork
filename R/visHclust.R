@@ -6,28 +6,28 @@
 #' Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
 #' 
 #' @param object \code{hclust | dist | data.frame}.
-#' @param data \code{data.frame} data.frame with data. Only for \code{hclust} or \code{dist} object.
-#' @param main For add a title. See \link{visNetwork}
-#' @param submain For add a subtitle. See \link{visNetwork}
-#' @param footer For add a footer. See \link{visNetwork}
-#' @param distColumns \code{numeric} indice of columns used for compute distance. 
-#'  If NULL (default), keep all \code{numeric} and \code{integer} columns. 
-#'  If Not NULL, we keep only  \code{numeric} and \code{integer} columns
-#' @param distMethod \code{character} the distance measure to be used for dist function. Default to 'euclidean'. See \code{\link[stats]{dist}}.
-#' @param hclustMethod \code{character} the agglomeration method to be used for hclust function. Default to 'complete'. See \code{\link[stats]{hclust}}.
-#' @param cutree \code{numeric} or \code{integer} desired number of groups. Default to 0
-#' @param tooltipColumns \code{numeric} indice of columns used in tooltip. All by default.
-#' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
-#' @param colorEdges \code{character} color of edges. Default to 'black'
-#' @param colorGroups \code{character}, color for group in exa ("#00FF00"). Default rainbow.
-#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to TRUE
-#' @param highlightNearest \code{boolean} highlight sub-tree on click default TRUE.
+#' @param data \code{data.frame}, data.frame with data. Only for \code{hclust} or \code{dist} object.
+#' @param main Title. See \link{visNetwork}
+#' @param submain Subtitle. See \link{visNetwork}
+#' @param footer Footer. See \link{visNetwork}
+#' @param distColumns \code{numeric}, indice of columns used for compute distance. 
+#'  If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
+#'  If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns
+#' @param distMethod \code{character}, the distance measure to be used for \code{\link[stats]{dist}} function. Default to 'euclidean'.
+#' @param hclustMethod \code{character}, the agglomeration method to be used for \code{\link[stats]{hclust}} function. Default to 'complete'.
+#' @param cutree \code{numeric} or \code{integer}, desired number of groups. Default to 0.
+#' @param tooltipColumns \code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? Indice of columns used in tooltip. All by default.
+#' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
+#' @param colorEdges \code{character}, color of edges. Default to 'black'.
+#' @param colorGroups \code{character}, color for group in hexa ("#00FF00"). Default rainbow.
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else \code{minNodeSize + maxNodeSize / 2}. 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else \code{ minNodeSize + maxNodeSize / 2}. 
+#' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to \code{TRUE}.
+#' @param highlightNearest \code{boolean}, highlight sub-tree on click ? Default to \code{TRUE}.
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
 #' @param export \code{boolean}, add button for export. Default to TRUE
-#' @param ... Nothing
+#' @param ... Don't use
 #' 
 #' @examples
 #' 
@@ -41,13 +41,11 @@
 #' visHclust(iris, cutree = 3, colorEdges = "red")
 #' 
 #' # update some parameters
-#' visHclust(iris, cutree = 3,
-#'   tooltipColumns = c(1, 5),
+#' visHclust(iris, cutree = 3, tooltipColumns = c(1, 5),
 #'   colorGroups = c("red", "blue", "green"))
 #'   
 #' # no graphics on tooltip
-#' visHclust(iris, cutree = 3,
-#'   tooltipColumns = NULL,
+#' visHclust(iris, cutree = 3, tooltipColumns = NULL,
 #'   main = "Hclust on iris")
 #'   
 #' # update group / individual nodes
@@ -63,8 +61,7 @@
 #' visHclust(dist(iris[,1:4]), cutree = 3)
 #'   
 #' # adding data & info in tooltip
-#' visHclust(dist(iris[,1:4]), cutree = 3, 
-#'     data = iris)
+#' visHclust(dist(iris[,1:4]), cutree = 3, data = iris)
 #' 
 #' #--------------
 #' # hclust
@@ -74,18 +71,17 @@
 #' visHclust(hclust(dist(iris[,1:4])), cutree = 3)
 #'   
 #' # adding data & info in tooltip
-#' visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
-#'     data = iris) 
+#' visHclust(hclust(dist(iris[,1:4])), cutree = 3, data = iris) 
 #'     
-#' #Title(s)
+#' # Title(s)
 #' visHclust(iris, cutree = 3,  main ="My_title",
 #'           submain = "My_sub_title", footer = "My_footer")
 #'           
-#' #Export
+#' # Export
 #' visHclust(iris, cutree = 3, export = TRUE)
 #' 
 #' 
-#' #Colors on groups
+#' # Colors on groups
 #' visHclust(iris, cutree = 3,
 #'            colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 #' }
@@ -166,9 +162,7 @@ visHclust.data.frame <- function(object, main = "", submain = "", footer = "",
 visHclust.dist <- function(object, data = NULL, main = "", submain = "", footer = "",
                            cutree = 0,
                            hclustMethod = "complete",
-                           tooltipColumns = if(!is.null(data)){
-                             1:ncol(data)
-                           } else {NULL},
+                           tooltipColumns = if(!is.null(data)){1:ncol(data)} else {NULL},
                            colorEdges = "black",
                            colorGroups = substr(rainbow(cutree),1, 7),
                            highlightNearest = TRUE, 
@@ -402,19 +396,18 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   titleDetails <- ""
   if(!is.null(drawNames)){
     titleDetails <-  paste0(
-        '<hr class="rPartvisNetwork">
+      '<hr class = "rPartvisNetwork">
         <div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details : </U></div>
-        <div class="showMeRpartTTp2" style="display:none;">
+        <div class="showMeRpartTTp2" style="display:none;margin-top: -15px">
         ', dta$nodes$labelComplete,
-        '</script>',
-        '<script type="text/javascript">',
-        '$(document).ready(function(){
-        $(".showOnMe2").click(function(){
-        $(".showMeRpartTTp2").toggle();
-        $.sparkline_display_visible();
-        });
-  });</script>','</div></div>
-        
+      '</script>',
+      '<script type="text/javascript">',
+      '$(document).ready(function(){
+            $(".showOnMe2").click(function(){
+              $(".showMeRpartTTp2").toggle();
+              $.sparkline_display_visible();
+            });
+          });</script>','</div></div>
         ')
   }
   dta$nodes$title <- paste(dta$nodes$title, titleDetails)

@@ -38,38 +38,38 @@ visHclust(object, ...)
 \arguments{
 \item{object}{\code{hclust | dist | data.frame}.}
 
-\item{...}{Nothing}
+\item{...}{Don't use}
 
-\item{main}{For add a title. See \link{visNetwork}}
+\item{main}{Title. See \link{visNetwork}}
 
-\item{submain}{For add a subtitle. See \link{visNetwork}}
+\item{submain}{Subtitle. See \link{visNetwork}}
 
-\item{footer}{For add a footer. See \link{visNetwork}}
+\item{footer}{Footer. See \link{visNetwork}}
 
-\item{distColumns}{\code{numeric} indice of columns used for compute distance. 
-If NULL (default), keep all \code{numeric} and \code{integer} columns. 
-If Not NULL, we keep only  \code{numeric} and \code{integer} columns}
+\item{distColumns}{\code{numeric}, indice of columns used for compute distance. 
+If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
+If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns}
 
-\item{distMethod}{\code{character} the distance measure to be used for dist function. Default to 'euclidean'. See \code{\link[stats]{dist}}.}
+\item{distMethod}{\code{character}, the distance measure to be used for \code{\link[stats]{dist}} function. Default to 'euclidean'.}
 
-\item{hclustMethod}{\code{character} the agglomeration method to be used for hclust function. Default to 'complete'. See \code{\link[stats]{hclust}}.}
+\item{hclustMethod}{\code{character}, the agglomeration method to be used for \code{\link[stats]{hclust}} function. Default to 'complete'.}
 
-\item{cutree}{\code{numeric} or \code{integer} desired number of groups. Default to 0}
+\item{cutree}{\code{numeric} or \code{integer}, desired number of groups. Default to 0.}
 
-\item{tooltipColumns}{\code{numeric} indice of columns used in tooltip. All by default.
-So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.}
+\item{tooltipColumns}{\code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? Indice of columns used in tooltip. All by default.
+So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}
 
-\item{colorEdges}{\code{character} color of edges. Default to 'black'}
+\item{colorEdges}{\code{character}, color of edges. Default to 'black'.}
 
-\item{colorGroups}{\code{character}, color for group in exa ("#00FF00"). Default rainbow.}
+\item{colorGroups}{\code{character}, color for group in hexa ("#00FF00"). Default rainbow.}
 
-\item{highlightNearest}{\code{boolean} highlight sub-tree on click default TRUE.}
+\item{highlightNearest}{\code{boolean}, highlight sub-tree on click ? Default to \code{TRUE}.}
 
-\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else \code{minNodeSize + maxNodeSize / 2}.}
 
-\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else \code{ minNodeSize + maxNodeSize / 2}.}
 
-\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to TRUE}
+\item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to \code{TRUE}.}
 
 \item{height}{\code{character}, default to "600px"}
 
@@ -77,7 +77,7 @@ So, we add a boxplot or a pie focus on sub-population and all population using \
 
 \item{export}{\code{boolean}, add button for export. Default to TRUE}
 
-\item{data}{\code{data.frame} data.frame with data. Only for \code{hclust} or \code{dist} object.}
+\item{data}{\code{data.frame}, data.frame with data. Only for \code{hclust} or \code{dist} object.}
 }
 \description{
 Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
@@ -97,13 +97,11 @@ Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashC
 visHclust(iris, cutree = 3, colorEdges = "red")
 
 # update some parameters
-visHclust(iris, cutree = 3,
-  tooltipColumns = c(1, 5),
+visHclust(iris, cutree = 3, tooltipColumns = c(1, 5),
   colorGroups = c("red", "blue", "green"))
   
 # no graphics on tooltip
-visHclust(iris, cutree = 3,
-  tooltipColumns = NULL,
+visHclust(iris, cutree = 3, tooltipColumns = NULL,
   main = "Hclust on iris")
   
 # update group / individual nodes
@@ -119,8 +117,7 @@ visHclust(iris, cutree = 8) \%>\%
 visHclust(dist(iris[,1:4]), cutree = 3)
   
 # adding data & info in tooltip
-visHclust(dist(iris[,1:4]), cutree = 3, 
-    data = iris)
+visHclust(dist(iris[,1:4]), cutree = 3, data = iris)
 
 #--------------
 # hclust
@@ -130,18 +127,17 @@ visHclust(dist(iris[,1:4]), cutree = 3,
 visHclust(hclust(dist(iris[,1:4])), cutree = 3)
   
 # adding data & info in tooltip
-visHclust(hclust(dist(iris[,1:4])), cutree = 3, 
-    data = iris) 
+visHclust(hclust(dist(iris[,1:4])), cutree = 3, data = iris) 
     
-#Title(s)
+# Title(s)
 visHclust(iris, cutree = 3,  main ="My_title",
           submain = "My_sub_title", footer = "My_footer")
           
-#Export
+# Export
 visHclust(iris, cutree = 3, export = TRUE)
 
 
-#Colors on groups
+# Colors on groups
 visHclust(iris, cutree = 3,
            colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 }

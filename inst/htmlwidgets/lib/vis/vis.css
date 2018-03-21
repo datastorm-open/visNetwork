@@ -9,8 +9,8 @@ display: none;
 display : block;
 }*/
 
-hr.rPartvisNetwork{
-	margin: 0.1em auto;
+.rPartvisNetwork{
+  margin: 0.5em auto; 
 }
 
 .vis .overlay {
@@ -323,7 +323,7 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     border-width: 12px;
     margin-top: -12px;
 }
-/*
+
 div.vis-tooltip {
   position: absolute;
   visibility: hidden;
@@ -345,7 +345,7 @@ div.vis-tooltip {
 
   z-index: 5;
 }
-*/
+
 
 div.vis-color-picker {
   position:absolute;

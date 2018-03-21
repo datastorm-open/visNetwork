@@ -3,12 +3,12 @@
 #' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
-#' @param data \code{data.frame}, use by sparkline, if NULL, sparkline are unavailable.
-#' @param tooltipColumns \code{numeric} indice of columns used in tooltip. All by default.
-#' So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.
-#' @param main For add a title. See \link{visNetwork}
-#' @param submain For add a subtitle. See \link{visNetwork}
-#' @param footer For add a footer. See \link{visNetwork}
+#' @param data \code{data.frame}, adding mini-graphics in tooltips using \code{sparkline} and \code{tooltipColumns} ?
+#' @param tooltipColumns \code{numeric}, indice of columns used in tooltip. All by default.
+#' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
+#' @param main Title. See \link{visNetwork}
+#' @param submain Subtitle. See \link{visNetwork}
+#' @param footer Footer. See \link{visNetwork}
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
 #' up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalLayout} 
@@ -19,7 +19,7 @@
 #' @param legendFontSize \code{numeric}, size of labels of nodes in legend. Default to 16
 #' @param legendNodesSize \code{numeric}, size of nodes in legend. Default to 22
 #' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link{visEdges}  
-#' @param colorVar \code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
+#' @param colorVar \code{character}, colors to use or \code{data.frame} To set color of variables. 2 columns :
 #' \itemize{
 #'   \item{"variable"}{ : names of variables}
 #'   \item{"color"}{ : colors (in hexa). See examples}
@@ -30,7 +30,7 @@
 #'   \item{"color"}{ : colors (in hexa)}
 #' }
 #' if regression tree : \code{character}, 2 colors (min and max, in hexa)
-#' @param colorEdges \code{character} color of edges, in hexa. Default to #8181F7
+#' @param colorEdges \code{character}, color of edges, in hexa. Default to #8181F7
 #' @param legend \code{boolean}, add legend ? Default TRUE. \link{visLegend}
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of columns in legend. Default 1
@@ -73,7 +73,8 @@
 #' # Complex tree
 #' data("solder")
 #' res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.00005))
-#' visTree(res, height = "800px", nodesPopSize = TRUE, minNodeSize = 10, maxNodeSize = 30)
+#' visTree(res, data = solder, nodesPopSize = TRUE, minNodeSize = 10, 
+#'   maxNodeSize = 30, height = "800px")
 #' 
 #' # ----- Options
 #' res <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
@@ -103,7 +104,7 @@
 #'     colorY = c("blue", "green", "orange"))
 #'     
 #'     
-#'  # And more you, can use visnetwork functions to add more options
+#'  # Use visNetwork functions to add more options
 #' visTree(res) %>% 
 #' visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 #' 
@@ -118,7 +119,7 @@
 #' 
 visTree <- function(object,
                     data = NULL,
-                    tooltipColumns = NULL,
+                    tooltipColumns = if(!is.null(data)){1:ncol(data)} else {NULL},
                     main = "",
                     submain = "",
                     footer = "",
@@ -203,11 +204,17 @@ visTree <- function(object,
   stopifnot("character" %in% class(shapeVar))
   stopifnot("character" %in% class(shapeY))
   
-  if(!is.null(tooltipColumns))
-  {
-    stopifnot("numeric" %in% class(tooltipColumns))
+  if(!is.null(tooltipColumns)){
+    stopifnot(class(tooltipColumns)[1] %in% c("numeric", "integer"))
+    stopifnot(!is.null(data))
+    stopifnot(max(tooltipColumns) <= ncol(data))
   }
   
+  if(!is.null(tooltipColumns) | rules){
+    if(!requireNamespace("sparkline", quietly = TRUE)){
+      stop("'sparkline' package is needed for this function")
+    }
+  }
   
   # ------------------------------
   # get information from rpart object
@@ -297,7 +304,6 @@ visTree <- function(object,
                               " (", effectif[,i], ")")
     }
     statsNodes <- apply(probsHtml, 1, function(x){paste0(x, collapse = "<br>")})
-    statsNodes <- paste('<hr>', statsNodes)
   }else{
     # Regression TREE
     varNodes <- round(object$frame$dev/(object$frame$n - 1),digits)
@@ -360,14 +366,10 @@ visTree <- function(object,
   # ------------------------------
   # Sparklines for nodes
   labelComplete <- NULL
-  if(!is.null(data))
-  {
-    
-    if(!is.null(tooltipColumns))
-    {
-      data <- data[, tooltipColumns, drop = FALSE]
-    }
-    # data <- data[,varInTooltips]
+  if(!is.null(data) & !is.null(tooltipColumns)){
+
+    data <- data[, tooltipColumns, drop = FALSE]
+
     nodesNames <- as.integer(rownames(object$frame))
     classDtaIn <- unlist(lapply(data, function(X){class(X)[1]}))
     classDtaIn <- classDtaIn%in%c("numeric", "integer")
@@ -386,8 +388,7 @@ visTree <- function(object,
                                         popSpkl, minPop, maxPop, meanPop)
       })
     }
-    
-    
+  
     dataOthr <- data[,!classDtaIn, drop = FALSE]
     
     if(ncol(dataOthr) > 0){
@@ -408,19 +409,20 @@ visTree <- function(object,
         .giveLabelsFromDfChrInvisible(subsetRpart(object, dataOthr, Z),
                                       popSpkl, namOrder)} ) )
     }
+    
+    labelComplete <- paste0('<hr class = "rPartvisNetwork">
+        <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details</U></div>
+                            <div class="showMeRpartTTp" style="display:none;margin-top: -15px">
+                            ',labelComplete,
+                            '</script>',
+                            '<script type="text/javascript">',
+                            '$(document).ready(function(){
+                            $(".showOnMe").click(function(){
+                            $(".showMeRpartTTp").toggle();
+                            $.sparkline_display_visible();
+                            });
+                        });</script>','</div></div>')
   }
-  
-  labelComplete <- paste0('<div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">MINI CHARTS(s)</U></div>
-<div class="showMeRpartTTp" style="display:none;">
-           ',labelComplete,
-           '</script>',
-           '<script type="text/javascript">',
-           '$(document).ready(function(){
-           $(".showOnMe").click(function(){
-           $(".showMeRpartTTp").toggle();
-           $.sparkline_display_visible();
-           });
-});</script>','</div></div>')
   
   # ------------------------------
   # Terminal nodes colors
@@ -460,8 +462,8 @@ visTree <- function(object,
     # tooltipRules,'</div>
       
     finalHtmlRules <-  paste0(
-'<hr class="rPartvisNetwork">
-<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">RULES</U></div>
+'<hr class = "rPartvisNetwork">
+<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Rules</U></div>
 <div class="showMeRpartTTp2" style="display:none;">
 ',tooltipRules,
 '</script>',
@@ -587,7 +589,7 @@ $.sparkline_display_visible();
   if(export){
     tree <- tree%>%visExport()
   }
-  if(!is.null(labelComplete)){
+  if(!is.null(labelComplete) | rules){
     tree <- tree %>% sparkline::spk_add_deps() 
   }
   
@@ -889,12 +891,12 @@ visTreeEditor <- function(data, ...){
     }
     namOrder
     tbl$Var1 <- ifelse(nchar(as.character(tbl$Var1) ) > 9, paste0(substr(tbl$Var1, 1, 8), "..."), as.character(tbl$Var1))
-    re[[i]] <- paste0(.addSparkLineOnlyJs(tbl$Freq, type = "pie", labels = tbl$Var1))
+    re[[i]] <- paste0(.addSparkLineOnlyJs(tbl$Freq, type = "pie", labels = tbl$Var1), "On grp. (mode:<b>", tbl[which.max(tbl$Freq),]$Var1,"</b>)")
+    
   }
   re <- unlist(re)
-  paste(paste("<br> <b>",names(re), ": </b><br>",
-              popSpkl, "<br>",
-              re, "On grp. (mode:<b>", tbl[which.max(tbl$Freq),]$Var1,"</b>)", collapse = ""))
+  paste(paste("<br> <b>",names(re), ": </b><br>", popSpkl, "<br>",
+              re, collapse = ""))
 }
 
 

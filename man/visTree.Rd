@@ -4,34 +4,34 @@
 \alias{visTree}
 \title{Visualize Recursive Partitioning and Regression Trees (rpart object)}
 \usage{
-visTree(object, data = NULL, tooltipColumns = NULL, main = "",
-  submain = "", footer = "", direction = "UD", fallenLeaves = FALSE,
-  rules = TRUE, simplifyRules = TRUE, shapeVar = "dot",
-  shapeY = "square", colorVar = NULL, colorY = NULL,
-  colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
-  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
-  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
-  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
-  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
-  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
-  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
-  clusterOptions = list(fixed = TRUE, physics = FALSE)), updateShape = TRUE,
-  tooltipDelay = 500, digits = 3, height = "600px", width = "100\%",
-  export = TRUE)
+visTree(object, data = NULL, tooltipColumns = if (!is.null(data)) {    
+  1:ncol(data) } else {     NULL }, main = "", submain = "", footer = "",
+  direction = "UD", fallenLeaves = FALSE, rules = TRUE,
+  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
+  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
+  nodesFontSize = 16, edgesFontSize = 14, edgesFontAlign = "horizontal",
+  legend = TRUE, legendNodesSize = 22, legendFontSize = 16,
+  legendWidth = 0.1, legendNcol = 1, legendPosition = "left",
+  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
+  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
+  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
+  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
+  height = "600px", width = "100\%", export = TRUE)
 }
 \arguments{
 \item{object}{\code{rpart}, rpart object}
 
-\item{data}{\code{data.frame}, use by sparkline, if NULL, sparkline are unavailable.}
+\item{data}{\code{data.frame}, adding mini-graphics in tooltips using \code{sparkline} and \code{tooltipColumns} ?}
 
-\item{tooltipColumns}{\code{numeric} indice of columns used in tooltip. All by default.
-So, we add a boxplot or a pie focus on sub-population and all population using \code{sparkline} package.}
+\item{tooltipColumns}{\code{numeric}, indice of columns used in tooltip. All by default.
+So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}
 
-\item{main}{For add a title. See \link{visNetwork}}
+\item{main}{Title. See \link{visNetwork}}
 
-\item{submain}{For add a subtitle. See \link{visNetwork}}
+\item{submain}{Subtitle. See \link{visNetwork}}
 
-\item{footer}{For add a footer. See \link{visNetwork}}
+\item{footer}{Footer. See \link{visNetwork}}
 
 \item{direction}{\code{character}, The direction of the hierarchical layout.
 The available options are: UD, DU, LR, RL. To simplify:
@@ -47,7 +47,7 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 
 \item{shapeY}{\code{character}, shape for terminal nodes See \link{visNodes}}
 
-\item{colorVar}{\code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
+\item{colorVar}{\code{character}, colors to use or \code{data.frame} To set color of variables. 2 columns :
 \itemize{
   \item{"variable"}{ : names of variables}
   \item{"color"}{ : colors (in hexa). See examples}
@@ -60,7 +60,7 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 }
 if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 
-\item{colorEdges}{\code{character} color of edges, in hexa. Default to #8181F7}
+\item{colorEdges}{\code{character}, color of edges, in hexa. Default to #8181F7}
 
 \item{nodesFontSize}{\code{numeric}, size of labels of nodes. Default to 16}
 
@@ -155,7 +155,7 @@ visTree(res, colorEdges = "#000099",
     colorY = c("blue", "green", "orange"))
     
     
- # And more you, can use visnetwork functions to add more options
+ # Use visNetwork functions to add more options
 visTree(res) \%>\% 
 visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
 
