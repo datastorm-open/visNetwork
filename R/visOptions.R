@@ -21,6 +21,7 @@
 #'  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
 #'  \item{"useLabels"}{ : Optional. Boolean. Use labels instead of id ? Default to TRUE.}
+#'  \item{"main"}{ : Optional. Default to "Select by id"}
 #'}
 #'@param selectedBy : Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
 #'\itemize{
@@ -325,10 +326,10 @@ visOptions <- function(graph,
     #############################
     # nodesIdSelection
     #############################
-    idselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', useLabels = TRUE)
+    idselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', useLabels = TRUE, main = "Select by id")
     if(is.list(nodesIdSelection)){
-      if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style", "values", "useLabels"))){
-        stop("Invalid 'nodesIdSelection' argument. List can have 'enabled', 'selected', 'style', 'values', 'useLabels'")
+      if(any(!names(nodesIdSelection)%in%c("enabled", "selected", "style", "values", "useLabels", "main"))){
+        stop("Invalid 'nodesIdSelection' argument. List can have 'enabled', 'selected', 'style', 'values', 'useLabels', 'main'")
       }
       if("selected"%in%names(nodesIdSelection)){
         if(any(class(graph) %in% "visNetwork")){
@@ -342,6 +343,10 @@ visOptions <- function(graph,
         idselection$enabled <- nodesIdSelection$enabled
       }else{
         idselection$enabled <- TRUE
+      }
+      
+      if("main"%in%names(nodesIdSelection)){
+        idselection$main <- nodesIdSelection$main
       }
       
       if("useLabels"%in%names(nodesIdSelection)){

@@ -828,7 +828,12 @@ function setNodeIdList(selectList, params, nodes){
       
   option = document.createElement("option");
   option.value = "";
-  option.text = "Select by id";
+  if(params.main === undefined){
+    option.text = "Select by id";
+  } else {
+    option.text = params.main;
+  }
+  
   selectList.appendChild(option);
       
   // have to set for all nodes ?
@@ -1635,6 +1640,7 @@ if (HTMLWidgets.shinyMode){
             selectList.options.length = 0;
             if(data.options.idselection.enabled === true){
               setNodeIdList(selectList, data.options.idselection, graph.nodes)
+              el.idselection = true;
             } else {
               selectList.style.display = 'none';
               el.idselection = false;
