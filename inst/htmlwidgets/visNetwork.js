@@ -2688,7 +2688,15 @@ HTMLWidgets.widget({
     var popupState = false;
     var popupTimeout = null;
     var vispopup = document.createElement("div");
+   
+    // disable vis.js tooltip 
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = 'div.vis-tooltip {display : none}';
+    document.getElementsByTagName('head')[0].appendChild(style);
+
     var popupStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2)'
+    
     if(x.tooltipStyle !== undefined){
       popupStyle = x.tooltipStyle
     }
