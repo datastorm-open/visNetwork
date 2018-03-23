@@ -6,19 +6,20 @@
 \alias{visTreeModuleUI}
 \title{Module shiny for visualize and customize a \code{rpart} tree}
 \usage{
-visTreeModuleServer(input, output, session, data, main = "", submain = "",
-  footer = "", direction = "UD", fallenLeaves = FALSE, rules = TRUE,
-  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
-  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
-  nodesFontSize = 16, edgesFontSize = 14, edgesFontAlign = "horizontal",
-  legend = TRUE, legendNodesSize = 22, legendFontSize = 16,
-  legendWidth = 0.1, legendNcol = 1, legendPosition = "left",
-  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
-  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
-  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
-  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
-  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
-  height = 650, width = "100\%", export = TRUE)
+visTreeModuleServer(input, output, session, data, tooltipColumns = "",
+  main = "", submain = "", footer = "", direction = "UD",
+  fallenLeaves = FALSE, rules = TRUE, simplifyRules = TRUE,
+  shapeVar = "dot", shapeY = "square", colorVar = NULL, colorY = NULL,
+  colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
+  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
+  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
+  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
+  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
+  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
+  clusterOptions = list(fixed = TRUE, physics = FALSE)), updateShape = TRUE,
+  tooltipDelay = 500, digits = 3, height = 650, width = "100\%",
+  export = TRUE)
 
 visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
   quitButton = FALSE)
@@ -32,11 +33,14 @@ visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
 
 \item{data}{\code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object}
 
-\item{main}{For add a title. See \link{visNetwork}}
+\item{tooltipColumns}{\code{numeric}, indice of columns used in tooltip. All by default.
+So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}
 
-\item{submain}{For add a subtitle. See \link{visNetwork}}
+\item{main}{Title. See \link{visNetwork}}
 
-\item{footer}{For add a footer. See \link{visNetwork}}
+\item{submain}{Subtitle. See \link{visNetwork}}
+
+\item{footer}{Footer. See \link{visNetwork}}
 
 \item{direction}{\code{character}, The direction of the hierarchical layout.
 The available options are: UD, DU, LR, RL. To simplify:
@@ -52,7 +56,7 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 
 \item{shapeY}{\code{character}, shape for terminal nodes See \link{visNodes}}
 
-\item{colorVar}{\code{character} colors to use or \code{data.frame} To set color of variables. 2 columns :
+\item{colorVar}{\code{character}, colors to use or \code{data.frame} To set color of variables. 2 columns :
 \itemize{
   \item{"variable"}{ : names of variables}
   \item{"color"}{ : colors (in hexa). See examples}
@@ -65,7 +69,7 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 }
 if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 
-\item{colorEdges}{\code{character} color of edges, in hexa. Default to #8181F7}
+\item{colorEdges}{\code{character}, color of edges, in hexa. Default to #8181F7}
 
 \item{nodesFontSize}{\code{numeric}, size of labels of nodes. Default to 16}
 
