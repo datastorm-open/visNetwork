@@ -31,7 +31,7 @@ visNearestNodes <- function(graph, target, maxpoints = 5, addDist = T){
   force(target)
   
   visNetworkProxy(graph$id) %>%
-    visGetNodes(input = "tmp_nearest_nodes")
+    visGetNodes(input = graph$session$ns("tmp_nearest_nodes"))
   
   current_nodes <- graph$session$input$tmp_nearest_nodes
   if(is.list(current_nodes)){
