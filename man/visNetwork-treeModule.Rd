@@ -6,20 +6,20 @@
 \alias{visTreeModuleUI}
 \title{Module shiny for visualize and customize a \code{rpart} tree}
 \usage{
-visTreeModuleServer(input, output, session, data, tooltipColumns = "",
-  main = "", submain = "", footer = "", direction = "UD",
-  fallenLeaves = FALSE, rules = TRUE, simplifyRules = TRUE,
-  shapeVar = "dot", shapeY = "square", colorVar = NULL, colorY = NULL,
-  colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
-  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
-  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
-  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
-  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
-  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
-  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
-  clusterOptions = list(fixed = TRUE, physics = FALSE)), updateShape = TRUE,
-  tooltipDelay = 500, digits = 3, height = 650, width = "100\%",
-  export = TRUE)
+visTreeModuleServer(input, output, session, data, tooltip_data = NULL,
+  tooltipColumns = "", main = "", submain = "", footer = "",
+  direction = "UD", fallenLeaves = FALSE, rules = TRUE,
+  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
+  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
+  nodesFontSize = 16, edgesFontSize = 14, edgesFontAlign = "horizontal",
+  legend = TRUE, legendNodesSize = 22, legendFontSize = 16,
+  legendWidth = 0.1, legendNcol = 1, legendPosition = "left",
+  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
+  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
+  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
+  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
+  height = 650, width = "100\%", export = TRUE)
 
 visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
   quitButton = FALSE)
@@ -32,6 +32,9 @@ visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
 \item{session}{\code{list}, shiny session}
 
 \item{data}{\code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object}
+
+\item{tooltip_data}{\code{reactive}, a \code{data.frame}. if \code{data} is a \code{rpart}, 
+data.frame used to build tree in order to plot \code{sparkline}}
 
 \item{tooltipColumns}{\code{numeric}, indice of columns used in tooltip. All by default.
 So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}

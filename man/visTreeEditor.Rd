@@ -9,7 +9,7 @@ visTreeEditor(data, ...)
 \arguments{
 \item{data}{\code{rpart or data.drame}}
 
-\item{...}{all arguments except \code{object} present in \link{visTree}}
+\item{...}{all arguments except \code{object} present in \link{visTreeModuleServer}}
 }
 \description{
 Needed packages : shiny, rpart, colourpicker, shinyWidgets

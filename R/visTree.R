@@ -804,7 +804,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' Needed packages : shiny, rpart, colourpicker, shinyWidgets
 #' 
 #' @param  data  \code{rpart or data.drame}
-#' @param  ...  all arguments except \code{object} present in \link{visTree}
+#' @param  ...  all arguments except \code{object} present in \link{visTreeModuleServer}
 #' 
 #' @examples
 #' 
@@ -854,7 +854,7 @@ visTreeEditor <- function(data, ...){
   return(shiny::runApp(shiny::shinyApp(ui = shiny::fluidPage(
     visTreeModuleUI(id = "visTreeEditor", rpartParams = rpartParams, visTreeParams = TRUE, quitButton = TRUE)), 
     server = function(input, output, session) {
-      shiny::callModule(visTreeModuleServer, id = "visTreeEditor" ,data = shiny::reactive(data), ...)
+      shiny::callModule(visTreeModuleServer, id = "visTreeEditor", data = shiny::reactive(data), ...)
     })))
 }
 
@@ -929,60 +929,3 @@ visTreeEditor <- function(data, ...){
          ttr,
          '</script>')
 }
-
-
-
-# 
-# # object =rpart(Species~., data=iris,control = rpart.control(cp = 0.02))
-# object <- rpart(Petal.Length~., data=iris, control = rpart.control(cp = 0.02))
-# object <- rpart(Species~., data=iris, control = rpart.control(cp = 1))
-
-# object <- rpart(Solder~., data = solder, control = rpart.control(cp = 0.005))
-# # object <- rpart(Opening~., data = solder, control = rpart.control(cp = 0.005))
-# # # # #
-# # # object =rpart(Petal.Length~., data=iris)
-# main = ""
-# submain = ""
-# footer = ""
-# direction = "UD"
-# fallenLeaves = FALSE
-# rules = TRUE
-# simplifyRules = TRUE
-# shapeVar = "dot"
-# shapeY = "square"
-# colorVar = NULL
-# colorY = NULL
-# # 
-# # colorVar <- data.frame(variable = names(solder),
-# #   color = c("#339933", "#b30000","#4747d1","#88cc00", "#9900ff","#247856"))
-# # colorVar <- colorVar[1:2,]
-# # # colorY <- data.frame(modality = unique(solder$Opening),
-# # #  color = c("#AA00AA", "#CDAD15", "#213478"))
-# # # colorY <- c("red", "green")
-# # 
-# colorEdges = "#8181F7"
-# nodesFontSize = 16
-# edgesFontSize = 14
-# edgesFontAlign = "horizontal"
-# legendNodesSize = 22
-# legendFontSize = 16
-# legend = TRUE
-# legendWidth = 0.1
-# legendNcol = 1
-# nodesPopSize = FALSE
-# minNodeSize = 15
-# maxNodeSize = 30
-# highlightNearest =  list(enabled = TRUE,
-#                          degree = list(from = 50000, to = 0), hover = TRUE,
-#                          algorithm = "hierarchical")
-# collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
-#                 clusterOptions = list(fixed = TRUE, physics = FALSE))
-# updateShape = TRUE
-# tooltipDelay = 500
-# digits = 3
-# height = "500px"
-# width = "100%"
-# export = T
-# # 
-# # # # r <- rpart(carat ~ cut+color +clarity+ depth+ table +price, data = diamonds, control = rpart.control(cp = 0))
-# # # # r

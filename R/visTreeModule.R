@@ -10,7 +10,10 @@
 #' @param  input  \code{list} shiny input
 #' @param  output \code{list}, shiny output
 #' @param  session  \code{list}, shiny session
-#' @param data \code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object
+#' @param  data \code{reactive}, a \code{data.frame} or a \code{rpart} result. Must be a reactive object
+#' @param  tooltip_data \code{reactive}, a \code{data.frame}. if \code{data} is a \code{rpart}, 
+#' data.frame used to build tree in order to plot \code{sparkline}
+#' 
 #' @inheritParams visTree
 #' 
 #' 
@@ -67,6 +70,7 @@
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 #'
 visTreeModuleServer <- function(input, output, session, data,
+                                tooltip_data = NULL,
                                 tooltipColumns = "",
                                 main = "",
                                 submain = "",
@@ -127,6 +131,12 @@ visTreeModuleServer <- function(input, output, session, data,
   }
   
   # reactive controls
+  if (!shiny::is.reactive(tooltip_data)){
+    get_tooltip_data <- shiny::reactive({tooltip_data})
+  } else {
+    get_tooltip_data <- tooltip_data
+  }
+  
   if (!shiny::is.reactive(tooltipColumns)){
     get_tooltipColumns <- shiny::reactive({tooltipColumns})
   } else {
@@ -840,8 +850,16 @@ visTreeModuleServer <- function(input, output, session, data,
             tooltipColumns <- 1:ncol(data)
           }
         } else {
-          data <- NULL
-          tooltipColumns <- NULL
+          if(!is.null(get_tooltip_data()) && "data.frame" %in% class(get_tooltip_data())){
+            data <- get_tooltip_data()
+            tooltipColumns <- get_tooltipColumns()
+            if(isTRUE(all.equal(tooltipColumns, ""))){
+              tooltipColumns <- 1:ncol(data)
+            }
+          } else {
+            data <- NULL
+            tooltipColumns <- NULL
+          }
         }
         
         if("runTree" %in% names(input)){
@@ -895,8 +913,19 @@ visTreeModuleServer <- function(input, output, session, data,
                 tooltipColumns <- as.numeric(input$tooltipColumns)
               }
             } else {
-              data <- NULL
-              tooltipColumns <- NULL
+              if(!is.null(get_tooltip_data()) && "data.frame" %in% class(get_tooltip_data())){
+                data <- get_tooltip_data()
+                if(is.null(input$tooltipColumns)){
+                  tooltipColumns <- NULL
+                } else if(length(input$tooltipColumns) == 0){
+                  tooltipColumns <- NULL
+                } else {
+                  tooltipColumns <- as.numeric(input$tooltipColumns)
+                }
+              } else {
+                data <- NULL
+                tooltipColumns <- NULL
+              }
             }
           }
         }
