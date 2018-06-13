@@ -158,7 +158,7 @@ visTree(res, colorEdges = "#000099",
     
  # Use visNetwork functions to add more options
 visTree(res) \%>\% 
-visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+    visOptions(highlightNearest = TRUE)
 
 
 }

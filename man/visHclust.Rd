@@ -16,24 +16,25 @@ visHclust(object, ...)
   footer = "", distColumns = NULL, distMethod = "euclidean",
   hclustMethod = "complete", cutree = 0, tooltipColumns = 1:ncol(object),
   colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
-  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
-  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
-  ...)
+  highlightNearest = TRUE, horizontal = FALSE, minNodeSize = 50,
+  maxNodeSize = 200, nodesPopSize = TRUE, height = "600px",
+  width = "100\%", export = TRUE, ...)
 
 \method{visHclust}{dist}(object, data = NULL, main = "", submain = "",
   footer = "", cutree = 0, hclustMethod = "complete",
   tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
   colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
-  highlightNearest = TRUE, minNodeSize = 50, maxNodeSize = 200,
-  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
-  ...)
+  highlightNearest = TRUE, horizontal = FALSE, minNodeSize = 50,
+  maxNodeSize = 200, nodesPopSize = TRUE, height = "600px",
+  width = "100\%", export = TRUE, ...)
 
 \method{visHclust}{hclust}(object, data = NULL, main = "", submain = "",
   footer = "", cutree = 0, tooltipColumns = if (!is.null(data)) {    
   1:ncol(data) } else {     NULL }, colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
-  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
-  height = "600px", width = "100\%", export = TRUE, ...)
+  horizontal = FALSE, minNodeSize = 50, maxNodeSize = 200,
+  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
+  ...)
 }
 \arguments{
 \item{object}{\code{hclust | dist | data.frame}.}
@@ -65,6 +66,8 @@ So, we add boxplot / pie focus on sub-population vs all population using \code{s
 
 \item{highlightNearest}{\code{boolean}, highlight sub-tree on click ? Default to \code{TRUE}.}
 
+\item{horizontal}{\code{boolean}, default to FALSE}
+
 \item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else \code{minNodeSize + maxNodeSize / 2}.}
 
 \item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else \code{ minNodeSize + maxNodeSize / 2}.}
@@ -83,7 +86,7 @@ So, we add boxplot / pie focus on sub-population vs all population using \code{s
 Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
 Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
 render the tree with visNetwork, adding informations. Can also be called on a \code{hclust} or \code{dist} object.
-Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
+Needed packages : sparkline (graphics on tooltip), ggraph, igraph, flashClust
 }
 \examples{
 
@@ -98,16 +101,28 @@ visHclust(iris, cutree = 3, colorEdges = "red")
 
 # update some parameters
 visHclust(iris, cutree = 3, tooltipColumns = c(1, 5),
-  colorGroups = c("red", "blue", "green"))
+  colorGroups = c("red", "blue", "green"), horizontal = TRUE)
   
 # no graphics on tooltip
 visHclust(iris, cutree = 3, tooltipColumns = NULL,
   main = "Hclust on iris")
   
+# Title(s)
+visHclust(iris, cutree = 3,  main ="My_title",
+          submain = "My_sub_title", footer = "My_footer")
+          
+# Export
+visHclust(iris, cutree = 3, export = TRUE)
+
+
 # update group / individual nodes
 visHclust(iris, cutree = 8) \%>\% 
- visGroups(groupname = "group", color ="#00FF00", shape = "square")  \%>\% 
- visGroups(groupname = "individual", color ="#FF0000")
+ visGroups(groupname = "group", color ="black", 
+   shape = "triangleDown", size = 75)  \%>\% 
+ visGroups(groupname = "individual", 
+   font = list(size = 150),
+   color = list(background = "white", border = "purple", 
+            highlight = "#e2e9e9", hover = "orange"), shape = "box") 
 
 #--------------
 # dist
@@ -129,17 +144,6 @@ visHclust(hclust(dist(iris[,1:4])), cutree = 3)
 # adding data & info in tooltip
 visHclust(hclust(dist(iris[,1:4])), cutree = 3, data = iris) 
     
-# Title(s)
-visHclust(iris, cutree = 3,  main ="My_title",
-          submain = "My_sub_title", footer = "My_footer")
-          
-# Export
-visHclust(iris, cutree = 3, export = TRUE)
-
-
-# Colors on groups
-visHclust(iris, cutree = 3,
-           colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 }
 
 }

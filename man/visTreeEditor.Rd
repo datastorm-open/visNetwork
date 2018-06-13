@@ -20,6 +20,8 @@ Needed packages : shiny, rpart, colourpicker, shinyWidgets
 
 net <- visTreeEditor(data = iris)
 net <- visTreeEditor(data = rpart(iris), main = "visTree Editor")
+net <- visTreeEditor(data = rpart(iris), tooltip_data = iris, 
+    main = "visTree Editor")
 net
 
 }

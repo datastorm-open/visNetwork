@@ -16,7 +16,7 @@
 #' # https://fontawesome.com/v4.7.0/
 #' # Version in package (and compatible with vis.js) : 4.7.0
 #' # cheatsheet available in package: 
-#' # system.file("fontAwesome/Font Awesome Cheatsheet.pdf", package = "visNetwork")
+#' # system.file("fontAwesome/Font_Awesome_Cheatsheet.pdf", package = "visNetwork")
 #' 
 #' # definition in groups
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))

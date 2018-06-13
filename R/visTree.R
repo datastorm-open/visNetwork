@@ -106,7 +106,7 @@
 #'     
 #'  # Use visNetwork functions to add more options
 #' visTree(res) %>% 
-#' visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)
+#'     visOptions(highlightNearest = TRUE)
 #' 
 #' 
 #' }
@@ -812,6 +812,8 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' 
 #' net <- visTreeEditor(data = iris)
 #' net <- visTreeEditor(data = rpart(iris), main = "visTree Editor")
+#' net <- visTreeEditor(data = rpart(iris), tooltip_data = iris, 
+#'     main = "visTree Editor")
 #' net
 #' 
 #' }
@@ -826,25 +828,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #'
 visTreeEditor <- function(data, ...){
   
-  if(!requireNamespace("shiny", quietly = TRUE)){
-    stop("visTreeEditor require 'shiny' package")
-  } else {
-    if(packageVersion("shiny") < '1.0.0'){
-      stop("visTreeEditor require 'shiny' 1.0.0 or more")
-    }
-  }
-  
-  if(!requireNamespace("colourpicker", quietly = TRUE)){
-    stop("visTreeEditor require 'colourpicker' package")
-  }
-  
-  if(!requireNamespace("shinyWidgets", quietly = TRUE)){
-    stop("visTreeEditor require 'shinyWidgets' package")
-  }
-  
-  if(!requireNamespace("rpart", quietly = TRUE)){
-    stop("visTreeModule require 'rpart' package")
-  }
+  .ctrlPckTree()
   
   if("rpart" %in% class(data)){
     rpartParams <- FALSE

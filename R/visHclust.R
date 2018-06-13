@@ -3,7 +3,7 @@
 #' Visualize Hierarchical cluster analysis \code{hclust}. This function compute distance using \code{dist}, and
 #' Hierarchical cluster analysis using \code{hclust} (from stats package or flashClust if installed), and
 #' render the tree with visNetwork, adding informations. Can also be called on a \code{hclust} or \code{dist} object.
-#' Needed packages : shiny, sparkline (graphics on tooltip), ggraph, igraph, flashClust
+#' Needed packages : sparkline (graphics on tooltip), ggraph, igraph, flashClust
 #' 
 #' @param object \code{hclust | dist | data.frame}.
 #' @param data \code{data.frame}, data.frame with data. Only for \code{hclust} or \code{dist} object.
@@ -24,6 +24,7 @@
 #' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else \code{ minNodeSize + maxNodeSize / 2}. 
 #' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to \code{TRUE}.
 #' @param highlightNearest \code{boolean}, highlight sub-tree on click ? Default to \code{TRUE}.
+#' @param horizontal \code{boolean}, default to FALSE
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
 #' @param export \code{boolean}, add button for export. Default to TRUE
@@ -42,16 +43,28 @@
 #' 
 #' # update some parameters
 #' visHclust(iris, cutree = 3, tooltipColumns = c(1, 5),
-#'   colorGroups = c("red", "blue", "green"))
+#'   colorGroups = c("red", "blue", "green"), horizontal = TRUE)
 #'   
 #' # no graphics on tooltip
 #' visHclust(iris, cutree = 3, tooltipColumns = NULL,
 #'   main = "Hclust on iris")
 #'   
+#' # Title(s)
+#' visHclust(iris, cutree = 3,  main ="My_title",
+#'           submain = "My_sub_title", footer = "My_footer")
+#'           
+#' # Export
+#' visHclust(iris, cutree = 3, export = TRUE)
+#' 
+#' 
 #' # update group / individual nodes
 #' visHclust(iris, cutree = 8) %>% 
-#'  visGroups(groupname = "group", color ="#00FF00", shape = "square")  %>% 
-#'  visGroups(groupname = "individual", color ="#FF0000")
+#'  visGroups(groupname = "group", color ="black", 
+#'    shape = "triangleDown", size = 75)  %>% 
+#'  visGroups(groupname = "individual", 
+#'    font = list(size = 150),
+#'    color = list(background = "white", border = "purple", 
+#'             highlight = "#e2e9e9", hover = "orange"), shape = "box") 
 #'
 #' #--------------
 #' # dist
@@ -73,17 +86,6 @@
 #' # adding data & info in tooltip
 #' visHclust(hclust(dist(iris[,1:4])), cutree = 3, data = iris) 
 #'     
-#' # Title(s)
-#' visHclust(iris, cutree = 3,  main ="My_title",
-#'           submain = "My_sub_title", footer = "My_footer")
-#'           
-#' # Export
-#' visHclust(iris, cutree = 3, export = TRUE)
-#' 
-#' 
-#' # Colors on groups
-#' visHclust(iris, cutree = 3,
-#'            colorGroups = c("#0489B1" , "#08088A", "#4B088A"))
 #' }
 #' 
 #' @importFrom grDevices rainbow
@@ -108,6 +110,7 @@ visHclust.data.frame <- function(object, main = "", submain = "", footer = "",
                                  colorEdges = "black",
                                  colorGroups = substr(rainbow(cutree),1, 7),
                                  highlightNearest = TRUE, 
+                                 horizontal = FALSE,
                                  minNodeSize = 50,
                                  maxNodeSize = 200,
                                  nodesPopSize = TRUE,
@@ -151,6 +154,7 @@ visHclust.data.frame <- function(object, main = "", submain = "", footer = "",
                  colorEdges = colorEdges,
                  colorGroups = colorGroups,
                  highlightNearest = highlightNearest, 
+                 horizontal = horizontal,
                  minNodeSize = minNodeSize,
                  maxNodeSize = maxNodeSize,
                  nodesPopSize = nodesPopSize,
@@ -166,6 +170,7 @@ visHclust.dist <- function(object, data = NULL, main = "", submain = "", footer 
                            colorEdges = "black",
                            colorGroups = substr(rainbow(cutree),1, 7),
                            highlightNearest = TRUE, 
+                           horizontal = FALSE,
                            minNodeSize = 50,
                            maxNodeSize = 200,
                            nodesPopSize = TRUE,
@@ -187,7 +192,8 @@ visHclust.dist <- function(object, data = NULL, main = "", submain = "", footer 
                    tooltipColumns = tooltipColumns,
                    colorEdges = colorEdges,
                    colorGroups = colorGroups,
-                   highlightNearest = highlightNearest, 
+                   highlightNearest = highlightNearest,
+                   horizontal = horizontal,
                    minNodeSize = minNodeSize,
                    maxNodeSize = maxNodeSize,
                    nodesPopSize = nodesPopSize,
@@ -204,6 +210,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
                              colorEdges = "black",
                              colorGroups = substr(rainbow(cutree),1, 7),
                              highlightNearest = TRUE, 
+                             horizontal = FALSE,
                              minNodeSize = 50,
                              maxNodeSize = 200,
                              nodesPopSize = TRUE,
@@ -227,7 +234,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   # Make graph
   .makeHlcGraph(res, nodesPopSize, minNodeSize, maxNodeSize,
                 colorEdges, cutree, colorGroups,
-                height, width, main,
+                height, width, main, horizontal,
                 submain, footer, highlightNearest, export)
   
 }
@@ -464,7 +471,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 .addSparkLine <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
   if(is.null(min))min <- min(vect)
   if(is.null(max))max <- max(vect)
-  drun <- sample(LETTERS, 15, replace = TRUE)
+  drun <- c(sample(LETTERS, 10, replace = TRUE), sample(1:1000, 5))
   drun <- paste0(drun, collapse = "")
   if(!is.null(labels)){
     tltp <- paste0((1:length(labels))-1, ": '", labels, "'", collapse = ",")
@@ -486,28 +493,35 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 }
 
 
-.ctrlPckvisHcl <- function(tooltipColumns)
-{
+.ctrlPckvisHcl <- function(tooltipColumns){
+  miss_packages <- c()
   if(!is.null(tooltipColumns)){
     if(!requireNamespace("sparkline", quietly = TRUE)){
-      stop("'sparkline' package is needed for this function")
+      miss_packages <- c(miss_packages, "'sparkline'")
     }
   }
   
   if(!requireNamespace("ggraph", quietly = TRUE)){
-    stop("'ggraph' package is needed for this function")
+    miss_packages <- c(miss_packages, "'ggraph'")
   }
   
   if(!requireNamespace("igraph", quietly = TRUE)){
-    stop("'igraph' package is needed for this function")
+    miss_packages <- c(miss_packages, "'igraph'")
   }
+  
+  if(length(miss_packages) == 1){
+    stop(miss_packages," package is needed for this function", call. = FALSE)
+  } else if(length(miss_packages) > 1){
+    stop(paste(miss_packages, collapse = ", ")," packages are needed for this function", call. = FALSE)
+  }
+  
+  invisible(NULL)
 }
 
 
 .ctrlArgsvisHcl <- function(distColumns, cutree, data){
   # distColumns
-  if(!is.null(distColumns))
-  {
+  if(!is.null(distColumns)){
     if(!all(distColumns) %in% 1:ncol(data)){
       stop("all elements of distColumns should be in 1:ncol(data)")
     }
@@ -534,14 +548,12 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 
 .makeHlcGraph <- function(res, nodesPopSize, minNodeSize, maxNodeSize,
                           colorEdges, cutree, colorGroups,  height, width, main,
-                          submain, footer, highlightNearest, export)
-{
+                          horizontal, submain, footer, highlightNearest, export){
   
   res$edges$color <- colorEdges
-  if(!is.null(cutree))
-  {
-    if(cutree > 1)
-    {
+ 
+  if(!is.null(cutree)){
+    if(cutree > 1){
       color <- colorGroups
       levelCut <- unique(sort(res$nodes$y))[(cutree) - 1] + diff(unique(sort(res$nodes$y))[(cutree)+(-1:0)])/2
       Mid <- as.numeric(max(res$nodes$id))
@@ -579,8 +591,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
       nod <- nodesMainClass[1]
       nod
       
-      ndL <- sapply(nodesMainClass, function(nod)
-      {
+      ndL <- sapply(nodesMainClass, function(nod){
         c(nod, unlist(res$nodes[res$nodes$id == nod,]$neib))
       }, simplify = FALSE)
       
@@ -591,7 +602,15 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     }
   }
   res$nodes$value <- res$nodes$members
-  res$edges$id <- 1:nrow( res$edges)
+  res$edges$id <- paste0("edge_", 1:nrow( res$edges))
+  
+  res$nodes$label <- as.character(res$nodes$label)
+  
+  # res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE] <- gsub("^(\\n)|(\\n)$", "", 
+                                                                                       # gsub("", "\\\n", res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE]))
+  if(!horizontal){
+    colnames(res$nodes)[2:3] <- c("y", "x")
+  }
   vis <- visNetwork(res$nodes, res$edges, height = height, width = width, main = main,
                     submain = submain, footer = footer) %>%
     visPhysics(enabled = FALSE) %>% 
@@ -599,24 +618,32 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     visEdges(smooth = FALSE, font = list(background = "white")) %>%
     visGroups(groupname = "group", 
               color = list(background = "#D8D8D8", border = "black", 
-                           highlight = "black", hover = "black"), shape = "square")  %>% 
-    visGroups(groupname = "individual", 
-              color = list(background = "#D8D8D8", border = "black", 
-                           highlight = "black", hover = "black"), shape = "dot") %>%
+                           highlight = "black", hover = "black"), shape = "square") %>%
     visInteraction(hover = TRUE)
   
+  if(!horizontal){
+    vis <- vis %>% visGroups(groupname = "individual", 
+              font = list(size = 200),
+              color = list(background = "white", border = "white", 
+                           highlight = "#e2e9e9", hover = "#e2e9e9"), shape = "box") 
+  } else {
+    vis <- vis %>% visGroups(groupname = "individual", 
+                             font = list(size = 100),
+                             color = list(background = "white", border = "white", 
+                                          highlight = "#e2e9e9", hover = "#e2e9e9"), shape = "box") 
+  }
   if(export){
     vis <- vis %>% visExport()
   }
   
-  if(highlightNearest)
-  {
+  if(highlightNearest){
     vis <- vis%>%
       visOptions(highlightNearest = 
                    list(enabled = TRUE,
                         degree = list(from = 0, to = 50000),
                         algorithm = "hierarchical"))
   }
+  
   vis <- vis%>%sparkline::spk_add_deps()
   
   vis
@@ -671,17 +698,17 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   colorGroups
 }
 
-.hlcToPLot <- function(hcl, data, drawNames, minNodeSize, maxNodeSize,
-                       nodesPopSize,  colorEdges, cutree, colorGroups,
-                       height, width, main,
-                       submain, footer, highlightNearest){
-  # Convert data for viz
-  res <- .convertHclust(hcl, data, drawNames,
-                        minNodeSize = minNodeSize, maxNodeSize = maxNodeSize)
-  # Make graph
-  .makeHlcGraph(res, nodesPopSize, minNodeSize, maxNodeSize,
-                colorEdges, cutree, colorGroups,
-                height, width, main,
-                submain, footer, highlightNearest)
-}
+# .hlcToPLot <- function(hcl, data, drawNames, minNodeSize, maxNodeSize,
+#                        nodesPopSize,  colorEdges, cutree, colorGroups,
+#                        height, width, main, horizontal,
+#                        submain, footer, highlightNearest){
+#   # Convert data for viz
+#   res <- .convertHclust(hcl, data, drawNames,
+#                         minNodeSize = minNodeSize, maxNodeSize = maxNodeSize)
+#   # Make graph
+#   .makeHlcGraph(res, nodesPopSize, minNodeSize, maxNodeSize,
+#                 colorEdges, cutree, colorGroups,
+#                 height, width, main, horizontal,
+#                 submain, footer, highlightNearest)
+# }
 

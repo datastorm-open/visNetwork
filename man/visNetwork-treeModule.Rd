@@ -123,11 +123,12 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 \item{quitButton}{\code{boolean}, add a button to quit module and get back network in R ?}
 }
 \description{
-Needed packages : shiny, rpart, colourpicker, shinyWidgets
+Needed packages : shiny, rpart, colourpicker, shinyWidgets, sparkline
 }
 \examples{
 \dontrun{
 
+require(rpart)
 # simple module editor on rpart
 data <- iris
 shiny::shinyApp(ui = shiny::fluidPage(
@@ -136,12 +137,13 @@ visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = FALSE)),
  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
 })
 
-# full module editor on rpart
+# full module editor on rpart + data.frame for sparkline
 data <- iris
 shiny::shinyApp(ui = shiny::fluidPage(
  visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = TRUE)), 
  server = function(input, output, session) {
- shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+ shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)), 
+ tooltip_data = data)
 })
 
 # module on data.frame

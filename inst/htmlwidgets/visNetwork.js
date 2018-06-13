@@ -1921,14 +1921,16 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById(data.id);
       if(el){
-        if(data.tree.updateShape != undefined){
-          el.tree.updateShape = data.tree.updateShape
-        }
-        if(data.tree.shapeVar != undefined){
-          el.tree.shapeVar = data.tree.shapeVar
-        }
-        if(data.tree.shapeY != undefined){
-          el.tree.shapeY = data.tree.shapeY
+      if(el.tree){
+          if(data.tree.updateShape != undefined){
+            el.tree.updateShape = data.tree.updateShape
+          }
+          if(data.tree.shapeVar != undefined){
+            el.tree.shapeVar = data.tree.shapeVar
+          }
+          if(data.tree.shapeY != undefined){
+            el.tree.shapeY = data.tree.shapeY
+          }
         }
       }
   });
@@ -3395,6 +3397,7 @@ HTMLWidgets.widget({
     div_footer.id = "footer"+el.id;
     div_footer.setAttribute('style',  'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;background-color: inherit;');
     div_footer.style.display = 'none';
+
     document.getElementById("graph" + el.id).appendChild(div_footer);  
     if(x.footer !== null){
       div_footer.innerHTML = x.footer.text;

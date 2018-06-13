@@ -1,6 +1,6 @@
 #' Module shiny for visualize and customize a \code{rpart} tree
 #'
-#' Needed packages : shiny, rpart, colourpicker, shinyWidgets
+#' Needed packages : shiny, rpart, colourpicker, shinyWidgets, sparkline
 #' 
 #' @param  id \code{character} id of module, linked to  \link{visTreeModuleServer}
 #' @param  rpartParams \code{boolean}, add tabs for rpart parameters (in case of \code{data.frame} in input)
@@ -20,6 +20,7 @@
 #' @examples
 #' \dontrun{
 #' 
+#' require(rpart)
 #' # simple module editor on rpart
 #' data <- iris
 #' shiny::shinyApp(ui = shiny::fluidPage(
@@ -28,12 +29,13 @@
 #'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
 #' })
 #' 
-#' # full module editor on rpart
+#' # full module editor on rpart + data.frame for sparkline
 #' data <- iris
 #' shiny::shinyApp(ui = shiny::fluidPage(
 #'  visTreeModuleUI(id = "id1", rpartParams = FALSE, visTreeParams = TRUE)), 
 #'  server = function(input, output, session) {
-#'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)))
+#'  shiny::callModule(visTreeModuleServer, "id1", data = shiny::reactive(rpart(data)), 
+#'  tooltip_data = data)
 #' })
 #' 
 #' # module on data.frame
@@ -66,7 +68,8 @@
 #' @export
 #' 
 #' @importFrom  stats as.formula
-#'
+#' @importFrom grDevices col2rgb
+#' 
 #' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
 #'
 visTreeModuleServer <- function(input, output, session, data,
@@ -109,26 +112,6 @@ visTreeModuleServer <- function(input, output, session, data,
                                 export = TRUE) {
   
   ns <- session$ns
-  
-  if(!requireNamespace("shiny", quietly = TRUE)){
-    stop("visTreeModule require 'shiny' package")
-  } else {
-    if(packageVersion("shiny") < '1.0.0'){
-      stop("visTreeModule require 'shiny' 1.0.0 or more")
-    }
-  }
-  
-  if(!requireNamespace("colourpicker", quietly = TRUE)){
-    stop("visTreeModule require 'colourpicker' package")
-  }
-  
-  if(!requireNamespace("shinyWidgets", quietly = TRUE)){
-    stop("visTreeModule require 'shinyWidgets' package")
-  }
-  
-  if(!requireNamespace("rpart", quietly = TRUE)){
-    stop("visTreeModule require 'rpart' package")
-  }
   
   # reactive controls
   if (!shiny::is.reactive(tooltip_data)){
@@ -1560,6 +1543,8 @@ visTreeModuleServer <- function(input, output, session, data,
 visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitButton = FALSE) {
   ns <- shiny::NS(id)
   
+  .ctrlPckTree()
+  
   if(rpartParams){
     visTreeParams <- TRUE
   }
@@ -1797,4 +1782,37 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                             shiny::uiOutput(ns("treeUI"))
     )
   )
+}
+
+
+.ctrlPckTree <- function(){
+  miss_packages <- c()
+  
+  if(!requireNamespace("shiny", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'shiny (>1.0.0)'")
+  }
+  
+  if(!requireNamespace("colourpicker", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'colourpicker'")
+  }
+  
+  if(!requireNamespace("shinyWidgets", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'shinyWidgets'")
+  }
+  
+  if(!requireNamespace("rpart", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'rpart'")
+  }
+  
+  if(!requireNamespace("sparkline", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'sparkline'")
+  }
+  
+  if(length(miss_packages) == 1){
+    stop(miss_packages," package is needed for this visTreeModule / visTreeEditor", call. = FALSE)
+  } else if(length(miss_packages) > 1){
+    stop(paste(miss_packages, collapse = ", ")," packages are needed for visTreeModule / visTreeEditor", call. = FALSE)
+  }
+  
+  invisible(NULL)
 }
