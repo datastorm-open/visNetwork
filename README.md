@@ -14,8 +14,12 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``2.0.2`` available on CRAN
+## ``2.0.4`` available on CRAN
 
+  * ### Update to fontAwesome 4.7.0
+  * ### Fix node's id bug on collapse
+  * ### Add ``main`` argument to ``selectedBy`` and ``nodesIdSelection``
+  * ### Add ``sparkline`` graphics in ``visTree``
   * ### New ``visHclust`` for visualize Hierarchical cluster analysis
   * ### New ``visNetworkEditor`` and module ``visNetworkEditorUI`` to use ``visConfigure`` javascript functionnalities in R and shiny
   * ### Add ``zoom`` to ``visLegend``
