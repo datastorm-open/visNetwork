@@ -1,5 +1,5 @@
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/visNetwork)](http://cran.r-project.org/package=visNetwork) 
-[![CRAN Downloads Badge](https://cranlogs.r-pkg.org/badges/visNetwork)](http://cran.r-project.org/package=visNetwork)
+[![CRAN Status Badge](https://www.r-pkg.org/badges/version/visNetwork)](https://CRAN.R-project.org/package=visNetwork) 
+[![CRAN Downloads Badge](https://cranlogs.r-pkg.org/badges/visNetwork)](https://CRAN.R-project.org/package=visNetwork)
 
 
 # visNetwork
