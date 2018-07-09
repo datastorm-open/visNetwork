@@ -3582,8 +3582,12 @@ HTMLWidgets.widget({
       function clusterByHubsize() {
         var clusterOptionsByData = {
           processProperties: function(clusterOptions, childNodes) {
+            var cluster_level = 9999999
                   for (var i = 0; i < childNodes.length; i++) {
                       //totalMass += childNodes[i].mass;
+                      if(childNodes[i].level){
+                        cluster_level = Math.min(cluster_level, childNodes[i].level)
+                      }
                       if(i === 0){
                         //clusterOptions.shape =  childNodes[i].shape;
                         clusterOptions.color =  childNodes[i].color.background;
@@ -3597,6 +3601,9 @@ HTMLWidgets.widget({
                       }
                   }
             clusterOptions.label = "[" + childNodes.length + "]";
+            if(cluster_level !== 9999999){
+              clusterOptions.level = cluster_level
+            }
             return clusterOptions;
           },
           clusterNodeProperties: {borderWidth:3, shape:'box', font:{size:30}}
@@ -3627,8 +3634,12 @@ HTMLWidgets.widget({
               },
               processProperties: function (clusterOptions, childNodes, childEdges) {
                   var totalMass = 0;
+                  var cluster_level = 9999999;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
+                      if(childNodes[i].level){
+                        cluster_level = Math.min(cluster_level, childNodes[i].level)
+                      }
                       if(x.clusteringColor.force === false){
                         if(i === 0){
                           clusterOptions.shape =  childNodes[i].shape;
@@ -3643,6 +3654,9 @@ HTMLWidgets.widget({
 
                   }
                   clusterOptions.value = totalMass;
+                  if(cluster_level !== 9999999){
+                    clusterOptions.level = cluster_level
+                  }
                   return clusterOptions;
               },
               clusterNodeProperties: {id: 'cluster:' + color, borderWidth: 3, color:color, label: x.clusteringColor.label + color}
@@ -3671,8 +3685,12 @@ HTMLWidgets.widget({
               processProperties: function (clusterOptions, childNodes, childEdges) {
                 //console.info(clusterOptions);
                   var totalMass = 0;
+                  var cluster_level = 9999999;
                   for (var i = 0; i < childNodes.length; i++) {
                       totalMass += childNodes[i].mass;
+                      if(childNodes[i].level){
+                        cluster_level = Math.min(cluster_level, childNodes[i].level)
+                      }
                       if(x.clusteringGroup.force === false){
                         if(i === 0){
                           clusterOptions.shape =  childNodes[i].shape;
@@ -3691,6 +3709,9 @@ HTMLWidgets.widget({
                       }
                   }
                   clusterOptions.value = totalMass;
+                  if(cluster_level !== 9999999){
+                    clusterOptions.level = cluster_level
+                  }
                   return clusterOptions;
               },
               clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
@@ -3738,14 +3759,22 @@ HTMLWidgets.widget({
             processProperties: function (clusterOptions, childNodes) {
                 clusterIndex = clusterIndex + 1;
                 var childrenCount = 0;
+                var cluster_level = 9999999;
                 for (var i = 0; i < childNodes.length; i++) {
                     childrenCount += childNodes[i].childrenCount || 1;
+                    if(childNodes[i].level){
+                      cluster_level = Math.min(cluster_level, childNodes[i].level)
+                    }
                 }
                 clusterOptions.childrenCount = childrenCount;
                 clusterOptions.label = "# " + childrenCount + "";
                 clusterOptions.font = {size: childrenCount*5+30}
                 clusterOptions.id = 'cluster:' + clusterIndex;
                 clusters.push({id:'cluster:' + clusterIndex, scale:scale});
+                
+                if(cluster_level !== 9999999){
+                  clusterOptions.level = cluster_level
+                }
                 return clusterOptions;
             },
             clusterNodeProperties: {borderWidth: 3, shape: 'database', font: {size: 30}}
