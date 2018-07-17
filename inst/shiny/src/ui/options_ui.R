@@ -12,11 +12,15 @@ shiny::tabPanel(
         column(
           width = 3,
           HTML("Using nodesIdSelection option, you can view current node selection in shiny
-               with input$networkid_selected")
+               with input$networkid_selected"),
+          HTML("Using highlightNearest option, you can view current highlighted nodes in shiny
+               with input$networkid__highlight_label_id & input$networkid__highlight_color_id")
           ),
         column(
           width = 3,
-          verbatimTextOutput('view_id')
+          verbatimTextOutput('view_id'), 
+          verbatimTextOutput('view_highlight_color'), 
+          verbatimTextOutput('view_highlight_label')
         )
       )
     )

@@ -49,3 +49,11 @@ output$code_network_group  <- renderText({
     visOptions(selectedBy = list(variable = "group", selected = "A"))
  '
 })
+
+output$view_highlight_color <- renderText({
+  paste("Highlighted nodes (color) : ", paste(input$network_id_highlight_color_id, collapse = ", "))
+})
+
+output$view_highlight_label <- renderText({
+  paste("Highlighted nodes (label only) : ", paste(input$network_id_highlight_label_id, collapse = ", "))
+})
