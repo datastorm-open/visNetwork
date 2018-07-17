@@ -82,6 +82,9 @@ visClusteringByColor <- function(graph, colors, label = "Cluster on color : ",
     stop("graph must be a visNetwork object")
   }
   
+  shape <- rep(shape, length(colors))[1:length(colors)]
+  force <- rep(force, length(colors))[1:length(colors)]
+  
   if(length(colors) == 1){
     colors <- list(colors)
   }
@@ -172,6 +175,10 @@ visClusteringByGroup <- function(graph, groups, label = "Cluster on group : ",
   if(!any(class(graph) %in% "visNetwork")){
     stop("graph must be a visNetwork object")
   }
+  
+  color <- rep(color, length(groups))[1:length(groups)]
+  shape <- rep(shape, length(groups))[1:length(groups)]
+  force <- rep(force, length(groups))[1:length(groups)]
   
   if(length(groups) == 1){
     groups <- list(groups)

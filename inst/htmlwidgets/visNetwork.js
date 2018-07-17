@@ -3628,6 +3628,8 @@ HTMLWidgets.widget({
         var clusterOptionsByData;
         for (var i = 0; i < colors.length; i++) {
           var color = colors[i];
+          var sh = x.clusteringColor.shape[i];
+          var force = x.clusteringColor.force[i];
           clusterOptionsByData = {
               joinCondition: function (childOptions) {
                   return childOptions.color.background == color; // the color is fully defined in the node.
@@ -3640,16 +3642,16 @@ HTMLWidgets.widget({
                       if(childNodes[i].level){
                         cluster_level = Math.min(cluster_level, childNodes[i].level)
                       }
-                      if(x.clusteringColor.force === false){
+                      if(force === false){
                         if(i === 0){
                           clusterOptions.shape =  childNodes[i].shape;
                         }else{
                           if(childNodes[i].shape !== clusterOptions.shape){
-                            clusterOptions.shape = x.clusteringColor.shape;
+                            clusterOptions.shape = sh;
                           }
                         }
                       } else {
-                        clusterOptions.shape = x.clusteringColor.shape;
+                        clusterOptions.shape = sh;
                       }
 
                   }
@@ -3678,12 +3680,14 @@ HTMLWidgets.widget({
         var clusterOptionsByData;
         for (var i = 0; i < groups.length; i++) {
           var group = groups[i];
+          var col = x.clusteringGroup.color[i];
+          var sh = x.clusteringGroup.shape[i];
+          var force = x.clusteringGroup.force[i];
           clusterOptionsByData = {
               joinCondition: function (childOptions) {
                   return childOptions.group == group; //
               },
               processProperties: function (clusterOptions, childNodes, childEdges) {
-                //console.info(clusterOptions);
                   var totalMass = 0;
                   var cluster_level = 9999999;
                   for (var i = 0; i < childNodes.length; i++) {
@@ -3691,21 +3695,21 @@ HTMLWidgets.widget({
                       if(childNodes[i].level){
                         cluster_level = Math.min(cluster_level, childNodes[i].level)
                       }
-                      if(x.clusteringGroup.force === false){
+                      if(force === false){
                         if(i === 0){
                           clusterOptions.shape =  childNodes[i].shape;
                           clusterOptions.color =  childNodes[i].color.background;
                         }else{
                           if(childNodes[i].shape !== clusterOptions.shape){
-                            clusterOptions.shape = x.clusteringGroup.shape;
+                            clusterOptions.shape = sh;
                           }
                           if(childNodes[i].color.background !== clusterOptions.color){
-                            clusterOptions.color = x.clusteringGroup.color;
+                            clusterOptions.color = col;
                           }
                         }
                       } else {
-                        clusterOptions.shape = x.clusteringGroup.shape;
-                        clusterOptions.color = x.clusteringGroup.color;
+                        clusterOptions.shape = sh;
+                        clusterOptions.color = col;
                       }
                   }
                   clusterOptions.value = totalMass;
