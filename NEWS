@@ -1,6 +1,7 @@
 visNetwork 2.0.5
 --------------------------------------------------------------------------------
   * Fix clustering functions using level
+  * add input$network_highlight_color_id and input$network_highlight_label_id 
   
 visNetwork 2.0.4
 --------------------------------------------------------------------------------
