@@ -3051,6 +3051,12 @@ HTMLWidgets.widget({
 
             // all in degree nodes get their own color and their label back + main nodes
             connectedNodes = connectedNodes.concat(selectedNode);
+            
+            Shiny.onInputChange(el.id + '_highlight_color_id', Array.from(new Set(connectedNodes)));
+            if(el_id.highlightLabelOnly === true){
+              Shiny.onInputChange(el.id + '_highlight_label_id', allConnectedNodes.filter(x => !connectedNodes.includes(x)));
+            }  
+   
             array_cluster_id = [];
             for (i = 0; i < connectedNodes.length; i++) {
               resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options, instance.network);
@@ -3249,6 +3255,11 @@ HTMLWidgets.widget({
               }
             }
              
+            Shiny.onInputChange(el.id + '_highlight_color_id', Array.from(new Set(allConnectedNodes)));
+            if(el_id.highlightLabelOnly === true){
+              Shiny.onInputChange(el.id + '_highlight_label_id', nodesWithLabel.filter(x => !allConnectedNodes.includes(x)));
+            }  
+            
             // set some edges as hard to read
             var edgesHardToRead = edges.get({
               fields: ['id', 'color', 'hiddenColor', 'hiddenLabel', 'label'],
@@ -3308,6 +3319,9 @@ HTMLWidgets.widget({
           resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
           el_id.highlightActive = false;
           is_clicked = false;
+          
+          Shiny.onInputChange(el.id + '_highlight_label_id', null)
+          Shiny.onInputChange(el.id + '_highlight_color_id', null)
         }
       }
       // reset selectedBy list if actived
@@ -3352,7 +3366,7 @@ HTMLWidgets.widget({
           neighbourhoodHighlight(params.nodes, "click", el_id.highlightAlgorithm);
         }else if((el_id.idselection || el_id.byselection) && x.nodes){
           onClickIDSelection(params)
-        } 
+        }
     };
     
     // Set event in relation with highlightNearest      
