@@ -14,7 +14,7 @@ shiny::tabPanel(
           HTML("Using nodesIdSelection option, you can view current node selection in shiny
                with input$networkid_selected"),
           HTML("Using highlightNearest option, you can view current highlighted nodes in shiny
-               with input$networkid__highlight_label_id & input$networkid__highlight_color_id")
+               with input$networkid_highlight_label_id & input$networkid_highlight_color_id")
           ),
         column(
           width = 3,
