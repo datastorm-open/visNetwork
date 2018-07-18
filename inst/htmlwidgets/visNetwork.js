@@ -3834,6 +3834,8 @@ HTMLWidgets.widget({
           var col = x.clusteringGroup.color[i];
           var sh = x.clusteringGroup.shape[i];
           var force = x.clusteringGroup.force[i];
+          var sc_size = x.clusteringGroup.scale_size[i];
+          
           clusterOptionsByData = {
               joinCondition: function (childOptions) {
                   return childOptions.group == group; //
@@ -3863,7 +3865,9 @@ HTMLWidgets.widget({
                         clusterOptions.color = col;
                       }
                   }
-                  clusterOptions.value = totalMass;
+                  if(sc_size){
+                     clusterOptions.value = totalMass;
+                  }
                   if(cluster_level !== 9999999){
                     clusterOptions.level = cluster_level
                   }
@@ -3871,6 +3875,7 @@ HTMLWidgets.widget({
               },
               clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
           }
+          console.info(clusterOptionsByData)
           instance.network.cluster(clusterOptionsByData);
         }
       }

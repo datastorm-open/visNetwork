@@ -5,7 +5,7 @@
 \title{Network visualization clustering options - by group}
 \usage{
 visClusteringByGroup(graph, groups, label = "Cluster on group : ",
-  shape = "database", color = "grey", force = FALSE)
+  shape = "database", color = "grey", force = FALSE, scale_size = TRUE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -19,6 +19,8 @@ visClusteringByGroup(graph, groups, label = "Cluster on group : ",
 \item{color}{: Character. Color of cluster(s) if different colors between nodes or \code{force = T}. "grey" per default}
 
 \item{force}{: If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly defaut shape and color}
+
+\item{scale_size}{: Set size based on cluster population ? Default to TRUE.}
 }
 \description{
 Network visualization clustering options - by group.
