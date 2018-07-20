@@ -42,6 +42,12 @@
 #'edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
 #'
 #'# custom tooltip
+#'
+#'# default value : 'position: fixed;visibility:hidden;padding: 5px;font-family: verdana;
+#'# font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;*
+#'# -webkit-border-radius: 3px;border-radius: 3px; border: 1px solid #808074;
+#'# box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);max-width:400px;word-break: break-all'
+#'
 #'visNetwork(nodes, edges) %>%
 #' visInteraction(tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;
 #'  font-family: cursive;font-size:18px;font-color:purple;background-color: red;')
