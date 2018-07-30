@@ -3995,6 +3995,29 @@ HTMLWidgets.widget({
         instance.network.once("stabilized", function(){iconsRedraw();})
       }
     }
+    
+    //******************
+    // crosstalk
+    //******************
+    
+    var filter_handle = new crosstalk.FilterHandle();
+    
+    filter_handle.setGroup(x.crosstalk_group);
+    
+    filter_handle.on("change", function(e) {
+      console.info(e)
+      
+            
+      var items = nodes.get({
+        filter: function (item) {
+          return (indexOf.call(e.value, item.key, true) > -1)
+        },
+        returnType :'Array'
+      });
+
+      console.info(items)
+    });
+    
   }, 
   
   resize: function(el, width, height, instance) {

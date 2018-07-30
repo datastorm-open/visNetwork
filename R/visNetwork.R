@@ -200,6 +200,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #' @import htmlwidgets
+#' @import crosstalk
 #' 
 #' @importFrom jsonlite fromJSON
 #'
@@ -225,7 +226,9 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
       }
     }else if(is.list(nodes)){
       nodesToDataframe <- FALSE
-    }else{
+    }else if("SharedData" %in% class(nodes)){
+      nodesToDataframe <- TRUE
+    } else {
       stop("nodes must be a data.frame or a list")
     }
   } else {
@@ -246,7 +249,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
   } else {
     edgesToDataframe <- FALSE
   }
-
+  
   # main
   if(!is.null(main)){
     if(is.list(main)){
@@ -314,7 +317,9 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
               byselection = list(enabled = FALSE), main = main, 
-              submain = submain, footer = footer, background = background)
+              submain = submain, footer = footer, background = background, 
+              crosstalk_group = group
+    )
     
   }else if(!is.null(gephi)){
     x <- list(gephi = jsonlite::fromJSON(txt = gephi, simplifyDataFrame = FALSE),
@@ -323,7 +328,9 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
               groups = NULL, width = width, height = height,
               idselection = list(enabled = FALSE),
               byselection = list(enabled = FALSE), main = main, 
-              submain = submain, footer = footer, background = background)
+              submain = submain, footer = footer, background = background, 
+              crosstalk_group = group
+    )
   }else{
     
     # forward options using x
@@ -331,6 +338,22 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     if(length(groups) == 0){
       groups = NULL
     }
+    
+    if (is.SharedData(nodes)) {
+      # Using Crosstalk
+      key <- nodes$key()
+      group <- nodes$groupName()
+      nodes <- nodes$origData()
+    } else {
+      # Not using Crosstalk
+      key <- NULL
+      group <- NULL
+    }
+    
+    if (!is.null(key)) {
+      nodes <- cbind(nodes, key = key)
+    }
+    
     x <- list(nodes = nodes, edges = edges, nodesToDataframe = nodesToDataframe, 
               edgesToDataframe = edgesToDataframe, 
               options = list(width = '100%', height = "100%", nodes = list(shape = "dot"), 
@@ -338,7 +361,9 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
               groups = groups, width = width, height = height,
               idselection = list(enabled = FALSE),
               byselection = list(enabled = FALSE), main = main, 
-              submain = submain, footer = footer, background = background)
+              submain = submain, footer = footer, background = background, 
+              crosstalk_group = group
+    )
   }
   
   # previous legend control
@@ -366,6 +391,7 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     x,
     width = width,
     height = height,
+    dependencies = crosstalk::crosstalkLibs(),
     package = 'visNetwork'
   )
 }

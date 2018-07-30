@@ -20,6 +20,7 @@ Depends:
 Imports:
     htmlwidgets,
     htmltools,
+    crosstalk,
     jsonlite,
     magrittr,
     utils,
