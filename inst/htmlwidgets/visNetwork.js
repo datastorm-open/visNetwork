@@ -196,7 +196,9 @@ function edgeAsHardToRead(edge, hideColor1, hideColor2, network, type){
       //network.clustering.updateEdge(edge.id, {hiddenColor : edge.color});
       edge.hiddenColor = edge.color;
     }
-    network.clustering.updateEdge(edge.id, {color : hideColor1});
+    // set "hard to read" color
+    edge.color = hideColor1;
+    //network.clustering.updateEdge(edge.id, {color : hideColor1});
     //edge.color = hideColor1;
     // reset and save label
     if (edge.hiddenLabel === undefined) {
@@ -3189,9 +3191,13 @@ HTMLWidgets.widget({
             // all in degree nodes get their own color and their label back + main nodes
             connectedNodes = connectedNodes.concat(selectedNode);
             
-            Shiny.onInputChange(el.id + '_highlight_color_id', connectedNodes.unique());
+            if (window.Shiny){
+              Shiny.onInputChange(el.id + '_highlight_color_id', connectedNodes.unique());
+            }
             if(el_id.highlightLabelOnly === true){
-              Shiny.onInputChange(el.id + '_highlight_label_id', allConnectedNodes.filter(function(x){ return !connectedNodes.includes(x)}));
+              if (window.Shiny){
+                Shiny.onInputChange(el.id + '_highlight_label_id', allConnectedNodes.filter(function(x){ return !connectedNodes.includes(x)}));
+              }
             }  
    
             array_cluster_id = [];
@@ -3203,7 +3209,7 @@ HTMLWidgets.widget({
                 }
               }
             }
-
+            
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
@@ -3242,7 +3248,6 @@ HTMLWidgets.widget({
               }
             }
             edges.update(edgesHardToRead);
-            
           } else if(algorithm === "hierarchical"){
             
             var degree_from = degrees.from;
@@ -3392,9 +3397,13 @@ HTMLWidgets.widget({
               }
             }
              
-            Shiny.onInputChange(el.id + '_highlight_color_id', allConnectedNodes.unique());
+            if (window.Shiny){ 
+              Shiny.onInputChange(el.id + '_highlight_color_id', allConnectedNodes.unique());
+            }
             if(el_id.highlightLabelOnly === true){
-              Shiny.onInputChange(el.id + '_highlight_label_id', nodesWithLabel.filter(function(x) {return !allConnectedNodes.includes(x)}));
+              if (window.Shiny){
+                Shiny.onInputChange(el.id + '_highlight_label_id', nodesWithLabel.filter(function(x) {return !allConnectedNodes.includes(x)}));
+              }
             }  
             
             // set some edges as hard to read
@@ -3457,8 +3466,10 @@ HTMLWidgets.widget({
           el_id.highlightActive = false;
           is_clicked = false;
           
-          Shiny.onInputChange(el.id + '_highlight_label_id', null)
-          Shiny.onInputChange(el.id + '_highlight_color_id', null)
+          if (window.Shiny){
+            Shiny.onInputChange(el.id + '_highlight_label_id', null)
+            Shiny.onInputChange(el.id + '_highlight_color_id', null)
+          }
         }
       }
       // reset selectedBy list if actived
@@ -3683,7 +3694,20 @@ HTMLWidgets.widget({
       el_id.appendChild(clusterbutton);
       
       clusterbutton.onclick =  function(){
-        instance.network.setData(data);
+        // reset some parameters / data before
+        if (el_id.selectActive === true | el_id.highlightActive === true) {
+          //reset nodes
+          neighbourhoodHighlight([], "click", el_id.highlightAlgorithm);
+          if (el_id.selectActive === true){
+            el_id.selectActive = false;
+            resetList('selectedBy',el.id, 'selectedBy');
+          }
+          if (el_id.highlightActive === true){
+            el_id.highlightActive = false;
+            resetList('nodeSelect', el.id, 'selected');
+          }
+        }
+        //instance.network.setData(data);
         if(x.clusteringColor){
           clusterByColor();
         }
@@ -3703,8 +3727,10 @@ HTMLWidgets.widget({
     if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers || x.clusteringHubsize || x.clusteringConnection){
       // if we click on a node, we want to open it up!
       instance.network.on("doubleClick", function (params){
+        
         if (params.nodes.length === 1) {
           if (instance.network.isCluster(params.nodes[0]) === true) {
+            is_clicked = false;
             instance.network.openCluster(params.nodes[0], {releaseFunction : function(clusterPosition, containedNodesPositions) {
               return containedNodesPositions;
             }});
@@ -3875,7 +3901,6 @@ HTMLWidgets.widget({
               },
               clusterNodeProperties: {id: 'cluster:' + group, borderWidth: 3, label:x.clusteringGroup.label + group}
           }
-          console.info(clusterOptionsByData)
           instance.network.cluster(clusterOptionsByData);
         }
       }
