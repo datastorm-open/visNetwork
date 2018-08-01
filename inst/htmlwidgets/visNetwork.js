@@ -1,9 +1,3 @@
-Array.prototype.unique = function() {
-  return this.filter(function (value, index, self) { 
-    return self.indexOf(value) === index;
-  });
-};
-
 // Production steps of ECMA-262, Edition 6, 22.1.2.1
 // Référence : https://people.mozilla.org/~jorendorff/es6-draft.html#sec-array.from
 if (!Array.from) {
@@ -909,6 +903,12 @@ function uniqueArray(arr, exclude_cluster, network) {
 
   return a;
 }
+
+function uniqueShiny(arr) {
+  return arr.filter(function (value, index, self) { 
+    return self.indexOf(value) === index;
+  });
+};
 // clone an object
 function clone(obj) {
     if(obj === null || typeof(obj) != 'object')
@@ -3192,7 +3192,7 @@ HTMLWidgets.widget({
             connectedNodes = connectedNodes.concat(selectedNode);
             
             if (window.Shiny){
-              Shiny.onInputChange(el.id + '_highlight_color_id', connectedNodes.unique());
+              Shiny.onInputChange(el.id + '_highlight_color_id', uniqueShiny(connectedNodes));
             }
             if(el_id.highlightLabelOnly === true){
               if (window.Shiny){
@@ -3398,7 +3398,7 @@ HTMLWidgets.widget({
             }
              
             if (window.Shiny){ 
-              Shiny.onInputChange(el.id + '_highlight_color_id', allConnectedNodes.unique());
+              Shiny.onInputChange(el.id + '_highlight_color_id', uniqueShiny(allConnectedNodes));
             }
             if(el_id.highlightLabelOnly === true){
               if (window.Shiny){
