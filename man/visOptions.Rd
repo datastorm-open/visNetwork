@@ -58,7 +58,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
 
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
-\item{manipulation}{: Just a Boolean}
+\item{manipulation}{: Just a Boolean or a list. See \link{visDocumentation}}
 }
 \description{
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
@@ -185,7 +185,30 @@ nodes$group <- sample(c("group 1", "group 2", "group 1, group 2, group 3"),
  
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = list(variable = "group", multiple = TRUE))
-  
+ 
+##########################
+# manipulation
+##########################
+ 
+visNetwork(nodes, edges) \%>\% 
+ visOptions(manipulation = TRUE)
+
+visNetwork(nodes, edges) \%>\% 
+ visOptions(manipulation = list(enabled = TRUE, addNode = FALSE, addEdge = FALSE))
+
+visNetwork(nodes, edges) \%>\% 
+ visOptions(manipulation = list(enabled = TRUE, deleteNode = FALSE, deleteEdge = FALSE))
+
+visNetwork(nodes, edges) \%>\% 
+ visOptions(manipulation = list(enabled = TRUE, editNode = FALSE, editEdge = FALSE))
+
+visNetwork(nodes, edges)  \%>\% 
+ visOptions(manipulation = list(enabled = TRUE, 
+                                editEdge = htmlwidgets::JS("function(data, callback) {
+                                                           console.info('edit edge')
+                                                           }")
+                                    )
+                                )
 ##########################
 # collapse
 ##########################

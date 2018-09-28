@@ -42,7 +42,7 @@
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
-#'@param manipulation : Just a Boolean
+#'@param manipulation : Just a Boolean or a list. See \link{visDocumentation}
 #'
 #'@examples
 #' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
@@ -166,7 +166,30 @@
 #'  
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", multiple = TRUE))
-#'   
+#'  
+#' ##########################
+#' # manipulation
+#' ##########################
+#'  
+#'visNetwork(nodes, edges) %>% 
+#'  visOptions(manipulation = TRUE)
+#'
+#'visNetwork(nodes, edges) %>% 
+#'  visOptions(manipulation = list(enabled = TRUE, addNode = FALSE, addEdge = FALSE))
+#'
+#'visNetwork(nodes, edges) %>% 
+#'  visOptions(manipulation = list(enabled = TRUE, deleteNode = FALSE, deleteEdge = FALSE))
+#'
+#'visNetwork(nodes, edges) %>% 
+#'  visOptions(manipulation = list(enabled = TRUE, editNode = FALSE, editEdge = FALSE))
+#'
+#'visNetwork(nodes, edges)  %>% 
+#'  visOptions(manipulation = list(enabled = TRUE, 
+#'                                 editEdge = htmlwidgets::JS("function(data, callback) {
+#'                                                            console.info('edit edge')
+#'                                                            }")
+#'                                     )
+#'                                 )
 #' ##########################
 #' # collapse
 #' ##########################
@@ -205,16 +228,20 @@ visOptions <- function(graph,
   if(is.null(manipulation)){
     options$manipulation <- list(enabled = FALSE)
   }else{
-    options$manipulation <- list(enabled = manipulation)
+    if(is.logical(manipulation)){
+      options$manipulation <- list(enabled = manipulation)
+    } else if(is.list(manipulation)){
+      options$manipulation <- manipulation
+    } else {
+      stop("Invalid 'manipulation' argument. logical or list")
+    }
   }
   
   options$height <- height
   options$width <- width
   
   if(!is.null(manipulation)){
-    if(manipulation){
       graph$x$datacss <- paste(readLines(system.file("htmlwidgets/lib/css/dataManipulation.css", package = "visNetwork"), warn = FALSE), collapse = "\n")
-    }
   }
   
   if(!"nodes"%in%names(graph$x) && any(class(graph) %in% "visNetwork")){

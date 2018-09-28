@@ -2743,61 +2743,165 @@ HTMLWidgets.widget({
 
       el_id.appendChild(div);
 
-      options.manipulation.addNode = function(data, callback) {
-        document.getElementById('operation').innerHTML = "Add Node";
-        document.getElementById('node-id').value = data.id;
-        document.getElementById('node-label').value = data.label;
-        document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
-        document.getElementById('cancelButton').onclick = clearPopUp.bind();
-        document.getElementById('network-popUp').style.display = 'block';
-      };
+      if(x.options.manipulation.addNode === undefined){
+        options.manipulation.addNode = function(data, callback) {
+          document.getElementById('operation').innerHTML = "Add Node";
+          document.getElementById('node-id').value = data.id;
+          document.getElementById('node-label').value = data.label;
+          document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+          document.getElementById('cancelButton').onclick = clearPopUp.bind();
+          document.getElementById('network-popUp').style.display = 'block';
+        };
+      } else if(typeof(x.options.manipulation.addNode) === typeof(true)){
+        if(x.options.manipulation.addNode){
+          options.manipulation.addNode = function(data, callback) {
+            document.getElementById('operation').innerHTML = "Add Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+            document.getElementById('cancelButton').onclick = clearPopUp.bind();
+            document.getElementById('network-popUp').style.display = 'block';
+          };
+        } else {
+          options.manipulation.addNode = false;
+        }
+      } else {
+        options.manipulation.addNode = x.options.manipulation.addNode;
+      }
 
-      options.manipulation.editNode = function(data, callback) {
-        document.getElementById('operation').innerHTML = "Edit Node";
-        document.getElementById('node-id').value = data.id;
-        document.getElementById('node-label').value = data.label;
-        document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
-        document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
-        document.getElementById('network-popUp').style.display = 'block';
-      };
+      if(x.options.manipulation.editNode === undefined){
+        options.manipulation.editNode = function(data, callback) {
+            document.getElementById('operation').innerHTML = "Edit Node";
+            document.getElementById('node-id').value = data.id;
+            document.getElementById('node-label').value = data.label;
+            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+            document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
+            document.getElementById('network-popUp').style.display = 'block';
+          };
+      } else if(typeof(x.options.manipulation.editNode) === typeof(true)){
+        if(x.options.manipulation.editNode){
+          options.manipulation.editNode = function(data, callback) {
+              document.getElementById('operation').innerHTML = "Edit Node";
+              document.getElementById('node-id').value = data.id;
+              document.getElementById('node-label').value = data.label;
+              document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+              document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
+              document.getElementById('network-popUp').style.display = 'block';
+            };
+        } else {
+          options.manipulation.editNode = false;
+        }
+      } else {
+        options.manipulation.editNode = x.options.manipulation.editNode;
+      }
+  
+      if(x.options.manipulation.deleteNode === undefined){
+        options.manipulation.deleteNode = function(data, callback) {
+            var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
+            if (r === true) {
+              deleteSubGraph(data, callback);
+            }
+        };
+      } else if(typeof(x.options.manipulation.deleteNode) === typeof(true)){
+        if(x.options.manipulation.deleteNode){
+          options.manipulation.deleteNode = function(data, callback) {
+              var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
+              if (r === true) {
+                deleteSubGraph(data, callback);
+              }
+          };
+        } else {
+          options.manipulation.deleteNode = false;
+        }
+      } else {
+        options.manipulation.deleteNode = x.options.manipulation.deleteNode;
+      }
 
-      options.manipulation.deleteNode = function(data, callback) {
-          var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
-          if (r === true) {
-            deleteSubGraph(data, callback);
+      if(x.options.manipulation.deleteEdge === undefined){
+        options.manipulation.deleteEdge = function(data, callback) {
+            var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
+            if (r === true) {
+              deleteSubGraph(data, callback);
+            }
+        };
+      } else if(typeof(x.options.manipulation.deleteEdge) === typeof(true)){
+        if(x.options.manipulation.deleteEdge){
+          options.manipulation.deleteEdge = function(data, callback) {
+              var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
+              if (r === true) {
+                deleteSubGraph(data, callback);
+              }
+          };
+        } else {
+          options.manipulation.deleteEdge = false;
+        }
+      } else {
+        options.manipulation.deleteEdge = x.options.manipulation.deleteEdge;
+      }
+
+      if(x.options.manipulation.addEdge === undefined){
+        options.manipulation.addEdge = function(data, callback) {
+          if (data.from == data.to) {
+            var r = confirm("Do you want to connect the node to itself?");
+            if (r === true) {
+              saveEdge(data, callback, "addEdge");
+            }
           }
-      };
-
-      options.manipulation.deleteEdge = function(data, callback) {
-          var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
-          if (r === true) {
-            deleteSubGraph(data, callback);
-          }
-      };
-
-      options.manipulation.addEdge = function(data, callback) {
-        if (data.from == data.to) {
-          var r = confirm("Do you want to connect the node to itself?");
-          if (r === true) {
+          else {
             saveEdge(data, callback, "addEdge");
           }
+        };
+      } else if(typeof(x.options.manipulation.addEdge) === typeof(true)){
+        if(x.options.manipulation.addEdge){
+          options.manipulation.addEdge = function(data, callback) {
+            if (data.from == data.to) {
+              var r = confirm("Do you want to connect the node to itself?");
+              if (r === true) {
+                saveEdge(data, callback, "addEdge");
+              }
+            }
+            else {
+              saveEdge(data, callback, "addEdge");
+            }
+          };
+        } else {
+          options.manipulation.addEdge = false;
         }
-        else {
-          saveEdge(data, callback, "addEdge");
-        }
-      };
-      
-      options.manipulation.editEdge = function(data, callback) {
-        if (data.from == data.to) {
-          var r = confirm("Do you want to connect the node to itself?");
-          if (r === true) {
+      } else {
+        options.manipulation.addEdge = x.options.manipulation.addEdge;
+      }
+
+      if(x.options.manipulation.editEdge === undefined){
+        options.manipulation.editEdge = function(data, callback) {
+          if (data.from == data.to) {
+            var r = confirm("Do you want to connect the node to itself?");
+            if (r === true) {
+              saveEdge(data, callback, "editEdge");
+            }
+          }
+          else {
             saveEdge(data, callback, "editEdge");
           }
+        };
+      } else if(typeof(x.options.manipulation.editEdge) === typeof(true)){
+        if(x.options.manipulation.editEdge){
+          options.manipulation.editEdge = function(data, callback) {
+            if (data.from == data.to) {
+              var r = confirm("Do you want to connect the node to itself?");
+              if (r === true) {
+                saveEdge(data, callback, "editEdge");
+              }
+            }
+            else {
+              saveEdge(data, callback, "editEdge");
+            }
+          };
+        } else {
+          options.manipulation.editEdge = false;
         }
-        else {
-          saveEdge(data, callback, "editEdge");
-        }
-      };
+      } else {
+        options.manipulation.editEdge = x.options.manipulation.editEdge;
+      }
     }
     
     // create network
