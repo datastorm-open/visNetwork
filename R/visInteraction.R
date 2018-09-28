@@ -52,6 +52,9 @@
 #' visInteraction(tooltipStyle = 'position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;
 #'  font-family: cursive;font-size:18px;font-color:purple;background-color: red;')
 #'
+#' nodes <- data.frame(id = 1:3)
+#' edges <- data.frame(from = c(1,2), to = c(1,3))
+#' 
 #'# frozen network
 #'visNetwork(nodes, edges) %>%
 #'  visInteraction(dragNodes = FALSE, dragView = FALSE, zoomView = FALSE)
