@@ -1336,6 +1336,7 @@ if (HTMLWidgets.shinyMode){
   Shiny.addCustomMessageHandler('visShinyOptions', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
+      
       if(el){
         var network = el.chart;
         var options = el.options;
@@ -1818,7 +1819,9 @@ if (HTMLWidgets.shinyMode){
           
           // reset some parameters / data before
           if (main_el.selectActive === true | main_el.highlightActive === true) {
+
             //reset nodes
+            resetAllEdges(el.edges, el.highlightColor, el.byselectionColor, el.chart);
             resetAllNodes(el.nodes, true, el.chart.groups, el.options, el.chart);
             
             if (main_el.selectActive === true){
