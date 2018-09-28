@@ -40,13 +40,15 @@ server <- shinyServer(function(input, output) {
    
    observe({
      if(input$goCol > 0){
-       visNetworkProxy("distPlot") %>% visCollapse(nodes = c(10,3), clusterOptions = list( shape ="square", label = "and so ?"))
+       visNetworkProxy("distPlot") %>% 
+         visCollapse(nodes = c(10,3), clusterOptions = list( shape ="square", label = "and so ?"), 
+                     labelSuffix = "Cool")
      }
    })
    
    observe({
      if(input$goUC > 0){
-       visNetworkProxy("distPlot") %>% visUncollapse()
+       visNetworkProxy("distPlot") %>% visUncollapse(keepCoord = TRUE)
      }
    })
    

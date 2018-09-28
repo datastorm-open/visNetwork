@@ -3,7 +3,8 @@ visNetwork 2.0.5
   * Fix clustering functions using level
   * add input$network_highlight_color_id and input$network_highlight_label_id 
   * #266 : enabled custom manipulation
-  
+  * collapse : can keep coordinates and set label suffix
+
 visNetwork 2.0.4
 --------------------------------------------------------------------------------
   * Update to fontAwesome 4.7.0

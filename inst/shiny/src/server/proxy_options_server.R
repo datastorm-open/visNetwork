@@ -47,7 +47,10 @@ observe({
 
 observe({
   visNetworkProxy("network_proxy_options") %>%
-    visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, resetHighlight = input$reset_collapse))
+    visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, 
+                               resetHighlight = input$reset_collapse, 
+                               keepCoord = input$keep_coord, 
+                               labelSuffix = input$labelSuffix))
 })
 
 
@@ -82,8 +85,10 @@ observe({
 # collapse
 observe({
   visNetworkProxy("network_proxy_options") %>%
-  visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, 
-    resetHighlight = input$reset_collapse))
+    visOptions(collapse = list(enabled = input$collapse, fit = input$fit_collapse, 
+                               resetHighlight = input$reset_collapse, 
+                               keepCoord = input$keep_coord, 
+                               labelSuffix = input$labelSuffix))
 })
 
 observe({

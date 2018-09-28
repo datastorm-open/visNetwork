@@ -1048,7 +1048,7 @@ function networkOpenCluster(params){
   }
 }
 
-function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams, network, elid) {
+function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, labelSuffix, treeParams, network, elid) {
   
   var set_position = true;
   var selectedNode;
@@ -1173,9 +1173,9 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
                 }
                         
                 if(clusterOptions.label !== undefined){
-                  clusterOptions.label = clusterOptions.label + ' (cluster)'
+                  clusterOptions.label = clusterOptions.label + " " + labelSuffix;
                 } else {
-                  clusterOptions.label =  '(cluster)'
+                  clusterOptions.label =  labelSuffix;
                 }
                         
                 if(clusterOptions.borderWidth !== undefined){
@@ -1292,7 +1292,7 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
-        collapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.clusterOptions, undefined, el.chart, data.id)
+        collapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.clusterOptions, data.labelSuffix, undefined, el.chart, data.id)
       }
   });
   
@@ -1709,6 +1709,7 @@ if (HTMLWidgets.shinyMode){
             el.collapseFit = data.options.collapse.fit;
             el.collapseResetHighlight = data.options.collapse.resetHighlight;
             el.collapseKeepCoord = data.options.collapse.keepCoord;
+            el.collapseLabelSuffix = data.options.collapse.labelSuffix;
             el.clusterOptions = data.options.collapse.clusterOptions;
           }
           
@@ -2184,6 +2185,7 @@ HTMLWidgets.widget({
         el_id.collapseFit = x.collapse.fit;
         el_id.collapseResetHighlight = x.collapse.resetHighlight;
         el_id.collapseKeepCoord = x.collapse.keepCoord;
+        el_id.collapseLabelSuffix = x.collapse.labelSuffix;
         el_id.clusterOptions = x.collapse.clusterOptions;
       }
     } else {
@@ -2191,6 +2193,7 @@ HTMLWidgets.widget({
       el_id.collapseFit = false;
       el_id.collapseResetHighlight = false;
       el_id.collapseKeepCoord = true;
+      el_id.collapseLabelSuffix = " (cluster)";
       el_id.clusterOptions = undefined;
     }
     
@@ -3679,8 +3682,9 @@ HTMLWidgets.widget({
     //*************************
     instance.network.on("doubleClick", function(params){
       if(el_id.collapse){
-        collapsedNetwork(params.nodes, el_id.collapseFit, el_id.collapseResetHighlight, el_id.clusterOptions, 
-        el_id.tree, instance.network, el.id) 
+        collapsedNetwork(params.nodes, el_id.collapseFit, el_id.collapseResetHighlight, 
+          el_id.clusterOptions, el_id.collapseLabelSuffix,
+          el_id.tree, instance.network, el.id) 
       }
     }); 
     

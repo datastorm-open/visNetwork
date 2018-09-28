@@ -8,7 +8,7 @@
 \title{Network visualization collapse / uncollapsed method}
 \usage{
 visCollapse(graph, nodes, fit = FALSE, resetHighlight = TRUE,
-  clusterOptions = NULL)
+  clusterOptions = NULL, labelSuffix = "(cluster)")
 
 visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE,
   keepCoord = TRUE)
@@ -23,6 +23,8 @@ visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE,
 \item{resetHighlight}{: Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
 
 \item{clusterOptions}{: Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+
+\item{labelSuffix}{: Optional. Character. Use node label + suffix or just suffix. Default to '(cluster)'}
 
 \item{keepCoord}{: Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse}
 }

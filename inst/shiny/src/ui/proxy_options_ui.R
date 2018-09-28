@@ -17,6 +17,8 @@ shiny::tabPanel(
       checkboxInput("collapse", "Enable collapse", FALSE),
       checkboxInput("fit_collapse", "Fit after collapse", FALSE),
       checkboxInput("reset_collapse", "Reset highlight after collapse", FALSE),
+      checkboxInput("keep_coord", "keep coordinates ?", TRUE),
+      textInput("labelSuffix", "label suffix on cluster ?", "(cluster)"),
       checkboxInput("open_collapse", "Enable open cluster", FALSE)
     ),
     column(
