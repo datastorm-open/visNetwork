@@ -52,6 +52,7 @@ visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collapse/uncollapse event ?}
  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+ \item{"keepCoord"}{ : Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse}
 }}
 
 \item{autoResize}{: Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize().}

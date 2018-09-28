@@ -39,6 +39,7 @@
 #'  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collapse/uncollapse event ?}
 #'  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
 #'  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+#'  \item{"keepCoord"}{ : Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse}
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
@@ -248,14 +249,15 @@ visOptions <- function(graph,
     highlight <- list(enabled = FALSE)
     idselection <- list(enabled = FALSE)
     byselection <- list(enabled = FALSE)
-    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE)
+    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE, keepCoord = TRUE)
   }else{
     #############################
     # collapse
     #############################
-    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE, clusterOptions = NULL)
+    list_collapse <- list(enabled = FALSE, fit = FALSE, resetHighlight = TRUE, 
+                          clusterOptions = NULL, keepCoord = TRUE)
     if(is.list(collapse)){
-      if(any(!names(collapse)%in%c("enabled", "fit", "resetHighlight", "clusterOptions"))){
+      if(any(!names(collapse)%in%c("enabled", "fit", "resetHighlight", "clusterOptions", "keepCoord"))){
         stop("Invalid 'collapse' argument")
       }
       
@@ -270,6 +272,10 @@ visOptions <- function(graph,
       if("resetHighlight"%in%names(collapse)){
         stopifnot(is.logical(collapse$resetHighlight))
         list_collapse$resetHighlight <- collapse$resetHighlight
+      }
+      if("keepCoord"%in%names(collapse)){
+        stopifnot(is.logical(collapse$keepCoord))
+        list_collapse$keepCoord <- collapse$keepCoord
       }
       if("clusterOptions"%in%names(collapse)){
         stopifnot(is.list(collapse$clusterOptions))

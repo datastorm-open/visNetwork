@@ -1025,7 +1025,17 @@ function networkOpenCluster(params){
       var elid = this.body.container.id.substring(5);
       var fit = document.getElementById(elid).collapseFit;
       var resetHighlight = document.getElementById(elid).collapseResetHighlight;
-      this.openCluster(params.nodes[0]);
+      
+      if(document.getElementById(elid).collapseKeepCoord){
+        this.openCluster(params.nodes[0], 
+        {releaseFunction : function(clusterPosition, containedNodesPositions) {
+              return containedNodesPositions;
+            }
+        });
+      } else {
+        this.openCluster(params.nodes[0]);
+      }
+
       
       if(resetHighlight){
         document.getElementById("nodeSelect"+elid).value = "";
@@ -1210,7 +1220,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, treeParams,
   }
 };
 
-function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
+function uncollapsedNetwork(nodes, fit, resetHighlight, keepCoord, network, elid) {
   var selectedNode;
   var j;
   var arr_nodes = [];
@@ -1233,14 +1243,30 @@ function uncollapsedNetwork(nodes, fit, resetHighlight, network, elid) {
     selectedNode = '' + arr_nodes[inodes];
     if(selectedNode !== undefined){
         if(network.isCluster(selectedNode)){
-          network.openCluster(selectedNode)
+          if(keepCoord){
+            network.openCluster(selectedNode, 
+              {releaseFunction : function(clusterPosition, containedNodesPositions) {
+                    return containedNodesPositions;
+                  }
+              });
+          } else {
+            network.openCluster(selectedNode)
+          }
         } else {
           if(indexOf.call(nodes_in_clusters, selectedNode, true) > -1){
             // not a cluster into a cluster...
             if(selectedNode.search(/^cluster/i) === -1){
               cluster_node = network.clustering.findNode(selectedNode)[0];
               if(network.isCluster(cluster_node)){
-                network.openCluster(cluster_node)
+                if(keepCoord){
+                  network.openCluster(cluster_node, 
+                    {releaseFunction : function(clusterPosition, containedNodesPositions) {
+                          return containedNodesPositions;
+                        }
+                    });
+                } else {
+                  network.openCluster(cluster_node)
+                }
               }
             }
           }
@@ -1275,7 +1301,7 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
-        uncollapsedNetwork(data.nodes, data.fit, data.resetHighlight, el.chart, data.id)
+        uncollapsedNetwork(data.nodes, data.fit, data.resetHighlight, data.keepCoord, el.chart, data.id)
       }
   });
 
@@ -1682,6 +1708,7 @@ if (HTMLWidgets.shinyMode){
             el.collapse = data.options.collapse.enabled;
             el.collapseFit = data.options.collapse.fit;
             el.collapseResetHighlight = data.options.collapse.resetHighlight;
+            el.collapseKeepCoord = data.options.collapse.keepCoord;
             el.clusterOptions = data.options.collapse.clusterOptions;
           }
           
@@ -2156,12 +2183,14 @@ HTMLWidgets.widget({
         el_id.collapse = true;
         el_id.collapseFit = x.collapse.fit;
         el_id.collapseResetHighlight = x.collapse.resetHighlight;
+        el_id.collapseKeepCoord = x.collapse.keepCoord;
         el_id.clusterOptions = x.collapse.clusterOptions;
       }
     } else {
       el_id.collapse = false;
       el_id.collapseFit = false;
       el_id.collapseResetHighlight = false;
+      el_id.collapseKeepCoord = true;
       el_id.clusterOptions = undefined;
     }
     

@@ -10,7 +10,8 @@
 visCollapse(graph, nodes, fit = FALSE, resetHighlight = TRUE,
   clusterOptions = NULL)
 
-visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE)
+visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE,
+  keepCoord = TRUE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
@@ -22,6 +23,8 @@ visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE)
 \item{resetHighlight}{: Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
 
 \item{clusterOptions}{: Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+
+\item{keepCoord}{: Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse}
 }
 \description{
 Network visualization collapse / uncollapsed method
