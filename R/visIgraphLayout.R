@@ -140,8 +140,10 @@ visIgraphLayout <- function(graph,
   from <- range(graph$x$nodes$y, na.rm = TRUE, finite = TRUE)
   graph$x$nodes$y <- (graph$x$nodes$y - from[1])/diff(from) * diff(to) + to[1]
   
+  # graph$x$nodes$physics = physics
+  
   graph$x$igraphlayout <- igraphlayout
   
-  graph %>% visNodes(physics = physics) %>% 
+  graph %>% visNodes(physics = physics) %>%
     visEdges(smooth = smooth) %>% visPhysics(stabilization = FALSE)
 }

@@ -1202,7 +1202,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, labelSuffix
               return clusterOptions;
             },
             clusterNodeProperties: {
-              allowSingleNodeCluster: false,
+              allowSingleNodeCluster: false
             }
           }
           network.cluster(clusterOptions);
