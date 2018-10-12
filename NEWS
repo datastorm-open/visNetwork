@@ -4,6 +4,7 @@ visNetwork 2.0.5
   * add input$network_highlight_color_id and input$network_highlight_label_id 
   * #266 : enabled custom manipulation
   * collapse : can keep coordinates and set label suffix
+  * add sort argument to selectedBy
 
 visNetwork 2.0.4
 --------------------------------------------------------------------------------

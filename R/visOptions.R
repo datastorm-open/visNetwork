@@ -32,6 +32,7 @@
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
 #'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'  \item{"main"}{ : Optional. Default to "Select by variable"}
+#'  \item{"sort"}{ : Optional. If values is NULL, sort all possible values ?. Defaut to TRUE}
 #'}
 #'@param collapse : Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
 #'\itemize{
@@ -432,8 +433,8 @@ visOptions <- function(graph,
     
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor", "main"))){
-          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor', 'main'")
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor", "main", "sort"))){
+          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor', 'main', 'sort'")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
@@ -506,9 +507,17 @@ visOptions <- function(graph,
                                               do.call("c",strsplit(as.character(byselection$values), split = ","))))
           }
           if(any(c("integer", "numeric") %in% class(graph$x$nodes[, byselection$variable]))){
-            byselection$values <- sort(byselection$values)
+            byselection$values <- byselection$values
           }else{
-            byselection$values <- sort(as.character(byselection$values))
+            byselection$values <- as.character(byselection$values)
+          }
+          
+          if("sort"%in%names(selectedBy)){
+            if(selectedBy$sort){
+              byselection$values <- sort(byselection$values)
+            }
+          } else {
+            byselection$values <- sort(byselection$values)
           }
           
           if("values"%in%names(selectedBy)){
