@@ -1394,14 +1394,17 @@ if (HTMLWidgets.shinyMode){
           }
         }
         
-        if(data.options.nodes.icon){
+        if(data.options.nodes){
+          if(data.options.nodes.icon){
             if(data.options.nodes.icon.code){
               data.options.nodes.icon.code = JSON.parse( '"'+'\\u' + data.options.nodes.icon.code + '"');
             }
             if(data.options.nodes.icon.color){
               data.options.nodes.color = data.options.nodes.icon.color;
             }
+          }
         }
+
         
         update(options, data.options);
         network.setOptions(options);
