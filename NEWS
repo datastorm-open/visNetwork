@@ -5,6 +5,7 @@ visNetwork 2.0.5
   * #266 : enabled custom manipulation
   * collapse : can keep coordinates and set label suffix
   * add sort argument to selectedBy
+  * Fix passing icon using visGroup and proxy
 
 visNetwork 2.0.4
 --------------------------------------------------------------------------------
