@@ -198,6 +198,7 @@ visNodes <- function(graph,
   nodes$icon <- icon
   nodes$shadow <- shadow
   nodes$shapeProperties <- shapeProperties
+  nodes$margin <- margin
   nodes$chosen <- chosen
   nodes$widthConstraint <- widthConstraint
   nodes$heightConstraint <- heightConstraint
