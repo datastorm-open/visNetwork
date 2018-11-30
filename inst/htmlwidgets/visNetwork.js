@@ -4181,10 +4181,12 @@ HTMLWidgets.widget({
           instance.network.redraw();
         if(instance.legend)
           instance.legend.redraw();
-      }, 200);
-    }
+      }, 250);
+    };
+    
     if(x.iconsRedraw !== undefined){
       if(x.iconsRedraw){
+        iconsRedraw();
         instance.network.once("stabilized", function(){iconsRedraw();})
       }
     }
