@@ -208,6 +208,14 @@ visTree <- function(object,
     stopifnot(class(tooltipColumns)[1] %in% c("numeric", "integer"))
     stopifnot(!is.null(data))
     stopifnot(max(tooltipColumns) <= ncol(data))
+    
+    which_character <- which(sapply(data[, tooltipColumns, drop = FALSE], 
+                                    function(x) class(x)[1]) %in% "character")
+    if(length(which_character) > 0){
+      for(i in tooltipColumns[which_character]){
+        data[, i] <- as.factor(data[, i])
+      }
+    }
   }
   
   if(!is.null(tooltipColumns) | rules){

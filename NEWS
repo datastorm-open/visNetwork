@@ -6,6 +6,8 @@ visNetwork 2.0.5
   * collapse : can keep coordinates and set label suffix
   * add sort argument to selectedBy
   * Fix passing icon using visGroup and proxy
+  * Fix passing margin to nodes
+  * Fix bug passing character to visTree
 
 visNetwork 2.0.4
 --------------------------------------------------------------------------------
