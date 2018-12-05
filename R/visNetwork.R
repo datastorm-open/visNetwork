@@ -330,6 +330,8 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     groups = as.character(unique(nodes$group))
     if(length(groups) == 0){
       groups = NULL
+    } else if(length(groups) == 1){
+      groups = list(groups)
     }
     x <- list(nodes = nodes, edges = edges, nodesToDataframe = nodesToDataframe, 
               edgesToDataframe = edgesToDataframe, 

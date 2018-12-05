@@ -8,6 +8,7 @@ visNetwork 2.0.5
   * Fix passing icon using visGroup and proxy
   * Fix passing margin to nodes
   * Fix bug passing character to visTree
+  * Fix legend using only one group
 
 visNetwork 2.0.4
 --------------------------------------------------------------------------------
