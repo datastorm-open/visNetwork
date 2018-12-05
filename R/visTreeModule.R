@@ -1568,14 +1568,14 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                                      shiny::selectInput(ns("x"), "X :", NULL, multiple = TRUE, selected = NULL, width = "100%")
                                        ),
                                        shiny::column(2,
+                                                     shiny::numericInput(ns("minsplit"), "Minsplit : ", value = 20, min = 2)
+                                       ),
+                                       shiny::column(2,
                                                      shiny::sliderInput(ns("complexity"), "Complexity (cp) :",
                                                                         min = 0, max = 1, value = 0.005, step = 0.005)
                                        ),
                                        shiny::column(1,
                                                      shiny::br(), shiny::br(), shiny::actionButton(ns("set_cp"), "Set cp slider")
-                                       ),
-                                       shiny::column(2,
-                                                     shiny::numericInput(ns("minsplit"), "Minsplit : ", value = 20, min = 2)
                                        )
                                        
                             )
