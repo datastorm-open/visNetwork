@@ -4,10 +4,12 @@
 \alias{addIonicons}
 \title{Use Ionicons in visNetwork \code{graph}}
 \usage{
-addIonicons(graph)
+addIonicons(graph, name = "ionicons")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
+
+\item{name}{: name of dependency}
 }
 \value{
 \code{graph} htmlwidget with Ionicons dependencies attached.

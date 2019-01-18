@@ -4,10 +4,12 @@
 \alias{addFontAwesome}
 \title{Use fontAwesome icons in visNetwork \code{graph}}
 \usage{
-addFontAwesome(graph)
+addFontAwesome(graph, name = "font-awesome")
 }
 \arguments{
 \item{graph}{: a visNetwork object}
+
+\item{name}{: name of dependency}
 }
 \value{
 \code{graph} htmlwidget with Font-Awesome dependencies attached.
@@ -44,4 +46,8 @@ edges <- data.frame(from = c(1,2), to = c(1,3))
 visNetwork(nodes, edges) \%>\%
   addFontAwesome()
 
+# using shinydashboard : change name if needed
+visNetwork(nodes, edges) \%>\%
+  addFontAwesome(name = "font-awesome-visNetwork")
+  
 }

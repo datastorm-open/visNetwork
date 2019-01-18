@@ -6,6 +6,7 @@
 #' Can also use \link{addIonicons}   
 #' 
 #' @param  graph : a visNetwork object
+#' @param  name  : name of dependency
 #' 
 #' @return \code{graph} htmlwidget with Font-Awesome dependencies attached.
 #' 
@@ -35,16 +36,20 @@
 #' visNetwork(nodes, edges) %>%
 #'   addFontAwesome()
 #' 
+#' # using shinydashboard : change name if needed
+#' visNetwork(nodes, edges) %>%
+#'   addFontAwesome(name = "font-awesome-visNetwork")
+#'   
 #' @import htmltools
 #'
 #' @export
-addFontAwesome <- function(graph){
+addFontAwesome <- function(graph, name = "font-awesome"){
   if(!inherits(graph,"htmlwidget")){
     stop("graph should be a htmlwidget.", call.=F)
   } 
   
   font_dep <- htmltools::htmlDependency(
-    name = "font-awesome",
+    name = name,
     version = "4.7.0",
     src = c(file=system.file("htmlwidgets/lib/font-awesome", package="visNetwork")),
     stylesheet = "css/font-awesome.min.css"
@@ -67,6 +72,7 @@ addFontAwesome <- function(graph){
 #' Can also use \link{addFontAwesome}
 #'   
 #' @param  graph : a visNetwork object
+#' @param  name  : name of dependency
 #' 
 #' @return \code{graph} htmlwidget with Ionicons dependencies attached.
 #' 
@@ -85,13 +91,13 @@ addFontAwesome <- function(graph){
 #' @import htmltools
 #'
 #' @export
-addIonicons <- function(graph){
+addIonicons <- function(graph, name = "ionicons"){
   if(!inherits(graph,"htmlwidget")){
     stop("graph should be a htmlwidget.", call.=F)
   } 
   
   font_dep <- htmltools::htmlDependency(
-    name = "ionicons",
+    name = name,
     version = "2.0.1",
     src = c(file=system.file("htmlwidgets/lib/ionicons", package="visNetwork")),
     stylesheet = "css/ionicons.min.css"
