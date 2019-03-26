@@ -6,8 +6,8 @@
 \usage{
 visHierarchicalLayout(graph, enabled = TRUE, levelSeparation = NULL,
   nodeSpacing = NULL, treeSpacing = NULL, blockShifting = NULL,
-  edgeMinimization = NULL, parentCentralization = NULL, direction = NULL,
-  sortMethod = NULL)
+  edgeMinimization = NULL, parentCentralization = NULL,
+  direction = NULL, sortMethod = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

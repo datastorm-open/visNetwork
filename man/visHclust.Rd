@@ -14,27 +14,28 @@ visHclust(object, ...)
 
 \method{visHclust}{data.frame}(object, main = "", submain = "",
   footer = "", distColumns = NULL, distMethod = "euclidean",
-  hclustMethod = "complete", cutree = 0, tooltipColumns = 1:ncol(object),
-  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
-  highlightNearest = TRUE, horizontal = FALSE, minNodeSize = 50,
-  maxNodeSize = 200, nodesPopSize = TRUE, height = "600px",
-  width = "100\%", export = TRUE, ...)
-
-\method{visHclust}{dist}(object, data = NULL, main = "", submain = "",
-  footer = "", cutree = 0, hclustMethod = "complete",
-  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
-  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
-  highlightNearest = TRUE, horizontal = FALSE, minNodeSize = 50,
-  maxNodeSize = 200, nodesPopSize = TRUE, height = "600px",
-  width = "100\%", export = TRUE, ...)
-
-\method{visHclust}{hclust}(object, data = NULL, main = "", submain = "",
-  footer = "", cutree = 0, tooltipColumns = if (!is.null(data)) {    
-  1:ncol(data) } else {     NULL }, colorEdges = "black",
+  hclustMethod = "complete", cutree = 0,
+  tooltipColumns = 1:ncol(object), colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7), highlightNearest = TRUE,
   horizontal = FALSE, minNodeSize = 50, maxNodeSize = 200,
-  nodesPopSize = TRUE, height = "600px", width = "100\%", export = TRUE,
-  ...)
+  nodesPopSize = TRUE, height = "600px", width = "100\%",
+  export = TRUE, ...)
+
+\method{visHclust}{dist}(object, data = NULL, main = "",
+  submain = "", footer = "", cutree = 0, hclustMethod = "complete",
+  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {    
+  NULL }, colorEdges = "black", colorGroups = substr(rainbow(cutree),
+  1, 7), highlightNearest = TRUE, horizontal = FALSE,
+  minNodeSize = 50, maxNodeSize = 200, nodesPopSize = TRUE,
+  height = "600px", width = "100\%", export = TRUE, ...)
+
+\method{visHclust}{hclust}(object, data = NULL, main = "",
+  submain = "", footer = "", cutree = 0, tooltipColumns = if
+  (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  colorEdges = "black", colorGroups = substr(rainbow(cutree), 1, 7),
+  highlightNearest = TRUE, horizontal = FALSE, minNodeSize = 50,
+  maxNodeSize = 200, nodesPopSize = TRUE, height = "600px",
+  width = "100\%", export = TRUE, ...)
 }
 \arguments{
 \item{object}{\code{hclust | dist | data.frame}.}

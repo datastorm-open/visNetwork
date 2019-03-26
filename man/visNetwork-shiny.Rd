@@ -4,7 +4,6 @@
 \alias{visNetwork-shiny}
 \alias{visNetworkOutput}
 \alias{renderVisNetwork}
-\alias{visNetwork-shiny}
 \alias{visNetworkProxy}
 \title{Shiny bindings for visNetwork}
 \usage{

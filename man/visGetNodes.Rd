@@ -4,7 +4,8 @@
 \alias{visGetNodes}
 \title{Function to get nodes data, with shiny only.}
 \usage{
-visGetNodes(graph, input = paste0(graph$id, "_nodes"), addCoordinates = T)
+visGetNodes(graph, input = paste0(graph$id, "_nodes"),
+  addCoordinates = T)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

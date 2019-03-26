@@ -4,7 +4,8 @@
 \alias{visGetConnectedNodes}
 \title{Method getConnectedNodes, with shiny only.}
 \usage{
-visGetConnectedNodes(graph, id, input = paste0(graph$id, "_connectedNodes"))
+visGetConnectedNodes(graph, id, input = paste0(graph$id,
+  "_connectedNodes"))
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

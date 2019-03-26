@@ -5,7 +5,8 @@
 \title{Network visualization clustering options - by group}
 \usage{
 visClusteringByGroup(graph, groups, label = "Cluster on group : ",
-  shape = "database", color = "grey", force = FALSE, scale_size = TRUE)
+  shape = "database", color = "grey", force = FALSE,
+  scale_size = TRUE)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

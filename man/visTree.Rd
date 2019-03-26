@@ -5,18 +5,19 @@
 \title{Visualize Recursive Partitioning and Regression Trees (rpart object)}
 \usage{
 visTree(object, data = NULL, tooltipColumns = if (!is.null(data)) {    
-  1:ncol(data) } else {     NULL }, main = "", submain = "", footer = "",
-  direction = "UD", fallenLeaves = FALSE, rules = TRUE,
-  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
-  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
-  nodesFontSize = 16, edgesFontSize = 14, edgesFontAlign = "horizontal",
-  legend = TRUE, legendNodesSize = 22, legendFontSize = 16,
-  legendWidth = 0.1, legendNcol = 1, legendPosition = "left",
-  nodesPopSize = FALSE, minNodeSize = 15, maxNodeSize = 30,
-  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0),
-  hover = FALSE, algorithm = "hierarchical"), collapse = list(enabled = TRUE,
-  fit = TRUE, resetHighlight = TRUE, clusterOptions = list(fixed = TRUE, physics
-  = FALSE)), updateShape = TRUE, tooltipDelay = 500, digits = 3,
+  1:ncol(data) } else {     NULL }, main = "", submain = "",
+  footer = "", direction = "UD", fallenLeaves = FALSE,
+  rules = TRUE, simplifyRules = TRUE, shapeVar = "dot",
+  shapeY = "square", colorVar = NULL, colorY = NULL,
+  colorEdges = "#8181F7", nodesFontSize = 16, edgesFontSize = 14,
+  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
+  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
+  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
+  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
+  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
+  clusterOptions = list(fixed = TRUE, physics = FALSE)),
+  updateShape = TRUE, tooltipDelay = 500, digits = 3,
   height = "600px", width = "100\%", export = TRUE)
 }
 \arguments{

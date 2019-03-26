@@ -4,9 +4,10 @@
 \alias{visOptions}
 \title{Network visualization general options}
 \usage{
-visOptions(graph, width = NULL, height = NULL, highlightNearest = FALSE,
-  nodesIdSelection = FALSE, selectedBy = NULL, collapse = FALSE,
-  autoResize = NULL, clickToUse = NULL, manipulation = NULL)
+visOptions(graph, width = NULL, height = NULL,
+  highlightNearest = FALSE, nodesIdSelection = FALSE,
+  selectedBy = NULL, collapse = FALSE, autoResize = NULL,
+  clickToUse = NULL, manipulation = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

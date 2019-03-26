@@ -4,9 +4,10 @@
 \alias{visPhysics}
 \title{Network visualization Physics options}
 \usage{
-visPhysics(graph, solver = NULL, maxVelocity = NULL, minVelocity = NULL,
-  timestep = NULL, barnesHut = NULL, forceAtlas2Based = NULL,
-  repulsion = NULL, hierarchicalRepulsion = NULL, stabilization = NULL,
+visPhysics(graph, solver = NULL, maxVelocity = NULL,
+  minVelocity = NULL, timestep = NULL, barnesHut = NULL,
+  forceAtlas2Based = NULL, repulsion = NULL,
+  hierarchicalRepulsion = NULL, stabilization = NULL,
   adaptiveTimestep = NULL, enabled = NULL)
 }
 \arguments{

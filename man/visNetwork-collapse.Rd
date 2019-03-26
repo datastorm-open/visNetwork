@@ -3,15 +3,14 @@
 \name{visNetwork-collapse}
 \alias{visNetwork-collapse}
 \alias{visCollapse}
-\alias{visNetwork-collapse}
 \alias{visUncollapse}
 \title{Network visualization collapse / uncollapsed method}
 \usage{
 visCollapse(graph, nodes, fit = FALSE, resetHighlight = TRUE,
   clusterOptions = NULL, labelSuffix = "(cluster)")
 
-visUncollapse(graph, nodes = NULL, fit = FALSE, resetHighlight = TRUE,
-  keepCoord = TRUE)
+visUncollapse(graph, nodes = NULL, fit = FALSE,
+  resetHighlight = TRUE, keepCoord = TRUE)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

@@ -4,12 +4,14 @@
 \alias{visEdges}
 \title{Network visualization edges options}
 \usage{
-visEdges(graph, title = NULL, value = NULL, label = NULL, length = NULL,
-  width = NULL, dashes = NULL, hidden = NULL, hoverWidth = NULL,
-  id = NULL, physics = NULL, selectionWidth = NULL,
-  selfReferenceSize = NULL, labelHighlightBold = NULL, color = NULL,
-  font = NULL, arrows = NULL, arrowStrikethrough = NULL, smooth = NULL,
-  shadow = NULL, scaling = NULL, widthConstraint = NULL, chosen = NULL)
+visEdges(graph, title = NULL, value = NULL, label = NULL,
+  length = NULL, width = NULL, dashes = NULL, hidden = NULL,
+  hoverWidth = NULL, id = NULL, physics = NULL,
+  selectionWidth = NULL, selfReferenceSize = NULL,
+  labelHighlightBold = NULL, color = NULL, font = NULL,
+  arrows = NULL, arrowStrikethrough = NULL, smooth = NULL,
+  shadow = NULL, scaling = NULL, widthConstraint = NULL,
+  chosen = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

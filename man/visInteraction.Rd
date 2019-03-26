@@ -8,8 +8,8 @@ visInteraction(graph, dragNodes = NULL, dragView = NULL,
   hideEdgesOnDrag = NULL, hideNodesOnDrag = NULL, hover = NULL,
   hoverConnectedEdges = NULL, keyboard = NULL, multiselect = NULL,
   navigationButtons = NULL, selectable = NULL,
-  selectConnectedEdges = NULL, tooltipDelay = NULL, tooltipStay = 300,
-  tooltipStyle = NULL, zoomView = NULL)
+  selectConnectedEdges = NULL, tooltipDelay = NULL,
+  tooltipStay = 300, tooltipStyle = NULL, zoomView = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
