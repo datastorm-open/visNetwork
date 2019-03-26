@@ -26,11 +26,11 @@
 visDocumentation <- function(viewer = getOption("viewer")){
   if (!is.null(viewer)){
     tempDir <- tempdir()
-    ctrl <- file.copy(from = system.file("doc", package = "visNetwork"), 
+    ctrl <- file.copy(from = system.file("docjs", package = "visNetwork"), 
               to = tempDir, overwrite = TRUE , recursive = TRUE)
-    viewer(paste0(tempDir, "/doc/network/index.html"))
+    viewer(paste0(tempDir, "/docjs/network/index.html"))
   }else{
-    browseURL(system.file("doc/network/index.html", package = "visNetwork"))
+    browseURL(system.file("docjs/network/index.html", package = "visNetwork"))
   }
 }
 
