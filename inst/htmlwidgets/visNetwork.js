@@ -1085,7 +1085,9 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, labelSuffix
             },
             returnType :'Array'
           });
-              
+          
+          
+          
           for (j = 0; j < connectedToNodes.length; j++) {
             firstLevelNodes = firstLevelNodes.concat(connectedToNodes[j].to);
           }
@@ -1128,7 +1130,7 @@ function collapsedNetwork(nodes, fit, resetHighlight, clusterParams, labelSuffix
               finalClusterNodes = finalClusterNodes.concat(findnode[0]);
             }
           }
-    
+
           if(set_position){ 
             network.storePositions();
           }
