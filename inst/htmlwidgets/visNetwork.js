@@ -3914,7 +3914,7 @@ HTMLWidgets.widget({
                 returnType :'Array'
               });
             
-              clusterByGroup(array_group[0].group);
+              clusterByGroup([array_group[0].group]);
             }
           }
         }
