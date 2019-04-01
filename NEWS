@@ -1,5 +1,9 @@
 visNetwork 2.0.6
 --------------------------------------------------------------------------------
+  * #307 : visClusteringByGroup, add collapse on double click 
+  
+visNetwork 2.0.6
+--------------------------------------------------------------------------------
   * Fix using FontAwesome icons in shinydashboard
   
 visNetwork 2.0.5

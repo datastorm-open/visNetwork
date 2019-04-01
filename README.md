@@ -14,6 +14,10 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
+## ``2.0.7`` dev version
+
+  * ### #307 : visClusteringByGroup, add collapse on double click 
+  
 ## ``2.0.6`` available on CRAN
 
   * ### Fix using FontAwesome icons in shinydashboard
