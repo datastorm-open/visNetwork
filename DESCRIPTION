@@ -40,6 +40,5 @@ Suggests:
     ggraph,
     flashClust
 VignetteBuilder: knitr,
-    rmarkdown,
-    webshot
+    rmarkdown
 RoxygenNote: 6.1.1
