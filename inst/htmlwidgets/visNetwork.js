@@ -2872,6 +2872,8 @@ HTMLWidgets.widget({
               var r = confirm("Do you want to delete " + data.nodes.length + " node(s) and " + data.edges.length + " edges ?");
               if (r === true) {
                 deleteSubGraph(data, callback);
+              } else {
+                cancelEdit(callback);
               }
           };
         } else {
@@ -2896,6 +2898,8 @@ HTMLWidgets.widget({
               var r = confirm("Do you want to delete " + data.edges.length + " edges ?");
               if (r === true) {
                 deleteSubGraph(data, callback);
+              } else {
+                cancelEdit(callback);
               }
           };
         } else {
