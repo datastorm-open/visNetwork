@@ -135,10 +135,14 @@ visIgraphLayout <- function(graph,
   
   to <- c(-1, 1)
   from <- range(graph$x$nodes$x, na.rm = TRUE, finite = TRUE)
-  graph$x$nodes$x <- (graph$x$nodes$x - from[1])/diff(from) * diff(to) + to[1]
+  if(length(unique(from)) > 1){
+    graph$x$nodes$x <- (graph$x$nodes$x - from[1])/diff(from) * diff(to) + to[1]
+  }
   
   from <- range(graph$x$nodes$y, na.rm = TRUE, finite = TRUE)
-  graph$x$nodes$y <- (graph$x$nodes$y - from[1])/diff(from) * diff(to) + to[1]
+  if(length(unique(from)) > 1){
+    graph$x$nodes$y <- (graph$x$nodes$y - from[1])/diff(from) * diff(to) + to[1]
+  }
   
   # graph$x$nodes$physics = physics
   
