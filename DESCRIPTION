@@ -38,6 +38,7 @@ Suggests:
     colourpicker,
     sparkline,
     ggraph,
+    tidygraph,
     flashClust
 VignetteBuilder: knitr,
     rmarkdown

@@ -2,7 +2,8 @@ visNetwork 2.0.8
 --------------------------------------------------------------------------------
   * #325 : fix cancel manipulation
   * #327 : fix "layout_with_sugiyama" for simple graphs 
-
+  * #334 : Ensure compatibility with the next ggraph release
+  
 visNetwork 2.0.7
 --------------------------------------------------------------------------------
   * #307 : visClusteringByGroup, add collapse on double click 

@@ -240,16 +240,18 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 }
 
 
-
-
-
 #' Transform data from hclust to nodes and edges
 #'
 #' @noRd
+#' 
 .convertHclust <- function(hcl, data, drawNames,
                            minNodeSize, maxNodeSize)
 {
-  ig <- suppressMessages(ggraph::den_to_igraph(hcl))
+  
+  ig <- suppressMessages({
+    tidygraph::as.igraph(tidygraph::as_tbl_graph(hcl, directed = TRUE, mode = "out"))
+  })
+  
   neig <- igraph::neighborhood(ig, 150000, mode = "out")
   neig <- sapply(1:length(neig), function(i){
     neig[[i]][!neig[[i]] == i]
@@ -320,8 +322,14 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   
   dta$nodes$circular <- NULL
   dta$edges$circular <- NULL
+  dta$nodes$height <- NULL
   
-  dta$nodes$label <- suppressMessages(ggraph::create_layout(hcl, "dendrogram")$label)
+  tmp_layout <- suppressMessages(ggraph::create_layout(hcl, "dendrogram"))
+  
+  dta$nodes$label <- tmp_layout$label
+  dta$nodes$x <- tmp_layout$x
+  dta$nodes$y <- tmp_layout$y
+  dta$nodes$ggraph.index <- tmp_layout$ggraph.index
   
   names(dta$nodes) <- sub("layout.", "", names(dta$nodes))
   names(dta$nodes)[which(names(dta$nodes) == "leaf")] <- "hidden"
@@ -330,6 +338,10 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   dta$nodes$leaf <- dta$nodes$hidden
   tpNum <- max(as.numeric(dta$nodes$id)) + 1
   dta$edges$horizontal  <- FALSE
+  
+  dta$nodes <- dta$nodes[, c("id", "x", "y", "hidden", "label", "members", "ggraph.index", 
+                             "hidden2", "leaf", "neib", "labelComplete")]
+  
   outList <- sapply(1:nrow(dta$nodes), function(X){
     row <- dta$nodes[X,]
     if(row$hidden){
@@ -509,6 +521,10 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     miss_packages <- c(miss_packages, "'igraph'")
   }
   
+  if(!requireNamespace("tidygraph", quietly = TRUE)){
+    miss_packages <- c(miss_packages, "'tidygraph'")
+  }
+  
   if(length(miss_packages) == 1){
     stop(miss_packages," package is needed for this function", call. = FALSE)
   } else if(length(miss_packages) > 1){
@@ -551,7 +567,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
                           horizontal, submain, footer, highlightNearest, export){
   
   res$edges$color <- colorEdges
- 
+  
   if(!is.null(cutree)){
     if(cutree > 1){
       color <- colorGroups
@@ -607,7 +623,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   res$nodes$label <- as.character(res$nodes$label)
   
   # res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE] <- gsub("^(\\n)|(\\n)$", "", 
-                                                                                       # gsub("", "\\\n", res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE]))
+  # gsub("", "\\\n", res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE]))
   if(!horizontal){
     colnames(res$nodes)[2:3] <- c("y", "x")
   }
@@ -623,9 +639,9 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   
   if(!horizontal){
     vis <- vis %>% visGroups(groupname = "individual", 
-              font = list(size = 200),
-              color = list(background = "white", border = "white", 
-                           highlight = "#e2e9e9", hover = "#e2e9e9"), shape = "box") 
+                             font = list(size = 200),
+                             color = list(background = "white", border = "white", 
+                                          highlight = "#e2e9e9", hover = "#e2e9e9"), shape = "box") 
   } else {
     vis <- vis %>% visGroups(groupname = "individual", 
                              font = list(size = 100),
