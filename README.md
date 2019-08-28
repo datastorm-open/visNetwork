@@ -14,14 +14,12 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``2.0.7`` dev version
+## ``2.0.8`` available on CRAN
 
-  * ### #307 : visClusteringByGroup, add collapse on double click 
+  * ### #325 : fix cancel manipulation
+  * ### #327 : fix "layout_with_sugiyama" for simple graphs 
+  * ### #334 : Ensure compatibility with the next ggraph release
   
-## ``2.0.6`` available on CRAN
-
-  * ### Fix using FontAwesome icons in shinydashboard
-
 ![alt text](https://github.com/datastorm-open/visNetwork/blob/master/inst/img/tree_example.png)
 
 # Example
