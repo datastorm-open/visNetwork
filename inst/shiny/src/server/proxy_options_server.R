@@ -30,7 +30,7 @@ observe({
   if(input$selectedby){
     col <- paste0('rgba(200,200,200,', input$opasel, ')')
     visNetworkProxy("network_proxy_options") %>%
-      visOptions(selectedBy = list(variable = "group", hideColor = col))
+      visOptions(selectedBy = list(variable = "group", hideColor = col, highlight = input$selectedbyHighlight))
   }else{
     visNetworkProxy("network_proxy_options") %>%
       visOptions(selectedBy = NULL)

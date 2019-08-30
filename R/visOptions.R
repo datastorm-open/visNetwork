@@ -33,6 +33,7 @@
 #'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
 #'  \item{"main"}{ : Optional. Default to "Select by variable"}
 #'  \item{"sort"}{ : Optional. If values is NULL, sort all possible values ?. Defaut to TRUE}
+#'  \item{"highlight"}{ : Optional. Boolean. Run highlightNearest if defined on each selected node ? Defaut to FALSE}
 #'}
 #'@param collapse : Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
 #'\itemize{
@@ -150,6 +151,11 @@
 #'    selected = "C",
 #'    values = c("A", "C")))
 #'  
+#' # highlight also
+#' visNetwork(nodes, edges) %>% 
+#'  visOptions(selectedBy = list(variable = "group", 
+#'    highlight = TRUE), highlightNearest = TRUE) 
+#'      
 #' # add some style
 #' visNetwork(nodes, edges) %>% 
 #'  visOptions(selectedBy = list(variable = "group", style = 'width: 200px; height: 26px;
@@ -429,12 +435,13 @@ visOptions <- function(graph,
     #############################
     # selectedBy
     #############################
-    byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', multiple = FALSE, hideColor = 'rgba(200,200,200,0.5)')
+    byselection <- list(enabled = FALSE, style = 'width: 150px; height: 26px', multiple = FALSE, 
+                        hideColor = 'rgba(200,200,200,0.5)', highlight = FALSE)
     
     if(!is.null(selectedBy)){
       if(is.list(selectedBy)){
-        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor", "main", "sort"))){
-          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor', 'main', 'sort'")
+        if(any(!names(selectedBy)%in%c("variable", "selected", "style", "values", "multiple", "hideColor", "main", "sort", "highlight"))){
+          stop("Invalid 'selectedBy' argument. List can have 'variable', 'selected', 'style', 'values', 'multiple', 'hideColor', 'main', 'sort', 'highlight'")
         }
         if("selected"%in%names(selectedBy)){
           byselection$selected <- as.character(selectedBy$selected)
@@ -442,6 +449,10 @@ visOptions <- function(graph,
         
         if("hideColor"%in%names(selectedBy)){
           byselection$hideColor <- selectedBy$hideColor
+        }
+        
+        if("highlight"%in%names(selectedBy)){
+          byselection$highlight <- selectedBy$highlight
         }
         
         if(!"variable"%in%names(selectedBy)){

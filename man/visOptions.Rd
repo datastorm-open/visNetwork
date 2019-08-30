@@ -46,6 +46,7 @@ visOptions(graph, width = NULL, height = NULL,
  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
  \item{"main"}{ : Optional. Default to "Select by variable"}
  \item{"sort"}{ : Optional. If values is NULL, sort all possible values ?. Defaut to TRUE}
+ \item{"highlight"}{ : Optional. Boolean. Run highlightNearest if defined on each selected node ? Defaut to FALSE}
 }}
 
 \item{collapse}{: Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
@@ -170,6 +171,11 @@ visNetwork(nodes, edges) \%>\%
    selected = "C",
    values = c("A", "C")))
  
+# highlight also
+visNetwork(nodes, edges) \%>\% 
+ visOptions(selectedBy = list(variable = "group", 
+   highlight = TRUE), highlightNearest = TRUE) 
+     
 # add some style
 visNetwork(nodes, edges) \%>\% 
  visOptions(selectedBy = list(variable = "group", style = 'width: 200px; height: 26px;

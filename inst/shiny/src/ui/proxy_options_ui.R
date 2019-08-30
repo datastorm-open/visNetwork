@@ -12,6 +12,7 @@ shiny::tabPanel(
       checkboxInput("nodesIdSelection", "nodes Selection", FALSE),
       hr(),
       checkboxInput("selectedby", "Groups Selection", FALSE),
+      checkboxInput("selectedbyHighlight", "Groups Selection highlight", FALSE),
       sliderInput("opasel", "Opacity selection :", min = 0, max = 1, value = 0.5),
       hr(),
       checkboxInput("collapse", "Enable collapse", FALSE),
