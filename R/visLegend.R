@@ -14,10 +14,10 @@
 #'  \item{"text"}{ : Character. Title.}
 #'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'.}
 #' }
-#' @param ncol : Divide legend in multiple columns ? Defaut to 1 
-#' @param stepX : Experimental. Can use to control space between nodes. Defaut to 100
-#' @param stepY : Experimental. Can use to control space between nodes. Defaut to 100
-#' @param zoom : Boolean. Enable zoom on legend ? Defaut to TRUE
+#' @param ncol : Divide legend in multiple columns ? Default to 1 
+#' @param stepX : Experimental. Can use to control space between nodes. Default to 100
+#' @param stepY : Experimental. Can use to control space between nodes. Default to 100
+#' @param zoom : Boolean. Enable zoom on legend ? Default to TRUE
 #' 
 #' @examples
 #'
