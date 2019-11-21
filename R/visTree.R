@@ -887,14 +887,23 @@ visTreeEditor <- function(data, ...){
     
   }
   re <- unlist(re)
-  paste(paste("<br> <b>",names(re), ": </b><br>", popSpkl, "<br>",
-              re, collapse = ""))
+  paste(paste("<br> <b>",names(re), ": </b><br>", popSpkl, "<br>", re, collapse = ""))
 }
 
 
 
 
 .addSparkLineOnlyJs <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
+  getboxplotValues <- function(x){
+    if(!all(is.na(x)) && length(x) >4){
+      x_box <- boxplot.stats(x)
+      x_out_range <- ifelse(length(x_box$out)>=2, range(x_box$out),NA)
+      return(sort(c(x_box$stats, x_out_range))) 
+    } else{
+      return(NA)
+    }
+  }
+  
   if(is.null(min))min <- min(vect)
   if(is.null(max))max <- max(vect)
   drun <- sample(LETTERS, 15, replace = TRUE)
@@ -907,15 +916,27 @@ visTreeEditor <- function(data, ...){
   }else{
     tltp <- NULL
   }
-  ttr <- paste0('
+  if(type != "box"){
+    ttr <- paste0('
+         $(function() {
+                  $(".inlinesparkline', drun,'").sparkline([',paste0(vect, collapse = ",") ,'], {
+                  type: "',type , '", chartRangeMin: ', min,', chartRangeMax: ', max,'
+                  , ', tltp, '
+                  }); 
+  });
+                  ')
+  } else {
+    vect <- getboxplotValues(vect)
+    ttr <- paste0('
          $(function() {
          $(".inlinesparkline', drun,'").sparkline([',paste0(vect, collapse = ",") ,'], {
-         type: "',type , '", chartRangeMin: ', min,', chartRangeMax: ', max,'
+         type: "',type , '", raw : true, chartRangeMin: ', min,', chartRangeMax: ', max,'
          , ', tltp, '
          }); 
          });
          ')
-  
+  }
+
   paste0('<div class="inlinesparkline', drun,'" style="display: inline-block;">&nbsp;</div>',
          '<script type="text/javascript">',
          ttr,

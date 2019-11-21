@@ -1,6 +1,7 @@
 visNetwork 2.0.9
 --------------------------------------------------------------------------------
   * #335 : Enable highlightNearest degree for groups
+  * visTree : update performance compute boxplot sparkline with large data
   
 visNetwork 2.0.8
 --------------------------------------------------------------------------------
