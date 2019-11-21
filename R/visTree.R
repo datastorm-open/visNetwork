@@ -205,6 +205,10 @@ visTree <- function(object,
   stopifnot("character" %in% class(shapeY))
   
   if(!is.null(tooltipColumns)){
+    
+    if(class(tooltipColumns) %in% c("character", "factor")){
+      tooltipColumns <- which(tooltipColumns %in% colnames(data))
+    }
     stopifnot(class(tooltipColumns)[1] %in% c("numeric", "integer"))
     stopifnot(!is.null(data))
     stopifnot(max(tooltipColumns) <= ncol(data))
@@ -403,7 +407,11 @@ visTree <- function(object,
       popSpkl <- apply(dataOthr,2, function(X){
         Y <- sort(table(X))
         spl <- .addSparkLineOnlyJs(Y , type = "pie", labels = names(Y))
-        Y <- data.frame(Y)
+        if(length(Y) > 1){
+          Y <- data.frame(Y)
+        } else {
+          Y <- data.frame(X = names(Y), Freq = Y)
+        }
         Y$X <- ifelse(nchar(as.character(Y$X) ) > 9,
                       paste0(substr(Y$X, 1, 8), "..."), as.character(Y$X))
         modP <-  Y$X[length(Y$X)]
@@ -413,7 +421,7 @@ visTree <- function(object,
       namOrder <- lapply(dataOthr, function(X){
         names(sort(table(X)))
       })
-      labelComplete <-paste(labelComplete, sapply(nodesNames, function(Z){
+      labelComplete <- paste(labelComplete, sapply(nodesNames, function(Z){
         .giveLabelsFromDfChrInvisible(subsetRpart(object, dataOthr, Z),
                                       popSpkl, namOrder)} ) )
     }
@@ -874,9 +882,13 @@ visTreeEditor <- function(data, ...){
   nm <- names(df)
   re <- list()
   for(i in nm){
-    tbl <- table(df[,i])
+    tbl <- table(df[,i, drop = FALSE])
     tbl <- tbl[na.omit(match(namOrder[[i]], names(tbl)))]
-    tbl <- data.frame(tbl)
+    if(length(tbl) > 1){
+      tbl <- data.frame(tbl)
+    } else {
+      tbl <- data.frame(Var1 = names(tbl), Freq = tbl)
+    }
     newMod <- namOrder[[i]][!namOrder[[i]]%in%tbl$Var1]
     if(length(newMod) > 0){
       tbl <- rbind(tbl, data.frame(Var1 = newMod, Freq = 0))
@@ -893,6 +905,7 @@ visTreeEditor <- function(data, ...){
 
 
 
+#' @importFrom grDevices boxplot.stats
 .addSparkLineOnlyJs <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
   getboxplotValues <- function(x){
     if(!all(is.na(x)) && length(x) >4){

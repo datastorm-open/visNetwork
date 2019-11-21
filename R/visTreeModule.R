@@ -741,6 +741,22 @@ visTreeModuleServer <- function(input, output, session, data,
       choices = 1:ncol(data())
       names(choices) = names(data())
       selected = get_tooltipColumns()
+      if(class(selected) %in% c("character", "factor")){
+        selected <- which(selected %in% names(data()))
+      }
+      if(isTRUE(all.equal(selected, ""))){
+        selected <- choices
+      }
+      shiny::isolate({
+        shiny::updateSelectInput(session, inputId = "tooltipColumns", choices = choices, selected = selected)
+      })
+    } else if(!is.null(get_tooltip_data()) && "data.frame" %in% class(get_tooltip_data())){
+      choices = 1:ncol(get_tooltip_data())
+      names(choices) = names(get_tooltip_data())
+      selected = get_tooltipColumns()
+      if(class(selected) %in% c("character", "factor")){
+        selected <- which(selected %in% names(get_tooltip_data()))
+      }
       if(isTRUE(all.equal(selected, ""))){
         selected <- choices
       }
@@ -751,7 +767,7 @@ visTreeModuleServer <- function(input, output, session, data,
   })
   
   output$is_data_frame <- shiny::reactive({
-    "data.frame" %in% class(data())
+    "data.frame" %in% class(data()) || (!is.null(get_tooltip_data()) && "data.frame" %in% class(get_tooltip_data()))
   })
   
   shiny::outputOptions(output, "is_data_frame", suspendWhenHidden = FALSE)
@@ -888,6 +904,7 @@ visTreeModuleServer <- function(input, output, session, data,
             
             if("data.frame" %in% class(data())){
               data <- data()
+              
               if(is.null(input$tooltipColumns)){
                 tooltipColumns <- NULL
               } else if(length(input$tooltipColumns) == 0){
@@ -1587,9 +1604,6 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
           shiny::tabPanel("visTree options",
                           #Params graph
                           shiny::fluidRow(
-                            shiny::conditionalPanel(paste0("output['",ns("is_data_frame"),"'] === false"),
-                                                    shiny::column(2)
-                            ),
                             shiny::column(1, 
                                           shiny::uiOutput(ns("input_height"))
                             ),
@@ -1599,24 +1613,19 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                             shiny::column(1, 
                                           shiny::uiOutput(ns("input_tooltipDelay"))
                             ),
-                            shiny::conditionalPanel(paste0("output['",ns("is_data_frame"),"'] === true"),
-                                                    shiny::column(4, 
-                                                                  shiny::selectInput(ns("tooltipColumns"), "tooltipColumns :", NULL, multiple = TRUE, selected = NULL, width = "100%")
-                                                    )
-                            ),
-                            shiny::column(1,
+                            shiny::column(2,
                                           shiny::br(), shiny::uiOutput(ns("input_fallenLeaves"))
                             ),
-                            shiny::column(1,
+                            shiny::column(2,
                                           shiny::br(), 
                                           shiny::uiOutput(ns("input_updateShape"))
                             ),
-                            shiny::column(1,
+                            shiny::column(2,
                                           shiny::br(), 
                                           shiny::uiOutput(ns("input_rules"))
                             ),
                             shiny::conditionalPanel(paste0("input['",ns("rules"),"'] == true"),
-                                                    shiny::column(1,
+                                                    shiny::column(2,
                                                                   shiny::br(), 
                                                                   shiny::checkboxInput(ns("simpRules"),"Simplify rules", value = TRUE))
                             ),
@@ -1624,6 +1633,14 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                           shiny::br(), 
                                           shiny::uiOutput(ns("input_export"))
                             )
+                          ),
+                          
+                          shiny::conditionalPanel(paste0("output['",ns("is_data_frame"),"'] === true"),
+                                                  shiny::fluidRow(
+                                                    shiny::column(12, 
+                                                                  shiny::selectInput(ns("tooltipColumns"), "tooltipColumns :", NULL, multiple = TRUE, selected = NULL, width = "100%")
+                                                    )
+                                                  )
                           )
           )
         }else{shiny::div(style = "visibility: hidden")},
