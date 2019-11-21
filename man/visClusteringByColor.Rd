@@ -4,8 +4,13 @@
 \alias{visClusteringByColor}
 \title{Network visualization clustering options - by color}
 \usage{
-visClusteringByColor(graph, colors, label = "Cluster on color : ",
-  shape = "database", force = FALSE)
+visClusteringByColor(
+  graph,
+  colors,
+  label = "Cluster on color : ",
+  shape = "database",
+  force = FALSE
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

@@ -4,8 +4,7 @@
 \alias{visGetPositions}
 \title{Network visualization getPositions method}
 \usage{
-visGetPositions(graph, nodes = NULL, input = paste0(graph$id,
-  "_positions"))
+visGetPositions(graph, nodes = NULL, input = paste0(graph$id, "_positions"))
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

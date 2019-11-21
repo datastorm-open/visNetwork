@@ -6,9 +6,17 @@
 \alias{toVisNetworkData}
 \title{Render a visNetwork object from an igraph object}
 \usage{
-visIgraph(igraph, idToLabel = TRUE, layout = "layout_nicely",
-  physics = FALSE, smooth = FALSE, type = "square",
-  randomSeed = NULL, layoutMatrix = NULL, ...)
+visIgraph(
+  igraph,
+  idToLabel = TRUE,
+  layout = "layout_nicely",
+  physics = FALSE,
+  smooth = FALSE,
+  type = "square",
+  randomSeed = NULL,
+  layoutMatrix = NULL,
+  ...
+)
 
 toVisNetworkData(igraph, idToLabel = TRUE)
 }

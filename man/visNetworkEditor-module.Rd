@@ -7,8 +7,14 @@
 \title{Module shiny for visualize and customize and get back a \code{visNetwork} object.
 Using the javascript interface \link{visConfigure}.}
 \usage{
-visNetworkEditorServer(input, output, session, object,
-  filter = shiny::reactive(NULL), showButton = shiny::reactive(NULL))
+visNetworkEditorServer(
+  input,
+  output,
+  session,
+  object,
+  filter = shiny::reactive(NULL),
+  showButton = shiny::reactive(NULL)
+)
 
 visNetworkEditorUI(id, quitButton = FALSE, height = "700px")
 }

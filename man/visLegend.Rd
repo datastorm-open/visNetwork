@@ -4,9 +4,20 @@
 \alias{visLegend}
 \title{Add a legend on a visNetwork object}
 \usage{
-visLegend(graph, enabled = TRUE, useGroups = TRUE, addNodes = NULL,
-  addEdges = NULL, width = 0.2, position = "left", main = NULL,
-  ncol = 1, stepX = 100, stepY = 100, zoom = TRUE)
+visLegend(
+  graph,
+  enabled = TRUE,
+  useGroups = TRUE,
+  addNodes = NULL,
+  addEdges = NULL,
+  width = 0.2,
+  position = "left",
+  main = NULL,
+  ncol = 1,
+  stepX = 100,
+  stepY = 100,
+  zoom = TRUE
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

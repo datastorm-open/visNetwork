@@ -4,10 +4,18 @@
 \alias{visHierarchicalLayout}
 \title{Network visualization Hierarchical layout options}
 \usage{
-visHierarchicalLayout(graph, enabled = TRUE, levelSeparation = NULL,
-  nodeSpacing = NULL, treeSpacing = NULL, blockShifting = NULL,
-  edgeMinimization = NULL, parentCentralization = NULL,
-  direction = NULL, sortMethod = NULL)
+visHierarchicalLayout(
+  graph,
+  enabled = TRUE,
+  levelSeparation = NULL,
+  nodeSpacing = NULL,
+  treeSpacing = NULL,
+  blockShifting = NULL,
+  edgeMinimization = NULL,
+  parentCentralization = NULL,
+  direction = NULL,
+  sortMethod = NULL
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

@@ -4,8 +4,7 @@
 \alias{visLayout}
 \title{Network visualization layout options}
 \usage{
-visLayout(graph, randomSeed = NULL, improvedLayout = NULL,
-  hierarchical = NULL)
+visLayout(graph, randomSeed = NULL, improvedLayout = NULL, hierarchical = NULL)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

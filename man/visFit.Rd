@@ -4,8 +4,11 @@
 \alias{visFit}
 \title{Network visualization fit method}
 \usage{
-visFit(graph, nodes = NULL, animation = list(duration = 1500,
-  easingFunction = "easeInOutQuad"))
+visFit(
+  graph,
+  nodes = NULL,
+  animation = list(duration = 1500, easingFunction = "easeInOutQuad")
+)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

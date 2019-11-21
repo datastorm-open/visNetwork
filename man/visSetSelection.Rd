@@ -4,8 +4,14 @@
 \alias{visSetSelection}
 \title{Function to select edge(s) / node(s) from network, with shiny only.}
 \usage{
-visSetSelection(graph, nodesId = NULL, edgesId = NULL,
-  unselectAll = TRUE, highlightEdges = TRUE, clickEvent = TRUE)
+visSetSelection(
+  graph,
+  nodesId = NULL,
+  edgesId = NULL,
+  unselectAll = TRUE,
+  highlightEdges = TRUE,
+  clickEvent = TRUE
+)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

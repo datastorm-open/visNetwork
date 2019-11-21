@@ -6,11 +6,22 @@
 \alias{visUncollapse}
 \title{Network visualization collapse / uncollapsed method}
 \usage{
-visCollapse(graph, nodes, fit = FALSE, resetHighlight = TRUE,
-  clusterOptions = NULL, labelSuffix = "(cluster)")
+visCollapse(
+  graph,
+  nodes,
+  fit = FALSE,
+  resetHighlight = TRUE,
+  clusterOptions = NULL,
+  labelSuffix = "(cluster)"
+)
 
-visUncollapse(graph, nodes = NULL, fit = FALSE,
-  resetHighlight = TRUE, keepCoord = TRUE)
+visUncollapse(
+  graph,
+  nodes = NULL,
+  fit = FALSE,
+  resetHighlight = TRUE,
+  keepCoord = TRUE
+)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}
@@ -38,8 +49,8 @@ Network visualization collapse / uncollapsed method
 shiny::runApp(system.file("shiny", package = "visNetwork"))
 
 # You can also disable / enabled the double-click event opening cluster
-visNetworkProxy("network_id") \%>\% visEvents(type = "off", doubleClick = "networkOpenCluster")
-visNetworkProxy("network_id") \%>\% visEvents(type = "on", doubleClick = "networkOpenCluster")
+visNetworkProxy("network_id") %>% visEvents(type = "off", doubleClick = "networkOpenCluster")
+visNetworkProxy("network_id") %>% visEvents(type = "on", doubleClick = "networkOpenCluster")
 
 }
 

@@ -4,8 +4,7 @@
 \alias{visGetConnectedEdges}
 \title{Method getConnectedEdges, with shiny only.}
 \usage{
-visGetConnectedEdges(graph, id, input = paste0(graph$id,
-  "_connectedEdges"))
+visGetConnectedEdges(graph, id, input = paste0(graph$id, "_connectedEdges"))
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

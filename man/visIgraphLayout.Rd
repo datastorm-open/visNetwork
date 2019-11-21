@@ -4,9 +4,16 @@
 \alias{visIgraphLayout}
 \title{Use a igraph layout for compute coordinates & fast rendering}
 \usage{
-visIgraphLayout(graph, layout = "layout_nicely", physics = FALSE,
-  smooth = FALSE, type = "square", randomSeed = NULL,
-  layoutMatrix = NULL, ...)
+visIgraphLayout(
+  graph,
+  layout = "layout_nicely",
+  physics = FALSE,
+  smooth = FALSE,
+  type = "square",
+  randomSeed = NULL,
+  layoutMatrix = NULL,
+  ...
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
@@ -44,38 +51,38 @@ edges <- data.frame(from = sample(1:nnodes, nnedges, replace = T),
                    to = sample(1:nnodes, nnedges, replace = T))
 
 # with defaut layout
-visNetwork(nodes, edges) \%>\% 
+visNetwork(nodes, edges) %>% 
  visIgraphLayout()
 
 # use full space
-visNetwork(nodes, edges) \%>\% 
+visNetwork(nodes, edges) %>% 
  visIgraphLayout(type = "full")
 
 # in circle ?
-visNetwork(nodes, edges) \%>\% 
- visIgraphLayout(layout = "layout_in_circle") \%>\%
+visNetwork(nodes, edges) %>% 
+ visIgraphLayout(layout = "layout_in_circle") %>%
  visOptions(highlightNearest = list(enabled = T, hover = T), 
    nodesIdSelection = T)
  
 # keep physics with smooth curves ?
-visNetwork(nodes, edges) \%>\% 
+visNetwork(nodes, edges) %>% 
  visIgraphLayout(physics = TRUE, smooth = TRUE)
 
 # fix radomSeed to keep position
-visNetwork(nodes, edges) \%>\% 
+visNetwork(nodes, edges) %>% 
  visIgraphLayout(randomSeed = 123)
  
-visNetwork(nodes, edges) \%>\% 
+visNetwork(nodes, edges) %>% 
  visIgraphLayout(randomSeed = 123)
 
 # layout_with_sugiyama
 nodes <- data.frame(id = 1:5)
 edges <- data.frame(from = c(1, 2, 2, 4), to = c(2, 3, 4, 5))
 
-visNetwork(nodes, edges) \%>\%
+visNetwork(nodes, edges) %>%
  visIgraphLayout(layout = "layout_with_sugiyama", layers = c(1, 2, 3, 3, 4))
 
-visNetwork(nodes, edges) \%>\%
+visNetwork(nodes, edges) %>%
  visIgraphLayout(layout = "layout_with_sugiyama")
  
 }

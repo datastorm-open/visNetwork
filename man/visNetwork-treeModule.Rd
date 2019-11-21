@@ -6,24 +6,55 @@
 \alias{visTreeModuleUI}
 \title{Module shiny for visualize and customize a \code{rpart} tree}
 \usage{
-visTreeModuleServer(input, output, session, data, tooltip_data = NULL,
-  tooltipColumns = "", main = "", submain = "", footer = "",
-  direction = "UD", fallenLeaves = FALSE, rules = TRUE,
-  simplifyRules = TRUE, shapeVar = "dot", shapeY = "square",
-  colorVar = NULL, colorY = NULL, colorEdges = "#8181F7",
-  nodesFontSize = 16, edgesFontSize = 14,
-  edgesFontAlign = "horizontal", legend = TRUE, legendNodesSize = 22,
-  legendFontSize = 16, legendWidth = 0.1, legendNcol = 1,
-  legendPosition = "left", nodesPopSize = FALSE, minNodeSize = 15,
-  maxNodeSize = 30, highlightNearest = list(enabled = TRUE, degree =
-  list(from = 50000, to = 0), hover = FALSE, algorithm = "hierarchical"),
-  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE,
-  clusterOptions = list(fixed = TRUE, physics = FALSE)),
-  updateShape = TRUE, tooltipDelay = 500, digits = 3, height = 650,
-  width = "100\%", export = TRUE)
+visTreeModuleServer(
+  input,
+  output,
+  session,
+  data,
+  tooltip_data = NULL,
+  tooltipColumns = "",
+  main = "",
+  submain = "",
+  footer = "",
+  direction = "UD",
+  fallenLeaves = FALSE,
+  rules = TRUE,
+  simplifyRules = TRUE,
+  shapeVar = "dot",
+  shapeY = "square",
+  colorVar = NULL,
+  colorY = NULL,
+  colorEdges = "#8181F7",
+  nodesFontSize = 16,
+  edgesFontSize = 14,
+  edgesFontAlign = "horizontal",
+  legend = TRUE,
+  legendNodesSize = 22,
+  legendFontSize = 16,
+  legendWidth = 0.1,
+  legendNcol = 1,
+  legendPosition = "left",
+  nodesPopSize = FALSE,
+  minNodeSize = 15,
+  maxNodeSize = 30,
+  highlightNearest = list(enabled = TRUE, degree = list(from = 50000, to = 0), hover =
+    FALSE, algorithm = "hierarchical"),
+  collapse = list(enabled = TRUE, fit = TRUE, resetHighlight = TRUE, clusterOptions =
+    list(fixed = TRUE, physics = FALSE)),
+  updateShape = TRUE,
+  tooltipDelay = 500,
+  digits = 3,
+  height = 650,
+  width = "100\%",
+  export = TRUE
+)
 
-visTreeModuleUI(id, rpartParams = TRUE, visTreeParams = TRUE,
-  quitButton = FALSE)
+visTreeModuleUI(
+  id,
+  rpartParams = TRUE,
+  visTreeParams = TRUE,
+  quitButton = FALSE
+)
 }
 \arguments{
 \item{input}{\code{list} shiny input}

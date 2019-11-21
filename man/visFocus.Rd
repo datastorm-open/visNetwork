@@ -4,9 +4,14 @@
 \alias{visFocus}
 \title{Network visualization focus method}
 \usage{
-visFocus(graph, id, scale = 2, offset = list(x = 0, y = 0),
-  locked = TRUE, animation = list(duration = 1500, easingFunction =
-  "easeInOutQuad"))
+visFocus(
+  graph,
+  id,
+  scale = 2,
+  offset = list(x = 0, y = 0),
+  locked = TRUE,
+  animation = list(duration = 1500, easingFunction = "easeInOutQuad")
+)
 }
 \arguments{
 \item{graph}{: a \code{\link{visNetworkProxy}}  object}

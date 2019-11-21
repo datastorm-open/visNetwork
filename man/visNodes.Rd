@@ -4,14 +4,38 @@
 \alias{visNodes}
 \title{Network visualization nodes options}
 \usage{
-visNodes(graph, id = NULL, shape = NULL, size = NULL, title = NULL,
-  value = NULL, x = NULL, y = NULL, label = NULL, level = NULL,
-  group = NULL, hidden = NULL, image = NULL, mass = NULL,
-  physics = NULL, borderWidth = NULL, borderWidthSelected = NULL,
-  brokenImage = NULL, labelHighlightBold = NULL, color = NULL,
-  fixed = NULL, font = NULL, icon = NULL, shadow = NULL,
-  scaling = NULL, shapeProperties = NULL, heightConstraint = NULL,
-  widthConstraint = NULL, margin = NULL, chosen = NULL)
+visNodes(
+  graph,
+  id = NULL,
+  shape = NULL,
+  size = NULL,
+  title = NULL,
+  value = NULL,
+  x = NULL,
+  y = NULL,
+  label = NULL,
+  level = NULL,
+  group = NULL,
+  hidden = NULL,
+  image = NULL,
+  mass = NULL,
+  physics = NULL,
+  borderWidth = NULL,
+  borderWidthSelected = NULL,
+  brokenImage = NULL,
+  labelHighlightBold = NULL,
+  color = NULL,
+  fixed = NULL,
+  font = NULL,
+  icon = NULL,
+  shadow = NULL,
+  scaling = NULL,
+  shapeProperties = NULL,
+  heightConstraint = NULL,
+  widthConstraint = NULL,
+  margin = NULL,
+  chosen = NULL
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}

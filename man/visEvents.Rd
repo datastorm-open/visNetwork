@@ -4,17 +4,39 @@
 \alias{visEvents}
 \title{Network visualization events}
 \usage{
-visEvents(graph, type = "on", click = NULL, doubleClick = NULL,
-  oncontext = NULL, hold = NULL, release = NULL, select = NULL,
-  selectNode = NULL, selectEdge = NULL, deselectNode = NULL,
-  deselectEdge = NULL, dragStart = NULL, dragging = NULL,
-  dragEnd = NULL, hoverNode = NULL, blurNode = NULL,
-  hoverEdge = NULL, blurEdge = NULL, zoom = NULL, showPopup = NULL,
-  hidePopup = NULL, startStabilizing = NULL,
-  stabilizationProgress = NULL, stabilizationIterationsDone = NULL,
-  stabilized = NULL, resize = NULL, initRedraw = NULL,
-  beforeDrawing = NULL, afterDrawing = NULL,
-  animationFinished = NULL)
+visEvents(
+  graph,
+  type = "on",
+  click = NULL,
+  doubleClick = NULL,
+  oncontext = NULL,
+  hold = NULL,
+  release = NULL,
+  select = NULL,
+  selectNode = NULL,
+  selectEdge = NULL,
+  deselectNode = NULL,
+  deselectEdge = NULL,
+  dragStart = NULL,
+  dragging = NULL,
+  dragEnd = NULL,
+  hoverNode = NULL,
+  blurNode = NULL,
+  hoverEdge = NULL,
+  blurEdge = NULL,
+  zoom = NULL,
+  showPopup = NULL,
+  hidePopup = NULL,
+  startStabilizing = NULL,
+  stabilizationProgress = NULL,
+  stabilizationIterationsDone = NULL,
+  stabilized = NULL,
+  resize = NULL,
+  initRedraw = NULL,
+  beforeDrawing = NULL,
+  afterDrawing = NULL,
+  animationFinished = NULL
+)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
