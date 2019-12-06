@@ -9,7 +9,6 @@
 #' @param selfcontained	: Whether to save the HTML as a single self-contained file (with external resources base64 encoded) or a file with external resources placed in an adjacent directory.
 #' @param background : Text string giving the html background color of the widget. Defaults to white.
 #' 
-#' @inheritParams htmlwidgets::saveWidget
 #' 
 #' @examples
 #' 
