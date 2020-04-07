@@ -216,6 +216,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
                              nodesPopSize = TRUE,
                              height = "600px", width = "100%", export = TRUE, ...){
   
+
   if(!is.null(data)){
     if(length(object$order)!=nrow(data)){
       stop("object and data mush contain same number of individuals")
@@ -260,7 +261,8 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   
   dta <- toVisNetworkData(ig, idToLabel = FALSE)
   
-  dta <- lapply(dta, data.frame)
+  dta <- lapply(dta, data.frame, stringsAsFactors = FALSE)
+  dta$nodes$label <- as.character(dta$nodes$label)
   
   dta$nodes$labelComplete <- ""
   dta$nodes$neib <- I(neig)
@@ -273,9 +275,9 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     dataNum <- dataNum[,names(dataNum)%in%drawNames, drop = FALSE]
     
     if(ncol(dataNum) > 0){
-      minPop <- apply(dataNum, 2, min)
-      maxPop <- apply(dataNum, 2, max)
-      meanPop <- colMeans(dataNum)
+      minPop <- apply(dataNum, 2, min, na.rm = T)
+      maxPop <- apply(dataNum, 2, max, na.rm = T)
+      meanPop <- colMeans(dataNum, na.rm = TRUE)
       popSpkl <- apply(dataNum,2, function(X){
         .addSparkLineOnlyJs(X, type = "box")
       })
@@ -326,7 +328,14 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   
   tmp_layout <- suppressMessages(ggraph::create_layout(hcl, "dendrogram"))
   
-  dta$nodes$label <- tmp_layout$label
+  if(".ggraph.orig_index" %in% colnames(tmp_layout)){
+    tmp_layout <- tmp_layout[order(tmp_layout$.ggraph.orig_index),]
+    tmp_layout$ggraph.index <- tmp_layout$`.ggraph.orig_index`
+  }
+  if("height" %in% colnames(tmp_layout)){
+    tmp_layout$y <- tmp_layout$height
+  }
+  dta$nodes$label <- as.character(tmp_layout$label)
   dta$nodes$x <- tmp_layout$x
   dta$nodes$y <- tmp_layout$y
   dta$nodes$ggraph.index <- tmp_layout$ggraph.index
@@ -439,7 +448,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 
 .giveLabelsFromDf <- function(df, popSpkl = NULL, minPop = NULL, maxPop = NULL, meanPop = NULL){
   df <- df[!is.na(df[,1]),, drop = FALSE]
-  clM <- colMeans(df)
+  clM <- colMeans(df, na.rm = TRUE)
   if(!is.null(popSpkl)){
     nm <- names(df)
     re <- list()
@@ -481,8 +490,8 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
 
 
 .addSparkLine <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
-  if(is.null(min))min <- min(vect)
-  if(is.null(max))max <- max(vect)
+  if(is.null(min)) min <- min(vect, na.rm = T)
+  if(is.null(max)) max <- max(vect, na.rm = T)
   drun <- c(sample(LETTERS, 10, replace = TRUE), sample(1:1000, 5))
   drun <- paste0(drun, collapse = "")
   if(!is.null(labels)){
@@ -622,6 +631,11 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   
   res$nodes$label <- as.character(res$nodes$label)
   
+  res$nodes$group[res$nodes$hidden] <- "hidden"
+  res$nodes$title[res$nodes$hidden] <- NA
+  res$nodes$value[res$nodes$hidden] <- 0
+  res$nodes$hidden <- NULL
+  
   # res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE] <- gsub("^(\\n)|(\\n)$", "", 
   # gsub("", "\\\n", res$nodes$label[res$nodes$group %in% "individual" & res$nodes$hidden == FALSE]))
   if(!horizontal){
@@ -635,6 +649,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     visGroups(groupname = "group", 
               color = list(background = "#D8D8D8", border = "black", 
                            highlight = "black", hover = "black"), shape = "square") %>%
+    visGroups(groupname = "hidden", color = "rgba(200,200,200,0)", shape = "dot") %>%
     visInteraction(hover = TRUE)
   
   if(!horizontal){
