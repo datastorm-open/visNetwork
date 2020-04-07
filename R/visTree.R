@@ -427,7 +427,7 @@ visTree <- function(object,
     }
     
     labelComplete <- paste0('<hr class = "rPartvisNetwork">
-        <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details</U></div>
+        <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Details</U></div>
                             <div class="showMeRpartTTp" style="display:none;margin-top: -15px">
                             ',labelComplete,
                             '</script>',
@@ -479,7 +479,7 @@ visTree <- function(object,
       
     finalHtmlRules <-  paste0(
 '<hr class = "rPartvisNetwork">
-<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Rules</U></div>
+<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Rules</U></div>
 <div class="showMeRpartTTp2" style="display:none;">
 ',tooltipRules,
 '</script>',

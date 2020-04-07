@@ -1,6 +1,6 @@
-.classActivePointer:hover {
+/*.classActivePointer:hover {
     cursor: pointer;
-}
+}*/
 
 /*.rPartvisNetworkTooltipShowme{ 
 display: none;
@@ -9,9 +9,9 @@ display: none;
 display : block;
 }*/
 
-.rPartvisNetwork{
+/*.rPartvisNetwork{
   margin: 0.5em auto; 
-}
+}*/
 
 .vis .overlay {
   position: absolute;

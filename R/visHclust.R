@@ -416,7 +416,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
   if(!is.null(drawNames)){
     titleDetails <-  paste0(
       '<hr class = "rPartvisNetwork">
-        <div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details : </U></div>
+        <div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Details : </U></div>
         <div class="showMeRpartTTp2" style="display:none;margin-top: -15px">
         ', dta$nodes$labelComplete,
       '</script>',
