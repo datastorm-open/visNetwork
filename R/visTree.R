@@ -388,9 +388,9 @@ visTree <- function(object,
     dataNum <- data[,classDtaIn, drop = FALSE]
     
     if(ncol(dataNum) > 0){
-      minPop <- apply(dataNum, 2, min)
-      maxPop <- apply(dataNum, 2, max)
-      meanPop <- colMeans(dataNum)
+      minPop <- apply(dataNum, 2, min, na.rm = TRUE)
+      maxPop <- apply(dataNum, 2, max, na.rm = TRUE)
+      meanPop <- colMeans(dataNum, na.rm = TRUE)
       popSpkl <- apply(dataNum,2, function(X){
         .addSparkLineOnlyJs(X, type = "box")
       })
@@ -427,7 +427,7 @@ visTree <- function(object,
     }
     
     labelComplete <- paste0('<hr class = "rPartvisNetwork">
-        <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Details</U></div>
+        <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Details</U></div>
                             <div class="showMeRpartTTp" style="display:none;margin-top: -15px">
                             ',labelComplete,
                             '</script>',
@@ -479,7 +479,7 @@ visTree <- function(object,
       
     finalHtmlRules <-  paste0(
 '<hr class = "rPartvisNetwork">
-<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;" class = "classActivePointer">Rules</U></div>
+<div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Rules</U></div>
 <div class="showMeRpartTTp2" style="display:none;">
 ',tooltipRules,
 '</script>',
@@ -860,8 +860,8 @@ visTreeEditor <- function(data, ...){
 
 
 .giveLabelsFromDfWhichInvisible <- function(df, popSpkl = NULL, minPop = NULL, maxPop = NULL, meanPop = NULL){
-  df <- df[!is.na(df[,1]),, drop = FALSE]
-  clM <- colMeans(df)
+  # df <- df[!is.na(df[,1]),, drop = FALSE]
+  clM <- colMeans(df, na.rm = TRUE)
   if(!is.null(popSpkl)){
     nm <- names(df)
     re <- list()
@@ -908,7 +908,8 @@ visTreeEditor <- function(data, ...){
 #' @importFrom grDevices boxplot.stats
 .addSparkLineOnlyJs <- function(vect, min = NULL, max = NULL, type = "line", labels = NULL){
   getboxplotValues <- function(x){
-    if(!all(is.na(x)) && length(x) >4){
+    x <- x[!is.na(x)]
+    if(length(x) >= 1){
       x_box <- boxplot.stats(x)
       x_out_range <- ifelse(length(x_box$out)>=2, range(x_box$out),NA)
       return(sort(c(x_box$stats, x_out_range))) 
@@ -917,8 +918,8 @@ visTreeEditor <- function(data, ...){
     }
   }
   
-  if(is.null(min))min <- min(vect)
-  if(is.null(max))max <- max(vect)
+  if(is.null(min)) min <- min(vect, na.rm = TRUE)
+  if(is.null(max)) max <- max(vect, na.rm = TRUE)
   drun <- sample(LETTERS, 15, replace = TRUE)
   drun <- paste0(drun, collapse = "")
   if(!is.null(labels)){
@@ -940,7 +941,8 @@ visTreeEditor <- function(data, ...){
                   ')
   } else {
     vect <- getboxplotValues(vect)
-    ttr <- paste0('
+    if(!isTRUE(all.equal(NA, vect))){
+      ttr <- paste0('
          $(function() {
          $(".inlinesparkline', drun,'").sparkline([',paste0(vect, collapse = ",") ,'], {
          type: "',type , '", raw : true, chartRangeMin: ', min,', chartRangeMax: ', max,'
@@ -948,6 +950,10 @@ visTreeEditor <- function(data, ...){
          }); 
          });
          ')
+    } else {
+      ttr <- ""
+    }
+
   }
 
   paste0('<div class="inlinesparkline', drun,'" style="display: inline-block;">&nbsp;</div>',

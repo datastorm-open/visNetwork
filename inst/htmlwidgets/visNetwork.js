@@ -1505,9 +1505,8 @@ if (HTMLWidgets.shinyMode){
       // get container id
       var el = document.getElementById("graph"+data.id);
       if(el){
-        var current_edges = el.edges.getDataSet();
         // return data in shiny
-        Shiny.onInputChange(data.input, current_edges._data);
+        Shiny.onInputChange(data.input, el.edges.get({returnType:"Object"}));
       }
   });
   
@@ -1519,9 +1518,8 @@ if (HTMLWidgets.shinyMode){
         if(data.addCoordinates){
           el.chart.storePositions();
         }
-        var current_nodes = el.nodes.getDataSet();
         // return data in shiny
-        Shiny.onInputChange(data.input, current_nodes._data);
+        Shiny.onInputChange(data.input, el.nodes.get({returnType:"Object"}));
       }
   });
   
