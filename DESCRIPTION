@@ -3,7 +3,7 @@ Title: Network Visualization using 'vis.js' Library
 Version: 2.1.0
 Authors@R: c(
     person(family = "Almende B.V. and Contributors", role = c("aut", "cph"),
-       comment = "vis.js library in htmlwidgets/lib, https://github.com/visjs/vis-network"),
+       comment = "vis.js library in htmlwidgets/lib, https://visjs.org/, https://github.com/visjs/vis-network"),
     person("Benoit", "Thieurmel", role = c("aut", "cre"),
        comment = "R interface", email = "benoit.thieurmel@datastorm.fr"),
     person(given = "Titouan", family = "Robert", 
