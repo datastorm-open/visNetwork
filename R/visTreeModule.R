@@ -741,14 +741,15 @@ visTreeModuleServer <- function(input, output, session, data,
       choices = 1:ncol(data())
       names(choices) = names(data())
       selected = get_tooltipColumns()
-      if(class(selected) %in% c("character", "factor")){
-        selected <- which(selected %in% names(data()))
-      }
       if(isTRUE(all.equal(selected, ""))){
         selected <- choices
+      }else if(class(selected) %in% c("character", "factor")){
+        selected <- which(selected %in% names(data()))
       }
       shiny::isolate({
-        shiny::updateSelectInput(session, inputId = "tooltipColumns", choices = choices, selected = selected)
+        shiny::updateSelectInput(session, inputId = "tooltipColumns", 
+                                 choices = choices, 
+                                 selected = selected)
       })
     } else if(!is.null(get_tooltip_data()) && "data.frame" %in% class(get_tooltip_data())){
       choices = 1:ncol(get_tooltip_data())
@@ -780,7 +781,12 @@ visTreeModuleServer <- function(input, output, session, data,
     } else {
       if(input$runTree > 0){
         shiny::isolate({
-          formule <- paste(input$y, "~", paste0(input$x, collapse = "+")) %>% as.formula()
+          if(length(input$x) > 0){
+            x_frm <- paste0("`", paste0(input$x, collapse = "` + `"), "`")
+          } else {
+            x_frm <- " . "
+          }
+          formule <- paste0("`", input$y, "` ~ ", x_frm) %>% as.formula()
           rpart::rpart(formule, data = data(), 
                        control = rpart::rpart.control(cp = input$complexity, minsplit = input$minsplit))
         })
