@@ -10,11 +10,12 @@
     <title>vis.js - Network documentation.</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Tipue vendor css -->
-    <link href="../css/tipuesearch.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Tipue-Search/5.0.0/tipuesearch.css" rel="stylesheet">
 
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="../../common-docs-files/css/style.css" rel="stylesheet">
+    <link href="../css/overrides.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,11 +24,10 @@
     <![endif]-->
 
 
-    <link href="../css/prettify.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="../js/googleAnalytics.js"></script>
-    <script type="text/javascript" src="../js/prettify/prettify.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 
-    <script src="../js/smooth-scroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/12.1.5/js/smooth-scroll.min.js"></script>
     <script language="JavaScript">
         smoothScroll.init();
     </script>
@@ -67,13 +67,13 @@
         }
     </script>
 
-    <script type="text/javascript" src="../js/toggleTable.js"></script>
+    <script type="text/javascript" src="../../common-docs-files/js/toggleTable.js"></script>
 </head>
 <body onload="prettyPrint();">
 
 <div class="navbar-wrapper">
     <div class="container">
-        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <nav class="navbar-inverse navbar-static-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -87,13 +87,6 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="http://www.visjs.org/index.html#modules">Modules</a></li>
-                        <li><a href="http://www.visjs.org/blog.html">Blog</a></li>
-                        <li><a href="http://www.visjs.org/index.html#download_install">Download</a></li>
-                        <li><a href="http://www.visjs.org/showcase/index.html">Showcase</a></li>
-                        <li><a href="http://www.visjs.org/index.html#contribute">Contribute</a></li>
-                        <li><a href="http://www.visjs.org/featureRequests.html">Feature requests</a></li>
-                        <li><a href="http://www.visjs.org/index.html#licenses">License</a></li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <input name="q" id="tipue_search_input" autocomplete="off" type="text" class="form-control" placeholder="Enter keywords">
@@ -115,12 +108,6 @@
     </div>
 </div>
 
-<a href="https://github.com/almende/vis" class="hidden-xs hidden-sm hidden-md"><img
-        style="position: absolute; top: 0; right: 0; border: 0;"
-        src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
-        alt="Fork me on GitHub"
-        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-
 <div class="container full">
     <h1>Network</h1>
 
@@ -139,8 +126,14 @@
     <h3>Creating a Network</h3>
 
     <p>
-        Creating a vis network is easy. <a href="http://visjs.org/#download_install" target="_blank">It requires you to
-        include the vis.js and css files which you can get here</a>. If you have these
+        Creating a Vis Network is easy. It requires you to include the
+        vis-network.js and vis-network.css files which you can download from
+        <a href="https://visjs.org/#download_install" target="_blank">visjs.org</a>,
+        link them from
+        <a href="https://unpkg.com/vis-network/" target="_blank">unpkg.com</a>
+        or require/import from
+        <a href="https://www.npmjs.com/package/vis-network" target="_blank">npm package</a>.
+        If you have these
         added to your application, you will need to specify your nodes and edges. You can use DOT language or export
         nodes and edges from Gephi if you'd like but we will do it without these for now.
         For more information on this click the tabs below. You can also use the vis.DataSets for dynamic data binding,
@@ -150,11 +143,63 @@
         can use an options object to customize many aspects of the network. In code this
         looks like this:</p>
 
+    <p>
+      There are three ways how to import Vis Network:
+      <ul>
+        <li>
+          Standalone build:
+          <ul>
+            <li>simple to use (link/require/import a single file),</li>
+            <li>CSS included and automatically injected into the page,</li>
+            <li>JavaScript dependencies bundled,</li>
+            <li>doesn't work with other Vis family packages,</li>
+            <li>
+              <a href="../../examples/network/basic_usage/standalone.html" target="_blank">example usage</a>,
+            </li>
+            <li>
+              <a href="https://unpkg.com/vis-network/standalone/" target="_blank">linkable files on unpkg</a>.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Peer build:
+          <ul>
+            <li>in case of UMD Vis Data and Vis Util have to be loaded manually,</li>
+            <li>in case of ESM DataSets, DataViews etc. have to be loaded from Vis Data,</li>
+            <li>CSS has to be included separately,</li>
+            <li>works with other Vis family packages,</li>
+            <li>
+              <a href="../../examples/network/basic_usage/peer.html" target="_blank">example usage</a>,
+            </li>
+            <li>
+              <a href="https://unpkg.com/vis-network/peer/" target="_blank">linkable files on unpkg</a>.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Legacy build:
+          <ul>
+            <li>kept only for backward compatibility, please <strong>don't</strong> use,</li>
+            <li>contains Moment which is not used by Vis Network (aka bloatware),</li>
+            <li>CSS has to be included sepparately,</li>
+            <li>JavaScript dependencies bundled,</li>
+            <li>doesn't play well with tree shaking,</li>
+            <li>doesn't work with other Vis family packages,</li>
+            <li>
+              <a href="../../examples/network/basic_usage/legacy.html" target="_blank">example usage</a>,
+            </li>
+            <li>
+              <a href="https://unpkg.com/vis-network/dist/" target="_blank">linkable files on unpkg</a>.
+            </li>
+          </ul>
+        </li>
+    </p>
+
+    <h4>Simplest example (using standalone build)</h4>
         <pre class="prettyprint lang-html options">
 &lt;html&gt;
 &lt;head&gt;
-    &lt;script type="text/javascript" src="../../dist/vis.js"&gt;&lt;/script&gt;
-    &lt;link href="../../dist/vis.css" rel="stylesheet" type="text/css" /&gt;
+    &lt;script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"&gt;&lt;/script&gt;
 
     &lt;style type="text/css"&gt;
         #mynetwork {
@@ -201,7 +246,7 @@
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-    <p><a href="http://visjs.org/examples/network/basicUsage.html" target="_blank">The result of the code above will be the basic example which is shown here.</a></p>
+    <p><a href="../../examples/network/basicUsage.html" target="_blank">The result of the code above will be the basic example which is shown here.</a></p>
 
     <br>
     </div>
@@ -635,7 +680,7 @@ var locales = {
             </tr>
             <tr class="hidden" parent="getClusteredEdges">
                 <td class="midMethods">Returns: Array</td>
-                <td>Similiar to <code>findNode</code> in that it returns all the edge ids that were created from the provided edge during clustering
+                <td>Similar to <code>findNode</code> in that it returns all the edge ids that were created from the provided edge during clustering
                 </td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','getBaseEdge', this);">
@@ -645,7 +690,20 @@ var locales = {
             <tr class="hidden" parent="getBaseEdge">
                 <td class="midMethods">Returns: Value</td>
                 <td>When a clusteredEdgeId is available, this method will return the original baseEdgeId provided in <code>data.edges</code><br/>
-                    ie. After clustering the 'SelectEdge' event is fired but provides only the clustered edge. This method can then be used to return the baseEdgeId.
+                    ie. After clustering the 'SelectEdge' event is fired but provides only the clustered edge. This method can then be used to return the baseEdgeId.<br><br>
+                    <b>This method is deprecated. Please use <code>getBaseEdges()</code> instead.</b>
+                </td>
+            </tr>
+            <tr class="collapsible toggle" onclick="toggleTable('methodTable','getBaseEdges', this);">
+                <td colspan="2"><span parent="getBaseEdges" class="right-caret" id="method_getBaseEdges"></span>
+                  getBaseEdges(<code>String clusteredEdgeId</code>)
+                </td>
+            </tr>
+            <tr class="hidden" parent="getBaseEdges">
+                <td class="midMethods">Returns: Array</td>
+                <td>For the given <code>clusteredEdgeId</code>, this method will return all the original base edge id's provided in <code>data.edges</code>.
+                    For a non-clustered (i.e. 'base') edge, <code>clusteredEdgeId</code> is returned.<br/><br/>
+                    Only the base edge id's are returned. All clustered edges id's under <code>clusteredEdgeId</code> are skipped, but scanned recursively to return their base id's.<br/>
                 </td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','updateEdge', this);">
@@ -656,7 +714,7 @@ var locales = {
                 <td class="midMethods">Returns: none</td>
                 <td>Visible edges between clustered nodes are not the same edge as the ones provided in <code>data.edges</code> passed on <code>network</code> creation<br/>
                     With each layer of clustering, copies of the edges between clusters are created and the previous edges are hidden, until the cluster is opened.<br/>
-                    This method takes an edgeId (ie. a base edgeId from <data>data.edges</code>) and applys the options to it and any edges that were created from it while clustering.<br><br> Example:
+                    This method takes an edgeId (ie. a base edgeId from <data>data.edges</code>) and applies the options to it and any edges that were created from it while clustering.<br><br> Example:
                     <code>network.clustering.updateEdge(originalEdge.id, {color : '#aa0000'});</code><br/>
                     This would turn the base edge and any subsequent edges red, so when opening clusters the edges will all be the same color.
                 </td>
@@ -739,14 +797,14 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="enableEditMode">
                 <td class="midMethods">Returns: none</td>
-                <td>Programatically enable the edit mode. Similar effect to pressing the edit button.</td>
+                <td>Programmatically enable the edit mode. Similar effect to pressing the edit button.</td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','disableEditMode', this);">
                 <td colspan="2"><span parent="disableEditMode" class="right-caret" id="method_disableEditMode"></span> disableEditMode()</td>
             </tr>
             <tr class="hidden" parent="disableEditMode">
                 <td class="midMethods">Returns: none</td>
-                <td>Programatically disable the edit mode. Similar effect to pressing the close icon (small cross in the
+                <td>Programmatically disable the edit mode. Similar effect to pressing the close icon (small cross in the
                     corner of the toolbar).
                 </td>
             </tr>
@@ -767,21 +825,21 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="editNode">
                 <td class="midMethods">Returns: none</td>
-                <td>Edit the selected node. The explaination from <code>addNodeMode</code> applies here as well.</td>
+                <td>Edit the selected node. The explanation from <code>addNodeMode</code> applies here as well.</td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','addEdgeMode', this);">
                 <td colspan="2"><span parent="addEdgeMode" class="right-caret" id="method_addEdgeMode"></span> addEdgeMode()</td>
             </tr>
             <tr class="hidden" parent="addEdgeMode">
                 <td class="midMethods">Returns: none</td>
-                <td>Go into addEdge mode. The explaination from <code>addNodeMode</code> applies here as well.</td>
+                <td>Go into addEdge mode. The explanation from <code>addNodeMode</code> applies here as well.</td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','editEdgeMode', this);">
                 <td colspan="2"><span parent="editEdgeMode" class="right-caret" id="method_editEdgeMode"></span> editEdgeMode()</td>
             </tr>
             <tr class="hidden" parent="editEdgeMode">
                 <td class="midMethods">Returns: none</td>
-                <td>Go into editEdge mode. The explaination from <code>addNodeMode</code> applies here as well.</td>
+                <td>Go into editEdge mode. The explanation from <code>addNodeMode</code> applies here as well.</td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','deleteSelected', this);">
                 <td colspan="2"><span parent="deleteSelected" class="right-caret" id="method_deleteSelected"></span> deleteSelected()</td>
@@ -826,7 +884,7 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
                     positions of all nodes into that dataset. If you're loading your nodes from a database and have
                     this dynamically coupled with
                     the DataSet, you can
-                    use this to stablize your network once, then save the positions in that database through the DataSet
+                    use this to stabilize your network once, then save the positions in that database through the DataSet
                     so
                     the next
                     time you load the nodes, stabilization will be near instantaneous.
@@ -847,7 +905,7 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="moveNode">
                 <td class="midMethods">Returns: none</td>
-                <td>You can use this to programatically move a node. <i>The supplied x and y positions have to be in canvas space!</i>
+                <td>You can use this to programmatically move a node. <i>The supplied x and y positions have to be in canvas space!</i>
                 </td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','getBoundingBox', this);">
@@ -979,9 +1037,9 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="getEdgeAt">
                 <td class="midMethods">Returns: String</td>
-                <td>Returns a edgeId or undefined. The DOM positions are expected to be in pixels from the top left
+                <td>Returns an edgeId or undefined. The DOM positions are expected to be in pixels from the top left
                     corner
-                    of the canvas..
+                    of the canvas.
                 </td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','selectNodes', this);">
@@ -1050,7 +1108,7 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="getScale">
                 <td class="midMethods">Returns: Number</td>
-                <td>Returns the current scale of the network. 1.0 is comparible to 100%, 0 is zoomed out infinitely.
+                <td>Returns the current scale of the network. 1.0 is comparable to 100%, 0 is zoomed out infinitely.
                 </td>
             </tr>
             <tr class="collapsible toggle" onclick="toggleTable('methodTable','clusterByHubsize', this);">
@@ -1152,7 +1210,7 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
             </tr>
             <tr class="hidden" parent="releaseNode">
                 <td class="midMethods">Returns: none</td>
-                <td>Programatically release the focussed node.</td>
+                <td>Programmatically release the focussed node.</td>
             </tr>
             <tr id="methodConfigurator" class="subHeader">
                 <td colspan="2">Methods to use with the configurator module.</td>
@@ -1180,9 +1238,11 @@ function releaseFunction (clusterPosition, containedNodesPositions) {
                 <th>Type</th>
                 <th>Description</th>
             </tr>
-            <tr><td>joinCondition(<br>&nbsp;&nbsp;<code>nodeOptions:&nbsp;Object</code><br>)</td>
+            <tr><td>joinCondition(<br>&nbsp;&nbsp;<code>nodeOptions:&nbsp;Object</code><br>)<br>or<br>joinCondition(<br>&nbsp;&nbsp;<code>parentNodeOptions:&nbsp;Object,</code><br>&nbsp;&nbsp;<code>childNodeOptions:&nbsp;Object</code><br>)</td>
                 <td>Function</td>
-                <td><i>Optional for all but the cluster method. </i> The cluster module loops over all nodes that are
+                <td><i>Optional for all but the cluster method. </i> <br>
+                    <code>clusterByConnection</code> is the only function that will pass 2 nodeOptions objects as arguments to the joinCondition callback.<br>
+                    The cluster module loops over all nodes that are
                     selected to be in the cluster and calls this function with their data as argument.
                     If this function returns true, this node will be added to the cluster. You have access to all
                     options
@@ -1206,6 +1266,7 @@ var options = {
 
 network.clustering.cluster(options);
 </pre>
+                    <code>clusterByConnection</code><b> will pass 2 nodeOptions objects as arguments to the joinCondition callback.</b>
                 </td>
             </tr>
             <tr><td>processProperties(<br>&nbsp;&nbsp;<code>clusterOptions:&nbsp;Object</code>,<br>
@@ -1297,7 +1358,7 @@ var options = {
                 </td>
                 <td>Fired when the user clicks the mouse or taps on a touchscreen device. Passes an object with properties structured as:
 
-                <pre class="prettyprint lang-js">{
+<pre class="prettyprint lang-js">{
   nodes: [Array of selected nodeIds],
   edges: [Array of selected edgeIds],
   event: [Object] original click event,
@@ -1307,6 +1368,24 @@ var options = {
   }
 }
 </pre>
+
+This is the structure common to all events. Specifically for the click event, the following property is added:
+
+<pre class="prettyprint lang-js">{
+...
+  items: [Array of click items],
+}</pre>
+
+Where the click items can be:
+<pre class="prettyprint lang-js">
+  {nodeId:NodeId}            // node with given id clicked on
+  {nodeId:NodeId labelId:0}  // label of node with given id clicked on
+  {edgeId:EdgeId}            // edge with given id clicked on
+  {edge:EdgeId, labelId:0}   // label of edge with given id clicked on
+</pre>
+
+The order of the <code>items</code> array is descending in z-order.
+Thus, to get the topmost item, get the value at index 0.
                 </td>
             </tr>
             <tr><td id="event_doubleClick">doubleClick</td>
@@ -1352,7 +1431,7 @@ var options = {
             </tr>
             <tr><td id="event_selectEdge">selectEdge</td>
                 <td>same as <code>click</code>.</td>
-                <td>Fired when a edge has been selected by the user.</td>
+                <td>Fired when an edge has been selected by the user.</td>
             </tr>
             <tr><td id="event_deselectNode">deselectNode</td>
                 <td>Object
@@ -1377,7 +1456,7 @@ var options = {
             </tr>
             <tr><td id="event_deselectEdge">deselectEdge</td>
                 <td>same as <code>deselectNode</code>.</td>
-                <td>Fired when a edge (or edges) has (or have) been deselected by the user. The previous selection is
+                <td>Fired when an edge (or edges) has (or have) been deselected by the user. The previous selection is
                     the
                     list of nodes and edges that were selected before the last user event.
                 </td>
@@ -1393,6 +1472,27 @@ var options = {
             <tr><td id="event_dragEnd">dragEnd</td>
                 <td>same as <code>click</code>.</td>
                 <td>Fired when the drag has finished.</td>
+            </tr>
+            <tr><td id="event_controlNodeDragging">controlNodeDragging</td>
+                <td>Object</td>
+                <td>Fired when dragging control node. Control Edge is edge that is being dragged and contains ids of 'from' and 'to' nodes. If control node is not dragged over another node, 'to' field is undefined. Passes an object with properties structured as:
+
+<pre class="prettyprint lang-js">{
+    nodes: [Array of selected nodeIds],
+    edges: [Array of selected edgeIds],
+    event: [Object] original click event,
+    pointer: {
+        DOM: {x:pointer_x, y:pointer_y},
+        canvas: {x:canvas_x, y:canvas_y}
+    },    
+    controlEdge: {from:from_node_id, to:to_node_id}
+}
+</pre>
+                </td>
+            </tr>
+            <tr><td id="event_controlNodeDragEnd">controlNodeDragEnd</td>
+                <td>same as <code>controlNodeDragging</code>.</td>
+                <td>Fired when the control node drag has finished.</td>
             </tr>
             <tr><td id="event_hoverNode">hoverNode</td>
                 <td><code>{node: nodeId}</code></td>
@@ -1435,7 +1535,7 @@ var options = {
                 <td>none</td>
                 <td>Fired when stabilization starts. This is also the case when you drag a node and the physics
                     simulation
-                    restarts to stabilize again. Stabilization does not neccesarily imply 'without showing'.
+                    restarts to stabilize again. Stabilization does not necessarily imply 'without showing'.
                 </td>
             <tr><td id="event_stabilizationProgress">stabilizationProgress</td>
                 <td>Object</td>
@@ -1530,7 +1630,7 @@ var options = {
 
         <p>
             Network can import data straight from an exported json file from gephi. You can get the JSON exporter here:
-            <a href="https://marketplace.gephi.org/plugin/json-exporter/" target="_blank">https://marketplace.gephi.org/plugin/json-exporter/</a>.
+            <a href="https://gephi.org/plugins/#/plugin/jsonexporter-plugin" target="_blank">https://gephi.org/plugins/#/plugin/jsonexporter-plugin</a>.
             An example exists showing how to get a JSON file into Vis:
         </p>
 
@@ -1540,7 +1640,7 @@ var options = {
 
 <pre class="prettyprint lang-js">
 // load the JSON file containing the Gephi network.
-var gephiJSON = loadJSON("./datasources/WorldCup2014.json"); // code in <a href="http://visjs.org/examples/network/data/importingFromGephi.html">importing_from_gephi</a>.
+var gephiJSON = loadJSON("./datasources/WorldCup2014.json"); // code in <a href="../../examples/network/data/importingFromGephi.html">importing_from_gephi</a>.
 
 // you can customize the result like with these options. These are explained below.
 // These are the default options.
@@ -1556,7 +1656,7 @@ var parserOptions = {
 
 // parse the gephi file to receive an object
 // containing nodes and edges in vis format.
-var parsed = vis.network.convertGephi(gephiJSON, parserOptions);
+var parsed = vis.parseGephiNetwork(gephiJSON, parserOptions);
 
 // provide data in the normal fashion
 var data = {
@@ -1591,7 +1691,7 @@ var network = new vis.Network(container, data);
                 <td>Boolean</td>
                 <td><code>false</code></td>
                 <td>If true, the color will be parsed by the vis parser, generating extra colors for the borders,
-                    highlighs and hover. If false, the node will be the supplied color.
+                    highlights and hover. If false, the node will be the supplied color.
                 </td>
             </tr>
             <tr><td>edges.inheritColor</td>
@@ -1609,10 +1709,11 @@ var network = new vis.Network(container, data);
         <p>
             Network supports data in the
             <a href="http://en.wikipedia.org/wiki/DOT_language" target="_blank">DOT language</a>.
-            To use data in the DOT language, you can use the vis.network.convertDot converter to transform the DOT
-            language
-            into a vis.Network compatible nodes, edges and options objects. You can extend the options object with other
-            options if you'd like.
+            To use data in the DOT language, you can use the
+            vis.parseDOTNetwork converter function to transform the DOT
+            language string into a Vis Network compatible nodes, edges and
+            options. You can alter or extend the returned nodes, edges and
+            options if you like.
         </p>
 
         <p>
@@ -1622,7 +1723,7 @@ var network = new vis.Network(container, data);
 <pre class="prettyprint lang-js">
 // provide data in the DOT language
 var DOTstring = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }';
-var parsedData = vis.network.convertDot(DOTstring);
+var parsedData = vis.parseDOTNetwork(DOTstring);
 
 var data = {
   nodes: parsedData.nodes,
@@ -1642,20 +1743,24 @@ var network = new vis.Network(container, data, options);
     </div>
 
 
+    <div class="flagbar">
+      <a href="../../docs/network/index.html"><span class="flag en"></span></a>
+      <a href="../../docs-kr/network/index.html"><span class="flag kr"></span></a>
+    </div>
 </div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../js/ie10-viewport-bug-workaround.js"></script>
+<script src="../../common-docs-files/js/ie10-viewport-bug-workaround.js"></script>
 <!-- jquery extensions -->
-<script src="../js/jquery.highlight.js"></script>
-<script src="../js/jquery.url.min.js"></script>
+<script src="../../common-docs-files/js/jquery.highlight.js"></script>
+<script src="../../common-docs-files/js/jquery.url.min.js"></script>
 <!-- Tipue vendor js -->
-<script src="../js/tipuesearch.config.js"></script>
-<script src="../js/tipuesearch.js"></script>
+<script src="../../common-docs-files/js/tipuesearch.config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Tipue-Search/5.0.0/tipuesearch.min.js"></script>
 <!-- controller -->
-<script src="../js/main.js"></script>
+<script src="../../common-docs-files/js/main.js"></script>

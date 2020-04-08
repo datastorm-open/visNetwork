@@ -10,11 +10,12 @@
     <title>vis.js - Nodes documentation.</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Tipue vendor css -->
-    <link href="../css/tipuesearch.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Tipue-Search/5.0.0/tipuesearch.css" rel="stylesheet">
 
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="../../common-docs-files/css/style.css" rel="stylesheet">
+    <link href="../css/overrides.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,22 +24,21 @@
     <![endif]-->
 
 
-    <link href="../css/prettify.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="../js/googleAnalytics.js"></script>
-    <script type="text/javascript" src="../js/prettify/prettify.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 
-    <script src="../js/smooth-scroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/12.1.5/js/smooth-scroll.min.js"></script>
     <script language="JavaScript">
         smoothScroll.init();
     </script>
 
-    <script type="text/javascript" src="../js/toggleTable.js"></script>
+    <script type="text/javascript" src="../../common-docs-files/js/toggleTable.js"></script>
 </head>
 <body onload="prettyPrint();">
 
 <div class="navbar-wrapper">
     <div class="container">
-        <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <nav class="navbar-inverse navbar-static-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -52,13 +52,6 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="http://www.visjs.org/index.html#modules">Modules</a></li>
-                        <li><a href="http://www.visjs.org/blog.html">Blog</a></li>
-                        <li><a href="http://www.visjs.org/index.html#download_install">Download</a></li>
-                        <li><a href="http://www.visjs.org/showcase/index.html">Showcase</a></li>
-                        <li><a href="http://www.visjs.org/index.html#contribute">Contribute</a></li>
-                        <li><a href="http://www.visjs.org/featureRequests.html">Feature requests</a></li>
-                        <li><a href="http://www.visjs.org/index.html#licenses">License</a></li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <input name="q" id="tipue_search_input" autocomplete="off" type="text" class="form-control" placeholder="Enter keywords">
@@ -79,12 +72,6 @@
         </nav>
     </div>
 </div>
-
-<a href="https://github.com/almende/vis" class="hidden-xs hidden-sm hidden-md"><img
-        style="position: absolute; top: 0; right: 0; border: 0;"
-        src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
-        alt="Fork me on GitHub"
-        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
 <div class="container full">
     <h1>Network - nodes</h1>
@@ -123,6 +110,7 @@ var options = {
         background: '#D2E5FF'
       }
     },
+    opacity: 1,
     fixed: {
       x:false,
       y:false
@@ -172,10 +160,17 @@ var options = {
     icon: {
       face: 'FontAwesome',
       code: undefined,
+      weight: undefined,
       size: 50,  //50,
       color:'#2B7CE9'
     },
     image: undefined,
+    imagePadding: {
+      left: 0,
+      top: 0,
+      bottom: 0,
+      right: 0
+    },
     label: undefined,
     labelHighlightBold: true,
     level: undefined,
@@ -277,7 +272,7 @@ network.setOptions(options);
             <td>Object or Boolean</td>
             <td><code>true</code></td>
             <td>
-              When true, selecting or hovering on a node will change it and its label's characteristics according the default.
+              When true, selecting or hovering on a node will change it and its label's characteristics according to the default.
               When false, no change to the node or its label will occur when the node is chosen.
               If an object is supplied, finer-grained adjustment of node and label characteristics is available when a node is chosen.
             </td>
@@ -287,7 +282,7 @@ network.setOptions(options);
             <td>Function or Boolean</td>
             <td>undefined</td>
             <td>
-              When true, selecting or hovering on a node will change its characteristics according the default.
+              When true, selecting or hovering on a node will change its characteristics according to the default.
               When false, no change to the node will occur when the node is chosen.
               <p>
                 If a function is supplied, it is called when the node is chosen.
@@ -326,7 +321,7 @@ network.setOptions(options);
             <td>Function or Boolean</td>
             <td>undefined</td>
             <td>
-              When true, selecting or hovering on a node will change its label's characteristics according the default.
+              When true, selecting or hovering on a node will change its label's characteristics according to the default.
               When false, no change to the node's label will occur when the node is chosen.
               <p>
                 If a function is supplied, it is called when the node is chosen.
@@ -385,7 +380,7 @@ network.setOptions(options);
             <td class="indent">color.highlight</td>
             <td>Object or String</td>
             <td><code>Object</code></td>
-            <td>The color the node when it is selected. Alternatively you can just supply a string color value.</td>
+            <td>The color of the node when it is selected. Alternatively, you can just supply a string color value.</td>
         </tr>
         <tr parent="color" class="hidden">
             <td class="indent2">color.highlight.border</td>
@@ -403,7 +398,7 @@ network.setOptions(options);
             <td class="indent">color.hover</td>
             <td>Object or String</td>
             <td><code>Object</code></td>
-            <td>The color the node when the mouse hovers over it <i>(assuming hover is enabled in the interaction
+            <td>The color of the node when the mouse hovers over it <i>(assuming hover is enabled in the interaction
                 module)</i>. Shorthand like above is also supported.
             </td>
         </tr>
@@ -422,6 +417,12 @@ network.setOptions(options);
             <td>The color of the background of the node when the mouse hovers over it <i>(assuming hover is enabled in
                 the interaction module)</i>.
             </td>
+        </tr>
+        <tr>
+            <td>opacity</td>
+            <td>Number</td>
+            <td><code>undefined</code></td>
+            <td>Overall opacity of a node <i>(overrides any opacity on border, background, image, and shadow)</i></td>
         </tr>
         <tr class='toggle collapsible' onclick="toggleTable('optionTable','fixed', this);">
             <td><span parent="fixed" class="right-caret"></span> fixed</td>
@@ -500,7 +501,7 @@ network.setOptions(options);
         </tr>
         <tr parent="font" class="hidden">
             <td class="indent">font.vadjust</td>
-            <td>String</td>
+            <td>Number</td>
             <td><code>0</code></td>
             <td>A font-specific correction to the vertical positioning of the base font in the label text. (Positive is down.)</td>
         </tr>
@@ -545,9 +546,9 @@ network.setOptions(options);
         </tr>
         <tr parent="bold" class="hidden">
             <td class="indent">font.bold.vadjust</td>
-            <td>String</td>
+            <td>Number</td>
             <td><code>0</code></td>
-            <td>A font-specific correction to the vertical positioning of the bold italic font in the label text. (Positive is down.) Defaults to the base font's valign.</td>
+            <td>A font-specific correction to the vertical positioning of the bold font in the label text. (Positive is down.) Defaults to the base font's valign.</td>
         </tr>
         <tr parent="font" class='hidden toggle collapsible' onclick="toggleTable('optionTable','ital', this);">
             <td><span parent="ital" class="right-caret"></span> font.ital</td>
@@ -583,7 +584,7 @@ network.setOptions(options);
         </tr>
         <tr parent="ital" class="hidden">
             <td class="indent">font.ital.vadjust</td>
-            <td>String</td>
+            <td>Number</td>
             <td><code>0</code></td>
             <td>A font-specific correction to the vertical positioning of the italic font in the label text. (Positive is down.) Defaults to the base font's valign.</td>
         </tr>
@@ -621,7 +622,7 @@ network.setOptions(options);
         </tr>
         <tr parent="boldital" class="hidden">
             <td class="indent">font.boldital.vadjust</td>
-            <td>String</td>
+            <td>Number</td>
             <td><code>0</code></td>
             <td>A font-specific correction to the vertical positioning of the bold italic font in the label text. (Positive is down.) Defaults to the base font's valign.</td>
         </tr>
@@ -659,7 +660,7 @@ network.setOptions(options);
         </tr>
         <tr parent="mono" class="hidden">
             <td class="indent">font.mono.vadjust</td>
-            <td>String</td>
+            <td>Number</td>
             <td><code>2</code></td>
             <td>A font-specific correction to the vertical positioning of the monospaced font in the label text. (Positive is down.) Defaults to the base font's valign.</td>
         </tr>
@@ -675,13 +676,13 @@ network.setOptions(options);
             <td><span parent="heightConstraint" class="right-caret"></span> heightConstraint</td>
             <td>Number, Boolean or Object</td>
             <td><code>false</code></td>
-            <td>If false, no heightConstraint is applied. If a number is specified, the value is used as the minimum height of the node. The node's height will be be set to the minimum if less than the value.</td>
+            <td>If false, no heightConstraint is applied. If a number is specified, the value is used as the minimum height of the node. The node's height will be set to the minimum if less than the value.</td>
         </tr>
         <tr parent="heightConstraint" class="hidden">
             <td class="indent">heightConstraint.minimum</td>
             <td>Number</td>
             <td><code>undefined</code></td>
-            <td>If a number is specified, the value is used as the minimum height of the node. The node's height will be be set to the minimum if less than the value.</td>
+            <td>If a number is specified, the value is used as the minimum height of the node. The node's height will be set to the minimum if less than the value.</td>
         </tr>
         <tr parent="heightConstraint" class="hidden">
             <td class="indent">heightConstraint.valign</td>
@@ -706,8 +707,9 @@ network.setOptions(options);
             <td class="indent">icon.face</td>
             <td>String</td>
             <td><code>'FontAwesome'</code></td>
-            <td>These options are only used when the shape is set to <code>icon</code>. The possible options for the
-                face are: <code>'FontAwesome'</code> and <code>'Ionicons'</code>.
+            <td>These options are only used when the shape is set to <code>icon</code>. The possible values for the
+                face option are any font faces that are loaded on given page such as <code>'FontAwesome'</code> or
+                <code>'Ionicons'</code>.
             </td>
         </tr>
         <tr parent="icon" class="hidden">
@@ -728,9 +730,21 @@ network.setOptions(options);
             <td><code>'#2B7CE9'</code></td>
             <td>The color of the icon.</td>
         </tr>
+        <tr parent="icon" class="hidden">
+            <td class="indent">icon.weight</td>
+            <td>Number or String</td>
+            <td><code>undefined</code></td>
+            <td>
+              This allows for weight to be forced regardless of selection
+              status. For example Font Awesome 5 doesn't work properly unless
+              weight is forced to <code>'bold'</code> or <code>700</code>. If
+              this option is set then selection is indicated by bigger size
+              instead of bold font face.
+            </td>
+        </tr>
         <tr>
             <td>id</td>
-            <td>String</td>
+            <td>Number or String</td>
             <td><code>undefined</code></td>
             <td>The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.</td>
         </tr>
@@ -740,6 +754,8 @@ network.setOptions(options);
             <td><code>undefined</code></td>
             <td>When the shape is set to <code>image</code> or <code>circularImage</code>, this option should be the URL
                 to an image. If the image cannot be found, the brokenImage option can be used.
+                <br><i>Note: Firefox has a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=700533">SVG drawing bug</a>,
+                there is a <a href="https://stackoverflow.com/a/28692538/469898">workaround</a> - add width/height attributes to root &lt;svg&gt; element of the SVG</a></i>.
             </td>
         </tr>
         <tr parent="image" class="hidden">
@@ -755,6 +771,36 @@ network.setOptions(options);
             <td><code>undefined</code></td>
             <td>Selected image URL.
             </td>
+        </tr>
+        <tr class='toggle collapsible' onclick="toggleTable('optionTable','imagePadding', this);">
+            <td><span parent="imagePadding" class="right-caret"></span> imagePadding</td>
+            <td>Object or Number</td>
+            <td><code>0</code></td>
+            <td>If a number is specified, the paddings of the image inside the shape are set to that value on all sides. These options are only used when the shape is set to <code>image</code>, <code>circularImage</code>.</td>
+        </tr>
+        <tr parent="imagePadding" class="hidden">
+            <td class="indent">imagePadding.top</td>
+            <td>Number</td>
+            <td><code>0</code></td>
+            <td>The top padding of the image inside the shape is set to this value.</td>
+        </tr>
+        <tr parent="imagePadding" class="hidden">
+            <td class="indent">imagePadding.right</td>
+            <td>Number</td>
+            <td><code>0</code></td>
+            <td>The right margin of the image inside the shape is set to this value.</td>
+        </tr>
+        <tr parent="imagePadding" class="hidden">
+            <td class="indent">imagePadding.bottom</td>
+            <td>Number</td>
+            <td><code>0</code></td>
+            <td>The bottom margin of the image inside the shape is set to this value.</td>
+        </tr>
+        <tr parent="imagePadding" class="hidden">
+            <td class="indent">imagePadding.left</td>
+            <td>Number</td>
+            <td><code>0</code></td>
+            <td>The left margin of the image inside the shape is set to this value.</td>
         </tr>
         <tr>
             <td>label</td>
@@ -834,7 +880,7 @@ network.setOptions(options);
                 <code>ellipse</code>, <code>circle</code>, <code>database</code>, <code>box</code>, <code>text</code>.
                 Always scalable are:
                 <code>image</code>, <code>circularImage</code>, <code>diamond</code>, <code>dot</code>,
-                <code>star</code>, <code>triangle</code>, <code>triangleDown</code>, <code>square</code> and
+                <code>star</code>, <code>triangle</code>, <code>triangleDown</code>, <code>hexagon</code>, <code>square</code> and
                 <code>icon</code>. Keep in mind that when using scaling, the <code>size</code> option is neglected.
             </td>
         </tr>
@@ -857,7 +903,7 @@ network.setOptions(options);
             <td>Object or Boolean</td>
             <td><code>Object</code></td>
             <td>This can be false if the label is not allowed to scale with the node. If true it will scale using
-                default settigns. For further customization, you can supply an object.
+                default settings. For further customization, you can supply an object.
             </td>
         </tr>
         <tr parent="scaling" class="hidden">
@@ -975,14 +1021,14 @@ mySize = minSize + diff * scale;
                 <code>ellipse</code>, <code>circle</code>, <code>database</code>, <code>box</code>, <code>text</code>.
                 The ones with the label outside of it are: <code>image</code>, <code>circularImage</code>,
                 <code>diamond</code>, <code>dot</code>, <code>star</code>, <code>triangle</code>,
-                <code>triangleDown</code>, <code>square</code> and <code>icon</code>.
+                <code>triangleDown</code>, <code>hexagon</code>, <code>square</code> and <code>icon</code>.
             </td>
         </tr>
         <tr class='toggle collapsible' onclick="toggleTable('optionTable','shapeProperties', this);">
             <td><span parent="shapeProperties" class="right-caret"></span> shapeProperties</td>
             <td>Object</td>
             <td><code>Object</code></td>
-            <td>This object contains configuration for specific shapes
+            <td>This object contains configuration for specific shapes.
             </td>
         </tr>
         <tr parent="shapeProperties" class="hidden">
@@ -990,7 +1036,7 @@ mySize = minSize + diff * scale;
             <td>Array or Boolean</td>
             <td><code>false</code></td>
             <td>This property applies to all shapes that have borders.
-                You set the dashes by supplying an Array. Array formart: [dash length, gap length].
+                You set the dashes by supplying an Array. Array format: [dash length, gap length].
                 You can also use a Boolean, false is disable and true is default [5,15].
             </td>
         </tr>
@@ -1005,7 +1051,7 @@ mySize = minSize + diff * scale;
             <td class="indent">shapeProperties.interpolation</td>
             <td>Boolean</td>
             <td><code>true</code></td>
-            <td>This property only applies to the <code>image</code> and <code>circularImage</code> shapes. When true, the image is resampled when scaled down, resulting in a nicer image at the cost of computional time.</i>
+            <td>This property only applies to the <code>image</code> and <code>circularImage</code> shapes. When true, the image is resampled when scaled down, resulting in a nicer image at the cost of computational time.</i>
             </td>
         </tr>
         <tr parent="shapeProperties" class="hidden">
@@ -1031,7 +1077,7 @@ mySize = minSize + diff * scale;
             <td><code>25</code></td>
             <td>The size is used to determine the size of node shapes that do not have the label inside of them. These
                 shapes are: <code>image</code>, <code>circularImage</code>, <code>diamond</code>, <code>dot</code>,
-                <code>star</code>, <code>triangle</code>, <code>triangleDown</code>, <code>square</code> and
+                <code>star</code>, <code>triangle</code>, <code>triangleDown</code>, <code>hexagon</code>, <code>square</code> and
                 <code>icon</code></td>
         </tr>
         <tr>
@@ -1089,20 +1135,24 @@ mySize = minSize + diff * scale;
         </tr>
     </table>
 
+    <div class="flagbar">
+      <a href="../../docs/network/nodes.html"><span class="flag en"></span></a>
+      <a href="../../docs-kr/network/nodes.html"><span class="flag kr"></span></a>
+    </div>
 </div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../js/ie10-viewport-bug-workaround.js"></script>
+<script src="../../common-docs-files/js/ie10-viewport-bug-workaround.js"></script>
 <!-- jquery extensions -->
-<script src="../js/jquery.highlight.js"></script>
-<script src="../js/jquery.url.min.js"></script>
+<script src="../../common-docs-files/js/jquery.highlight.js"></script>
+<script src="../../common-docs-files/js/jquery.url.min.js"></script>
 <!-- Tipue vendor js -->
-<script src="../js/tipuesearch.config.js"></script>
-<script src="../js/tipuesearch.js"></script>
+<script src="../../common-docs-files/js/tipuesearch.config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Tipue-Search/5.0.0/tipuesearch.min.js"></script>
 <!-- controller -->
-<script src="../js/main.js"></script>
+<script src="../../common-docs-files/js/main.js"></script>

@@ -15,13 +15,7 @@ var tipuesearch_pages = [
 "../network/interaction.html",
 "../network/manipulation.html",
 "../network/nodes.html",
-"../network/physics.html",
-"../data/dataset.html",
-"../data/dataview.html",
-"../data/index.html",
-"../timeline/index.html",
-"../graph2d/index.html",
-"../graph3d/index.html"
+"../network/physics.html"
 ];
 
 /*
