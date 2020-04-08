@@ -14,7 +14,8 @@
 #' @param id : String. Default to undefined. The id of the edge. The id is optional for edges. When not supplied, an UUID will be assigned to the edge.
 #' @param physics : Boolean. Default to true. When true, the edge is part of the physics simulation. When false, it will not act as a spring.
 #' @param selectionWidth : Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.
-#' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.
+#' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle. This property is deprecated please use selfReference instead. 
+#' @param selfReference : See \link{visDocumentation} 
 #' @param labelHighlightBold 	: Boolean. Default to	true. Determines whether or not the label becomes bold when the edge is selected.
 #' 
 #' @param color : Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' (hexa notation on 7 char without transparency) or 'red'.
@@ -76,13 +77,9 @@
 #'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 #'}
 #'
-#' @param widthConstraint : Number, boolean or list. If false (defaut), no widthConstraint is applied. If a number is specified, the maximum width of the edge's label is set to the value. The edge's label's lines will be broken on spaces to stay below the maximum.
-#'  \itemize{
-#'    \item{"maximum"}{ : Boolean. If a number is specified, the maximum width of the edge's label is set to the value. The edge's label's lines will be broken on spaces to stay below the maximum.}
-#'  }
+#' @param widthConstraint : See \link{visDocumentation}
 #'  
 #' @param chosen : See \link{visDocumentation} 
-#' @param ... : Additional parameters. See \link{visDocumentation} 
 #' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -102,9 +99,16 @@
 #'   visEdges(arrows = list(to = list(enabled = TRUE, 
 #'      scaleFactor = 2, type = 'circle')))
 #' 
-#' # smooth
+#' # global smooth
 #' visNetwork(nodes, edges) %>% visEdges(smooth = FALSE)
 #' visNetwork(nodes, edges) %>% visEdges(smooth = list(enabled = TRUE, type = "diagonalCross"))
+#' 
+#' # individual smooth
+#' edges <- data.frame(from = c(1,2), to = c(2,3))
+#' edges$smooth.enabled <- c(TRUE, TRUE)
+#' edges$smooth.type <- c("discrete", "curvedCW")
+#' edges$smooth.roundness <- c(0.5, 1)
+#' visNetwork(nodes, edges)
 #' 
 #' # width
 #' visNetwork(nodes, edges) %>% visEdges(width = 10)
@@ -126,13 +130,6 @@
 #' # dashes
 #' # globally
 #' visNetwork(nodes, edges) %>% visEdges(dashes = TRUE)
-#' 
-#' # additional parameters
-#' visNetwork(nodes, edges) %>% 
-#'     visEdges(
-#'         selfReference = list(size = 15, angle = pi/4), 
-#'         selfReferenceSize = FALSE
-#'      )
 #'     
 #' # set configuration individualy 
 #' # have to use specific notation...
@@ -162,6 +159,7 @@ visEdges <- function(graph,
                      physics = NULL,
                      selectionWidth = NULL,
                      selfReferenceSize = NULL, 
+                     selfReference = NULL,
                      labelHighlightBold = NULL,
                      color = NULL,
                      font = NULL, 
@@ -171,14 +169,13 @@ visEdges <- function(graph,
                      shadow = NULL, 
                      scaling = NULL, 
                      widthConstraint = NULL,
-                     chosen = NULL, 
-                     ...){
+                     chosen = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
   }
   
-  edges <- list(...)
+  edges <- list()
 
   edges$title <- title
   edges$value <- value
@@ -191,8 +188,10 @@ visEdges <- function(graph,
   edges$id <- id
   edges$physics <- physics
   edges$selectionWidth <- selectionWidth
-  if(!"selfReference" %in% names(edges)){
+  if(is.null(selfReference)){
     edges$selfReferenceSize <- selfReferenceSize
+  } else {
+    edges$selfReference <- selfReference
   }
   edges$labelHighlightBold <- labelHighlightBold 
   edges$arrows <- arrows

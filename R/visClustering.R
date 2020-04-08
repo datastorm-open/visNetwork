@@ -43,7 +43,7 @@ visClusteringOutliers <- function(graph, clusterFactor = 0.9, stabilize = FALSE)
 #' @param colors : Character/vector. colors we want to cluster
 #' @param label : Character. Label put before value(s). See example
 #' @param shape : Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default
-#' @param force : If \code{force = FALSE}, Set shape of nodes if all equal, else directly defaut shape
+#' @param force : If \code{force = FALSE}, Set shape of nodes if all equal, else directly default shape
 #' 
 #' @examples
 #'
@@ -101,7 +101,7 @@ visClusteringByColor <- function(graph, colors, label = "Cluster on color : ",
 #' Network visualization clustering options - by hubsize
 #' 
 #' @param graph : a visNetwork object
-#' @param size : Integer. This method checks all nodes in the network and those with a equal or higher amount of edges than specified with size argument. If size is null (defaut), the size will be determined as the average value plus two standard deviations. 
+#' @param size : Integer. This method checks all nodes in the network and those with a equal or higher amount of edges than specified with size argument. If size is null (default), the size will be determined as the average value plus two standard deviations. 
 #' 
 #' @examples
 #'
@@ -147,7 +147,7 @@ visClusteringByHubsize <- function(graph, size = NULL){
 #' @param label : Character. Label put before value(s). See example
 #' @param shape : Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default
 #' @param color : Character. Color of cluster(s) if different colors between nodes or \code{force = T}. "grey" per default
-#' @param force : If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly defaut shape and color
+#' @param force : If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly default shape and color
 #' @param scale_size : Set size based on cluster population ? Default to TRUE.
 #' 
 #' @examples

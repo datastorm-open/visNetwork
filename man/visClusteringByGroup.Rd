@@ -25,7 +25,7 @@ visClusteringByGroup(
 
 \item{color}{: Character. Color of cluster(s) if different colors between nodes or \code{force = T}. "grey" per default}
 
-\item{force}{: If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly defaut shape and color}
+\item{force}{: If \code{force = FALSE}, Set shape and color of nodes if all equal, else directly default shape and color}
 
 \item{scale_size}{: Set size based on cluster population ? Default to TRUE.}
 }

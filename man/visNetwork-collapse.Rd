@@ -32,7 +32,7 @@ visUncollapse(
 
 \item{resetHighlight}{: Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
 
-\item{clusterOptions}{: Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+\item{clusterOptions}{: Optional. List. Default to NULL. A list of all options you want to pass to cluster collapsed node}
 
 \item{labelSuffix}{: Optional. Character. Use node label + suffix or just suffix. Default to '(cluster)'}
 

@@ -2,12 +2,13 @@
 #'
 #' Network visualization layout options. For full documentation, have a look at \link{visDocumentation}.
 #'
-#'@param graph : a visNetwork object
-#'@param randomSeed : Number. When NOT using the hierarchical layout, the nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time. Ideally you try with an undefined seed, reload until you are happy with the layout and use the getSeed() method to ascertain the seed.
-#'@param improvedLayout	: Boolean. Default to true. When enabled, the network will use the Kamada Kawai algorithm for initial layout. For networks larger than 100 nodes, clustering will be performed automatically to reduce the amount of nodes. This can greatly improve the stabilization times. If the network is very interconnected (no or few leaf nodes), this may not work and it will revert back to the old method. Performance will be improved in the future.
-#'@param hierarchical : Boolean. Default to false. When true, the layout engine positions the nodes in a hierarchical fashion using default settings. For customization you can use \link{visHierarchicalLayout}
+#' @param graph : a visNetwork object
+#' @param randomSeed : Number. When NOT using the hierarchical layout, the nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time. Ideally you try with an undefined seed, reload until you are happy with the layout and use the getSeed() method to ascertain the seed.
+#' @param improvedLayout	: Boolean. Default to true. When enabled, the network will use the Kamada Kawai algorithm for initial layout. For networks larger than 100 nodes, clustering will be performed automatically to reduce the amount of nodes. This can greatly improve the stabilization times. If the network is very interconnected (no or few leaf nodes), this may not work and it will revert back to the old method. Performance will be improved in the future.
+#' @param clusterThreshold :	Number. Default to	150. Cluster threshold to which improvedLayout applies.
+#' @param hierarchical : Boolean. Default to false. When true, the layout engine positions the nodes in a hierarchical fashion using default settings. For customization you can use \link{visHierarchicalLayout}
 #'
-#'@examples
+#' @examples
 #'
 #' nodes <- data.frame(id = 1:10)
 #' edges <- data.frame(from = round(runif(8)*10), to = round(runif(8)*10))
@@ -36,6 +37,7 @@
 visLayout <- function(graph,
                       randomSeed = NULL,
                       improvedLayout = NULL,
+                      clusterThreshold = NULL,
                       hierarchical = NULL){
   
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
@@ -46,6 +48,7 @@ visLayout <- function(graph,
   
   layout$randomSeed <- randomSeed
   layout$improvedLayout <- improvedLayout
+  layout$clusterThreshold <- clusterThreshold
   layout$hierarchical <- hierarchical
 
   if(any(class(graph) %in% "visNetwork_Proxy")){

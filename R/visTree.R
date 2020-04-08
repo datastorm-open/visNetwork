@@ -44,8 +44,8 @@
 #' @param digits \code{numeric}, number of digits. Default to 3
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
-#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Default to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Default to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
 #' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
 #' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
 #' @param export \code{boolean}, add export button. Default to TRUE

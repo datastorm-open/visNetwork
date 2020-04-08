@@ -126,9 +126,9 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 
 \item{nodesPopSize}{\code{boolean}, nodes sizes depends on population ? Default to FALSE}
 
-\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 15. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{minNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Default to 15. Else, nodes size is minNodeSize + maxNodeSize / 2}
 
-\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 30. Else, nodes size is minNodeSize + maxNodeSize / 2}
+\item{maxNodeSize}{\code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Default to 30. Else, nodes size is minNodeSize + maxNodeSize / 2}
 
 \item{highlightNearest}{\code{list}, Highlight nearest nodes. See \link{visOptions}}
 

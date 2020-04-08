@@ -66,7 +66,7 @@ visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
 #' @param  filter : see \link{visConfigure}. Must be a reactive.
 #' @param  showButton : see \link{visConfigure}. Must be a reactive.
 #' @param  quitButton : logical. Add a button for quit shiny and get back network in R ?
-#' @param  height : height of the configuration div. Defaut to "700px"
+#' @param  height : height of the configuration div. Default to "700px"
 #' 
 #' @examples
 #' \dontrun{

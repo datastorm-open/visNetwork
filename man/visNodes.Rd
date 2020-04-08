@@ -25,6 +25,7 @@ visNodes(
   brokenImage = NULL,
   labelHighlightBold = NULL,
   color = NULL,
+  opacity = NULL,
   fixed = NULL,
   font = NULL,
   icon = NULL,
@@ -34,7 +35,8 @@ visNodes(
   heightConstraint = NULL,
   widthConstraint = NULL,
   margin = NULL,
-  chosen = NULL
+  chosen = NULL,
+  imagePadding = NULL
 )
 }
 \arguments{
@@ -42,9 +44,9 @@ visNodes(
 
 \item{id}{: String. Default to undefined. The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.}
 
-\item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, square and icon.}
+\item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, hexagon, square and icon.}
 
-\item{size}{: Number. Default to 25. The size is used to determine the size of node shapes that do not have the label inside of them. These shapes are: image, circularImage, diamond, dot, star, triangle, triangleDown, square and icon}
+\item{size}{: Number. Default to 25. The size is used to determine the size of node shapes that do not have the label inside of them. These shapes are: image, circularImage, diamond, dot, star, triangle, triangleDown, hexagon, square and icon}
 
 \item{title}{: String or Element. Default to undefined. Title to be displayed when the user hovers over the node. The title can be an HTML element or a string containing plain text or HTML.}
 
@@ -58,7 +60,7 @@ visNodes(
 
 \item{level}{: Number. Default to undefined. When using the hierarchical layout, the level determines where the node is going to be positioned.}
 
-\item{group}{: String. Default to undefined. When not undefined, the group of node(s)}
+\item{group}{: String. Default to undefined. When not undefined, the node will belong to the defined group. Styling information of that group will apply to this node. Node specific styling overrides group styling.}
 
 \item{hidden}{: Boolean. Default to false. When true, the node will not be shown. It will still be part of the physics simulation though!}
 
@@ -98,6 +100,8 @@ visNodes(
  }
 }}
 
+\item{opacity}{:    Number. Overall opacity of a node (overrides any opacity on border, background, image, and shadow)}
+
 \item{fixed}{: Boolean | named list. Default to false. When true, the node will not move but IS part of the physics simulation. When defined as an list, movement in either X or Y direction can be disabled.
 \itemize{
  \item{"x"}{ : Boolean. When true, the node will not move in the X direction.}
@@ -122,6 +126,7 @@ visNodes(
  \item{"code"}{ : String. Default to undefined. This is the code of the icon, for example '\\uf007'.}
  \item{"size"}{ : Number. Default to 50. The size of the icon.}
  \item{"color"}{ : String. Default to '#2B7CE9'. The color of the icon.}
+ \item{"weight"}{ : Number or String. Default to undefined. This allows for weight to be forced regardless of selection status. For example Font Awesome 5 doesn't work properly unless weight is forced to 'bold' or 700. If this option is set then selection is indicated by bigger size instead of bold font face. }
 }}
 
 \item{shadow}{: Boolean | named list. Default to false. When true, the node casts a shadow using the default settings. This can be further refined by supplying a list
@@ -149,14 +154,7 @@ visNodes(
  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
 }}
 
-\item{shapeProperties}{: Named list. This object contains configuration for specific shapes. 
-\itemize{
- \item{"borderDashes"}{ : Vector or Boolean. Default to    false. This property applies to all shapes that have borders. You set the dashes by supplying an Vector Vector formart: [dash length, gap length]. You can also use a Boolean, false is disable and true is default [5,15].}
- \item{"borderRadius"}{ : Number. Default to    6. This property is used only for the box shape. It allows you to determine the roundness of the corners of the shape.}
- \item{"interpolation"}{ :     Boolean. Default to    true. This property only applies to the image and circularImage shapes. When true, the image is resampled when scaled down, resulting in a nicer image at the cost of computional time.}
- \item{"useImageSize"}{ : Boolean. Default to false. This property only applies to the image and circularImage shapes. When false, the size option is used, when true, the size of the image is used.}
- \item{"useBorderWithImage"}{ : Boolean. Default to false. This property only applies to the image shape. When true, the color object is used. A rectangle with the background color is drawn behind it and it has a border. This means all border options are taken into account.}
-}}
+\item{shapeProperties}{: See \link{visDocumentation}}
 
 \item{heightConstraint}{: See \link{visDocumentation}}
 
@@ -165,6 +163,8 @@ visNodes(
 \item{margin}{: See \link{visDocumentation}}
 
 \item{chosen}{: See \link{visDocumentation}}
+
+\item{imagePadding}{: See \link{visDocumentation}}
 }
 \description{
 Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.

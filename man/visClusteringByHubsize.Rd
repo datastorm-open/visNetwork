@@ -9,7 +9,7 @@ visClusteringByHubsize(graph, size = NULL)
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{size}{: Integer. This method checks all nodes in the network and those with a equal or higher amount of edges than specified with size argument. If size is null (defaut), the size will be determined as the average value plus two standard deviations.}
+\item{size}{: Integer. This method checks all nodes in the network and those with a equal or higher amount of edges than specified with size argument. If size is null (default), the size will be determined as the average value plus two standard deviations.}
 }
 \description{
 Network visualization clustering options - by hubsize

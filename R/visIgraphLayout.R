@@ -11,7 +11,7 @@
 #'@param layout : Character Name of igraph layout function to use. Default to "layout_nicely"
 #'@param physics : Boolean. Default to FALSE. Enabled physics on nodes ?
 #'@param smooth : Boolean. Default to FALSE. Use smooth edges ?
-#'@param type : Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.
+#'@param type : Character Type of scale from igrah to vis.js. "square" (default) render in a square limit by height. "full" use width and height to scale in a rectangle.
 #'@param randomSeed : Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.
 #'@param layoutMatrix : in case of layout = 'layout.norm'. the 'layout' argument (A matrix with two or three columns, the layout to normalize)
 #'@param ... : Adding arguments to layout function
@@ -26,7 +26,7 @@
 #'edges <- data.frame(from = sample(1:nnodes, nnedges, replace = T), 
 #'                    to = sample(1:nnodes, nnedges, replace = T))
 #'
-#'# with defaut layout
+#'# with default layout
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout()
 #'

@@ -21,7 +21,7 @@ visClusteringByColor(
 
 \item{shape}{: Character. Shape of cluster(s) if different shapes between nodes or \code{force = T}. "database" per default}
 
-\item{force}{: If \code{force = FALSE}, Set shape of nodes if all equal, else directly defaut shape}
+\item{force}{: If \code{force = FALSE}, Set shape of nodes if all equal, else directly default shape}
 }
 \description{
 Network visualization clustering options - by color.

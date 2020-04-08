@@ -24,7 +24,7 @@ visIgraphLayout(
 
 \item{smooth}{: Boolean. Default to FALSE. Use smooth edges ?}
 
-\item{type}{: Character Type of scale from igrah to vis.js. "square" (defaut) render in a square limit by height. "full" use width and height to scale in a rectangle.}
+\item{type}{: Character Type of scale from igrah to vis.js. "square" (default) render in a square limit by height. "full" use width and height to scale in a rectangle.}
 
 \item{randomSeed}{: Number. The nodes are randomly positioned initially. This means that the settled result is different every time. If you provide a random seed manually, the layout will be the same every time.}
 
@@ -50,7 +50,7 @@ nodes <- data.frame(id = 1:nnodes)
 edges <- data.frame(from = sample(1:nnodes, nnedges, replace = T), 
                    to = sample(1:nnodes, nnedges, replace = T))
 
-# with defaut layout
+# with default layout
 visNetwork(nodes, edges) %>% 
  visIgraphLayout()
 

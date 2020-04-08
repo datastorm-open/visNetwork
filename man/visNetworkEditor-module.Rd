@@ -35,7 +35,7 @@ visNetworkEditorUI(id, quitButton = FALSE, height = "700px")
 
 \item{quitButton}{: logical. Add a button for quit shiny and get back network in R ?}
 
-\item{height}{: height of the configuration div. Defaut to "700px"}
+\item{height}{: height of the configuration div. Default to "700px"}
 }
 \description{
 Module shiny for visualize and customize and get back a \code{visNetwork} object.

@@ -14,7 +14,8 @@ visHierarchicalLayout(
   edgeMinimization = NULL,
   parentCentralization = NULL,
   direction = NULL,
-  sortMethod = NULL
+  sortMethod = NULL,
+  shakeTowards = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ visHierarchicalLayout(
 \item{direction}{: String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.}
 
 \item{sortMethod}{: String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.}
+
+\item{shakeTowards}{: String. Default to 'roots'. Controls whether in directed layout should all the roots be lined up at the top and their child nodes as close to their roots as possible (roots) or all the leaves lined up at the bottom and their parents as close to their children as possible (leaves, default}
 }
 \description{
 Network visualization Hierarchical layout options. For full documentation, have a look at \link{visDocumentation}.

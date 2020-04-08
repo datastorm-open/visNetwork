@@ -18,6 +18,8 @@
 #' @param dragStart : Fired when starting a drag.
 #' @param dragging : Fired when dragging node(s) or the view.
 #' @param dragEnd : Fired when the drag has finished.
+#' @param controlNodeDragging : Fired when dragging control node. Control Edge is edge that is being dragged and contains ids of 'from' and 'to' nodes. If control node is not dragged over another node, 'to' field is undefined. See \link{visDocumentation}.
+#' @param controlNodeDragEnd : Fired when the control node drag has finished. See \link{visDocumentation}.
 #' @param hoverNode : Fired interaction:{hover:true} and the mouse hovers over a node.
 #' @param blurNode : Fired interaction:{hover:true} and the mouse moved away from a node it was hovering over before.
 #' @param hoverEdge : Fired interaction:{hover:true} and the mouse hovers over a edge
@@ -34,6 +36,7 @@
 #' @param beforeDrawing : Fired after the canvas has been cleared, scaled and translated to the viewing position but before all edges and nodes are drawn. Can be used to draw behind the network.
 #' @param afterDrawing : Fired after drawing on the canvas has been completed. Can be used to draw on top of the network.
 #' @param animationFinished : Fired when an animation is finished.
+#' @param configChange : Fired when a user changes any option in the configurator. The options object can be used with the setOptions method or stringified using JSON.stringify(). You do not have to manually put the options into the network: this is done automatically. You can use the event to store user options in the database.
 #' 
 #' @examples
 #'
@@ -97,6 +100,8 @@ visEvents <- function(graph,
                       dragStart = NULL,
                       dragging = NULL,
                       dragEnd = NULL,
+                      controlNodeDragging = NULL,
+                      controlNodeDragEnd = NULL,
                       hoverNode = NULL,
                       blurNode = NULL,
                       hoverEdge = NULL,
@@ -112,7 +117,8 @@ visEvents <- function(graph,
                       initRedraw = NULL,
                       beforeDrawing = NULL,
                       afterDrawing = NULL,
-                      animationFinished = NULL){
+                      animationFinished = NULL, 
+                      configChange = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -134,6 +140,8 @@ visEvents <- function(graph,
   events$dragStart  <- dragStart
   events$dragging  <- dragging
   events$dragEnd  <- dragEnd
+  events$controlNodeDragging <- controlNodeDragging
+  events$controlNodeDragEnd <- controlNodeDragEnd
   events$hoverNode  <- hoverNode
   events$blurNode  <- blurNode
   events$hoverEdge  <- hoverEdge
@@ -150,7 +158,8 @@ visEvents <- function(graph,
   events$beforeDrawing  <- beforeDrawing
   events$afterDrawing  <- afterDrawing
   events$animationFinished <- animationFinished
-
+  events$configChange <- configChange
+  
   if(any(class(graph) %in% "visNetwork_Proxy")){
     data <- list(id = graph$id, type = type, events = events)
     graph$session$sendCustomMessage("visShinyEvents",data)

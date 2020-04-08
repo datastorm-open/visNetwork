@@ -12,6 +12,7 @@
 #'@param parentCentralization	: Boolean. Default to true. When true, the parents nodes will be centered again after the the layout algorithm has been finished.
 #'@param direction : String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.
 #'@param sortMethod : String. Default to 'hubsize'.  The algorithm used to ascertain the levels of the nodes based on the data. The possible options are: hubsize, directed.
+#'@param shakeTowards : String. Default to 'roots'. Controls whether in directed layout should all the roots be lined up at the top and their child nodes as close to their roots as possible (roots) or all the leaves lined up at the bottom and their parents as close to their children as possible (leaves, default
 #'
 #'@examples
 #'
@@ -40,7 +41,8 @@ visHierarchicalLayout <- function(graph,
                                   edgeMinimization = NULL,
                                   parentCentralization = NULL,
                                   direction = NULL,
-                                  sortMethod = NULL){
+                                  sortMethod = NULL, 
+                                  shakeTowards = NULL){
   
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -57,6 +59,7 @@ visHierarchicalLayout <- function(graph,
   hierarchicalLayout$parentCentralization <- parentCentralization
   hierarchicalLayout$direction <- direction
   hierarchicalLayout$sortMethod <- sortMethod
+  hierarchicalLayout$shakeTowards <- shakeTowards
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(layout = list(hierarchical = hierarchicalLayout))

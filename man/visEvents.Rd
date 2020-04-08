@@ -20,6 +20,8 @@ visEvents(
   dragStart = NULL,
   dragging = NULL,
   dragEnd = NULL,
+  controlNodeDragging = NULL,
+  controlNodeDragEnd = NULL,
   hoverNode = NULL,
   blurNode = NULL,
   hoverEdge = NULL,
@@ -35,7 +37,8 @@ visEvents(
   initRedraw = NULL,
   beforeDrawing = NULL,
   afterDrawing = NULL,
-  animationFinished = NULL
+  animationFinished = NULL,
+  configChange = NULL
 )
 }
 \arguments{
@@ -69,6 +72,10 @@ visEvents(
 
 \item{dragEnd}{: Fired when the drag has finished.}
 
+\item{controlNodeDragging}{: Fired when dragging control node. Control Edge is edge that is being dragged and contains ids of 'from' and 'to' nodes. If control node is not dragged over another node, 'to' field is undefined. See \link{visDocumentation}.}
+
+\item{controlNodeDragEnd}{: Fired when the control node drag has finished. See \link{visDocumentation}.}
+
 \item{hoverNode}{: Fired interaction:{hover:true} and the mouse hovers over a node.}
 
 \item{blurNode}{: Fired interaction:{hover:true} and the mouse moved away from a node it was hovering over before.}
@@ -100,6 +107,8 @@ visEvents(
 \item{afterDrawing}{: Fired after drawing on the canvas has been completed. Can be used to draw on top of the network.}
 
 \item{animationFinished}{: Fired when an animation is finished.}
+
+\item{configChange}{: Fired when a user changes any option in the configurator. The options object can be used with the setOptions method or stringified using JSON.stringify(). You do not have to manually put the options into the network: this is done automatically. You can use the event to store user options in the database.}
 }
 \description{
 Network visualization events. For full documentation, have a look at \link{visDocumentation}.

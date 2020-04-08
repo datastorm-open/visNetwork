@@ -20,8 +20,8 @@
 #' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
 #' @param colorEdges \code{character}, color of edges. Default to 'black'.
 #' @param colorGroups \code{character}, color for group in hexa ("#00FF00"). Default rainbow.
-#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Defaut to 50. Else \code{minNodeSize + maxNodeSize / 2}. 
-#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Defaut to 200. Else \code{ minNodeSize + maxNodeSize / 2}. 
+#' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Default to 50. Else \code{minNodeSize + maxNodeSize / 2}. 
+#' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Default to 200. Else \code{ minNodeSize + maxNodeSize / 2}. 
 #' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to \code{TRUE}.
 #' @param highlightNearest \code{boolean}, highlight sub-tree on click ? Default to \code{TRUE}.
 #' @param horizontal \code{boolean}, default to FALSE

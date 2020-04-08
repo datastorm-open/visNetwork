@@ -11,14 +11,14 @@
 #'  \item{"degree"}{ : Optional. Integer. Degree of depth of nodes to be colored. Default to 1. Set high number to have the entire sub-network. In case of "hierarchical" algorithm, you can also pass a list(from = 1, to = 1) to control degree in both direction}
 #'  \item{"hover"}{ : Optional. Boolean. Enable highlightNearest alos hovering a node ? Default to FALSE}
 #'  \item{"algorithm"}{ : Optional. String. highlightNearest algorithm. "all" highlight all nodes, without taking direction information. "hierarchical" look only at inputs/outputs nodes.}
-#'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+#'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Default to rgba(200,200,200,0.5)}
 #'  \item{"labelOnly"}{ : Optional. Boolean. Keep just label for nodes on degree + 1 ? Default to TRUE}
 #'}
 #'@param nodesIdSelection :  Custom Option. Just a Boolean, or a named list. Default to false. Add an id node selection creating an HTML select element. This options use click event. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?.}
-#'  \item{"values}{ : Optional. Vector of possible values (node's id), and so order is preserve. Defaut to all id in nodes data.frame.}
-#'  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Defaut to NULL}
+#'  \item{"values}{ : Optional. Vector of possible values (node's id), and so order is preserve. Default to all id in nodes data.frame.}
+#'  \item{"selected"}{ : Optional. Integer/Character. Initial id selection. Default to NULL}
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
 #'  \item{"useLabels"}{ : Optional. Boolean. Use labels instead of id ? Default to TRUE.}
 #'  \item{"main"}{ : Optional. Default to "Select by id"}
@@ -26,21 +26,21 @@
 #'@param selectedBy : Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.
 #'\itemize{
 #'  \item{"variable"}{ : Character. Column name of selection variable.}
-#'  \item{"values}{ : Optional. Vector of possible values. Defaut to all values in nodes data.frame.}
-#'  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Defaut to NULL}
+#'  \item{"values}{ : Optional. Vector of possible values. Default to all values in nodes data.frame.}
+#'  \item{"selected"}{ : Optional. Integer/Character. Initial selection. Default to NULL}
 #'  \item{"style"}{ : Optional. Character. HTML style of list. Default to 'width: 150px; height: 26px'.}
 #'  \item{"multiple"}{ : Optional. Boolean. Default to FALSE. If TRUE, you can affect multiple groups per nodes using a comma ("gr1,gr2")}
-#'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Defaut to rgba(200,200,200,0.5)}
+#'  \item{"hideColor"}{ : Optional. String. Color for hidden nodes/edges. Use a rgba definition. Default to rgba(200,200,200,0.5)}
 #'  \item{"main"}{ : Optional. Default to "Select by variable"}
-#'  \item{"sort"}{ : Optional. If values is NULL, sort all possible values ?. Defaut to TRUE}
-#'  \item{"highlight"}{ : Optional. Boolean. Run highlightNearest if defined on each selected node ? Defaut to FALSE}
+#'  \item{"sort"}{ : Optional. If values is NULL, sort all possible values ?. Default to TRUE}
+#'  \item{"highlight"}{ : Optional. Boolean. Run highlightNearest if defined on each selected node ? Default to FALSE}
 #'}
 #'@param collapse : Custom option. Just a Boolean, or a named list. Collapse / Uncollapse nodes using double-click. In dev.
 #'\itemize{
 #'  \item{"enabled"}{ : Boolean. Default to false. Activated or not ?}
 #'  \item{"fit"}{ : Optional. Boolean. Default to FALSE. Call fit method after collapse/uncollapse event ?}
 #'  \item{"resetHighlight"}{ : Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.}
-#'  \item{"clusterOptions"}{ : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node}
+#'  \item{"clusterOptions"}{ : Optional. List. Default to NULL. A list of all options you want to pass to cluster collapsed node}
 #'  \item{"keepCoord"}{ : Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse}
 #'  \item{"labelSuffix"}{ : Optional. Character. Use node label + suffix or just suffix. Default to '(cluster)'}
 #'}

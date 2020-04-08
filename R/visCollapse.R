@@ -5,7 +5,7 @@
 #'@param fit : Optional. Boolean. Default to FALSE. Call fit method after collapse/uncollapse event ?
 #'@param resetHighlight : Optional. Boolean. Default to TRUE to reset highlighted nodes after collapse/uncollapse event.
 #'@param keepCoord : Optional. Boolean. Default to TRUE to keep nodes coordinates on collapse
-#'@param clusterOptions : Optional. List. Defaut to NULL. A list of all options you want to pass to cluster collapsed node
+#'@param clusterOptions : Optional. List. Default to NULL. A list of all options you want to pass to cluster collapsed node
 #'@param labelSuffix : Optional. Character. Use node label + suffix or just suffix. Default to '(cluster)'
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

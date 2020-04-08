@@ -40,13 +40,13 @@ visLegend(
  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:14px;text-align:center;'.}
 }}
 
-\item{ncol}{: Divide legend in multiple columns ? Defaut to 1}
+\item{ncol}{: Divide legend in multiple columns ? Default to 1}
 
-\item{stepX}{: Experimental. Can use to control space between nodes. Defaut to 100}
+\item{stepX}{: Experimental. Can use to control space between nodes. Default to 100}
 
-\item{stepY}{: Experimental. Can use to control space between nodes. Defaut to 100}
+\item{stepY}{: Experimental. Can use to control space between nodes. Default to 100}
 
-\item{zoom}{: Boolean. Enable zoom on legend ? Defaut to TRUE}
+\item{zoom}{: Boolean. Enable zoom on legend ? Default to TRUE}
 }
 \description{
 Add a legend on a visNetwork object

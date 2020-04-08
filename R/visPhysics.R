@@ -10,6 +10,7 @@
 #'
 #'@param barnesHut, named list of options
 #'\itemize{
+#'  \item{"theta"}{ : Number. Default to 0.5. This parameter determines the boundary between consolidated long range forces and individual short range forces. To oversimplify higher values are faster but generate more errors, lower values are slower but with less errors.}
 #'  \item{"gravitationalConstant"}{ : Number. Default to -2000. Gravity attracts. We like repulsion. So the value is negative. If you want the repulsion to be stronger, decrease the value (so -10000, -50000).}
 #'  \item{"centralGravity"}{ : Number. Default to 0.3. There is a central gravity attractor to pull the entire network back to the center.}
 #'  \item{"springLength"}{ : Number. Default to 95. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
@@ -20,6 +21,7 @@
 #'
 #'@param forceAtlas2Based, named list of options
 #'\itemize{
+#'  \item{"theta"}{ : Number. Default to 0.5. This parameter determines the boundary between consolidated long range forces and individual short range forces. To oversimplify higher values are faster but generate more errors, lower values are slower but with less errors.}
 #'  \item{"gravitationalConstant"}{ : Number. Default to -50. Gravity attracts. We like repulsion. So the value is negative. If you want the repulsion to be stronger, decrease the value (so -10000, -50000).}
 #'  \item{"centralGravity"}{ : Number. Default to 0.01. There is a central gravity attractor to pull the entire network back to the center.}
 #'  \item{"springLength"}{ : Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
@@ -44,6 +46,7 @@
 #'  \item{"springLength"}{ : Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.}
 #'  \item{"springConstant"}{ : Number. Default to 0.01. This is how 'sturdy' the springs are. Higher values mean stronger springs.}
 #'  \item{"damping"}{ : Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.}
+#'  \item{"avoidOverlap"}{ : Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.}
 #'}
 #'
 #'@param stabilization, Just a boolean, or a named list of options
@@ -56,6 +59,12 @@
 #'}
 #'
 #'@param adaptiveTimestep :	Boolean. Default to true. If this is enabled, the timestep will intelligently be adapted (only during the stabilization stage if stabilization is enabled!) to greatly decrease stabilization times. The timestep configured above is taken as the minimum timestep. This can be further improved by using the improvedLayout algorithm.
+#'
+#'@param wind, Named list. A force that pushes all non-fixed nodes in the given direction. Requires all nodes are connected to nodes which are fixed, otherwise non-attached nodes will keep moving indefinitely.
+#'\itemize{
+#'  \item{"x"}{ : Number. Default to 0. The amount of force to be applied pushing non-fixed nodes to the right (positive value) or to the left (negative value).}
+#'  \item{"y"}{ : Number. Default to 0. The amount of force to be applied pushing non-fixed nodes downwards (positive value) or upwards (negative value).}
+#'}
 #'
 #'@param enabled :	Boolean. Default to true. Toggle the physics system on or off. This property is optional. If you define any of the options below and enabled is undefined, this will be set to true.
 #'
@@ -92,6 +101,7 @@ visPhysics <- function(graph,
                        hierarchicalRepulsion = NULL, 
                        stabilization = NULL, 
                        adaptiveTimestep = NULL, 
+                       wind = NULL,
                        enabled = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
@@ -117,6 +127,7 @@ visPhysics <- function(graph,
   physics$stabilization <- stabilization
   physics$adaptiveTimestep <-  adaptiveTimestep
   physics$enabled <- enabled
+  physics$wind <- wind
   
   if(!is.null(barnesHut)){
     physics$barnesHut <- barnesHut
