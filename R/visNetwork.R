@@ -247,6 +247,12 @@ visNetwork <- function(nodes = NULL, edges = NULL, dot = NULL, gephi = NULL,
     edgesToDataframe <- FALSE
   }
 
+  if(is.data.frame(nodes) & is.data.frame(edges)){
+    rm_edges <- which(!(edges$from %in% nodes$id & edges$to %in% nodes$id))
+    if(length(rm_edges) > 0){
+      edges <- edges[-c(rm_edges), ]
+    }
+  }
   # main
   if(!is.null(main)){
     if(is.list(main)){
