@@ -1,12 +1,13 @@
 #' Use fontAwesome icons in visNetwork \code{graph}
 #'
-#' Add \href{http://fortawesome.github.io/Font-Awesome/}{Font-Awesome} for styling
+#' Add \href{http://fontawesome.com}{Font-Awesome} for styling
 #' our \code{graph} with beautiful, professional icons.  Please note
 #' that you'll already have these icons if using Shiny.
 #' Can also use \link{addIonicons}   
 #' 
 #' @param  graph : a visNetwork object
 #' @param  name  : name of dependency
+#' @param  version : fontawesome version.  "4.7.0" (default) or "5.13.0"
 #' 
 #' @return \code{graph} htmlwidget with Font-Awesome dependencies attached.
 #' 
@@ -14,10 +15,11 @@
 #' 
 #' # use fontAwesome icons using groups or nodes options 
 #' # font-awesome is not part of dependencies. use addFontAwesome() if needed.
+#' # Versions in package (and compatible with vis.js) : 4.7.0 & 5.13.0
 #' # https://fontawesome.com/v4.7.0/
-#' # Version in package (and compatible with vis.js) : 4.7.0
+#' # https://fontawesome.com/
 #' # cheatsheet available in package: 
-#' # system.file("fontAwesome/Font_Awesome_Cheatsheet.pdf", package = "visNetwork")
+#' # system.file("fontAwesome/Font_Awesome_Cheatsheet_4_7_0.pdf", package = "visNetwork")
 #' 
 #' # definition in groups
 #' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
@@ -26,8 +28,21 @@
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) %>%
 #'   visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) %>%
-#'   addFontAwesome()
+#'   addFontAwesome(version = "4.7.0")
 #' 
+#' # use 5.13.0
+#' # set face = "'Font Awesome 5 Free'"
+#' # weight is automatically set to "bold"
+#' nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
+#' edges <- data.frame(from = c(1,2), to = c(2,3))
+#' 
+#' visNetwork(nodes, edges) %>%
+#'   visGroups(groupname = "A", shape = "icon", 
+#'       icon = list(face = "'Font Awesome 5 Free'", code = "f0c0", size = 75)) %>%
+#'   visGroups(groupname = "B", shape = "icon", 
+#'       icon = list(face = "'Font Awesome 5 Free'", code = "f007", color = "red")) %>%
+#'   addFontAwesome(version = "5.13.0")
+#'   
 #' # definition in nodes
 #' nodes <- data.frame(id = 1:3, shape = "icon", icon.face = 'FontAwesome', 
 #'    icon.code = "f0c0")
@@ -43,16 +58,21 @@
 #' @import htmltools
 #'
 #' @export
-addFontAwesome <- function(graph, name = "font-awesome"){
+addFontAwesome <- function(graph, name = "font-awesome", version = c("4.7.0", "5.13.0")){
   if(!inherits(graph,"htmlwidget")){
     stop("graph should be a htmlwidget.", call.=F)
   } 
   
+  version <- match.arg(version)
+  
   font_dep <- htmltools::htmlDependency(
     name = name,
-    version = "4.7.0",
-    src = c(file=system.file("htmlwidgets/lib/font-awesome", package="visNetwork")),
-    stylesheet = "css/font-awesome.min.css"
+    version = version,
+    src = c(file=system.file(paste0("htmlwidgets/lib/fontawesome_", version), package="visNetwork")),
+    stylesheet = switch(version, 
+                        "4.7.0" = "css/font-awesome.min.css",
+                        "5.13.0" = "css/all.min.css"
+    )
   )
   
   if(length(graph$dependencies) == 0){

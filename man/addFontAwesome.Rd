@@ -4,18 +4,20 @@
 \alias{addFontAwesome}
 \title{Use fontAwesome icons in visNetwork \code{graph}}
 \usage{
-addFontAwesome(graph, name = "font-awesome")
+addFontAwesome(graph, name = "font-awesome", version = c("4.7.0", "5.13.0"))
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
 \item{name}{: name of dependency}
+
+\item{version}{: fontawesome version.  "4.7.0" (default) or "5.13.0"}
 }
 \value{
 \code{graph} htmlwidget with Font-Awesome dependencies attached.
 }
 \description{
-Add \href{http://fortawesome.github.io/Font-Awesome/}{Font-Awesome} for styling
+Add \href{http://fontawesome.com}{Font-Awesome} for styling
 our \code{graph} with beautiful, professional icons.  Please note
 that you'll already have these icons if using Shiny.
 Can also use \link{addIonicons}
@@ -24,10 +26,11 @@ Can also use \link{addIonicons}
 
 # use fontAwesome icons using groups or nodes options 
 # font-awesome is not part of dependencies. use addFontAwesome() if needed.
+# Versions in package (and compatible with vis.js) : 4.7.0 & 5.13.0
 # https://fontawesome.com/v4.7.0/
-# Version in package (and compatible with vis.js) : 4.7.0
+# https://fontawesome.com/
 # cheatsheet available in package: 
-# system.file("fontAwesome/Font_Awesome_Cheatsheet.pdf", package = "visNetwork")
+# system.file("fontAwesome/Font_Awesome_Cheatsheet_4_7_0.pdf", package = "visNetwork")
 
 # definition in groups
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
@@ -36,8 +39,21 @@ edges <- data.frame(from = c(1,2), to = c(2,3))
 visNetwork(nodes, edges) \%>\%
   visGroups(groupname = "A", shape = "icon", icon = list(code = "f0c0", size = 75)) \%>\%
   visGroups(groupname = "B", shape = "icon", icon = list(code = "f007", color = "red")) \%>\%
-  addFontAwesome()
+  addFontAwesome(version = "4.7.0")
 
+# use 5.13.0
+# set face = "'Font Awesome 5 Free'"
+# weight is automatically set to "bold"
+nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
+edges <- data.frame(from = c(1,2), to = c(2,3))
+
+visNetwork(nodes, edges) \%>\%
+  visGroups(groupname = "A", shape = "icon", 
+      icon = list(face = "'Font Awesome 5 Free'", code = "f0c0", size = 75)) \%>\%
+  visGroups(groupname = "B", shape = "icon", 
+      icon = list(face = "'Font Awesome 5 Free'", code = "f007", color = "red")) \%>\%
+  addFontAwesome(version = "5.13.0")
+  
 # definition in nodes
 nodes <- data.frame(id = 1:3, shape = "icon", icon.face = 'FontAwesome', 
    icon.code = "f0c0")

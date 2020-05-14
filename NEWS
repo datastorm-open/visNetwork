@@ -3,6 +3,7 @@ visNetwork 2.1.0
   * #361 : fix visHclust with new ggraph version
   * switch to vis-network 7.5.2
   * visTree : fix using invalid R colnames + crash no one X
+  * add fontawesome 5.13.0 support
   
 visNetwork 2.0.9
 --------------------------------------------------------------------------------

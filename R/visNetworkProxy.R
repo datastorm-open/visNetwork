@@ -23,7 +23,7 @@
 #' 
 #' With \code{visNetworkProxy}, you can update your network and use various methods :
 #' \itemize{
-#'  \item{"all 'visNetwork' functons"}{ : \code{\link{visOptions}}, \code{\link{visNodes}}, \code{\link{visEdges}}, \code{\link{visPhysics}}, \code{\link{visEvents}}, ...}
+#'  \item{"all 'visNetwork' functions"}{ : \code{\link{visOptions}}, \code{\link{visNodes}}, \code{\link{visEdges}}, \code{\link{visPhysics}}, \code{\link{visEvents}}, ...}
 #'  \item{\code{\link{visFocus}}}{ : Focus to one or more nodes}
 #'  \item{\code{\link{visFit}}}{ : Set view on a set of nodes}
 #'  \item{\code{\link{visUpdateNodes}}}{ : Update and add nodes}

@@ -854,6 +854,11 @@ function visNetworkdataframeToD3(df, type) {
             } else if(names[col][0] === "icon" && names[col][1] === "color"){
               item.color = df[colnames[col]][row];
               item[names[col][0]][names[col][1]] = df[colnames[col]][row];
+            } else if(names[col][0] === "icon" && names[col][1] === "face"){
+              if(df[colnames[col]][row] === "'Font Awesome 5 Free'"){
+                item.icon.weight = "bold";
+              }
+              item[names[col][0]][names[col][1]] = df[colnames[col]][row];
             } else{
               item[names[col][0]][names[col][1]] = df[colnames[col]][row];
             }
@@ -1389,6 +1394,11 @@ if (HTMLWidgets.shinyMode){
               if(data.options.groups[gr].icon.code){
                 data.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + data.options.groups[gr].icon.code + '"');
               }
+              if(data.options.groups[gr].icon.face){
+                if(data.options.groups[gr].icon.face === "'Font Awesome 5 Free'"){
+                  data.options.groups[gr].icon.weight = "bold"
+                }
+              }
               if(data.options.groups[gr].icon.color){
                 data.options.groups[gr].color = data.options.groups[gr].icon.color;
               }
@@ -1400,6 +1410,11 @@ if (HTMLWidgets.shinyMode){
           if(data.options.nodes.icon){
             if(data.options.nodes.icon.code){
               data.options.nodes.icon.code = JSON.parse( '"'+'\\u' + data.options.nodes.icon.code + '"');
+            }
+            if(data.options.nodes.icon.face){
+              if(data.options.nodes.icon.face === "'Font Awesome 5 Free'"){
+                  data.options.nodes.icon.weight = "bold"
+              }
             }
             if(data.options.nodes.icon.color){
               data.options.nodes.color = data.options.nodes.icon.color;
@@ -2401,6 +2416,11 @@ HTMLWidgets.widget({
           if(x.options.groups[gr].icon.code){
             x.options.groups[gr].icon.code = JSON.parse( '"'+'\\u' + x.options.groups[gr].icon.code + '"');
           }
+          if(x.options.groups[gr].icon.face){
+            if(x.options.groups[gr].icon.face === "'Font Awesome 5 Free'"){
+                x.options.groups[gr].icon.weight = "bold"
+            }
+          }
           if(x.options.groups[gr].icon.color){
             x.options.groups[gr].color = x.options.groups[gr].icon.color;
           }
@@ -2411,6 +2431,11 @@ HTMLWidgets.widget({
     if(x.options.nodes.icon){
         if(x.options.nodes.icon.code){
           x.options.nodes.icon.code = JSON.parse( '"'+'\\u' + x.options.nodes.icon.code + '"');
+        }
+        if(x.options.nodes.icon.face){
+          if(x.options.nodes.icon.face === "'Font Awesome 5 Free'"){
+              x.options.nodes.icon.weight = "bold"
+          }
         }
         if(x.options.nodes.icon.color){
           x.options.nodes.color = x.options.nodes.icon.color;
@@ -2582,6 +2607,11 @@ HTMLWidgets.widget({
         for (var nd in tmpnodes){
           if(tmpnodes[nd].icon  && !x.legend.nodesToDataframe){
             tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
+          }
+          if(tmpnodes[nd].icon.face){
+            if(tmpnodes[nd].icon.face === "'Font Awesome 5 Free'"){
+              tmpnodes[nd].icon.weight = "bold"
+            }
           }
         }
         // group control for y

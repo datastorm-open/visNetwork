@@ -61,13 +61,13 @@
 #'  \item{"vadjust, multi, bold, ital, boldital, mono"}{See \link{visDocumentation}}
 #'}
 #'
-#' @param icon : Named list. These options are only used when the shape is set to 'icon'.
+#' @param icon : Named list. These options are only used when the shape is set to 'icon'. See \link{addFontAwesome}, \link{addIonicons}
 #' \itemize{
-#'  \item{"face"}{ : String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome' and 'Ionicons'.}
+#'  \item{"face"}{ : String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome', "'Font Awesome 5 Free'", and 'Ionicons'.}
 #'  \item{"code"}{ : String. Default to undefined. This is the code of the icon, for example '\\uf007'.}
 #'  \item{"size"}{ : Number. Default to 50. The size of the icon.}
 #'  \item{"color"}{ : String. Default to '#2B7CE9'. The color of the icon.}
-#'  \item{"weight"}{ : Number or String. Default to undefined. This allows for weight to be forced regardless of selection status. For example Font Awesome 5 doesn't work properly unless weight is forced to 'bold' or 700. If this option is set then selection is indicated by bigger size instead of bold font face. }
+#'  \item{"weight"}{ : Number or String. Default to undefined. This allows for weight to be forced regardless of selection status. For example Font Awesome 5 doesn't work properly unless weight is forced to 'bold' or 700 (This is done automatically in visNetwork). If this option is set then selection is indicated by bigger size instead of bold font face. }
 #'}
 #'
 #' @param shadow : Boolean | named list. Default to false. When true, the node casts a shadow using the default settings. This can be further refined by supplying a list
