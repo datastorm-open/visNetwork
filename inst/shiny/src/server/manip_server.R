@@ -3,7 +3,10 @@ output$network_manip <- renderVisNetwork({
   edges <- data.frame(from = c(1,2), to = c(1,3))
   
   visNetwork(nodes, edges) %>%
-    visOptions(manipulation = TRUE)
+    visOptions(manipulation = list(enabled = TRUE, 
+                                   editEdgeCols = c("label"), 
+                                   editNodeCols = c("group"), 
+                                   addNodeCols = c("id", "label")))
 })
 
 output$view_manip <- renderPrint({
@@ -13,6 +16,9 @@ output$view_manip <- renderPrint({
 output$code_network_manip <- renderText({
   '
   visNetwork(nodes, edges)
-    visOptions(manipulation = TRUE))
+    visOptions(manipulation = list(enabled = TRUE, 
+                                   editEdgeCols = c("label"), 
+                                   editNodeCols = c("group"), 
+                                   addNodeCols = c("id", "label")))
  '
 })

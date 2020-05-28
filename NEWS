@@ -4,6 +4,7 @@ visNetwork 2.1.0
   * switch to vis-network 7.5.2
   * visTree : fix using invalid R colnames + crash no one X
   * add fontawesome 5.13.0 support
+  * #377 : custom manipulation columns
   
 visNetwork 2.0.9
 --------------------------------------------------------------------------------

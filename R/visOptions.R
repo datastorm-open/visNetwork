@@ -46,8 +46,12 @@
 #'}
 #'@param autoResize : Boolean. Default to true. If true, the Network will automatically detect when its container is resized, and redraw itself accordingly. If false, the Network can be forced to repaint after its container has been resized using the function redraw() and setSize(). 
 #'@param clickToUse : Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.
-#'@param manipulation : Just a Boolean or a list. See \link{visDocumentation}
-#'
+#'@param manipulation : Just a Boolean or a list. See \link{visDocumentation}. You can also choose the columns to edit : 
+#'\itemize{
+#'  \item{"editEdgeCols"}{ : Optional. Default to NULL, and so you can just move edge. If set, you can't move edge but just edit.}
+#'  \item{"editNodeCols"}{ : Optional. Default to c("id", "label")}
+#'  \item{"addNodeCols"}{ : Optional. Default to c("id", "label")}
+#'}
 #'@examples
 #' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
 #'  group = sample(LETTERS[1:3], 15, replace = TRUE))
@@ -191,10 +195,18 @@
 #'
 #'visNetwork(nodes, edges) %>% 
 #'  visOptions(manipulation = list(enabled = TRUE, editNode = FALSE, editEdge = FALSE))
+#'  
+#' # choose columns to edit
+#' visNetwork(nodes, edges) %>% 
+#'   visOptions(manipulation = list(enabled = T, 
+#'                                  editEdgeCols = c("label"), 
+#'                                  editNodeCols = c("id", "label", "title", "group"), 
+#'                                  addNodeCols = c("label", "group")))
 #'
 #'visNetwork(nodes, edges)  %>% 
 #'  visOptions(manipulation = list(enabled = TRUE, 
 #'                                 editEdge = htmlwidgets::JS("function(data, callback) {
+#'                                                            callback(data);
 #'                                                            console.info('edit edge')
 #'                                                            }")
 #'                                     )
@@ -237,21 +249,63 @@ visOptions <- function(graph,
   if(is.null(manipulation)){
     options$manipulation <- list(enabled = FALSE)
   }else{
+    
+    graph$x$opts_manipulation$datacss <- paste(readLines(system.file("htmlwidgets/lib/css/dataManipulation.css", package = "visNetwork"), warn = FALSE), collapse = "\n")
+    
     if(is.logical(manipulation)){
       options$manipulation <- list(enabled = manipulation)
+      
     } else if(is.list(manipulation)){
       options$manipulation <- manipulation
     } else {
       stop("Invalid 'manipulation' argument. logical or list")
     }
+    
+    if(!"addNodeCols" %in% names(manipulation)){
+      graph$x$opts_manipulation$addNodeCols <- c("id", "label")
+    } else {
+      graph$x$opts_manipulation$addNodeCols <- manipulation$addNodeCols
+      options$manipulation$addNodeCols <- NULL
+    }
+    
+    if(!"editNodeCols" %in% names(manipulation)){
+      graph$x$opts_manipulation$editNodeCols <- c("id", "label")
+    } else {
+      graph$x$opts_manipulation$editNodeCols <- manipulation$editNodeCols
+      options$manipulation$editNodeCols <- NULL
+    }
+    
+    if("editEdgeCols" %in% names(manipulation) && !is.null(manipulation$editEdgeCols) && length(manipulation$editEdgeCols) > 0){
+      graph$x$opts_manipulation$editEdgeCols <- manipulation$editEdgeCols
+      options$manipulation$editEdgeCols <- NULL
+    } 
+    
+    if(length(graph$x$opts_manipulation$addNodeCols) == 1){
+      graph$x$opts_manipulation$addNodeCols <- list(graph$x$opts_manipulation$addNodeCols)
+    }
+    if(length(graph$x$opts_manipulation$editNodeCols) == 1){
+      graph$x$opts_manipulation$editNodeCols <- list(graph$x$opts_manipulation$editNodeCols)
+    }
+    if(length(graph$x$opts_manipulation$editEdgeCols) == 1){
+      graph$x$opts_manipulation$editEdgeCols <- list(graph$x$opts_manipulation$editEdgeCols)
+    }
+    
+    if(!is.null(graph$x$opts_manipulation$addNodeCols)){
+      graph$x$opts_manipulation$tab_add_node <- build_manipulation_table(graph$x$opts_manipulation$addNodeCols, id = "addnode")
+    }
+    
+    if(!is.null(graph$x$opts_manipulation$editNodeCols)){
+      graph$x$opts_manipulation$tab_edit_node <- build_manipulation_table(graph$x$opts_manipulation$editNodeCols, id = "editnode") 
+    }
+    
+    if(!is.null(graph$x$opts_manipulation$editEdgeCols)){
+      graph$x$opts_manipulation$tab_edit_edge <- build_manipulation_table(graph$x$opts_manipulation$editEdgeCols, id = "editedge") 
+    }
+    
   }
   
   options$height <- height
   options$width <- width
-  
-  if(!is.null(manipulation)){
-      graph$x$datacss <- paste(readLines(system.file("htmlwidgets/lib/css/dataManipulation.css", package = "visNetwork"), warn = FALSE), collapse = "\n")
-  }
   
   if(!"nodes"%in%names(graph$x) && any(class(graph) %in% "visNetwork")){
     highlight <- list(enabled = FALSE)
@@ -298,7 +352,7 @@ visOptions <- function(graph,
       stopifnot(is.logical(collapse))
       list_collapse$enabled <- collapse
     }
-      
+    
     #############################
     # highlightNearest
     #############################
@@ -466,7 +520,7 @@ visOptions <- function(graph,
         } else {
           byselection$main <- paste0("Select by ", selectedBy$variable)
         }
- 
+        
         if("style"%in%names(selectedBy)){
           byselection$style <- selectedBy$style
         }else if(any(class(graph) %in% "visNetwork_Proxy")){
@@ -607,4 +661,25 @@ visOptions <- function(graph,
     graph$x$options <- mergeLists(graph$x$options, options)
   }
   graph
+}
+
+
+build_manipulation_table <- function(col, id = "node"){
+  
+  if(length(col) > 0){
+    table <- paste0('<span id="', id, '-operation" class = "operation">node</span> <br><table style="margin:auto;">')
+    
+    for(c in col){
+      
+      add <- paste0('<tr><td>', c, '</td><td><input id="', id, "-", c, '" value="new value"></td></tr>')
+      table <- paste0(table, add)
+    }
+    
+    table <- paste0(table, '</table><input type="button" value="save" id="', id, '-saveButton"></button><input type="button" value="cancel" id="', id, '-cancelButton"></button>')
+  } else {
+    table <- ""
+  }
+  
+  table
+  
 }

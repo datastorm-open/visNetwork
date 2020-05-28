@@ -71,7 +71,12 @@ visOptions(
 
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
-\item{manipulation}{: Just a Boolean or a list. See \link{visDocumentation}}
+\item{manipulation}{: Just a Boolean or a list. See \link{visDocumentation}. You can also choose the columns to edit : 
+\itemize{
+ \item{"editEdgeCols"}{ : Optional. Default to NULL, and so you can just move edge. If set, you can't move edge but just edit.}
+ \item{"editNodeCols"}{ : Optional. Default to c("id", "label")}
+ \item{"addNodeCols"}{ : Optional. Default to c("id", "label")}
+}}
 }
 \description{
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
@@ -219,10 +224,18 @@ visNetwork(nodes, edges) \%>\%
 
 visNetwork(nodes, edges) \%>\% 
  visOptions(manipulation = list(enabled = TRUE, editNode = FALSE, editEdge = FALSE))
+ 
+# choose columns to edit
+visNetwork(nodes, edges) \%>\% 
+  visOptions(manipulation = list(enabled = T, 
+                                 editEdgeCols = c("label"), 
+                                 editNodeCols = c("id", "label", "title", "group"), 
+                                 addNodeCols = c("label", "group")))
 
 visNetwork(nodes, edges)  \%>\% 
  visOptions(manipulation = list(enabled = TRUE, 
                                 editEdge = htmlwidgets::JS("function(data, callback) {
+                                                           callback(data);
                                                            console.info('edit edge')
                                                            }")
                                     )

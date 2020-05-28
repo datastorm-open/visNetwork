@@ -2820,42 +2820,47 @@ HTMLWidgets.widget({
 
       var style = document.createElement('style');
       style.type = 'text/css';
-      style.appendChild(document.createTextNode(x.datacss));
+      style.appendChild(document.createTextNode(x.opts_manipulation.datacss));
       document.getElementsByTagName("head")[0].appendChild(style);
 
-      var div = document.createElement('div');
-      div.id = 'network-popUp';
+      var div_addnode = document.createElement('div');
+      div_addnode.id = 'addnode-popUp';
+      div_addnode.classList.add('network-popUp');
+      div_addnode.innerHTML = x.opts_manipulation.tab_add_node;
+      el_id.appendChild(div_addnode);
 
-      div.innerHTML = '<span id="operation">node</span> <br>\
-      <table style="margin:auto;"><tr>\
-      <td>id</td><td><input id="node-id" value="new value" disabled = true></td>\
-      </tr>\
-      <tr>\
-      <td>label</td><td><input id="node-label" value="new value"> </td>\
-      </tr></table>\
-      <input type="button" value="save" id="saveButton"></button>\
-      <input type="button" value="cancel" id="cancelButton"></button>';
-
-      el_id.appendChild(div);
-
+      var div_editnode = document.createElement('div');
+      div_editnode.id = 'editnode-popUp';
+      div_editnode.classList.add('network-popUp');
+      div_editnode.innerHTML = x.opts_manipulation.tab_edit_node;
+      el_id.appendChild(div_editnode);
+      
+      var div_editedge = document.createElement('div');
+      div_editedge.id = 'editedge-popUp';
+      div_editedge.classList.add('network-popUp');
+      div_editedge.innerHTML = x.opts_manipulation.tab_edit_edge;
+      el_id.appendChild(div_editedge);
+      
       if(x.options.manipulation.addNode === undefined){
         options.manipulation.addNode = function(data, callback) {
-          document.getElementById('operation').innerHTML = "Add Node";
-          document.getElementById('node-id').value = data.id;
-          document.getElementById('node-label').value = data.label;
-          document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
-          document.getElementById('cancelButton').onclick = clearPopUp.bind();
-          document.getElementById('network-popUp').style.display = 'block';
+          document.getElementById('addnode-operation').innerHTML = "Add Node";
+          for (var nodecol = 0; nodecol < x.opts_manipulation.addNodeCols.length; nodecol++){
+            document.getElementById('addnode-' + x.opts_manipulation.addNodeCols[nodecol]).value = data[x.opts_manipulation.addNodeCols[nodecol]];
+          }
+          document.getElementById('addnode-saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+          document.getElementById('addnode-cancelButton').onclick = clearPopUp.bind();
+          document.getElementById('addnode-popUp').style.display = 'block';
         };
       } else if(typeof(x.options.manipulation.addNode) === typeof(true)){
         if(x.options.manipulation.addNode){
           options.manipulation.addNode = function(data, callback) {
-            document.getElementById('operation').innerHTML = "Add Node";
-            document.getElementById('node-id').value = data.id;
-            document.getElementById('node-label').value = data.label;
-            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
-            document.getElementById('cancelButton').onclick = clearPopUp.bind();
-            document.getElementById('network-popUp').style.display = 'block';
+            document.getElementById('addnode-operation').innerHTML = "Add Node";
+            for (var nodecol = 0; nodecol < x.opts_manipulation.addNodeCols.length; nodecol++){
+              document.getElementById('addnode-' + x.opts_manipulation.addNodeCols[nodecol]).value = data[x.opts_manipulation.addNodeCols[nodecol]];
+            }
+            document.getElementById('addnode-saveButton').onclick = saveNode.bind(this, data, callback, "addNode");
+            document.getElementById('addnode-cancelButton').onclick = clearPopUp.bind();
+            document.getElementById('addnode-popUp').style.display = 'block';
           };
         } else {
           options.manipulation.addNode = false;
@@ -2866,22 +2871,24 @@ HTMLWidgets.widget({
 
       if(x.options.manipulation.editNode === undefined){
         options.manipulation.editNode = function(data, callback) {
-            document.getElementById('operation').innerHTML = "Edit Node";
-            document.getElementById('node-id').value = data.id;
-            document.getElementById('node-label').value = data.label;
-            document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
-            document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
-            document.getElementById('network-popUp').style.display = 'block';
+            document.getElementById('editnode-operation').innerHTML = "Edit Node";
+            for (var nodecol = 0; nodecol < x.opts_manipulation.editNodeCols.length; nodecol++){
+              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = data[x.opts_manipulation.editNodeCols[nodecol]];
+            }
+            document.getElementById('editnode-saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+            document.getElementById('editnode-cancelButton').onclick = cancelEdit.bind(this,callback);
+            document.getElementById('editnode-popUp').style.display = 'block';
           };
       } else if(typeof(x.options.manipulation.editNode) === typeof(true)){
         if(x.options.manipulation.editNode){
           options.manipulation.editNode = function(data, callback) {
-              document.getElementById('operation').innerHTML = "Edit Node";
-              document.getElementById('node-id').value = data.id;
-              document.getElementById('node-label').value = data.label;
-              document.getElementById('saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
-              document.getElementById('cancelButton').onclick = cancelEdit.bind(this,callback);
-              document.getElementById('network-popUp').style.display = 'block';
+            document.getElementById('editnode-operation').innerHTML = "Edit Node";
+            for (var nodecol = 0; nodecol < x.opts_manipulation.editNodeCols.length; nodecol++){
+              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = data[x.opts_manipulation.editNodeCols[nodecol]];
+            }
+            document.getElementById('editnode-saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
+            document.getElementById('editnode-cancelButton').onclick = cancelEdit.bind(this,callback);
+            document.getElementById('editnode-popUp').style.display = 'block';
             };
         } else {
           options.manipulation.editNode = false;
@@ -2967,30 +2974,56 @@ HTMLWidgets.widget({
       }
 
       if(x.options.manipulation.editEdge === undefined){
-        options.manipulation.editEdge = function(data, callback) {
-          if (data.from == data.to) {
-            var r = confirm("Do you want to connect the node to itself?");
-            if (r === true) {
-              saveEdge(data, callback, "editEdge");
+          if(x.opts_manipulation.tab_edit_edge){
+            options.manipulation.editEdge = {editWithoutDrag : function(data, callback) {
+              document.getElementById('editedge-operation').innerHTML = "Edit Edge";
+              for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
+                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = data[x.opts_manipulation.editEdgeCols[edgecol]];
+              }
+              document.getElementById('editedge-saveButton').onclick = saveEdge.bind(this, data, callback, "editEdgeCols");
+              document.getElementById('editedge-cancelButton').onclick = cancelEdit.bind(this,callback);
+              document.getElementById('editedge-popUp').style.display = 'block';
             }
-          }
-          else {
-            saveEdge(data, callback, "editEdge");
-          }
-        };
-      } else if(typeof(x.options.manipulation.editEdge) === typeof(true)){
-        if(x.options.manipulation.editEdge){
-          options.manipulation.editEdge = function(data, callback) {
-            if (data.from == data.to) {
-              var r = confirm("Do you want to connect the node to itself?");
-              if (r === true) {
+            }
+          } else {
+            options.manipulation.editEdge = function(data, callback) {
+              if (data.from == data.to) {
+                var r = confirm("Do you want to connect the node to itself?");
+                if (r === true) {
+                  saveEdge(data, callback, "editEdge");
+                }
+              }
+              else {
                 saveEdge(data, callback, "editEdge");
               }
+            };
+          }
+      } else if(typeof(x.options.manipulation.editEdge) === typeof(true)){
+        if(x.options.manipulation.editEdge){
+          if(x.opts_manipulation.tab_edit_edge){
+            options.manipulation.editEdge = {editWithoutDrag : function(data, callback) {
+              document.getElementById('editedge-operation').innerHTML = "Edit Edge";
+              for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
+                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = data[x.opts_manipulation.editEdgeCols[edgecol]];
+              }
+              document.getElementById('editedge-saveButton').onclick = saveEdge.bind(this, data, callback, "editEdgeCols");
+              document.getElementById('editedge-cancelButton').onclick = cancelEdit.bind(this,callback);
+              document.getElementById('editedge-popUp').style.display = 'block';
             }
-            else {
-              saveEdge(data, callback, "editEdge");
             }
-          };
+          } else {
+            options.manipulation.editEdge = function(data, callback) {
+              if (data.from == data.to) {
+                var r = confirm("Do you want to connect the node to itself?");
+                if (r === true) {
+                  saveEdge(data, callback, "editEdge");
+                }
+              }
+              else {
+                saveEdge(data, callback, "editEdge");
+              }
+            };
+          }
         } else {
           options.manipulation.editEdge = false;
         }
@@ -3852,29 +3885,88 @@ HTMLWidgets.widget({
     // dataManipulation
     //*************************
     function clearPopUp() {
-      document.getElementById('saveButton').onclick = null;
-      document.getElementById('cancelButton').onclick = null;
-      document.getElementById('network-popUp').style.display = 'none';
+      if(x.opts_manipulation.tab_add_node){
+        document.getElementById('addnode-saveButton').onclick = null;
+        document.getElementById('addnode-cancelButton').onclick = null;
+        document.getElementById('addnode-popUp').style.display = 'none';
+      }
+
+      if(x.opts_manipulation.tab_edit_node){
+        document.getElementById('editnode-saveButton').onclick = null;
+        document.getElementById('editnode-cancelButton').onclick = null;
+        document.getElementById('editnode-popUp').style.display = 'none';
+      }
+      
+      if(x.opts_manipulation.tab_edit_edge){
+        document.getElementById('editedge-saveButton').onclick = null;
+        document.getElementById('editedge-cancelButton').onclick = null;
+        document.getElementById('editedge-popUp').style.display = 'none';
+      }
     }
 
     function saveNode(data, callback, cmd) {
-      data.id = document.getElementById('node-id').value;
-      data.label = document.getElementById('node-label').value;
+      var iname;
+      var prediv;
+      if(cmd === "addNode"){
+        iname = "addNodeCols";
+        prediv = 'addnode-';
+      } else  {
+        iname = "editNodeCols";
+        prediv = 'editnode-';
+      }
+      var obj = {id : data.id}
+      for (var nodecol = 0; nodecol < x.opts_manipulation[iname].length; nodecol++){
+        var add_node_val = document.getElementById(prediv + x.opts_manipulation[iname][nodecol]).value;
+        if(add_node_val !== "undefined"){
+          obj[x.opts_manipulation[iname][nodecol]] = add_node_val
+        }
+      }
+
+      var update_obj = clone(obj);
+      update_obj.x = data.x;
+      update_obj.y = data.y;
+      nodes.update(update_obj);
+      
       if (window.Shiny){
-        var obj = {cmd: cmd, id: data.id, label: data.label}
+        obj.cmd = cmd;
         Shiny.onInputChange(el.id + '_graphChange', obj);
       }
       clearPopUp();
-      callback(data);
+      callback(null);
     }
 
     function saveEdge(data, callback, cmd) {
-      callback(data); //must be first called for egde id !
-      if (window.Shiny){
-        var obj = {cmd: cmd, id: data.id, from: data.from, to: data.to};
-        Shiny.onInputChange(el.id + '_graphChange', obj);
+      if(cmd === "editEdge"){
+        callback(data); //must be first called for egde id !
+        if (window.Shiny){
+          var obj = {cmd: cmd, id: data.id, from: data.from, to: data.to};
+          Shiny.onInputChange(el.id + '_graphChange', obj);
+        }
+      } else if(cmd === "addEdge"){
+        callback(data); //must be first called for egde id !
+        if (window.Shiny){
+          var obj = {cmd: cmd, id: data.id, from: data.from, to: data.to};
+          Shiny.onInputChange(el.id + '_graphChange', obj);
+        }
+      } else if(cmd === "editEdgeCols"){
+        for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
+          var add_edge_val = document.getElementById("editedge-" + x.opts_manipulation.editEdgeCols[edgecol]).value;
+          if(add_edge_val !== "undefined"){
+            data[x.opts_manipulation.editEdgeCols[edgecol]] = add_edge_val
+          }
+        }
+        if (window.Shiny){
+          var obj = {cmd: "editEdge", id : data.id}
+          for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
+            if(data[x.opts_manipulation.editEdgeCols[edgecol]] !== "undefined"){
+              obj[x.opts_manipulation.editEdgeCols[edgecol]] = data[x.opts_manipulation.editEdgeCols[edgecol]];
+            }
+          }
+          Shiny.onInputChange(el.id + '_graphChange', obj);
+        }
+        callback(data);
+        clearPopUp();
       }
-      
     }
 
     function deleteSubGraph(data, callback) {
