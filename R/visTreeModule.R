@@ -1506,15 +1506,15 @@ visTreeModuleServer <- function(input, output, session, data,
   })
   
   # complexity update
-  cp_parameters <- shiny::reactiveValues(min = 0, max = 1,  step = 0.005)
+  cp_parameters <- shiny::reactiveValues(min = 0, max = 0.2,  step = 0.001)
   
   shiny::observeEvent(input$set_cp, {
     shiny::showModal(shiny::modalDialog(
       title = "Complexity parameters",
-      shiny::numericInput(ns("cp_min"), "Slider minimum :", shiny::isolate(cp_parameters$min)),
-      shiny::numericInput(ns("cp_max"), "Slider maximum :", shiny::isolate(cp_parameters$max)),
-      shiny::numericInput(ns("cp_step"), "Slider step :", shiny::isolate(cp_parameters$step)),
-      shiny::actionButton(ns("update_cp"), "Update complexity slider"),
+      shiny::numericInput(ns("cp_min"), "Slider minimum :", shiny::isolate(cp_parameters$min), step = 0.1),
+      shiny::numericInput(ns("cp_max"), "Slider maximum :", shiny::isolate(cp_parameters$max), step = 0.1),
+      shiny::numericInput(ns("cp_step"), "Slider step :", shiny::isolate(cp_parameters$step), step = 0.001),
+      shiny::div(shiny::actionButton(ns("update_cp"), "Update complexity slider"), align = "center"),
       easyClose = TRUE,
       footer = NULL
     ))
@@ -1525,6 +1525,7 @@ visTreeModuleServer <- function(input, output, session, data,
     cp_parameters$max <- input$cp_max
     cp_parameters$step <- input$cp_step
     shiny::updateSliderInput(session, "complexity", min = input$cp_min, max = input$cp_max, step = input$cp_step)
+    shiny::removeModal()
   })
   
   
@@ -1595,7 +1596,7 @@ visTreeModuleUI <- function(id, rpartParams = TRUE, visTreeParams = TRUE, quitBu
                                        ),
                                        shiny::column(2,
                                                      shiny::sliderInput(ns("complexity"), "Complexity (cp) :",
-                                                                        min = 0, max = 1, value = 0.005, step = 0.005)
+                                                                        min = 0, max = 0.2, value = 0.005, step = 0.001)
                                        ),
                                        shiny::column(1,
                                                      shiny::br(), shiny::br(), shiny::actionButton(ns("set_cp"), "Set cp slider")
