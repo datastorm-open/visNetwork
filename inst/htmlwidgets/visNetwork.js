@@ -2608,7 +2608,7 @@ HTMLWidgets.widget({
           if(tmpnodes[nd].icon  && !x.legend.nodesToDataframe){
             tmpnodes[nd].icon.code = JSON.parse( '"'+'\\u' + tmpnodes[nd].icon.code + '"');
           }
-          if(tmpnodes[nd].icon.face){
+          if(tmpnodes[nd].icon  && tmpnodes[nd].icon.face){
             if(tmpnodes[nd].icon.face === "'Font Awesome 5 Free'"){
               tmpnodes[nd].icon.weight = "bold"
             }
