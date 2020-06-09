@@ -49,8 +49,8 @@
 #'@param manipulation : Just a Boolean or a list. See \link{visDocumentation}. You can also choose the columns to edit : 
 #'\itemize{
 #'  \item{"editEdgeCols"}{ : Optional. Default to NULL, and so you can just move edge. If set, you can't move edge but just edit.}
-#'  \item{"editNodeCols"}{ : Optional. Default to c("id", "label")}
-#'  \item{"addNodeCols"}{ : Optional. Default to c("id", "label")}
+#'  \item{"editNodeCols"}{ : Optional. Default to c("id", "label"). See examples.}
+#'  \item{"addNodeCols"}{ : Optional. Default to c("id", "label"). See examples.}
 #'}
 #'@examples
 #' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
@@ -200,9 +200,19 @@
 #' visNetwork(nodes, edges) %>% 
 #'   visOptions(manipulation = list(enabled = T, 
 #'                                  editEdgeCols = c("label"), 
-#'                                  editNodeCols = c("id", "label", "title", "group"), 
+#'                                  editNodeCols = c("id", "label", "title", "size"), 
 #'                                  addNodeCols = c("label", "group")))
 #'
+#' # choose columns to edit + input html type (text, number, ...)
+#' # https://www.w3schools.com/tags/att_input_type.asp
+#' visNetwork(nodes, edges) %>% 
+#'   visOptions(manipulation = list(enabled = T, 
+#'                                  editEdgeCols = c("label"), 
+#'                                  editNodeCols = list(
+#'                                     "text" = c("id", "label", "title"),
+#'                                     "number" = c("size")
+#'                                  ), 
+#'                                  addNodeCols = c("label", "group")))
 #'visNetwork(nodes, edges)  %>% 
 #'  visOptions(manipulation = list(enabled = TRUE, 
 #'                                 editEdge = htmlwidgets::JS("function(data, callback) {
@@ -263,20 +273,40 @@ visOptions <- function(graph,
     
     if(!"addNodeCols" %in% names(manipulation)){
       graph$x$opts_manipulation$addNodeCols <- c("id", "label")
+      addNodeCols_html_input_type <- rep("text", 2)
     } else {
-      graph$x$opts_manipulation$addNodeCols <- manipulation$addNodeCols
+      if(is.list(manipulation$addNodeCols)){
+        graph$x$opts_manipulation$addNodeCols <- unname(do.call("c", manipulation$addNodeCols))
+        addNodeCols_html_input_type <- rep(names(manipulation$addNodeCols), sapply(manipulation$addNodeCols, length))
+      } else if(is.vector(manipulation$addNodeCols)){
+        graph$x$opts_manipulation$addNodeCols <- manipulation$addNodeCols
+        addNodeCols_html_input_type <- rep("text", length(manipulation$addNodeCols))
+      }
       options$manipulation$addNodeCols <- NULL
     }
     
     if(!"editNodeCols" %in% names(manipulation)){
       graph$x$opts_manipulation$editNodeCols <- c("id", "label")
+      editNodeCols_html_input_type <- rep("text", 2)
     } else {
-      graph$x$opts_manipulation$editNodeCols <- manipulation$editNodeCols
+      if(is.list(manipulation$editNodeCols)){
+        graph$x$opts_manipulation$editNodeCols <- unname(do.call("c", manipulation$editNodeCols))
+        editNodeCols_html_input_type <- rep(names(manipulation$editNodeCols), sapply(manipulation$editNodeCols, length))
+      } else if(is.vector(manipulation$editNodeCols)){
+        graph$x$opts_manipulation$editNodeCols <- manipulation$editNodeCols
+        editNodeCols_html_input_type <- rep("text", length(manipulation$editNodeCols))
+      }
       options$manipulation$editNodeCols <- NULL
     }
     
     if("editEdgeCols" %in% names(manipulation) && !is.null(manipulation$editEdgeCols) && length(manipulation$editEdgeCols) > 0){
-      graph$x$opts_manipulation$editEdgeCols <- manipulation$editEdgeCols
+      if(is.list(manipulation$editEdgeCols)){
+        graph$x$opts_manipulation$editEdgeCols <- unname(do.call("c", manipulation$editEdgeCols))
+        editEdgeCols_html_input_type <- rep(names(manipulation$editEdgeCols), sapply(manipulation$editEdgeCols, length))
+      } else if(is.vector(manipulation$editEdgeCols)){
+        graph$x$opts_manipulation$editEdgeCols <- manipulation$editEdgeCols
+        editEdgeCols_html_input_type <- rep("text", length(manipulation$editEdgeCols))
+      } 
       options$manipulation$editEdgeCols <- NULL
     } 
     
@@ -291,15 +321,24 @@ visOptions <- function(graph,
     }
     
     if(!is.null(graph$x$opts_manipulation$addNodeCols)){
-      graph$x$opts_manipulation$tab_add_node <- build_manipulation_table(graph$x$opts_manipulation$addNodeCols, id = "addnode")
+      graph$x$opts_manipulation$tab_add_node <- build_manipulation_table(
+        col = graph$x$opts_manipulation$addNodeCols, 
+        type = addNodeCols_html_input_type,
+        id = "addnode")
     }
     
     if(!is.null(graph$x$opts_manipulation$editNodeCols)){
-      graph$x$opts_manipulation$tab_edit_node <- build_manipulation_table(graph$x$opts_manipulation$editNodeCols, id = "editnode") 
+      graph$x$opts_manipulation$tab_edit_node <- build_manipulation_table(
+        col = graph$x$opts_manipulation$editNodeCols, 
+        type = editNodeCols_html_input_type,
+        id = "editnode") 
     }
     
     if(!is.null(graph$x$opts_manipulation$editEdgeCols)){
-      graph$x$opts_manipulation$tab_edit_edge <- build_manipulation_table(graph$x$opts_manipulation$editEdgeCols, id = "editedge") 
+      graph$x$opts_manipulation$tab_edit_edge <- build_manipulation_table(
+        col = graph$x$opts_manipulation$editEdgeCols,
+        type = editEdgeCols_html_input_type, 
+        id = "editedge") 
     }
     
   }
@@ -664,14 +703,14 @@ visOptions <- function(graph,
 }
 
 
-build_manipulation_table <- function(col, id = "node"){
+build_manipulation_table <- function(col, type, id = "node"){
   
   if(length(col) > 0){
     table <- paste0('<span id="', id, '-operation" class = "operation">node</span> <br><table style="margin:auto;">')
     
-    for(c in col){
+    for(i in 1:length(col)){
       
-      add <- paste0('<tr><td>', c, '</td><td><input id="', id, "-", c, '" value="new value"></td></tr>')
+      add <- paste0('<tr><td>', col[i], '</td><td><input id="', id, "-", col[i], '"  type= "', type[i], '" value="new value"></td></tr>')
       table <- paste0(table, add)
     }
     

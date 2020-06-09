@@ -74,8 +74,8 @@ visOptions(
 \item{manipulation}{: Just a Boolean or a list. See \link{visDocumentation}. You can also choose the columns to edit : 
 \itemize{
  \item{"editEdgeCols"}{ : Optional. Default to NULL, and so you can just move edge. If set, you can't move edge but just edit.}
- \item{"editNodeCols"}{ : Optional. Default to c("id", "label")}
- \item{"addNodeCols"}{ : Optional. Default to c("id", "label")}
+ \item{"editNodeCols"}{ : Optional. Default to c("id", "label"). See examples.}
+ \item{"addNodeCols"}{ : Optional. Default to c("id", "label"). See examples.}
 }}
 }
 \description{
@@ -229,9 +229,19 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\% 
   visOptions(manipulation = list(enabled = T, 
                                  editEdgeCols = c("label"), 
-                                 editNodeCols = c("id", "label", "title", "group"), 
+                                 editNodeCols = c("id", "label", "title", "size"), 
                                  addNodeCols = c("label", "group")))
 
+# choose columns to edit + input html type (text, number, ...)
+# https://www.w3schools.com/tags/att_input_type.asp
+visNetwork(nodes, edges) \%>\% 
+  visOptions(manipulation = list(enabled = T, 
+                                 editEdgeCols = c("label"), 
+                                 editNodeCols = list(
+                                    "text" = c("id", "label", "title"),
+                                    "number" = c("size")
+                                 ), 
+                                 addNodeCols = c("label", "group")))
 visNetwork(nodes, edges)  \%>\% 
  visOptions(manipulation = list(enabled = TRUE, 
                                 editEdge = htmlwidgets::JS("function(data, callback) {

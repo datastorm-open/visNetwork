@@ -2871,9 +2871,10 @@ HTMLWidgets.widget({
 
       if(x.options.manipulation.editNode === undefined){
         options.manipulation.editNode = function(data, callback) {
+            var node_data = nodes.get(data.id);
             document.getElementById('editnode-operation').innerHTML = "Edit Node";
             for (var nodecol = 0; nodecol < x.opts_manipulation.editNodeCols.length; nodecol++){
-              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = data[x.opts_manipulation.editNodeCols[nodecol]];
+              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = node_data[x.opts_manipulation.editNodeCols[nodecol]];
             }
             document.getElementById('editnode-saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
             document.getElementById('editnode-cancelButton').onclick = cancelEdit.bind(this,callback);
@@ -2882,9 +2883,10 @@ HTMLWidgets.widget({
       } else if(typeof(x.options.manipulation.editNode) === typeof(true)){
         if(x.options.manipulation.editNode){
           options.manipulation.editNode = function(data, callback) {
+            var node_data = nodes.get(data.id);
             document.getElementById('editnode-operation').innerHTML = "Edit Node";
             for (var nodecol = 0; nodecol < x.opts_manipulation.editNodeCols.length; nodecol++){
-              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = data[x.opts_manipulation.editNodeCols[nodecol]];
+              document.getElementById('editnode-' + x.opts_manipulation.editNodeCols[nodecol]).value = node_data[x.opts_manipulation.editNodeCols[nodecol]];
             }
             document.getElementById('editnode-saveButton').onclick = saveNode.bind(this, data, callback, "editNode");
             document.getElementById('editnode-cancelButton').onclick = cancelEdit.bind(this,callback);
@@ -2976,9 +2978,10 @@ HTMLWidgets.widget({
       if(x.options.manipulation.editEdge === undefined){
           if(x.opts_manipulation.tab_edit_edge){
             options.manipulation.editEdge = {editWithoutDrag : function(data, callback) {
+              var edge_data = edges.get(data.id);
               document.getElementById('editedge-operation').innerHTML = "Edit Edge";
               for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
-                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = data[x.opts_manipulation.editEdgeCols[edgecol]];
+                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = edge_data[x.opts_manipulation.editEdgeCols[edgecol]];
               }
               document.getElementById('editedge-saveButton').onclick = saveEdge.bind(this, data, callback, "editEdgeCols");
               document.getElementById('editedge-cancelButton').onclick = cancelEdit.bind(this,callback);
@@ -3002,9 +3005,10 @@ HTMLWidgets.widget({
         if(x.options.manipulation.editEdge){
           if(x.opts_manipulation.tab_edit_edge){
             options.manipulation.editEdge = {editWithoutDrag : function(data, callback) {
+              var edge_data = edges.get(data.id);
               document.getElementById('editedge-operation').innerHTML = "Edit Edge";
               for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
-                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = data[x.opts_manipulation.editEdgeCols[edgecol]];
+                document.getElementById('editedge-' + x.opts_manipulation.editEdgeCols[edgecol]).value = edge_data[x.opts_manipulation.editEdgeCols[edgecol]];
               }
               document.getElementById('editedge-saveButton').onclick = saveEdge.bind(this, data, callback, "editEdgeCols");
               document.getElementById('editedge-cancelButton').onclick = cancelEdit.bind(this,callback);
@@ -3917,6 +3921,10 @@ HTMLWidgets.widget({
       var obj = {id : data.id}
       for (var nodecol = 0; nodecol < x.opts_manipulation[iname].length; nodecol++){
         var add_node_val = document.getElementById(prediv + x.opts_manipulation[iname][nodecol]).value;
+        var add_node_type = document.getElementById(prediv + x.opts_manipulation[iname][nodecol]).type;
+        if(add_node_type && add_node_type === "number"){
+          add_node_val = parseFloat(add_node_val)
+        }
         if(add_node_val !== "undefined"){
           obj[x.opts_manipulation[iname][nodecol]] = add_node_val
         }
@@ -3951,6 +3959,10 @@ HTMLWidgets.widget({
       } else if(cmd === "editEdgeCols"){
         for (var edgecol = 0; edgecol < x.opts_manipulation.editEdgeCols.length; edgecol++){
           var add_edge_val = document.getElementById("editedge-" + x.opts_manipulation.editEdgeCols[edgecol]).value;
+          var add_edge_type = document.getElementById("editedge-" + x.opts_manipulation.editEdgeCols[edgecol]).type;
+          if(add_edge_type && add_edge_type === "number"){
+            add_edge_val = parseFloat(add_edge_val)
+          }
           if(add_edge_val !== "undefined"){
             data[x.opts_manipulation.editEdgeCols[edgecol]] = add_edge_val
           }
