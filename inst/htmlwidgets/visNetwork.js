@@ -798,8 +798,8 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
 function visNetworkdataframeToD3(df, type) {
 
   // variables we have specially to control
-  var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties", "chosen", "heightConstraint", "image", "margin", "widthConstraint"];
-  var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling", "chosen", "widthConstraint"];
+  /*var nodesctrl = ["color", "fixed", "font", "icon", "shadow", "scaling", "shapeProperties", "chosen", "heightConstraint", "image", "margin", "widthConstraint"];
+  var edgesctrl = ["color", "font", "arrows", "shadow", "smooth", "scaling", "chosen", "widthConstraint"];*/
   
   var names = [];
   var colnames = [];
@@ -814,16 +814,16 @@ function visNetworkdataframeToD3(df, type) {
       if(ctrlname.length === 1){
         names.push( new Array(name));
       } else {
-        if(type === "nodes"){
+        /*if(type === "nodes"){
          toctrl = indexOf.call(nodesctrl, ctrlname[0], true);
         } else if(type === "edges"){
          toctrl = indexOf.call(edgesctrl, ctrlname[0], true);
         }
-        if(toctrl > -1){
+        if(toctrl > -1){*/
           names.push(ctrlname);
-        } else {
+        /*} else {
           names.push(new Array(name));
-        }
+        }*/
       }
       if (typeof(df[name]) !== "object" || typeof(df[name].length) === "undefined") {
           throw new Error("All fields must be arrays");
