@@ -33,10 +33,11 @@ Network visualization configure options. For full documentation, have a look at 
 nodes <- data.frame(id = 1:3, title = paste0("<p>", 1:3,"<br> tooltip</p>"))
 edges <- data.frame(from = c(1,2), to = c(1,3))
 
-visNetwork(nodes, edges) %>%
+visNetwork(nodes, edges) \%>\%
  visConfigure(enabled = TRUE, filter = "interaction")
  
 # using visNetworkEditor
+network <- visNetwork(nodes, edges)
 custom_network <- visNetworkEditor(object = network)
 custom_network
 

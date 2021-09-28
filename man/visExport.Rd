@@ -45,15 +45,15 @@ Network export configuration. This function only work within shiny or a web brow
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
 
-visNetwork(nodes, edges) %>%
- visGroups(groupname = "A", color = "red") %>%
- visGroups(groupname = "B", color = "lightblue") %>%
- visLegend() %>% visExport() 
+visNetwork(nodes, edges) \%>\%
+ visGroups(groupname = "A", color = "red") \%>\%
+ visGroups(groupname = "B", color = "lightblue") \%>\%
+ visLegend() \%>\% visExport() 
  
-visNetwork(nodes, edges) %>%
- visGroups(groupname = "A", color = "red") %>%
- visGroups(groupname = "B", color = "lightblue") %>%
- visLegend() %>% visExport(type = "jpeg", name = "export-network", 
+visNetwork(nodes, edges) \%>\%
+ visGroups(groupname = "A", color = "red") \%>\%
+ visGroups(groupname = "B", color = "lightblue") \%>\%
+ visLegend() \%>\% visExport(type = "jpeg", name = "export-network", 
    float = "left", label = "Save network", background = "purple", style= "") 
  
 }

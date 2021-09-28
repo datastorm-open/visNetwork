@@ -30,7 +30,7 @@ edges <- data.frame(from = c(1,2), to = c(2,3))
 network <- visNetwork(nodes, edges)
 network
 
-network %>% visSave(file = "network.html", background = "black")
+network \%>\% visSave(file = "network.html", background = "black")
 
 # same as
 visSave(network, file = "network.html", background = "black")

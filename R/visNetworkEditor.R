@@ -127,7 +127,7 @@ visNetworkEditorServer <- function(input, output, session, object,
   shiny::observe({
     if(!is.null(input$network_configurator)){
       update_network <- object() %>% 
-        visSetOptions(options = input$network_configurator) %>%
+        visSetOptions(options = vis_list_clean(input$network_configurator, recursive = TRUE)) %>%
         visConfigure(enabled = FALSE)
       shiny::stopApp(update_network)
     }
@@ -147,14 +147,27 @@ visNetworkEditorUI <- function(id, quitButton = FALSE, height = "700px") {
     ),
     
     shiny::fluidRow(
-      shiny::column(4,
+      shiny::column(5,
                     shiny::div(id = ns("configure"), 
                                style = paste0("overflow: auto;overflow-x: hidden; height:", height, ";")),
                     if(quitButton){
                       shiny::div(hr(), shiny::actionButton(ns("quit_btn"), "Quit and get back network in R"), align = "center")
                     }
       ), 
-      shiny::column(8, shiny::uiOutput(ns("network_ui")))
+      shiny::column(7, shiny::uiOutput(ns("network_ui")))
     )
   )
+}
+
+vis_setmembers <- `[<-`
+vis_list_clean <- function (.data, fun = is.null, recursive = FALSE) 
+{
+  if (recursive) {
+    .data <- lapply(.data, function(.item) {
+      if (is.list(.item)) 
+        vis_list_clean(.item, fun, recursive = TRUE)
+      else .item
+    })
+  }
+  vis_setmembers(.data, vapply(.data, fun, logical(1L)), NULL)
 }
