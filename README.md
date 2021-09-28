@@ -14,11 +14,16 @@ And have a look to multiple R examples, vis.js documentation (````visDocumentati
 
 # News
 
-## ``2.0.8`` available on CRAN
+## ``2.1.0`` available on CRAN (in a few days...)
 
-  * ### #325 : fix cancel manipulation
-  * ### #327 : fix "layout_with_sugiyama" for simple graphs 
-  * ### #334 : Ensure compatibility with the next ggraph release
+  * ### #361 : fix visHclust with new ggraph version
+  * ### switch to vis-network 9.1.0
+  * ### visTree : fix using invalid R colnames + crash no one X
+  * ### add fontawesome 5.13.0 support
+  * ### #377 : custom manipulation columns
+  * ### #335 : Enable highlightNearest degree for groups
+  * ### visTree : update performance compute boxplot sparkline with large data
+  * ### visTree/TreeModule : fix passing constant variable & character tooltipColumns
   
 ![alt text](https://github.com/datastorm-open/visNetwork/blob/master/inst/img/tree_example.png)
 
