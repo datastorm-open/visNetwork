@@ -25,19 +25,19 @@
 #' @param borderWidthSelected : Number. Default to 2. The width of the border of the node when it is selected. If left at undefined, double the borderWidth will be used.
 #' @param brokenImage : String. Undefined. When the shape is set to image or circularImage, this option can be an URL to a backup image in case the URL supplied in the image option cannot be resolved
 #' @param labelHighlightBold : Boolean. Default to true. Determines whether or not the label becomes bold when the node is selected.
-#' @param color : String | named list.	Color for the node. Can be 'rgba(120,32,14,1)', '#97C2FC' (hexa notation on 7 char without transparency) or 'red'. Can be just one color, or a list with several elements :
+#' @param color : String | named list.	Color for the node. Can be 'rgba(120,32,14,1)', '#D2E5FF' (hexa notation on 7 char without transparency) or 'red'. Can be just one color, or a list with several elements :
 #' \itemize{
-#'  \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node.}
+#'  \item{"background"}{ : String. Default to '#D2E5FF'. Background color for the node.}
 #'  \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node.}
 #'  \item{"highlight"}{ : String | named list, 	Color of the node when selected.
 #'    \itemize{
-#'      \item{"background"}{ : String. Default to '#97C2FC'. Background color for the node when selected.}
+#'      \item{"background"}{ : String. Default to '#D2E5FF'. Background color for the node when selected.}
 #'      \item{"border"}{ : String. Default to '#2B7CE9'. Border color for the node when selected.}
 #'    }
 #'  }
 #'  \item{"hover"}{ : named list, when the hover option is enabled
 #'    \itemize{
-#'      \item{"background"}{ : String. Default to '#2B7CE9'. Border color of the node when selected.}
+#'      \item{"background"}{ : String. Default to '#D2E5FF'. Background color of the node when the node is hovered over and the hover option is enabled.}
 #'      \item{"border"}{ : String. Default to '#2B7CE9'. Border color of the node when the node is hovered over and the hover option is enabled.}
 #'    }
 #'  }
