@@ -78,8 +78,8 @@
 #'}
 #'
 #' @param widthConstraint : See \link{visDocumentation}
-#'  
 #' @param chosen : See \link{visDocumentation} 
+#' @param endPointOffset : See \link{visDocumentation}
 #' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -169,7 +169,8 @@ visEdges <- function(graph,
                      shadow = NULL, 
                      scaling = NULL, 
                      widthConstraint = NULL,
-                     chosen = NULL){
+                     chosen = NULL, 
+                     endPointOffset = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -210,6 +211,7 @@ visEdges <- function(graph,
   }
   
   edges$scaling <- scaling
+  edges$endPointOffset <- endPointOffset
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(edges = edges)

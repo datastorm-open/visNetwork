@@ -6,6 +6,7 @@
 #'@param dragNodes : Boolean. Default to true. When true, the nodes that are not fixed can be dragged by the user.
 #'@param dragView : Boolean. Default to true. When true, the view can be dragged around by the user.
 #'@param hideEdgesOnDrag : Boolean. Default to false. When true, the edges are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.
+#'@param hideEdgesOnZoom : Boolean. Default to false. When true, the edges are not drawn when zooming the view. This can greatly speed up responsiveness on zooming, improving user experience.
 #'@param hideNodesOnDrag : Boolean. Default to false. When true, the nodes are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.
 #'@param hover : Boolean. Default to false. When true, the nodes use their hover colors when the mouse moves over them.
 #'@param hoverConnectedEdges : Boolean. Default to true. When true, on hovering over a node, it's connecting edges are highlighted.
@@ -29,6 +30,7 @@
 #'@param tooltipStay : Number. Default to 300. This is the amount of time in milliseconds it takes before the tooltip is hidden.
 #'@param tooltipStyle : Character. HTML style of tooltip. You must use 'position: fixed;visibility:hidden;'.
 #'@param zoomView : Boolean. Default to true. When true, the user can zoom in.
+#'@param zoomSpeed. Number. Default to 1. 	How fast/rough or slow/precise zooming is.
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -84,6 +86,7 @@ visInteraction <- function(graph,
                        dragNodes = NULL,
                        dragView = NULL,
                        hideEdgesOnDrag = NULL,
+                       hideEdgesOnZoom = NULL,
                        hideNodesOnDrag = NULL,
                        hover = NULL,
                        hoverConnectedEdges = NULL,
@@ -95,7 +98,8 @@ visInteraction <- function(graph,
                        tooltipDelay = NULL,
                        tooltipStay = 300,
                        tooltipStyle = NULL,
-                       zoomView = NULL){
+                       zoomView = NULL, 
+                       zoomSpeed = 1){
 
   
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
@@ -106,6 +110,7 @@ visInteraction <- function(graph,
   interaction$dragNodes <- dragNodes
   interaction$dragView <- dragView
   interaction$hideEdgesOnDrag <- hideEdgesOnDrag
+  interaction$hideEdgesOnZoom <- hideEdgesOnZoom
   interaction$hideNodesOnDrag <- hideNodesOnDrag
   interaction$hover <- hover
   interaction$hoverConnectedEdges <- hoverConnectedEdges
@@ -116,7 +121,7 @@ visInteraction <- function(graph,
   interaction$selectConnectedEdges <- selectConnectedEdges
   interaction$tooltipDelay <- tooltipDelay
   interaction$zoomView <-zoomView
-
+  interaction$zoomSpeed <- zoomSpeed
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(interaction = interaction)
     data <- list(id = graph$id, options = options)

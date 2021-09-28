@@ -102,6 +102,7 @@
 #' @param margin : See \link{visDocumentation} 
 #' @param chosen : See \link{visDocumentation}  
 #' @param imagePadding : See \link{visDocumentation}  
+#' @param ctxRenderer : See \link{visDocumentation}  
 #' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
@@ -164,7 +165,8 @@ visNodes <- function(graph,
                      widthConstraint = NULL,
                      margin = NULL,
                      chosen = NULL, 
-                     imagePadding = NULL){
+                     imagePadding = NULL, 
+                     ctxRenderer = NULL){
 
   if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
     stop("graph must be a visNetwork or a visNetworkProxy object")
@@ -210,6 +212,7 @@ visNodes <- function(graph,
   }
   
   nodes$scaling <- scaling
+  nodes$ctxRenderer <- ctxRenderer
   
   if(any(class(graph) %in% "visNetwork_Proxy")){
     options <- list(nodes = nodes)
