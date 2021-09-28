@@ -15,9 +15,8 @@ addIonicons(graph, name = "ionicons")
 \code{graph} htmlwidget with Ionicons dependencies attached.
 }
 \description{
-Add \href{http://ionicons.com/}{Ionicons} for styling
+Add \href{https://ionic.io/ionicons}{Ionicons} for styling
 our \code{graph} with beautiful, professional icons.
-See \href{http://ionicons.com/cheatsheet.html}{Cheatsheet} to get CSS content code.
 Can also use \link{addFontAwesome}
 }
 \examples{

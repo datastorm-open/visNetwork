@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-**visNetwork** is a R package for network visualization, using **vis.js** javascript library (http://visjs.org). All the remarks and bugs returns are welcome on github : https://github.com/datastorm-open/visNetwork.
+**visNetwork** is a R package for network visualization, using **vis.js** javascript library (https://visjs.org). All the remarks and bugs returns are welcome on github : https://github.com/datastorm-open/visNetwork.
 
 ## Minimal example
 
@@ -218,7 +218,7 @@ visNetwork(nodes, edges, width = "100%") %>%
 
 ## Use font awesome icons in your network
 
-You can use **Font Awesome** icons using groups or nodes options. **Font Awesome** library (http://fortawesome.github.io/Font-Awesome/) is not part of dependencies. use addFontAwesome() if needed.
+You can use **Font Awesome** icons using groups or nodes options. **Font Awesome** library (https://fontawesome.com) is not part of dependencies. use addFontAwesome() if needed.
 
 ```{r}
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))

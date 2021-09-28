@@ -1,6 +1,6 @@
 #' Use fontAwesome icons in visNetwork \code{graph}
 #'
-#' Add \href{http://fontawesome.com}{Font-Awesome} for styling
+#' Add \href{https://fontawesome.com}{Font-Awesome} for styling
 #' our \code{graph} with beautiful, professional icons.  Please note
 #' that you'll already have these icons if using Shiny.
 #' Can also use \link{addIonicons}   
@@ -86,9 +86,8 @@ addFontAwesome <- function(graph, name = "font-awesome", version = c("4.7.0", "5
 
 #' Use Ionicons in visNetwork \code{graph}
 #'
-#' Add \href{http://ionicons.com/}{Ionicons} for styling
+#' Add \href{https://ionic.io/ionicons}{Ionicons} for styling
 #' our \code{graph} with beautiful, professional icons.
-#' See \href{http://ionicons.com/cheatsheet.html}{Cheatsheet} to get CSS content code.
 #' Can also use \link{addFontAwesome}
 #'   
 #' @param  graph : a visNetwork object
