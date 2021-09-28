@@ -19,6 +19,7 @@
 #'  visConfigure(enabled = TRUE, filter = "interaction")
 #'  
 #' # using visNetworkEditor
+#' network <- visNetwork(nodes, edges)
 #' custom_network <- visNetworkEditor(object = network)
 #' custom_network
 #' 

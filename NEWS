@@ -1,7 +1,7 @@
 visNetwork 2.1.0
 --------------------------------------------------------------------------------
   * #361 : fix visHclust with new ggraph version
-  * switch to vis-network 7.5.2
+  * switch to vis-network 9.1.0
   * visTree : fix using invalid R colnames + crash no one X
   * add fontawesome 5.13.0 support
   * #377 : custom manipulation columns

@@ -417,7 +417,7 @@ function simpleImageResetNode(node, imageType, type){
 }
 
 // Global function to reset one cluster
-function resetOneCluster(node, groups, options, network){
+function resetOneCluster(node, options, network){
   if(node !== undefined){
     if(node.options.isHardToRead !== undefined){ // we have to reset this node
       if(node.options.isHardToRead){
@@ -425,10 +425,10 @@ function resetOneCluster(node, groups, options, network){
         var shape_group = false;
         var is_group = false;
   	  // have a group information & a shape defined in group ?
-        if(node.options.group !== undefined){
-          if(groups.groups[node.options.group] !== undefined){
+        if(node.options.group !== undefined && options.groups !== undefined){
+          if(options.groups[node.options.group] !== undefined){
             is_group = true;
-            if(groups.groups[node.options.group].shape !== undefined){
+            if(options.groups[node.options.group].shape !== undefined){
               shape_group = true;
             }
           }
@@ -446,7 +446,7 @@ function resetOneCluster(node, groups, options, network){
         } else if(node.options.shape !== undefined){
           final_shape = node.options.shape;
         } else if(shape_group){
-          final_shape = groups.groups[node.options.group].shape;
+          final_shape = options.groups[node.options.group].shape;
         } else if(shape_options){
           final_shape = options.nodes.shape;
         }
@@ -473,7 +473,7 @@ function resetOneCluster(node, groups, options, network){
 }
 
 // Global function to reset one node
-function resetOneNode(node, groups, options, network){
+function resetOneNode(node, options, network){
   if(node !== undefined){
     if(node.isHardToRead !== undefined){ // we have to reset this node
       if(node.isHardToRead){
@@ -481,10 +481,10 @@ function resetOneNode(node, groups, options, network){
         var shape_group = false;
         var is_group = false;
   	  // have a group information & a shape defined in group ?
-        if(node.group !== undefined){
-          if(groups.groups[node.group] !== undefined){
+        if(node.group !== undefined && options.groups !== undefined){
+          if(options.groups[node.group] !== undefined){
             is_group = true;
-            if(groups.groups[node.group].shape !== undefined){
+            if(options.groups[node.group].shape !== undefined){
               shape_group = true;
             }
           }
@@ -502,7 +502,7 @@ function resetOneNode(node, groups, options, network){
         } else if(node.shape !== undefined){
           final_shape = node.shape;
         } else if(shape_group){
-          final_shape = groups.groups[node.group].shape;
+          final_shape = options.groups[node.group].shape;
         } else if(shape_options){
           final_shape = options.nodes.shape;
         }
@@ -532,7 +532,7 @@ function resetOneNode(node, groups, options, network){
 }
 
 // Global function to reset all node
-function resetAllNodes(nodes, update, groups, options, network){
+function resetAllNodes(nodes, update, options, network){
   var nodesToReset = nodes.get({
     filter: function (item) {
       return item.isHardToRead === true;
@@ -553,7 +553,7 @@ function resetAllNodes(nodes, update, groups, options, network){
   }
 
   for (var i = 0; i < nodesToReset.length; i++) {
-    resetOneNode(nodesToReset[i], groups, options, network, type = "node");
+    resetOneNode(nodesToReset[i], options, network, type = "node");
 	// reset coordinates
     nodesToReset[i].x = undefined;
     nodesToReset[i].y = undefined;
@@ -562,7 +562,7 @@ function resetAllNodes(nodes, update, groups, options, network){
         var tmp_cluster_id = network.clustering.findNode(nodesToReset[i].id);
         // in case of multiple cluster...
         for(var j = 0; j < (tmp_cluster_id.length-1); j++) {
-          resetOneCluster(network.body.nodes[tmp_cluster_id[j]], groups, options, network);
+          resetOneCluster(network.body.nodes[tmp_cluster_id[j]], options, network);
         }
       }
     }
@@ -701,18 +701,19 @@ function imageNodeAsHardToRead(node, imageType, hideColor1, hideColor2, type){
 }
 
 // Global function to set one node as hard to read
-function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network, type){
+function nodeAsHardToRead(node, options, hideColor1, hideColor2, network, type){
   var final_shape;
   var shape_group = false;
   var is_group = false;
 
+
   if(node.isHardToRead === false || node.isHardToRead === undefined){
 
     // have a group information & a shape defined in group ?
-    if(node.group !== undefined){
-      if(groups.groups[node.group] !== undefined){
+    if(node.group !== undefined && options.groups !== undefined){
+      if(options.groups[node.group] !== undefined){
         is_group = true;
-        if(groups.groups[node.group].shape !== undefined){
+        if(options.groups[node.group].shape !== undefined){
           shape_group = true;
         }
       }
@@ -728,7 +729,7 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
     if(node.shape !== undefined){
       final_shape = node.shape;
     } else if(shape_group){
-      final_shape = groups.groups[node.group].shape;
+      final_shape = options.groups[node.group].shape;
     } else if(shape_options){
       final_shape = options.nodes.shape;
     }
@@ -753,9 +754,9 @@ function nodeAsHardToRead(node, groups, options, hideColor1, hideColor2, network
         }
       } 
       // or in group ?
-      if(find_color === false && is_group && groups.groups[node.group].icon !== undefined){
-        if(groups.groups[node.group].icon.color !== undefined){
-          icon_color = groups.groups[node.group].icon.color;
+      if(find_color === false && is_group && options.groups !== undefined && options.groups[node.group].icon !== undefined){
+        if(options.groups[node.group].icon.color !== undefined){
+          icon_color = options.groups[node.group].icon.color;
           find_color = true;
         }
       }
@@ -1896,7 +1897,7 @@ if (HTMLWidgets.shinyMode){
 
             //reset nodes
             resetAllEdges(el.edges, el.highlightColor, el.byselectionColor, el.chart);
-            resetAllNodes(el.nodes, true, el.chart.groups, el.options, el.chart);
+            resetAllNodes(el.nodes, true, el.options, el.chart);
             
             if (main_el.selectActive === true){
               main_el.selectActive = false;
@@ -1981,7 +1982,7 @@ if (HTMLWidgets.shinyMode){
           // reset some parameters / date before
           if (main_el.selectActive === true | main_el.highlightActive === true) {
             //reset nodes
-            resetAllNodes(el.nodes, true, el.chart.groups, el.options, el.chart);
+            resetAllNodes(el.nodes, true, el.options, el.chart);
             
             if (main_el.selectActive === true){
               main_el.selectActive = false;
@@ -3055,6 +3056,7 @@ HTMLWidgets.widget({
       }
     }
       
+    //console.info(instance.network)  
     //save data for re-use and update
     document.getElementById("graph"+el.id).chart = instance.network;
     document.getElementById("graph"+el.id).options = options;
@@ -3254,10 +3256,10 @@ HTMLWidgets.widget({
             }
           }
           if(value_in === false){ // not in selection, so as hard to read
-            nodeAsHardToRead(allNodes[nodeId], instance.network.groups, options, el_id.byselectionColor, el_id.highlightColor, instance.network, "node");
+            nodeAsHardToRead(allNodes[nodeId], options, el_id.byselectionColor, el_id.highlightColor, instance.network, "node");
           } else { // in selection, so reset if needed
             connectedNodes = connectedNodes.concat(allNodes[nodeId].id);
-            resetOneNode(allNodes[nodeId], instance.network.groups, options, instance.network);
+            resetOneNode(allNodes[nodeId], options, instance.network);
           }
           allNodes[nodeId].x = undefined;
           allNodes[nodeId].y = undefined;
@@ -3293,7 +3295,7 @@ HTMLWidgets.widget({
       }
       else if (el_id.selectActive === true) {
         //reset nodes
-        resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
+        resetAllNodes(nodes, update, options, instance.network)
         el_id.selectActive = false
       }
     } 
@@ -3368,11 +3370,11 @@ HTMLWidgets.widget({
           // mark all nodes as hard to read.
           for (var nodeId in instance.network.body.nodes) {
             if(instance.network.isCluster(nodeId)){
-              nodeAsHardToRead(instance.network.body.nodes[nodeId], instance.network.groups, options, el_id.highlightColor, el_id.byselectionColor, instance.network, "cluster");
+              nodeAsHardToRead(instance.network.body.nodes[nodeId], options, el_id.highlightColor, el_id.byselectionColor, instance.network, "cluster");
             }else {
               var tmp_node = allNodes[nodeId];
               if(tmp_node !== undefined){
-                nodeAsHardToRead(tmp_node, instance.network.groups, options, el_id.highlightColor, el_id.byselectionColor, instance.network, "node");
+                nodeAsHardToRead(tmp_node, options, el_id.highlightColor, el_id.byselectionColor, instance.network, "node");
                 tmp_node.x = undefined;
                 tmp_node.y = undefined;
               }
@@ -3447,7 +3449,7 @@ HTMLWidgets.widget({
    
             array_cluster_id = [];
             for (i = 0; i < connectedNodes.length; i++) {
-              resetOneNode(allNodes[connectedNodes[i]], instance.network.groups, options, instance.network);
+              resetOneNode(allNodes[connectedNodes[i]], options, instance.network);
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, connectedNodes[i], true) > -1){
                   array_cluster_id = array_cluster_id.concat(instance.network.clustering.findNode(connectedNodes[i])[0]);
@@ -3458,7 +3460,7 @@ HTMLWidgets.widget({
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                resetOneCluster(instance.network.body.nodes[array_cluster_id[i]], instance.network.groups, options, instance.network);
+                resetOneCluster(instance.network.body.nodes[array_cluster_id[i]], options, instance.network);
               }
             }
             
@@ -3627,7 +3629,7 @@ HTMLWidgets.widget({
             // all in degree nodes get their own color and their label back
             array_cluster_id = [];
             for (i = 0; i < allConnectedNodes.length; i++) {
-              resetOneNode(allNodes[allConnectedNodes[i]], instance.network.groups, options, instance.network);
+              resetOneNode(allNodes[allConnectedNodes[i]], options, instance.network);
               if(have_cluster_nodes){
                 if(indexOf.call(nodes_in_clusters, allConnectedNodes[i], true) > -1){
                   array_cluster_id = array_cluster_id.concat(instance.network.clustering.findNode(allConnectedNodes[i])[0]);
@@ -3638,7 +3640,7 @@ HTMLWidgets.widget({
             if(array_cluster_id.length > 0){
               array_cluster_id = uniqueArray(array_cluster_id, false, instance.network);
               for (i = 0; i < array_cluster_id.length; i++) {
-                 resetOneCluster(instance.network.body.nodes[array_cluster_id[i]], instance.network.groups, options, instance.network);
+                 resetOneCluster(instance.network.body.nodes[array_cluster_id[i]], options, instance.network);
               }
             }
              
@@ -3707,7 +3709,7 @@ HTMLWidgets.widget({
             resetList("nodeSelect", el.id, 'selected');
           }
           //reset nodes
-          resetAllNodes(nodes, update, instance.network.groups, options, instance.network)
+          resetAllNodes(nodes, update, options, instance.network)
           el_id.highlightActive = false;
           is_clicked = false;
           

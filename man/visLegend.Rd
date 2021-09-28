@@ -67,7 +67,7 @@ visNetwork(nodes, edges) \%>\%
 visNetwork(nodes, edges) \%>\%
   visGroups(groupname = "A", color = "red") \%>\%
   visGroups(groupname = "B", color = "lightblue") \%>\%
-  visLegend(width = 0.05, position = "right", main = "Legend")
+  visLegend(width = 0.1, position = "right", main = "Legend")
   
 # css on main   
 visNetwork(nodes, edges) \%>\%

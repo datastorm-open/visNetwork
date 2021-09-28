@@ -36,7 +36,8 @@ visNodes(
   widthConstraint = NULL,
   margin = NULL,
   chosen = NULL,
-  imagePadding = NULL
+  imagePadding = NULL,
+  ctxRenderer = NULL
 )
 }
 \arguments{
@@ -165,6 +166,8 @@ visNodes(
 \item{chosen}{: See \link{visDocumentation}}
 
 \item{imagePadding}{: See \link{visDocumentation}}
+
+\item{ctxRenderer}{: See \link{visDocumentation}}
 }
 \description{
 Network visualization nodes options. For full documentation, have a look at \link{visDocumentation}.

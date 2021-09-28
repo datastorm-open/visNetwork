@@ -28,7 +28,8 @@ visEdges(
   shadow = NULL,
   scaling = NULL,
   widthConstraint = NULL,
-  chosen = NULL
+  chosen = NULL,
+  endPointOffset = NULL
 )
 }
 \arguments{
@@ -124,6 +125,8 @@ If you want to control the size of the arrowheads, you can supply an object. See
 \item{widthConstraint}{: See \link{visDocumentation}}
 
 \item{chosen}{: See \link{visDocumentation}}
+
+\item{endPointOffset}{: See \link{visDocumentation}}
 }
 \description{
 Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.

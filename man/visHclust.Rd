@@ -158,9 +158,9 @@ visHclust(iris, cutree = 3, export = TRUE)
 
 
 # update group / individual nodes
-visHclust(iris, cutree = 8) %>% 
+visHclust(iris, cutree = 8) \%>\% 
  visGroups(groupname = "group", color ="black", 
-   shape = "triangleDown", size = 75)  %>% 
+   shape = "triangleDown", size = 75)  \%>\% 
  visGroups(groupname = "individual", 
    font = list(size = 150),
    color = list(background = "white", border = "purple", 

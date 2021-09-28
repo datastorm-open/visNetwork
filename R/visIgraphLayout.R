@@ -44,7 +44,7 @@
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(physics = TRUE, smooth = TRUE)
 #'
-#'# fix radomSeed to keep position
+#'# fix randomSeed to keep position
 #'visNetwork(nodes, edges) %>% 
 #'  visIgraphLayout(randomSeed = 123)
 #'  

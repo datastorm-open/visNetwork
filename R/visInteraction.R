@@ -30,7 +30,7 @@
 #'@param tooltipStay : Number. Default to 300. This is the amount of time in milliseconds it takes before the tooltip is hidden.
 #'@param tooltipStyle : Character. HTML style of tooltip. You must use 'position: fixed;visibility:hidden;'.
 #'@param zoomView : Boolean. Default to true. When true, the user can zoom in.
-#'@param zoomSpeed. Number. Default to 1. 	How fast/rough or slow/precise zooming is.
+#'@param zoomSpeed : Number. Default to 1. 	How fast/rough or slow/precise zooming is.
 #'
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 

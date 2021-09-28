@@ -1,6 +1,6 @@
 dependencies:
   - name: vis
-    version: 7.5.2
+    version: 9.1.0
     src: htmlwidgets/lib/vis
     script: vis-network.min.js
     stylesheet: vis-network.min.css

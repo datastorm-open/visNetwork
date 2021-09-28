@@ -9,6 +9,7 @@ visInteraction(
   dragNodes = NULL,
   dragView = NULL,
   hideEdgesOnDrag = NULL,
+  hideEdgesOnZoom = NULL,
   hideNodesOnDrag = NULL,
   hover = NULL,
   hoverConnectedEdges = NULL,
@@ -20,7 +21,8 @@ visInteraction(
   tooltipDelay = NULL,
   tooltipStay = 300,
   tooltipStyle = NULL,
-  zoomView = NULL
+  zoomView = NULL,
+  zoomSpeed = 1
 )
 }
 \arguments{
@@ -31,6 +33,8 @@ visInteraction(
 \item{dragView}{: Boolean. Default to true. When true, the view can be dragged around by the user.}
 
 \item{hideEdgesOnDrag}{: Boolean. Default to false. When true, the edges are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.}
+
+\item{hideEdgesOnZoom}{: Boolean. Default to false. When true, the edges are not drawn when zooming the view. This can greatly speed up responsiveness on zooming, improving user experience.}
 
 \item{hideNodesOnDrag}{: Boolean. Default to false. When true, the nodes are not drawn when dragging the view. This can greatly speed up responsiveness on dragging, improving user experience.}
 
@@ -66,6 +70,8 @@ visInteraction(
 \item{tooltipStyle}{: Character. HTML style of tooltip. You must use 'position: fixed;visibility:hidden;'.}
 
 \item{zoomView}{: Boolean. Default to true. When true, the user can zoom in.}
+
+\item{zoomSpeed}{: Number. Default to 1.     How fast/rough or slow/precise zooming is.}
 }
 \description{
 Network visualization interaction. For full documentation, have a look at \link{visDocumentation}.

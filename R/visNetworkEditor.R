@@ -147,14 +147,14 @@ visNetworkEditorUI <- function(id, quitButton = FALSE, height = "700px") {
     ),
     
     shiny::fluidRow(
-      shiny::column(4,
+      shiny::column(6,
                     shiny::div(id = ns("configure"), 
                                style = paste0("overflow: auto;overflow-x: hidden; height:", height, ";")),
                     if(quitButton){
                       shiny::div(hr(), shiny::actionButton(ns("quit_btn"), "Quit and get back network in R"), align = "center")
                     }
       ), 
-      shiny::column(8, shiny::uiOutput(ns("network_ui")))
+      shiny::column(6, shiny::uiOutput(ns("network_ui")))
     )
   )
 }

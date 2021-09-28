@@ -227,7 +227,7 @@ visNetwork(nodes, edges) \%>\%
  
 # choose columns to edit
 visNetwork(nodes, edges) \%>\% 
-  visOptions(manipulation = list(enabled = T, 
+  visOptions(manipulation = list(enabled = TRUE, 
                                  editEdgeCols = c("label"), 
                                  editNodeCols = c("id", "label", "title", "size"), 
                                  addNodeCols = c("label", "group")))
@@ -235,7 +235,7 @@ visNetwork(nodes, edges) \%>\%
 # choose columns to edit + input html type (text, number, ...)
 # https://www.w3schools.com/tags/att_input_type.asp
 visNetwork(nodes, edges) \%>\% 
-  visOptions(manipulation = list(enabled = T, 
+  visOptions(manipulation = list(enabled = TRUE, 
                                  editEdgeCols = c("label"), 
                                  editNodeCols = list(
                                     "text" = c("id", "label", "title"),
