@@ -532,13 +532,18 @@ function resetOneNode(node, options, network){
 }
 
 // Global function to reset all node
-function resetAllNodes(nodes, update, options, network){
-  var nodesToReset = nodes.get({
-    filter: function (item) {
-      return item.isHardToRead === true;
-    },
-    returnType :'Array'
-  });
+function resetAllNodes(nodes, update, options, network, all){
+  
+  if(all === false){
+      var nodesToReset = nodes.get({
+      filter: function (item) {
+        return item.isHardToRead === true;
+      },
+      returnType :'Array'
+    });
+  } else {
+      var nodesToReset = nodes.get({returnType :'Array'});
+  }
   
   var have_cluster_nodes = false;
   var nodes_in_clusters;
@@ -1897,7 +1902,7 @@ if (HTMLWidgets.shinyMode){
 
             //reset nodes
             resetAllEdges(el.edges, el.highlightColor, el.byselectionColor, el.chart);
-            resetAllNodes(el.nodes, true, el.options, el.chart);
+            resetAllNodes(el.nodes, true, el.options, el.chart, false);
             
             if (main_el.selectActive === true){
               main_el.selectActive = false;
@@ -1982,7 +1987,7 @@ if (HTMLWidgets.shinyMode){
           // reset some parameters / date before
           if (main_el.selectActive === true | main_el.highlightActive === true) {
             //reset nodes
-            resetAllNodes(el.nodes, true, el.options, el.chart);
+            resetAllNodes(el.nodes, true, el.options, el.chart, false);
             
             if (main_el.selectActive === true){
               main_el.selectActive = false;
@@ -3295,7 +3300,7 @@ HTMLWidgets.widget({
       }
       else if (el_id.selectActive === true) {
         //reset nodes
-        resetAllNodes(nodes, update, options, instance.network)
+        resetAllNodes(nodes, update, options, instance.network, false)
         el_id.selectActive = false
       }
     } 
@@ -3709,7 +3714,7 @@ HTMLWidgets.widget({
             resetList("nodeSelect", el.id, 'selected');
           }
           //reset nodes
-          resetAllNodes(nodes, update, options, instance.network)
+          resetAllNodes(nodes, update, options, instance.network, false)
           el_id.highlightActive = false;
           is_clicked = false;
           
@@ -4042,13 +4047,15 @@ HTMLWidgets.widget({
     if(x.clusteringGroup || x.clusteringColor || x.clusteringOutliers || x.clusteringHubsize || x.clusteringConnection){
       // if we click on a node, we want to open it up!
       instance.network.on("doubleClick", function (params){
-        
         if (params.nodes.length === 1) {
           if (instance.network.isCluster(params.nodes[0]) === true) {
             is_clicked = false;
             instance.network.openCluster(params.nodes[0], {releaseFunction : function(clusterPosition, containedNodesPositions) {
               return containedNodesPositions;
             }});
+            // must be better...
+            resetAllEdges(edges, el_id.highlightColor, el_id.byselectionColor, instance.network);
+            resetAllNodes(nodes, true, options, instance.network, true);
           } else {
             if(x.clusteringGroup){
               var array_group = nodes.get({
