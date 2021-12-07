@@ -4,7 +4,7 @@
 #' 
 #'@param graph : a visNetwork object
 #'@param solver : String. Default to 'barnesHut'.	You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.
-#'@param maxVelocity : Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.
+#'@param maxVelocity : Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximum value.
 #'@param minVelocity : Number. Default to 0.1. Once the minimum velocity is reached for all nodes, we assume the network has been stabilized and the simulation stops.
 #'@param timestep : Number. Default to 0.5. The physics simulation is discrete. This means we take a step in time, calculate the forces, move the nodes and take another step. If you increase this number the steps will be too large and the network can get unstable. If you see a lot of jittery movement in the network, you may want to reduce this value a little.
 #'
