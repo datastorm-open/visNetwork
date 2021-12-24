@@ -14,7 +14,9 @@ visTree(
   direction = "UD",
   fallenLeaves = FALSE,
   rules = TRUE,
+  defaultOpenRules = FALSE,
   simplifyRules = TRUE,
+  defaultOpenDetails = FALSE,
   shapeVar = "dot",
   shapeY = "square",
   colorVar = NULL,
@@ -66,7 +68,11 @@ up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalL
 
 \item{rules}{\code{boolean}, add rules in tooltips ? Default to TRUE}
 
+\item{defaultOpenRules}{\code{boolean}, default open rules part of tooltips.}
+
 \item{simplifyRules}{\code{boolean}, simplify rules writing}
+
+\item{defaultOpenDetails}{\code{boolean}, default open details part of tooltips.}
 
 \item{shapeVar}{\code{character}, shape for variables nodes See \link{visNodes}}
 

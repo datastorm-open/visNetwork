@@ -40,7 +40,9 @@
 #' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE
 #' @param tooltipDelay \code{numeric}, delay for tooltips in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default to TRUE
+#' @param defaultOpenRules \code{boolean}, default open rules part of tooltips.
 #' @param simplifyRules \code{boolean}, simplify rules writing
+#' @param defaultOpenDetails \code{boolean}, default open details part of tooltips.
 #' @param digits \code{numeric}, number of digits. Default to 3
 #' @param height \code{character}, default to "600px"
 #' @param width \code{character}, default to "100\%"
@@ -126,7 +128,9 @@ visTree <- function(object,
                     direction = "UD",
                     fallenLeaves = FALSE,
                     rules = TRUE,
+                    defaultOpenRules = FALSE,
                     simplifyRules = TRUE,
+                    defaultOpenDetails = FALSE,
                     shapeVar = "dot",
                     shapeY = "square",
                     colorVar = NULL,
@@ -162,6 +166,9 @@ visTree <- function(object,
   stopifnot(direction %in% c("UD", "LR", "RL", "DU"))
   stopifnot(length(direction) == 1)
   stopifnot("logical" %in% class(nodesPopSize))
+  stopifnot("logical" %in% class(defaultOpenRules))
+  stopifnot("logical" %in% class(defaultOpenDetails))
+  
   stopifnot("numeric" %in% class(minNodeSize) | "integer" %in% class(minNodeSize))
   stopifnot("numeric" %in% class(maxNodeSize) | "integer" %in% class(maxNodeSize))
   stopifnot("logical" %in% class(fallenLeaves))
@@ -426,9 +433,19 @@ visTree <- function(object,
                                       popSpkl, namOrder)} ) )
     }
     
+    
+    
+    if(defaultOpenDetails == FALSE){
+      styleStartDetails = "none"
+    }
+    if(defaultOpenDetails == TRUE){
+      styleStartDetails = "block"
+    }
+    
+    
     labelComplete <- paste0('<hr class = "rPartvisNetwork">
         <div class ="showOnMe"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Details</U></div>
-                            <div class="showMeRpartTTp" style="display:none;margin-top: -15px">
+                            <div class="showMeRpartTTp" style="display:', styleStartDetails, ';margin-top: -15px">
                             ',labelComplete,
                             '</script>',
                             '<script type="text/javascript">',
@@ -476,11 +493,18 @@ visTree <- function(object,
     # <div onclick="toggle_visibility(\'',idS,'\')">
     #   <U>RULES</U></div><div id="',idS,'">', 
     # tooltipRules,'</div>
-      
+    if(defaultOpenRules == FALSE){
+      styleStart = "none"
+    }
+    if(defaultOpenRules == TRUE){
+      styleStart = "block"
+    }
+    
+    
     finalHtmlRules <-  paste0(
 '<hr class = "rPartvisNetwork">
 <div class ="showOnMe2"><div style="text-align:center;"><U style="color:blue;"  onmouseover="this.style.cursor=\'pointer\';" onmouseout="this.style.cursor=\'default\';">Rules</U></div>
-<div class="showMeRpartTTp2" style="display:none;">
+<div class="showMeRpartTTp2" style="display:',styleStart,';">
 ',tooltipRules,
 '</script>',
 '<script type="text/javascript">',
