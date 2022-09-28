@@ -27,7 +27,7 @@
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'@name visNetwork-collapse
 #' 
 visCollapse <- function(graph, nodes, fit = FALSE, resetHighlight = TRUE, 

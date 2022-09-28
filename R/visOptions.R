@@ -235,7 +235,7 @@
 #'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visOptions <- function(graph,
                        width = NULL,
                        height = NULL,

@@ -30,7 +30,7 @@
 #' 
 #' @seealso \link{visExport}
 #'
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visSave <- function(graph, file, selfcontained = TRUE, background = "white") {
   htmlwidgets::saveWidget(graph, file, selfcontained = selfcontained, background = background)
 }

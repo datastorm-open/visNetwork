@@ -47,7 +47,7 @@ custom_network
 
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
 \link{visConfigure}, \link{visTree}, \link{visNetworkEditor}

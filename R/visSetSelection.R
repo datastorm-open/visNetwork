@@ -23,7 +23,7 @@
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visSetSelection <- function(graph, nodesId = NULL, edgesId = NULL, unselectAll = TRUE, 
                             highlightEdges = TRUE, clickEvent = TRUE){
 

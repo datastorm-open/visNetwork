@@ -20,7 +20,7 @@
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetNodes <- function(graph, input = paste0(graph$id, "_nodes"), addCoordinates = T){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -56,7 +56,7 @@ visGetNodes <- function(graph, input = paste0(graph$id, "_nodes"), addCoordinate
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetEdges <- function(graph, input = paste0(graph$id, "_edges")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -92,7 +92,7 @@ visGetEdges <- function(graph, input = paste0(graph$id, "_edges")){
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetPositions <- function(graph, nodes = NULL, input = paste0(graph$id, "_positions")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -129,7 +129,7 @@ visGetPositions <- function(graph, nodes = NULL, input = paste0(graph$id, "_posi
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetSelectedNodes <- function(graph, input = paste0(graph$id, "_selectedNodes")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -165,7 +165,7 @@ visGetSelectedNodes <- function(graph, input = paste0(graph$id, "_selectedNodes"
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetSelectedEdges <- function(graph, input = paste0(graph$id, "_selectedEdges")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -200,7 +200,7 @@ visGetSelectedEdges <- function(graph, input = paste0(graph$id, "_selectedEdges"
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetSelection <- function(graph, input = paste0(graph$id, "_selection")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -235,7 +235,7 @@ visGetSelection <- function(graph, input = paste0(graph$id, "_selection")){
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetScale <- function(graph, input = paste0(graph$id, "_scale")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -270,7 +270,7 @@ visGetScale <- function(graph, input = paste0(graph$id, "_scale")){
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetViewPosition <- function(graph, input = paste0(graph$id, "_viewPosition")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -306,7 +306,7 @@ visGetViewPosition <- function(graph, input = paste0(graph$id, "_viewPosition"))
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetConnectedEdges <- function(graph, id, input = paste0(graph$id, "_connectedEdges")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -344,7 +344,7 @@ visGetConnectedEdges <- function(graph, id, input = paste0(graph$id, "_connected
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetConnectedNodes <- function(graph, id, input = paste0(graph$id, "_connectedNodes")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -382,7 +382,7 @@ visGetConnectedNodes <- function(graph, id, input = paste0(graph$id, "_connected
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGetBoundingBox <- function(graph, id, input = paste0(graph$id, "_boundingBox")){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){
@@ -418,7 +418,7 @@ visGetBoundingBox <- function(graph, id, input = paste0(graph$id, "_boundingBox"
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visStorePositions <- function(graph){
   
   if(!any(class(graph) %in% "visNetwork_Proxy")){

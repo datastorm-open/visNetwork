@@ -73,5 +73,5 @@ shiny::runApp(system.file("shiny", package = "visNetwork"))
 }
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }

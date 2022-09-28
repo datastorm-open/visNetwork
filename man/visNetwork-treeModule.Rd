@@ -205,5 +205,5 @@ server = function(input, output, session) {
 
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }

@@ -18,7 +18,7 @@
 #'
 #' @export
 #' @importFrom  utils browseURL
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 visDocumentation <- function(){
     browseURL(system.file("docjs/network/index.html", package = "visNetwork"))

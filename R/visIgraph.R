@@ -81,7 +81,7 @@
 #' @importFrom  methods findFunction
 #' 
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visIgraph <- function(igraph,
                       idToLabel = TRUE,
                       layout = "layout_nicely",

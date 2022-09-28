@@ -47,7 +47,7 @@ visNetwork(nodes, edges) \%>\%
 
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

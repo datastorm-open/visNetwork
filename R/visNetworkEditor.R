@@ -28,7 +28,7 @@
 #' 
 #' @seealso \link{visConfigure}, \link{visTree}, \link{visNetworkEditorServer}
 #'
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
   
@@ -88,7 +88,7 @@ visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
 #' 
 #' @seealso \link{visConfigure}, \link{visTree}, \link{visNetworkEditor}
 #' 
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 #'
 visNetworkEditorServer <- function(input, output, session, object, 

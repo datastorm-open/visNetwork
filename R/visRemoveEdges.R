@@ -19,10 +19,10 @@
 #'
 #'}
 #'
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #' 
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visRemoveEdges <- function(graph, id, legend = FALSE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

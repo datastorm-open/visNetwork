@@ -54,7 +54,7 @@
 #' 
 #' @seealso \link{visTreeEditor}, \link{visTreeModuleServer}, \link{visNetworkEditor}
 #'
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 #' @examples
 #' 
@@ -840,7 +840,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' 
 #' @seealso \link{visTree}, \link{visTreeModuleServer}, \link{visNetworkEditor}
 #'
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 visTreeEditor <- function(data, ...){
   

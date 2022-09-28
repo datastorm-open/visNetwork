@@ -100,7 +100,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visLegend <- function(graph,
                       enabled = TRUE,
                       useGroups = TRUE,

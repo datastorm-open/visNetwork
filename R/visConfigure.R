@@ -29,7 +29,7 @@
 #' 
 #'@seealso \link{visConfigure}, \link{visTree}, \link{visNetworkEditor}
 #'
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
 #' @export
 visConfigure <- function(graph,

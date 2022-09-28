@@ -19,7 +19,7 @@
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visSelectEdges <- function(graph, id){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

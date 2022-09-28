@@ -30,7 +30,7 @@
 #'}
 #'
 #'@export
-#'@references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visUpdateEdges <- function(graph, edges, legend = FALSE){
 
   if(!any(class(graph) %in% "visNetwork_Proxy")){

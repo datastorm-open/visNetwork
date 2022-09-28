@@ -1,19 +1,17 @@
 Package: visNetwork
 Title: Network Visualization using 'vis.js' Library
-Version: 2.1.1
+Version: 2.1.2
 Authors@R: c(
     person(family = "Almende B.V. and Contributors", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, https://visjs.org/, https://github.com/visjs/vis-network"),
     person("Benoit", "Thieurmel", role = c("aut", "cre"),
-       comment = "R interface", email = "benoit.thieurmel@datastorm.fr"),
-    person(given = "Titouan", family = "Robert", 
-    email = "titouan.robert@datastorm.fr", role = c("aut", "ctb"))
+       comment = "R interface", email = "bthieurmel@gmail.com")
     )
-Maintainer: Benoit Thieurmel <benoit.thieurmel@datastorm.fr>
+Maintainer: Benoit Thieurmel <bthieurmel@gmail.com>
 Description: Provides an R interface to the 'vis.js' JavaScript charting
     library. It allows an interactive visualization of networks.
 BugReports: https://github.com/datastorm-open/visNetwork/issues
-URL: http://datastorm-open.github.io/visNetwork/
+URL: https://datastorm-open.github.io/visNetwork/
 Depends:
     R (>= 3.0)
 Imports:
@@ -41,4 +39,4 @@ Suggests:
     flashClust
 VignetteBuilder: knitr,
     rmarkdown
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

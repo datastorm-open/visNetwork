@@ -25,7 +25,7 @@ visPhysics(
 
 \item{solver}{: String. Default to 'barnesHut'.    You can select your own solver. Possible options: 'barnesHut', 'repulsion', 'hierarchicalRepulsion', 'forceAtlas2Based'. When setting the hierarchical layout, the hierarchical repulsion solver is automaticaly selected, regardless of what you fill in here.}
 
-\item{maxVelocity}{: Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximium value.}
+\item{maxVelocity}{: Number. Default to 50. The physics module limits the maximum velocity of the nodes to increase the time to stabilization. This is the maximum value.}
 
 \item{minVelocity}{: Number. Default to 0.1. Once the minimum velocity is reached for all nodes, we assume the network has been stabilized and the simulation stops.}
 
@@ -111,7 +111,7 @@ visNetwork(nodes, edges) \%>\%
 
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 

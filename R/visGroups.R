@@ -25,7 +25,7 @@
 #'
 #' @export
 #'
-#' @references See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+#' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visGroups <- function(graph,
                       useDefaultGroups = TRUE,
                       groupname = NULL,

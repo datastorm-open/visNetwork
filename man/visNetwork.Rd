@@ -167,7 +167,6 @@ visNetwork(nodes, edges) \%>\%
 
 # use fontAwesome icons using groups or nodes options 
 # font-awesome is not part of dependencies. use addFontAwesome() if needed
-# http://fortawesome.github.io/Font-Awesome
 
 nodes <- data.frame(id = 1:3, group = c("B", "A", "B"))
 edges <- data.frame(from = c(1,2), to = c(2,3))
@@ -215,7 +214,7 @@ visNetwork(gephi = 'WorldCup2014.json') \%>\% visPhysics(stabilization = FALSE, 
 
 }
 \references{
-See online documentation \url{http://datastorm-open.github.io/visNetwork/}
+See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
 \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
