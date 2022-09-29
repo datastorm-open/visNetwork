@@ -80,6 +80,7 @@ edges <- data.frame(from = c(1,2), to = c(1,3))
 
 visNetwork(nodes, edges)
 
+\dontrun{
 # add a title
 visNetwork(nodes, edges, main = "visNetwork minimal example")
 visNetwork(nodes, edges, main = list(text = "visNetwork minimal example",
@@ -184,7 +185,7 @@ visNetwork(nodes, edges) \%>\%
   addFontAwesome()
 
 # Save a network
-\dontrun{
+
 network <- visNetwork(nodes, edges) \%>\% 
  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE,
  manipulation = TRUE) \%>\% visLegend()
@@ -192,19 +193,18 @@ network <- visNetwork(nodes, edges) \%>\%
 network \%>\% visSave(file = "network.html")
 # same as
 visSave(network, file = "network.html")
-}
+
 
 # Export as png/jpeg (shiny or browser only)
-\dontrun{
 visNetwork(nodes, edges) \%>\% 
  visExport()
-}
+
 
 # DOT language
 visNetwork(dot = 'dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }')
 
 # gephi json file
-\dontrun{
+
 visNetwork(gephi = 'WorldCup2014.json') \%>\% visPhysics(stabilization = FALSE,   barnesHut = list(
     gravitationalConstant = -10000,
     springConstant = 0.002,

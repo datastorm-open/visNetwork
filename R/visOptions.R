@@ -53,6 +53,8 @@
 #'  \item{"addNodeCols"}{ : Optional. Default to c("id", "label"). See examples.}
 #'}
 #'@examples
+#'
+#'\dontrun{  
 #' nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
 #'  group = sample(LETTERS[1:3], 15, replace = TRUE))
 #'
@@ -228,7 +230,7 @@
 #'  visEdges(arrows = "to") %>% 
 #'  visOptions(collapse = list(enabled = TRUE, 
 #'    clusterOptions = list(shape = "square")))
-#'   
+#'}   
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,

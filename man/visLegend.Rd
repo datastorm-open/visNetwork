@@ -62,7 +62,8 @@ visNetwork(nodes, edges) \%>\%
   visGroups(groupname = "A", color = "red") \%>\%
   visGroups(groupname = "B", color = "lightblue") \%>\%
   visLegend()
-  
+
+\dontrun{
 # on group, adding options
 visNetwork(nodes, edges) \%>\%
   visGroups(groupname = "A", color = "red") \%>\%
@@ -123,7 +124,9 @@ visNetwork(nodes, edges) \%>\%
  addFontAwesome() \%>\%
  visLegend(addNodes = addNodes,
    addEdges = data.frame(label = "link"), useGroups = FALSE)   
-   
+
+}
+
 }
 \references{
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}

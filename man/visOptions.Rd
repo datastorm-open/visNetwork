@@ -82,6 +82,8 @@ visOptions(
 Network visualization general options. For full documentation, have a look at \link{visDocumentation}.
 }
 \examples{
+
+\dontrun{  
 nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
  group = sample(LETTERS[1:3], 15, replace = TRUE))
 
@@ -257,7 +259,7 @@ visNetwork(nodes, edges) \%>\%
  visEdges(arrows = "to") \%>\% 
  visOptions(collapse = list(enabled = TRUE, 
    clusterOptions = list(shape = "square")))
-  
+}   
 }
 \references{
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}

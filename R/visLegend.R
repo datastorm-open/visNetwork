@@ -30,7 +30,8 @@
 #'   visGroups(groupname = "A", color = "red") %>%
 #'   visGroups(groupname = "B", color = "lightblue") %>%
 #'   visLegend()
-#'   
+#'
+#' \dontrun{
 #' # on group, adding options
 #' visNetwork(nodes, edges) %>%
 #'   visGroups(groupname = "A", color = "red") %>%
@@ -91,7 +92,9 @@
 #'  addFontAwesome() %>%
 #'  visLegend(addNodes = addNodes,
 #'    addEdges = data.frame(label = "link"), useGroups = FALSE)   
-#'    
+#' 
+#' }
+#' 
 #'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
 #'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
 #'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,

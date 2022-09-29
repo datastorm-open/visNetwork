@@ -95,6 +95,7 @@
 #' visNetwork(nodes, edges) %>% visEdges(arrows = 'from')
 #' visNetwork(nodes, edges) %>% visEdges(arrows = 'to, from')
 #' 
+#' \dontrun{
 #' visNetwork(nodes, edges) %>% 
 #'   visEdges(arrows = list(to = list(enabled = TRUE, 
 #'      scaleFactor = 2, type = 'circle')))
@@ -143,7 +144,7 @@
 #'      dashes = c("[10,10,2,2]", "[2]"))
 #' 
 #' visNetwork(nodes, edges)
-#' 
+#' }
 #' @export
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visEdges <- function(graph,
