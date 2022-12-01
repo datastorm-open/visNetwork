@@ -886,6 +886,7 @@ visTreeEditor <- function(data, ...){
     tbl <- tbl[na.omit(match(namOrder[[i]], names(tbl)))]
     if(length(tbl) > 1){
       tbl <- data.frame(tbl)
+      colnames(tbl)[1] <- "Var1"
     } else {
       tbl <- data.frame(Var1 = names(tbl), Freq = tbl)
     }

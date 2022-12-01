@@ -472,6 +472,7 @@ visHclust.hclust <- function(object, data = NULL, main = "", submain = "", foote
     tbl <- table(df[,i])
     tbl <- tbl[na.omit(match(namOrder[[i]], names(tbl)))]
     tbl <- data.frame(tbl)
+    colnames(tbl) <- "Var1"
     newMod <- namOrder[[i]][!namOrder[[i]]%in%tbl$Var1]
     if(length(newMod) > 0){
       tbl <- rbind(tbl, data.frame(Var1 = newMod, Freq = 0))

@@ -1,6 +1,6 @@
 Package: visNetwork
 Title: Network Visualization using 'vis.js' Library
-Version: 2.1.2
+Version: 2.1.3
 Authors@R: c(
     person(family = "Almende B.V. and Contributors", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, https://visjs.org/, https://github.com/visjs/vis-network"),
