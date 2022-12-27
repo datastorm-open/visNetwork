@@ -779,9 +779,9 @@ subsetRpart <- function(tree,data,  node = 1L) {
     vardecidedClust <- round(object$frame$yval, digits)
     
     # palette
-    if(length(row.names(object$frame)) > 1){
-      meanV <- object$frame$yval-min(object$frame$yval)
-      meanV <- meanV/max(meanV)
+    if (length(unique(na.omit(object$frame$yval))) > 1) {
+      meanV <- object$frame$yval - min(object$frame$yval, na.rm = TRUE)
+      meanV <- meanV/max(meanV, na.rm = TRUE)
     } else {
       meanV <- 1
     }
