@@ -2,7 +2,7 @@
 #'
 #' Needed packages : shiny, rpart, colourpicker, shinyWidgets, sparkline
 #' 
-#' @param  id \code{character} id of module, linked to  \link{visTreeModuleServer}
+#' @param  id \code{character} id of module, linked to  \link[pkg:visNetwork]{visTreeModuleServer}
 #' @param  rpartParams \code{boolean}, add tabs for rpart parameters (in case of \code{data.frame} in input)
 #' @param  visTreeParams \code{boolean}, add tabs for visTree parameters. Default to TRUE. Force to TRUE if \code{rpartParams}
 #' @param  quitButton \code{boolean}, add a button to quit module and get back network in R ?

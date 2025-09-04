@@ -1,8 +1,8 @@
 #' Network visualization focus method
 #'
-#' For use focus() method in a shiny app. For full documentation, have a look at \link{visDocumentation}.
+#' For use focus() method in a shiny app. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
 #' 
-#'@param graph : a \code{\link{visNetworkProxy}}  object
+#'@param graph : a \code{\link[pkg:visNetwork]{visNetworkProxy}}  object
 #'@param id : a node id
 #'@param scale : Optional. Number. The scale is the target zoomlevel. Default value is 2.0. 
 #'@param offset : Optional. List. The offset (in DOM units) is how many pixels from the center the view is focussed. Default value is list(x = 0, y = 0). 
@@ -11,10 +11,10 @@
 #'Available are: linear, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint.
 #'Default to list(duration = 1500, easingFunction = "easeInOutQuad") 
 #'
-#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
+#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 #' 
 #' @examples
 #'\dontrun{

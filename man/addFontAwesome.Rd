@@ -20,7 +20,7 @@ addFontAwesome(graph, name = "font-awesome", version = c("4.7.0", "5.13.0"))
 Add \href{https://fontawesome.com}{Font-Awesome} for styling
 our \code{graph} with beautiful, professional icons.  Please note
 that you'll already have these icons if using Shiny.
-Can also use \link{addIonicons}
+Can also use \link[pkg:visNetwork]{addIonicons}
 }
 \examples{
 

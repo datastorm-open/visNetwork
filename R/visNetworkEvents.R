@@ -1,6 +1,6 @@
 #' Network visualization events
 #'
-#' Network visualization events. For full documentation, have a look at \link{visDocumentation}.
+#' Network visualization events. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
 #' Use \code{type = "once"} to set an event listener only once, and \code{type = "off"} to disable all the related events.
 #'
 #' @param graph : a visNetwork object
@@ -18,12 +18,12 @@
 #' @param dragStart : Fired when starting a drag.
 #' @param dragging : Fired when dragging node(s) or the view.
 #' @param dragEnd : Fired when the drag has finished.
-#' @param controlNodeDragging : Fired when dragging control node. Control Edge is edge that is being dragged and contains ids of 'from' and 'to' nodes. If control node is not dragged over another node, 'to' field is undefined. See \link{visDocumentation}.
-#' @param controlNodeDragEnd : Fired when the control node drag has finished. See \link{visDocumentation}.
-#' @param hoverNode : Fired interaction:{hover:true} and the mouse hovers over a node.
-#' @param blurNode : Fired interaction:{hover:true} and the mouse moved away from a node it was hovering over before.
-#' @param hoverEdge : Fired interaction:{hover:true} and the mouse hovers over a edge
-#' @param blurEdge : Fired interaction:{hover:true} and the mouse moved away from a edge it was hovering over before.
+#' @param controlNodeDragging : Fired when dragging control node. Control Edge is edge that is being dragged and contains ids of 'from' and 'to' nodes. If control node is not dragged over another node, 'to' field is undefined. See \link[pkg:visNetwork]{visDocumentation}.
+#' @param controlNodeDragEnd : Fired when the control node drag has finished. See \link[pkg:visNetwork]{visDocumentation}.
+#' @param hoverNode : Fired interaction (hover:true) and the mouse hovers over a node.
+#' @param blurNode : Fired interaction (hover:true) and the mouse moved away from a node it was hovering over before.
+#' @param hoverEdge : Fired interaction (hover:true) and the mouse hovers over a edge
+#' @param blurEdge : Fired interaction (hover:true) and the mouse moved away from a edge it was hovering over before.
 #' @param zoom : Fired when the user zooms in or out. The properties tell you which direction the zoom is in. The scale is a number greater than 0, which is the same that you get with network.getScale().
 #' @param showPopup : Fired when the popup (tooltip) is shown.
 #' @param hidePopup : Fired when the popup (tooltip) is hidden.
@@ -78,10 +78,10 @@
 #'             }
 #'           }")
 #'           
-#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
+#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 #'
 #' @export
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}

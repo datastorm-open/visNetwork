@@ -1,42 +1,42 @@
 #' Visualize Recursive Partitioning and Regression Trees (rpart object)
 #' 
-#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link{visTreeEditor} to edity and get back network, or to \link{visTreeModuleServer} to use custom tree module in R
+#' Visualize Recursive Partitioning and Regression Trees \code{rpart}. Have a look to \link[pkg:visNetwork]{visTreeEditor} to edity and get back network, or to \link[pkg:visNetwork]{visTreeModuleServer} to use custom tree module in R
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param data \code{data.frame}, adding mini-graphics in tooltips using \code{sparkline} and \code{tooltipColumns} ?
 #' @param tooltipColumns \code{numeric}, indice of columns used in tooltip. All by default.
 #' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
-#' @param main Title. See \link{visNetwork}
-#' @param submain Subtitle. See \link{visNetwork}
-#' @param footer Footer. See \link{visNetwork}
+#' @param main Title. See \link[pkg:visNetwork]{visNetwork}
+#' @param submain Subtitle. See \link[pkg:visNetwork]{visNetwork}
+#' @param footer Footer. See \link[pkg:visNetwork]{visNetwork}
 #' @param direction \code{character}, The direction of the hierarchical layout.
 #' The available options are: UD, DU, LR, RL. To simplify:
-#' up-down, down-up, left-right, right-left. Default UD. See \link{visHierarchicalLayout} 
+#' up-down, down-up, left-right, right-left. Default UD. See \link[pkg:visNetwork]{visHierarchicalLayout} 
 #' @param nodesPopSize \code{boolean}, nodes sizes depends on population ? Default to FALSE
 #' @param fallenLeaves \code{boolean} leaf nodes at the bottom of the graph ? Default to FALSE
 #' @param nodesFontSize \code{numeric}, size of labels of nodes. Default to 16
 #' @param edgesFontSize \code{numeric}, size of labels of edges Default to 14
 #' @param legendFontSize \code{numeric}, size of labels of nodes in legend. Default to 16
 #' @param legendNodesSize \code{numeric}, size of nodes in legend. Default to 22
-#' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link{visEdges}  
+#' @param edgesFontAlign \code{character}, for edges only. Default tp 'horizontal'. Possible options: 'horizontal' (Default),'top','middle','bottom'. See \link[pkg:visNetwork]{visEdges}  
 #' @param colorVar \code{character}, colors to use or \code{data.frame} To set color of variables. 2 columns :
 #' \itemize{
-#'   \item{"variable"}{ : names of variables}
-#'   \item{"color"}{ : colors (in hexa). See examples}
+#'   \item "variable" names of variables
+#'   \item "color" colors (in hexa). See examples
 #' }
 #' @param colorY if classification tree : \code{character} colors to use or \code{data.frame} 2 columns :
 #' \itemize{
-#'   \item{"modality"}{ : levels of Y}
-#'   \item{"color"}{ : colors (in hexa)}
+#'   \item "modality" levels of Y
+#'   \item "color" colors (in hexa)
 #' }
 #' if regression tree : \code{character}, 2 colors (min and max, in hexa)
 #' @param colorEdges \code{character}, color of edges, in hexa. Default to #8181F7
-#' @param legend \code{boolean}, add legend ? Default TRUE. \link{visLegend}
+#' @param legend \code{boolean}, add legend ? Default TRUE. \link[pkg:visNetwork]{visLegend}
 #' @param legendWidth \code{numeric}, legend width, between 0 and 1. Default 0.1
 #' @param legendNcol \code{numeric}, number of columns in legend. Default 1
 #' @param legendPosition \code{character}, one of "left" (Default) or "right"
-#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link{visOptions}
-#' @param collapse \code{list}, collapse or not using double click on a node ? See \link{visOptions}
+#' @param highlightNearest \code{list}, Highlight nearest nodes. See \link[pkg:visNetwork]{visOptions}
+#' @param collapse \code{list}, collapse or not using double click on a node ? See \link[pkg:visNetwork]{visOptions}
 #' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE
 #' @param tooltipDelay \code{numeric}, delay for tooltips in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default to TRUE
@@ -46,13 +46,13 @@
 #' @param width \code{character}, default to "100\%"
 #' @param minNodeSize \code{numeric}, in case of \code{nodesPopSize}, minimum size of a node. Default to 15. Else, nodes size is minNodeSize + maxNodeSize / 2 
 #' @param maxNodeSize \code{numeric}, in case of \code{nodesPopSize}, maximum size of a node. Default to 30. Else, nodes size is minNodeSize + maxNodeSize / 2 
-#' @param shapeVar \code{character}, shape for variables nodes See \link{visNodes}
-#' @param shapeY \code{character}, shape for terminal nodes See \link{visNodes}
+#' @param shapeVar \code{character}, shape for variables nodes See \link[pkg:visNetwork]{visNodes}
+#' @param shapeY \code{character}, shape for terminal nodes See \link[pkg:visNetwork]{visNodes}
 #' @param export \code{boolean}, add export button. Default to TRUE
 #' 
 #' @return a visNetwork object 
 #' 
-#' @seealso \link{visTreeEditor}, \link{visTreeModuleServer}, \link{visNetworkEditor}
+#' @seealso \link[pkg:visNetwork]{visTreeEditor}, \link[pkg:visNetwork]{visTreeModuleServer}, \link[pkg:visNetwork]{visNetworkEditor}
 #'
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
@@ -820,7 +820,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' Needed packages : shiny, rpart, colourpicker, shinyWidgets
 #' 
 #' @param  data  \code{rpart or data.drame}
-#' @param  ...  all arguments except \code{object} present in \link{visTreeModuleServer}
+#' @param  ...  all arguments except \code{object} present in \link[pkg:visNetwork]{visTreeModuleServer}
 #' 
 #' @examples
 #' 
@@ -838,7 +838,7 @@ subsetRpart <- function(tree,data,  node = 1L) {
 #' 
 #' @importFrom  utils packageVersion
 #' 
-#' @seealso \link{visTree}, \link{visTreeModuleServer}, \link{visNetworkEditor}
+#' @seealso \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visTreeModuleServer}, \link[pkg:visNetwork]{visNetworkEditor}
 #'
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'

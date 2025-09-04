@@ -24,7 +24,7 @@ visConfigure(
 \item{showButton}{: Boolean. Default to true. Show the generate options button at the bottom of the configurator.}
 }
 \description{
-Network visualization configure options. For full documentation, have a look at \link{visDocumentation}.
+Network visualization configure options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
 }
 \examples{
 
@@ -50,5 +50,5 @@ custom_network
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visConfigure}, \link{visTree}, \link{visNetworkEditor}
+\link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditor}
 }

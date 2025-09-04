@@ -17,7 +17,7 @@ addIonicons(graph, name = "ionicons")
 \description{
 Add \href{https://ionic.io/ionicons}{Ionicons} for styling
 our \code{graph} with beautiful, professional icons.
-Can also use \link{addFontAwesome}
+Can also use \link[pkg:visNetwork]{addFontAwesome}
 }
 \examples{
 

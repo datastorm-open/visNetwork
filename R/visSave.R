@@ -5,7 +5,7 @@
 #' dependencies into the HTML file (via base64 encoding).
 #'
 #' @param graph : a visNetwork object
-#' @param file : File to save HTML into. See \link{saveWidget}
+#' @param file : File to save HTML into. See \link[pkg:visNetwork]{saveWidget}
 #' @param selfcontained	: Whether to save the HTML as a single self-contained file (with external resources base64 encoded) or a file with external resources placed in an adjacent directory.
 #' @param background : Text string giving the html background color of the widget. Defaults to white.
 #' 
@@ -28,7 +28,7 @@
 #'}
 #' @export
 #' 
-#' @seealso \link{visExport}
+#' @seealso \link[pkg:visNetwork]{visExport}
 #'
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 visSave <- function(graph, file, selfcontained = TRUE, background = "white") {

@@ -3,7 +3,7 @@
 #' Add \href{https://fontawesome.com}{Font-Awesome} for styling
 #' our \code{graph} with beautiful, professional icons.  Please note
 #' that you'll already have these icons if using Shiny.
-#' Can also use \link{addIonicons}   
+#' Can also use \link[pkg:visNetwork]{addIonicons}   
 #' 
 #' @param  graph : a visNetwork object
 #' @param  name  : name of dependency
@@ -88,7 +88,7 @@ addFontAwesome <- function(graph, name = "font-awesome", version = c("4.7.0", "5
 #'
 #' Add \href{https://ionic.io/ionicons}{Ionicons} for styling
 #' our \code{graph} with beautiful, professional icons.
-#' Can also use \link{addFontAwesome}
+#' Can also use \link[pkg:visNetwork]{addFontAwesome}
 #'   
 #' @param  graph : a visNetwork object
 #' @param  name  : name of dependency
@@ -132,7 +132,7 @@ addIonicons <- function(graph, name = "ionicons"){
 }
 
 
-#' Add libraries dependencies used in export \link{visExport}
+#' Add libraries dependencies used in export \link[pkg:visNetwork]{visExport}
 #'
 #'   
 #' @param  graph : a visNetwork object

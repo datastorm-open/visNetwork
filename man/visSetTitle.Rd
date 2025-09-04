@@ -7,27 +7,27 @@
 visSetTitle(graph, main = NULL, submain = NULL, footer = NULL)
 }
 \arguments{
-\item{graph}{: a \code{\link{visNetworkProxy}}  object}
+\item{graph}{: a \code{\link[pkg:visNetwork]{visNetworkProxy}}  object}
 
 \item{main}{: For add a title. Character or a named list.
 \itemize{
- \item{"text"}{ : Character. Title.}
- \item{"style"}{ : Optional. Character. HTML style of title.}
- \item{'hidden'}{ : Optional. Boolean. Force title to be hidden} 
+ \item "text" Character. Title.
+ \item "style" Optional. Character. HTML style of title.
+ \item 'hidden' Optional. Boolean. Force title to be hidden 
 }}
 
 \item{submain}{: For add a subtitle. Character or a named list.
 \itemize{
- \item{"text"}{ : Character. Subtitle.}
- \item{"style"}{ : Optional. Character. HTML style of submain.}
- \item{'hidden'}{ : Optional. Boolean. Force submain to be hidden} 
+ \item "text" Character. Subtitle.
+ \item "style" Optional. Character. HTML style of submain.
+ \item 'hidden' Optional. Boolean. Force submain to be hidden 
 }}
 
 \item{footer}{: For add a footer. Character or a named list.
 \itemize{
- \item{"text"}{ : Character. footer.}
- \item{"style"}{ : Optional. Character. HTML style of footer.}
- \item{'hidden'}{ : Optional. Boolean. Force footer to be be hidden} 
+ \item "text" Character. footer.
+ \item "style" Optional. Character. HTML style of footer.
+ \item 'hidden' Optional. Boolean. Force footer to be be hidden 
 }}
 }
 \description{
@@ -46,8 +46,8 @@ shiny::runApp(system.file("shiny", package = "visNetwork"))
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
+\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 }

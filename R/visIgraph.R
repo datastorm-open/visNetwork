@@ -1,9 +1,9 @@
 #' Render a visNetwork object from an igraph object
 #'
-#' Render a visNetwork object from an igraph object. \link{toVisNetworkData} transfrom igraph data to visNetwork data.
+#' Render a visNetwork object from an igraph object. \link[pkg:visNetwork]{toVisNetworkData} transfrom igraph data to visNetwork data.
 #' We actually try to keep color, size and label from igraph to visNetwork.
-#' \link{visIgraph} plot directly an igraph object in visNetwork, using \link{toVisNetworkData} to extract data, and
-#' \link{visIgraphLayout} to compute layout and coordinates before rendering.
+#' \link[pkg:visNetwork]{visIgraph} plot directly an igraph object in visNetwork, using \link[pkg:visNetwork]{toVisNetworkData} to extract data, and
+#' \link[pkg:visNetwork]{visIgraphLayout} to compute layout and coordinates before rendering.
 #' 
 #'
 #'@param igraph : a igraph object
@@ -73,10 +73,10 @@
 #'plot(g)
 #'visIgraph(g)
 #'}
-#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
+#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 #'
 #' @importFrom  methods findFunction
 #' 

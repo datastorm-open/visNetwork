@@ -13,7 +13,7 @@ visSetOptions(graph, options = NULL)
 }
 \description{
 Network visualization full options setter. Using this function, you can pass all network options you want,
-respecting the library format rather than use \link{visNodes}, \link{visEdges},  \link{visGroups}....
+respecting the library format rather than use \link[pkg:visNetwork]{visNodes}, \link[pkg:visNetwork]{visEdges},  \link[pkg:visNetwork]{visGroups}....
 There is no control, so it's at your own risk !
 }
 \examples{

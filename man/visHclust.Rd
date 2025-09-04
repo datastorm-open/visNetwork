@@ -43,7 +43,11 @@ visHclust(object, ...)
   footer = "",
   cutree = 0,
   hclustMethod = "complete",
-  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  tooltipColumns = if (!is.null(data)) {
+     1:ncol(data)
+ } else {
+     NULL
+ },
   colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7),
   highlightNearest = TRUE,
@@ -64,7 +68,11 @@ visHclust(object, ...)
   submain = "",
   footer = "",
   cutree = 0,
-  tooltipColumns = if (!is.null(data)) {     1:ncol(data) } else {     NULL },
+  tooltipColumns = if (!is.null(data)) {
+     1:ncol(data)
+ } else {
+     NULL
+ },
   colorEdges = "black",
   colorGroups = substr(rainbow(cutree), 1, 7),
   highlightNearest = TRUE,
@@ -83,11 +91,11 @@ visHclust(object, ...)
 
 \item{...}{Don't use}
 
-\item{main}{Title. See \link{visNetwork}}
+\item{main}{Title. See \link[pkg:visNetwork]{visNetwork}}
 
-\item{submain}{Subtitle. See \link{visNetwork}}
+\item{submain}{Subtitle. See \link[pkg:visNetwork]{visNetwork}}
 
-\item{footer}{Footer. See \link{visNetwork}}
+\item{footer}{Footer. See \link[pkg:visNetwork]{visNetwork}}
 
 \item{distColumns}{\code{numeric}, indice of columns used for compute distance. 
 If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 

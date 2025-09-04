@@ -9,9 +9,9 @@ visNetworkEditor(object, filter = NULL, showButton = NULL)
 \arguments{
 \item{object}{: a \code{visNetwork} object}
 
-\item{filter}{: see \link{visConfigure}}
+\item{filter}{: see \link[pkg:visNetwork]{visConfigure}}
 
-\item{showButton}{: see \link{visConfigure}}
+\item{showButton}{: see \link[pkg:visNetwork]{visConfigure}}
 }
 \value{
 a \code{visNetwork} object
@@ -40,5 +40,5 @@ custom_network
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visConfigure}, \link{visTree}, \link{visNetworkEditorServer}
+\link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditorServer}
 }

@@ -23,26 +23,26 @@
 #' 
 #' With \code{visNetworkProxy}, you can update your network and use various methods :
 #' \itemize{
-#'  \item{"all 'visNetwork' functions"}{ : \code{\link{visOptions}}, \code{\link{visNodes}}, \code{\link{visEdges}}, \code{\link{visPhysics}}, \code{\link{visEvents}}, ...}
-#'  \item{\code{\link{visFocus}}}{ : Focus to one or more nodes}
-#'  \item{\code{\link{visFit}}}{ : Set view on a set of nodes}
-#'  \item{\code{\link{visUpdateNodes}}}{ : Update and add nodes}
-#'  \item{\code{\link{visUpdateEdges}}}{ : Update and add edges}
-#'  \item{\code{\link{visRemoveNodes}}}{ : Remove nodes}
-#'  \item{\code{\link{visRemoveEdges}}}{ : Remove edges}
-#'  \item{\code{\link{visSelectNodes}}}{ :Select nodes}
-#'  \item{\code{\link{visSelectEdges}}}{ : Select edges}
-#'  \item{\code{\link{visGetNodes}}}{ : Get nodes dataset}
-#'  \item{\code{\link{visGetEdges}}}{ : Get edges dataset}
-#'  \item{\code{\link{visSetSelection}}}{ : Select edges/nodes}
-#'  \item{\code{\link{visNearestNodes}}}{ : Get nearest nodes}
-#'  \item{\code{\link{visCollapse}}}{ : Collapse nodes}
-#'  \item{\code{\link{visUncollapse}}}{ : Uncollpase nodes}
-#'  \item{\code{\link{visSetTitle}}}{ : Set and update main, submain, footer}
-#'  \item{and also...}{ : \code{\link{visGetSelectedEdges}}, \code{\link{visGetSelectedNodes}}, \code{\link{visGetSelection}},
-#'     \code{\link{visGetConnectedEdges}}, \code{\link{visGetConnectedNodes}}, \code{\link{visRedraw}}, \code{\link{visStabilize}}, 
-#'     \code{\link{visSetData}}, \code{\link{visGetPositions}}, \code{\link{visMoveNode}}, \code{\link{visUnselectAll}},
-#'     \code{\link{visGetScale}}, \code{\link{visGetBoundingBox}}, \code{\link{visGetViewPosition}},\code{\link{visSetOptions}}}
+#'  \item "all 'visNetwork' functions" \code{\link[pkg:visNetwork]{visOptions}}, \code{\link[pkg:visNetwork]{visNodes}}, \code{\link[pkg:visNetwork]{visEdges}}, \code{\link[pkg:visNetwork]{visPhysics}}, \code{\link[pkg:visNetwork]{visEvents}}, ...
+#'  \item \code{\link[pkg:visNetwork]{visFocus}} Focus to one or more nodes
+#'  \item \code{\link[pkg:visNetwork]{visFit}} Set view on a set of nodes
+#'  \item \code{\link[pkg:visNetwork]{visUpdateNodes}} Update and add nodes
+#'  \item \code{\link[pkg:visNetwork]{visUpdateEdges}} Update and add edges
+#'  \item \code{\link[pkg:visNetwork]{visRemoveNodes}} Remove nodes
+#'  \item \code{\link[pkg:visNetwork]{visRemoveEdges}} Remove edges
+#'  \item \code{\link[pkg:visNetwork]{visSelectNodes}} Select nodes
+#'  \item \code{\link[pkg:visNetwork]{visSelectEdges}} Select edges
+#'  \item \code{\link[pkg:visNetwork]{visGetNodes}} Get nodes dataset
+#'  \item \code{\link[pkg:visNetwork]{visGetEdges}} Get edges dataset
+#'  \item \code{\link[pkg:visNetwork]{visSetSelection}} Select edges/nodes
+#'  \item \code{\link[pkg:visNetwork]{visNearestNodes}} Get nearest nodes
+#'  \item \code{\link[pkg:visNetwork]{visCollapse}} Collapse nodes
+#'  \item \code{\link[pkg:visNetwork]{visUncollapse}} Uncollpase nodes
+#'  \item \code{\link[pkg:visNetwork]{visSetTitle}} Set and update main, submain, footer
+#'  \item and also... \code{\link[pkg:visNetwork]{visGetSelectedEdges}}, \code{\link[pkg:visNetwork]{visGetSelectedNodes}}, \code{\link[pkg:visNetwork]{visGetSelection}},
+#'     \code{\link[pkg:visNetwork]{visGetConnectedEdges}}, \code{\link[pkg:visNetwork]{visGetConnectedNodes}}, \code{\link[pkg:visNetwork]{visRedraw}}, \code{\link[pkg:visNetwork]{visStabilize}}, 
+#'     \code{\link[pkg:visNetwork]{visSetData}}, \code{\link[pkg:visNetwork]{visGetPositions}}, \code{\link[pkg:visNetwork]{visMoveNode}}, \code{\link[pkg:visNetwork]{visUnselectAll}},
+#'     \code{\link[pkg:visNetwork]{visGetScale}}, \code{\link[pkg:visNetwork]{visGetBoundingBox}}, \code{\link[pkg:visNetwork]{visGetViewPosition}},\code{\link[pkg:visNetwork]{visSetOptions}}
 #'}
 #' 
 #' @examples 

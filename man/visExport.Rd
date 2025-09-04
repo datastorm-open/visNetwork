@@ -33,7 +33,7 @@ visExport(
 
 \item{loadDependencies}{/ Boolean. TRUE by default. Load libraries for export (fileSaver, Blob, canvastoBlob, html2canvas, jsPDF)}
 
-\item{...}{: arguments for \link{addExport}}
+\item{...}{: arguments for \link[pkg:visNetwork]{addExport}}
 }
 \description{
 Network export configuration. This function only work within shiny or a web browser.
@@ -62,5 +62,5 @@ visNetwork(nodes, edges) \%>\%
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visSave}
+\link[pkg:visNetwork]{visSave}
 }

@@ -1,25 +1,25 @@
 #' Network visualization
 #'
-#' Network visualization using vis.js library. For full documentation, have a look at \link{visDocumentation}.
+#' Network visualization using vis.js library. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
 #'
-#' @param nodes : data.frame or a list with nodes informations. Needed at least column "id". See \link{visNodes} 
+#' @param nodes : data.frame or a list with nodes informations. Needed at least column "id". See \link[pkg:visNetwork]{visNodes} 
 #' \itemize{
-#'  \item{"id"}{ : id of the node, needed in edges information}
-#'  \item{"label"}{ : label of the node}
-#'  \item{"group"}{ : group of the node. Groups can be configure with \link{visGroups}}
-#'  \item{"value"}{ : size of the node}
-#'  \item{"title"}{ : tooltip of the node}
-#'  \item{...}{}
+#'  \item "id" id of the node, needed in edges information
+#'  \item "label" label of the node
+#'  \item "group" group of the node. Groups can be configure with \link[pkg:visNetwork]{visGroups}
+#'  \item "value" size of the node
+#'  \item "title" tooltip of the node
+#'  \item ...
 #'}
 #'
-#' @param edges : data.frame or a list  with edges informations. Needed at least columns "from" and "to". See \link{visEdges}
+#' @param edges : data.frame or a list  with edges informations. Needed at least columns "from" and "to". See \link[pkg:visNetwork]{visEdges}
 #' \itemize{
-#'  \item{"from"}{ : node id of begin of the edge}
-#'  \item{"to"}{ : node id of end of the edge}
-#'  \item{"label"}{ : label of the edge}
-#'  \item{"value"}{ : size of the node}
-#'  \item{"title"}{ : tooltip of the node}
-#'  \item{...}{}
+#'  \item "from" node id of begin of the edge
+#'  \item "to" node id of end of the edge
+#'  \item "label" label of the edge
+#'  \item "value" size of the node
+#'  \item "title" tooltip of the node
+#'  \item ...
 #'}
 #'
 #' @param dot : Character DOT language.
@@ -32,20 +32,20 @@
 #' 
 #'@param main : For add a title. Character or a named list.
 #'\itemize{
-#'  \item{"text"}{ : Character. Title.}
-#'  \item{"style"}{ : Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.}
+#'  \item "text" Character. Title.
+#'  \item "style" Optional. Character. HTML style of title. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;'.
 #'}
 #'
 #'@param submain : For add a subtitle. Character or a named list.
 #'\itemize{
-#'  \item{"text"}{ : Character. Subtitle.}
-#'  \item{"style"}{ : Optional. Character. HTML style of submain. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'  \item "text" Character. Subtitle.
+#'  \item "style" Optional. Character. HTML style of submain. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.
 #'}
 #'
 #'@param footer : For add a footer. Character or a named list.
 #'\itemize{
-#'  \item{"text"}{ : Character. footer.}
-#'  \item{"style"}{ : Optional. Character. HTML style of footer. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.}
+#'  \item "text" Character. footer.
+#'  \item "style" Optional. Character. HTML style of footer. Default to 'font-family:Georgia, Times New Roman, Times, serif;font-size:12px;text-align:center;'.
 #'}
 #'
 #'@param background : Background color. Default to 'rgba(0, 0, 0, 0)' (transparent). Can be a valid color name ("red"), a HEX value ("#ff0000") or rgb/rgba ("rgb(255,0,0)")
@@ -192,11 +192,11 @@
 #'   ))
 #'}
 #' 
-#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} for play with network using shiny,
-#'\link{visTree} to visualize CART rpart tree, \link{visNetworkEditor} to edit your network, 
-#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} for play with network using shiny,
+#'\link[pkg:visNetwork]{visTree} to visualize CART rpart tree, \link[pkg:visNetwork]{visNetworkEditor} to edit your network, 
+#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 #'
 #' @import htmlwidgets
 #' 

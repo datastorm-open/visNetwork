@@ -59,77 +59,76 @@ visEdges(
 
 \item{selfReferenceSize}{: Number. Default to false.    When the to and from nodes are the same, a circle is drawn. This is the radius of that circle. This property is deprecated please use selfReference instead.}
 
-\item{selfReference}{: See \link{visDocumentation}}
+\item{selfReference}{: See \link[pkg:visNetwork]{visDocumentation}}
 
 \item{labelHighlightBold}{: Boolean. Default to    true. Determines whether or not the label becomes bold when the edge is selected.}
 
 \item{color}{: Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' (hexa notation on 7 char without transparency) or 'red'.
 \itemize{
- \item{"color"}{ : String. Default to '#848484. The color of the edge when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
- \item{"highlight "}{ : String. Default to '#848484'. The color the edge when it is selected.}
- \item{"hover"}{ : String. Default to '#848484'. The color the edge when the mouse hovers over it (assuming hover is enabled in the interaction module).}
- \item{"inherit"}{ : String or Boolean. Default to 'from'. When color, highlight or hover are defined, inherit is set to false! Supported options are: true, false, 'from','to','both'.}
- \item{"opacity"}{ : Number. Default to 1.0. It can be useful to set the opacity of an edge without manually changing all the colors. The allowed range of the opacity option is between 0 and 1.}
+ \item "color" String. Default to '#848484. The color of the edge when it is not selected or hovered over (assuming hover is enabled in the interaction module).
+ \item "highlight" String. Default to '#848484'. The color the edge when it is selected.
+ \item "hover" String. Default to '#848484'. The color the edge when the mouse hovers over it (assuming hover is enabled in the interaction module).
+ \item "inherit" String or Boolean. Default to 'from'. When color, highlight or hover are defined, inherit is set to false! Supported options are: true, false, 'from','to','both'.
+ \item "opacity" Number. Default to 1.0. It can be useful to set the opacity of an edge without manually changing all the colors. The allowed range of the opacity option is between 0 and 1.
 }}
 
 \item{font}{: Named list or String. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
 \itemize{
- \item{"color"}{ : String. Default to '#343434'. Color of the label text.}
- \item{"size"}{ : Number. Default to 14. Size of the label text.}
- \item{"face"}{ : String. Default to 'arial. Font face (or font family) of the label text.}
- \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
- \item{"strokeWidth"}{ : Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
- \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
- \item{"align"}{ : String. Default to 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.}
- \item{"vadjust, multi, bold, ital, boldital, mono"}{See \link{visDocumentation}}
+ \item "color" String. Default to '#343434'. Color of the label text.
+ \item "size" Number. Default to 14. Size of the label text.
+ \item "face" String. Default to 'arial. Font face (or font family) of the label text.
+ \item "background  String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.
+ \item "strokeWidth" Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.
+ \item "strokeColor" String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.
+ \item "align" String. Default to 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.
+ \item "vadjust, multi, bold, ital, boldital, mono" See \link[pkg:visNetwork]{visDocumentation}
 }}
 
 \item{arrows}{: Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. 
-If you want to control the size of the arrowheads, you can supply an object. See \link{visDocumentation}}
+If you want to control the size of the arrowheads, you can supply an object. See \link[pkg:visNetwork]{visDocumentation}}
 
 \item{arrowStrikethrough}{:    Boolean. Default to True.     When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.}
 
 \item{smooth}{: Boolean | named list. Default to named list. When true, the edge is drawn as a dynamic quadratic bezier curve. The drawing of these curves takes longer than that of straight curves but it looks better.
 \itemize{
- \item{"enabled"}{ : Boolean. Default to true. Toggle smooth curves on and off. This is an optional option. If any of the other properties in this object are set, this option will be set to true.}
- \item{"type"}{ : String. Default to 'dynamic'. Possible options: 'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal', 'vertical', 'curvedCW', 'curvedCCW', 'cubicBezier'.}
- \item{"roundness"}{ : Number. Default to 0.5. Accepted range: 0 .. 1.0. This parameter tweaks the roundness of the smooth curves for all types EXCEPT dynamic.}
- \item{"forceDirection"}{ : String or Boolean. Default to false. Accepted options: ['horizontal', 'vertical', 'none']. This options is only used with the cubicBezier curves. When true, horizontal is chosen, when false, the direction that is larger (x distance between nodes vs y distance between nodes) is used. If the x distance is larger, horizontal. This is ment to be used with hierarchical layouts. }
+ \item "enabled" Boolean. Default to true. Toggle smooth curves on and off. This is an optional option. If any of the other properties in this object are set, this option will be set to true.
+ \item "type" String. Default to 'dynamic'. Possible options: 'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal', 'vertical', 'curvedCW', 'curvedCCW', 'cubicBezier'.
+ \item "roundness" Number. Default to 0.5. Accepted range: 0 .. 1.0. This parameter tweaks the roundness of the smooth curves for all types EXCEPT dynamic.
+ \item "forceDirection" String or Boolean. Default to false. Accepted options: ['horizontal', 'vertical', 'none']. This options is only used with the cubicBezier curves. When true, horizontal is chosen, when false, the direction that is larger (x distance between nodes vs y distance between nodes) is used. If the x distance is larger, horizontal. This is ment to be used with hierarchical layouts.
 }}
 
 \item{shadow}{: Boolean | named list. Default to false. When true, the edges casts a shadow using the default settings. This can be further refined by supplying a list
 \itemize{
- \item{"enabled"}{ : Boolean. Default to false. Toggle the casting of shadows. If this option is not defined, it is set to true if any of the properties in this object are defined.}
- \item{"color"}{    : String. Default to    'rgba(0,0,0,0.5)'.    The color of the shadow as a string. Supported formats are 'rgb(255,255,255)', 'rgba(255,255,255,1)' and '#FFFFFF'.}
- \item{"size"}{ : Number. Default to 10. The blur size of the shadow.}
- \item{"x"}{ : Number. Default to 5. The x offset.}
- \item{"y"}{ : Number. Default to 5. The y offset.}
+ \item "enabled" Boolean. Default to false. Toggle the casting of shadows. If this option is not defined, it is set to true if any of the properties in this object are defined.
+ \item "color" String. Default to    'rgba(0,0,0,0.5)'.    The color of the shadow as a string. Supported formats are 'rgb(255,255,255)', 'rgba(255,255,255,1)' and '#FFFFFF'.
+ \item "size" Number. Default to 10. The blur size of the shadow.
+ \item "x" Number. Default to 5. The x offset.
+ \item "y" Number. Default to 5. The y offset.
 }}
 
 \item{scaling}{: Named list.  If the value option is specified, the size of the edges will be scaled according to the properties in this object.
 \itemize{
- \item{"min"}{ :  Number. Default to 10. If edges have a value, their sizes are determined by the value, the scaling function and the min max values.}
- \item{"max"}{ : Number. Default to 30. This is the maximum allowed size when the edges are scaled using the value option.}
- \item{"label"}{ : Named list or Boolean. Default to Named list. This can be false if the label is not allowed to scale with the node. If true it will scale using default settigns. For further customization, you can supply an object.
+ \item "min"  Number. Default to 10. If edges have a value, their sizes are determined by the value, the scaling function and the min max values.
+ \item "max" Number. Default to 30. This is the maximum allowed size when the edges are scaled using the value option.
+ \item "label" Named list or Boolean. Default to Named list. This can be false if the label is not allowed to scale with the node. If true it will scale using default settigns. For further customization, you can supply an object.
    \itemize{
-     \item{"enabled"}{ : Boolean. Default to false. Toggle the scaling of the label on or off. If this option is not defined, it is set to true if any of the properties in this object are defined.}
-     \item{"min"}{ : Number. Default to 14. The minimum font-size used for labels when scaling.}
-     \item{"max"}{ : Number. Default to 30. The maximum font-size used for labels when scaling.}
-     \item{"maxVisible"}{ :   Number. Default to 30. When zooming in, the font is drawn larger as well. You can limit the perceived font size using this option. If set to 30, the font will never look larger than size 30 zoomed at 100\%.}
-     \item{"drawThreshold"}{ : Number. Default to 5. When zooming out, the font will be drawn smaller. This defines a lower limit for when the font is drawn. When using font scaling, you can use this together with the maxVisible to first show labels of important nodes when zoomed out and only show the rest when zooming in.}
+     \item "enabled" Boolean. Default to false. Toggle the scaling of the label on or off. If this option is not defined, it is set to true if any of the properties in this object are defined.
+     \item "min" Number. Default to 14. The minimum font-size used for labels when scaling.
+     \item "max" Number. Default to 30. The maximum font-size used for labels when scaling.
+     \item "maxVisible"   Number. Default to 30. When zooming in, the font is drawn larger as well. You can limit the perceived font size using this option. If set to 30, the font will never look larger than size 30 zoomed at 100\%.
+     \item "drawThreshold" Number. Default to 5. When zooming out, the font will be drawn smaller. This defines a lower limit for when the font is drawn. When using font scaling, you can use this together with the maxVisible to first show labels of important nodes when zoomed out and only show the rest when zooming in.
    }
- }
- \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
+ \item "customScalingFunction" Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.
 }}
 
-\item{widthConstraint}{: See \link{visDocumentation}}
+\item{widthConstraint}{: See \link[pkg:visNetwork]{visDocumentation}}
 
-\item{chosen}{: See \link{visDocumentation}}
+\item{chosen}{: See \link[pkg:visNetwork]{visDocumentation}}
 
-\item{endPointOffset}{: See \link{visDocumentation}}
+\item{endPointOffset}{: See \link[pkg:visNetwork]{visDocumentation}}
 }
 \description{
-Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.
+Network visualization edges options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
 }
 \examples{
 
@@ -195,8 +194,8 @@ visNetwork(nodes, edges)
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
-\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
-\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
-\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
+\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
+\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
+\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
 }

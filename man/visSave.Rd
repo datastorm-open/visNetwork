@@ -9,7 +9,7 @@ visSave(graph, file, selfcontained = TRUE, background = "white")
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{file}{: File to save HTML into. See \link{saveWidget}}
+\item{file}{: File to save HTML into. See \link[pkg:visNetwork]{saveWidget}}
 
 \item{selfcontained}{: Whether to save the HTML as a single self-contained file (with external resources base64 encoded) or a file with external resources placed in an adjacent directory.}
 
@@ -41,5 +41,5 @@ visSave(network, file = "network.html", background = "black")
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link{visExport}
+\link[pkg:visNetwork]{visExport}
 }
