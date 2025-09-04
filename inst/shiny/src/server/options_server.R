@@ -12,8 +12,6 @@ output$network_id <- renderVisNetwork({
     visExport() %>%
     visOptions(highlightNearest = TRUE,
                nodesIdSelection = list(enabled = TRUE, selected = "1"))
-  visNetwork(nodes, edges) %>%
-      visConfigure(enabled = TRUE, filter = "interaction")
 })
 
 output$view_id <- renderText({
