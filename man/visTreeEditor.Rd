@@ -9,7 +9,7 @@ visTreeEditor(data, ...)
 \arguments{
 \item{data}{\code{rpart or data.drame}}
 
-\item{...}{all arguments except \code{object} present in \link[pkg:visNetwork]{visTreeModuleServer}}
+\item{...}{all arguments except \code{object} present in  \link[visNetwork]{visTreeModuleServer}}
 }
 \description{
 Needed packages : shiny, rpart, colourpicker, shinyWidgets
@@ -31,5 +31,5 @@ net
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visTreeModuleServer}, \link[pkg:visNetwork]{visNetworkEditor}
+\link[visNetwork]{visTree},  \link[visNetwork]{visTreeModuleServer},  \link[visNetwork]{visNetworkEditor}
 }

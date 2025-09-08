@@ -7,9 +7,9 @@
 visUpdateEdges(graph, edges, legend = FALSE)
 }
 \arguments{
-\item{graph}{: a \code{\link[pkg:visNetwork]{visNetworkProxy}}  object}
+\item{graph}{: a \code{ \link[visNetwork]{visNetworkProxy}}  object}
 
-\item{edges}{: data.frame with the information of edges. See \link[pkg:visNetwork]{visEdges}
+\item{edges}{: data.frame with the information of edges. See  \link[visNetwork]{visEdges}
 \itemize{
  \item "id" edge id, for update
  \item "from" node id, begin of the edge
@@ -39,8 +39,8 @@ shiny::runApp(system.file("shiny", package = "visNetwork"))
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+\link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+\link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+\link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+\link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 }

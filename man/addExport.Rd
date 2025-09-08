@@ -2,7 +2,7 @@
 % Please edit documentation in R/dependencies.R
 \name{addExport}
 \alias{addExport}
-\title{Add libraries dependencies used in export \link[pkg:visNetwork]{visExport}}
+\title{Add libraries dependencies used in export  \link[visNetwork]{visExport}}
 \usage{
 addExport(graph, pdf = TRUE)
 }
@@ -15,5 +15,5 @@ addExport(graph, pdf = TRUE)
 \code{graph} htmlwidget with dependencies attached.
 }
 \description{
-Add libraries dependencies used in export \link[pkg:visNetwork]{visExport}
+Add libraries dependencies used in export  \link[visNetwork]{visExport}
 }

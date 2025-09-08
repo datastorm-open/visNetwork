@@ -1,6 +1,6 @@
 #' Network visualization configure options
 #'
-#' Network visualization configure options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+#' Network visualization configure options. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 #' 
 #' @param graph : a visNetwork object
 #' @param enabled : Boolean. Default to true. Toggle the configuration interface on or off. This is an optional parameter. If left undefined and any of the other properties of this object are defined, this will be set to true.
@@ -27,7 +27,7 @@
 #' custom_network
 #'}
 #' 
-#'@seealso \link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditor}
+#'@seealso  \link[visNetwork]{visConfigure},  \link[visNetwork]{visTree},  \link[visNetwork]{visNetworkEditor}
 #'
 #'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'

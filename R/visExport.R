@@ -10,7 +10,7 @@
 #'@param float : button postion, default to "right" 
 #'@param style : button css style.
 #'@param loadDependencies / Boolean. TRUE by default. Load libraries for export (fileSaver, Blob, canvastoBlob, html2canvas, jsPDF)
-#'@param ... : arguments for \link[pkg:visNetwork]{addExport}
+#'@param ... : arguments for  \link[visNetwork]{addExport}
 #'
 #'@examples
 #'
@@ -31,7 +31,7 @@
 #'    float = "left", label = "Save network", background = "purple", style= "") 
 #'  
 #'}
-#'@seealso \link[pkg:visNetwork]{visSave}
+#'@seealso  \link[visNetwork]{visSave}
 #'
 #'@export
 #'@references See online documentation \url{https://datastorm-open.github.io/visNetwork/}

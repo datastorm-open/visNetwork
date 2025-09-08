@@ -1,18 +1,18 @@
 #' Network visualization
 #'
-#' Network visualization using vis.js library. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+#' Network visualization using vis.js library. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 #'
-#' @param nodes : data.frame or a list with nodes informations. Needed at least column "id". See \link[pkg:visNetwork]{visNodes} 
+#' @param nodes : data.frame or a list with nodes informations. Needed at least column "id". See  \link[visNetwork]{visNodes} 
 #' \itemize{
 #'  \item "id" id of the node, needed in edges information
 #'  \item "label" label of the node
-#'  \item "group" group of the node. Groups can be configure with \link[pkg:visNetwork]{visGroups}
+#'  \item "group" group of the node. Groups can be configure with  \link[visNetwork]{visGroups}
 #'  \item "value" size of the node
 #'  \item "title" tooltip of the node
 #'  \item ...
 #'}
 #'
-#' @param edges : data.frame or a list  with edges informations. Needed at least columns "from" and "to". See \link[pkg:visNetwork]{visEdges}
+#' @param edges : data.frame or a list  with edges informations. Needed at least columns "from" and "to". See  \link[visNetwork]{visEdges}
 #' \itemize{
 #'  \item "from" node id of begin of the edge
 #'  \item "to" node id of end of the edge
@@ -192,11 +192,11 @@
 #'   ))
 #'}
 #' 
-#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} for play with network using shiny,
-#'\link[pkg:visNetwork]{visTree} to visualize CART rpart tree, \link[pkg:visNetwork]{visNetworkEditor} to edit your network, 
-#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+#'@seealso  \link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+#' \link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+#' \link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} for play with network using shiny,
+#' \link[visNetwork]{visTree} to visualize CART rpart tree,  \link[visNetwork]{visNetworkEditor} to edit your network, 
+#' \link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 #'
 #' @import htmlwidgets
 #' 

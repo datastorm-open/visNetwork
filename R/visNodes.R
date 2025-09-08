@@ -1,6 +1,6 @@
 #' Network visualization nodes options
 #'
-#' Network visualization nodes options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+#' Network visualization nodes options. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 #'
 #' @param graph : a visNetwork object
 #' @param id : String. Default to undefined. The id of the node. The id is mandatory for nodes and they have to be unique. This should obviously be set per node, not globally.
@@ -56,10 +56,10 @@
 #'  \item "strokeWidth" Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.
 #'  \item "strokeColor" String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.
 #'  \item "align" String. Default to 'center'. This can be set to 'left' to make the label left-aligned
-#'  \item "vadjust, multi, bold, ital, boldital, mono" See \link[pkg:visNetwork]{visDocumentation}
+#'  \item "vadjust, multi, bold, ital, boldital, mono" See  \link[visNetwork]{visDocumentation}
 #'}
 #'
-#' @param icon : Named list. These options are only used when the shape is set to 'icon'. See \link[pkg:visNetwork]{addFontAwesome}, \link[pkg:visNetwork]{addIonicons}
+#' @param icon : Named list. These options are only used when the shape is set to 'icon'. See  \link[visNetwork]{addFontAwesome},  \link[visNetwork]{addIonicons}
 #' \itemize{
 #'  \item "face" String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome', "'Font Awesome 5 Free'", and 'Ionicons'.
 #'  \item "code" String. Default to undefined. This is the code of the icon, for example '\\uf007'.
@@ -93,19 +93,19 @@
 #'  \item "customScalingFunction" Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.
 #'}
 #'
-#' @param shapeProperties : See \link[pkg:visNetwork]{visDocumentation}  
+#' @param shapeProperties : See  \link[visNetwork]{visDocumentation}  
 #'  
-#' @param heightConstraint : See \link[pkg:visNetwork]{visDocumentation}  
-#' @param widthConstraint : See \link[pkg:visNetwork]{visDocumentation}  
-#' @param margin : See \link[pkg:visNetwork]{visDocumentation} 
-#' @param chosen : See \link[pkg:visNetwork]{visDocumentation}  
-#' @param imagePadding : See \link[pkg:visNetwork]{visDocumentation}  
-#' @param ctxRenderer : See \link[pkg:visNetwork]{visDocumentation}  
+#' @param heightConstraint : See  \link[visNetwork]{visDocumentation}  
+#' @param widthConstraint : See  \link[visNetwork]{visDocumentation}  
+#' @param margin : See  \link[visNetwork]{visDocumentation} 
+#' @param chosen : See  \link[visNetwork]{visDocumentation}  
+#' @param imagePadding : See  \link[visNetwork]{visDocumentation}  
+#' @param ctxRenderer : See  \link[visNetwork]{visDocumentation}  
 #' 
-#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+#'@seealso  \link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+#' \link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+#' \link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+#' \link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 #' 
 #' @examples
 #' 

@@ -7,9 +7,9 @@
 #' 
 #' @param object \code{hclust | dist | data.frame}.
 #' @param data \code{data.frame}, data.frame with data. Only for \code{hclust} or \code{dist} object.
-#' @param main Title. See \link[pkg:visNetwork]{visNetwork}
-#' @param submain Subtitle. See \link[pkg:visNetwork]{visNetwork}
-#' @param footer Footer. See \link[pkg:visNetwork]{visNetwork}
+#' @param main Title. See  \link[visNetwork]{visNetwork}
+#' @param submain Subtitle. See  \link[visNetwork]{visNetwork}
+#' @param footer Footer. See  \link[visNetwork]{visNetwork}
 #' @param distColumns \code{numeric}, indice of columns used for compute distance. 
 #'  If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
 #'  If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns

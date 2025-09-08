@@ -1,6 +1,6 @@
 #' Network visualization edges options
 #'
-#' Network visualization edges options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+#' Network visualization edges options. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 #' 
 #' @param graph : a visNetwork object
 #' @param title : String. Default to undefined. The title is shown in a pop-up when the mouse moves over the edge.
@@ -15,7 +15,7 @@
 #' @param physics : Boolean. Default to true. When true, the edge is part of the physics simulation. When false, it will not act as a spring.
 #' @param selectionWidth : Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.
 #' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle. This property is deprecated please use selfReference instead. 
-#' @param selfReference : See \link[pkg:visNetwork]{visDocumentation} 
+#' @param selfReference : See  \link[visNetwork]{visDocumentation} 
 #' @param labelHighlightBold 	: Boolean. Default to	true. Determines whether or not the label becomes bold when the edge is selected.
 #' 
 #' @param color : Named list or String. Default to named list. Color information of the edge in every situation. Can be 'rgba(120,32,14,1)', '#97C2FC' (hexa notation on 7 char without transparency) or 'red'.
@@ -36,11 +36,11 @@
 #'  \item "strokeWidth" Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.
 #'  \item "strokeColor" String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.
 #'  \item "align" String. Default to 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.
-#'  \item "vadjust, multi, bold, ital, boldital, mono" See \link[pkg:visNetwork]{visDocumentation}
+#'  \item "vadjust, multi, bold, ital, boldital, mono" See  \link[visNetwork]{visDocumentation}
 #'}
 #'
 #' @param arrows : Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. 
-#' If you want to control the size of the arrowheads, you can supply an object. See \link[pkg:visNetwork]{visDocumentation} 
+#' If you want to control the size of the arrowheads, you can supply an object. See  \link[visNetwork]{visDocumentation} 
 #'
 #' @param arrowStrikethrough :	Boolean. Default to True. 	When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.
 #'
@@ -76,14 +76,14 @@
 #'  \item "customScalingFunction" Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.
 #'}
 #'
-#' @param widthConstraint : See \link[pkg:visNetwork]{visDocumentation}
-#' @param chosen : See \link[pkg:visNetwork]{visDocumentation} 
-#' @param endPointOffset : See \link[pkg:visNetwork]{visDocumentation}
+#' @param widthConstraint : See  \link[visNetwork]{visDocumentation}
+#' @param chosen : See  \link[visNetwork]{visDocumentation} 
+#' @param endPointOffset : See  \link[visNetwork]{visDocumentation}
 #' 
-#'@seealso \link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-#'\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-#'\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-#'\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+#'@seealso  \link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+#' \link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+#' \link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+#' \link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 #' 
 #' @examples
 #' 

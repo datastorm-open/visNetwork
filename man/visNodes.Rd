@@ -116,10 +116,10 @@ visNodes(
  \item "strokeWidth" Number. Default to 0. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.
  \item "strokeColor" String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.
  \item "align" String. Default to 'center'. This can be set to 'left' to make the label left-aligned
- \item "vadjust, multi, bold, ital, boldital, mono" See \link[pkg:visNetwork]{visDocumentation}
+ \item "vadjust, multi, bold, ital, boldital, mono" See  \link[visNetwork]{visDocumentation}
 }}
 
-\item{icon}{: Named list. These options are only used when the shape is set to 'icon'. See \link[pkg:visNetwork]{addFontAwesome}, \link[pkg:visNetwork]{addIonicons}
+\item{icon}{: Named list. These options are only used when the shape is set to 'icon'. See  \link[visNetwork]{addFontAwesome},  \link[visNetwork]{addIonicons}
 \itemize{
  \item "face" String. Default to 'FontAwesome'. These options are only used when the shape is set to icon. The possible options for the face are: 'FontAwesome', "'Font Awesome 5 Free'", and 'Ionicons'.
  \item "code" String. Default to undefined. This is the code of the icon, for example '\\uf007'.
@@ -153,22 +153,22 @@ visNodes(
  \item "customScalingFunction" Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.
 }}
 
-\item{shapeProperties}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{shapeProperties}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{heightConstraint}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{heightConstraint}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{widthConstraint}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{widthConstraint}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{margin}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{margin}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{chosen}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{chosen}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{imagePadding}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{imagePadding}{: See  \link[visNetwork]{visDocumentation}}
 
-\item{ctxRenderer}{: See \link[pkg:visNetwork]{visDocumentation}}
+\item{ctxRenderer}{: See  \link[visNetwork]{visDocumentation}}
 }
 \description{
-Network visualization nodes options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+Network visualization nodes options. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 }
 \examples{
 
@@ -201,8 +201,8 @@ visNetwork(nodes, edges) \%>\% visNodes(shadow = list(enabled = TRUE, size = 50)
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+\link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+\link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+\link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+\link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 }

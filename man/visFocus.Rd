@@ -14,7 +14,7 @@ visFocus(
 )
 }
 \arguments{
-\item{graph}{: a \code{\link[pkg:visNetwork]{visNetworkProxy}}  object}
+\item{graph}{: a \code{ \link[visNetwork]{visNetworkProxy}}  object}
 
 \item{id}{: a node id}
 
@@ -29,7 +29,7 @@ Available are: linear, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, ease
 Default to list(duration = 1500, easingFunction = "easeInOutQuad")}
 }
 \description{
-For use focus() method in a shiny app. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+For use focus() method in a shiny app. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 }
 \examples{
 \dontrun{
@@ -44,8 +44,8 @@ shiny::runApp(system.file("shiny", package = "visNetwork"))
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+\link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+\link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+\link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+\link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 }

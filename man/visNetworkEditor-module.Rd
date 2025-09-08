@@ -5,7 +5,7 @@
 \alias{visNetworkEditorServer}
 \alias{visNetworkEditorUI}
 \title{Module shiny for visualize and customize and get back a \code{visNetwork} object.
-Using the javascript interface \link[pkg:visNetwork]{visConfigure}.}
+Using the javascript interface  \link[visNetwork]{visConfigure}.}
 \usage{
 visNetworkEditorServer(
   input,
@@ -27,11 +27,11 @@ visNetworkEditorUI(id, quitButton = FALSE, height = "700px")
 
 \item{object}{a \code{visNetwork} object. Must be a reactive.}
 
-\item{filter}{: see \link[pkg:visNetwork]{visConfigure}. Must be a reactive.}
+\item{filter}{: see  \link[visNetwork]{visConfigure}. Must be a reactive.}
 
-\item{showButton}{: see \link[pkg:visNetwork]{visConfigure}. Must be a reactive.}
+\item{showButton}{: see  \link[visNetwork]{visConfigure}. Must be a reactive.}
 
-\item{id}{\code{character} id of module, linked to  \link[pkg:visNetwork]{visNetworkEditorUI}}
+\item{id}{\code{character} id of module, linked to   \link[visNetwork]{visNetworkEditorUI}}
 
 \item{quitButton}{: logical. Add a button for quit shiny and get back network in R ?}
 
@@ -39,7 +39,7 @@ visNetworkEditorUI(id, quitButton = FALSE, height = "700px")
 }
 \description{
 Module shiny for visualize and customize and get back a \code{visNetwork} object.
-Using the javascript interface \link[pkg:visNetwork]{visConfigure}.
+Using the javascript interface  \link[visNetwork]{visConfigure}.
 }
 \examples{
 \dontrun{
@@ -60,5 +60,5 @@ shiny::shinyApp(ui = shiny::fluidPage(
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditor}
+\link[visNetwork]{visConfigure},  \link[visNetwork]{visTree},  \link[visNetwork]{visNetworkEditor}
 }

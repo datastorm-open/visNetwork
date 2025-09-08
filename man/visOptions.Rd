@@ -71,7 +71,7 @@ visOptions(
 
 \item{clickToUse}{: Boolean. Default to false. When a Network is configured to be clickToUse, it will react to mouse, touch, and keyboard events only when active. When active, a blue shadow border is displayed around the Network. The Network is set active by clicking on it, and is changed to inactive again by clicking outside the Network or by pressing the ESC key.}
 
-\item{manipulation}{: Just a Boolean or a list. See \link[pkg:visNetwork]{visDocumentation}. You can also choose the columns to edit : 
+\item{manipulation}{: Just a Boolean or a list. See  \link[visNetwork]{visDocumentation}. You can also choose the columns to edit : 
 \itemize{
  \item "editEdgeCols" Optional. Default to NULL, and so you can just move edge. If set, you can't move edge but just edit.
  \item "editNodeCols" Optional. Default to c("id", "label"). See examples.
@@ -79,7 +79,7 @@ visOptions(
 }}
 }
 \description{
-Network visualization general options. For full documentation, have a look at \link[pkg:visNetwork]{visDocumentation}.
+Network visualization general options. For full documentation, have a look at  \link[visNetwork]{visDocumentation}.
 }
 \examples{
 
@@ -265,8 +265,8 @@ visNetwork(nodes, edges) \%>\%
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+\link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+\link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+\link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+\link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 }

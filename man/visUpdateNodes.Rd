@@ -7,13 +7,13 @@
 visUpdateNodes(graph, nodes, updateOptions = TRUE, legend = FALSE)
 }
 \arguments{
-\item{graph}{: a \code{\link[pkg:visNetwork]{visNetworkProxy}}  object}
+\item{graph}{: a \code{ \link[visNetwork]{visNetworkProxy}}  object}
 
-\item{nodes}{: data.frame with the information of nodes. Needed at least column "id". See \link[pkg:visNetwork]{visNodes} 
+\item{nodes}{: data.frame with the information of nodes. Needed at least column "id". See  \link[visNetwork]{visNodes} 
 \itemize{
  \item "id" id of the node, needed in zhe definition of edges and for update nodes
  \item "label" label of the node
- \item "group" group of the node. Groups can be configure with \link[pkg:visNetwork]{visGroups}
+ \item "group" group of the node. Groups can be configure with  \link[visNetwork]{visGroups}
  \item "value" size of the node
  \item "title" tooltip of the node
  \item ...
@@ -40,8 +40,8 @@ shiny::runApp(system.file("shiny", package = "visNetwork"))
 See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 }
 \seealso{
-\link[pkg:visNetwork]{visNodes} for nodes options, \link[pkg:visNetwork]{visEdges} for edges options, \link[pkg:visNetwork]{visGroups} for groups options, 
-\link[pkg:visNetwork]{visLegend} for adding legend, \link[pkg:visNetwork]{visOptions} for custom option, \link[pkg:visNetwork]{visLayout} & \link[pkg:visNetwork]{visHierarchicalLayout} for layout, 
-\link[pkg:visNetwork]{visPhysics} for control physics, \link[pkg:visNetwork]{visInteraction} for interaction, \link[pkg:visNetwork]{visNetworkProxy} & \link[pkg:visNetwork]{visFocus} & \link[pkg:visNetwork]{visFit} for animation within shiny,
-\link[pkg:visNetwork]{visDocumentation}, \link[pkg:visNetwork]{visEvents}, \link[pkg:visNetwork]{visConfigure} ...
+\link[visNetwork]{visNodes} for nodes options,  \link[visNetwork]{visEdges} for edges options,  \link[visNetwork]{visGroups} for groups options, 
+\link[visNetwork]{visLegend} for adding legend,  \link[visNetwork]{visOptions} for custom option,  \link[visNetwork]{visLayout} &  \link[visNetwork]{visHierarchicalLayout} for layout, 
+\link[visNetwork]{visPhysics} for control physics,  \link[visNetwork]{visInteraction} for interaction,  \link[visNetwork]{visNetworkProxy} &  \link[visNetwork]{visFocus} &  \link[visNetwork]{visFit} for animation within shiny,
+\link[visNetwork]{visDocumentation},  \link[visNetwork]{visEvents},  \link[visNetwork]{visConfigure} ...
 }

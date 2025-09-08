@@ -1,8 +1,8 @@
 #' Visualize, customize and get back a \code{visNetwork} object. Need shiny package
 #' 
 #' @param  object : a \code{visNetwork} object
-#' @param  filter : see \link[pkg:visNetwork]{visConfigure}
-#' @param  showButton : see \link[pkg:visNetwork]{visConfigure}
+#' @param  filter : see  \link[visNetwork]{visConfigure}
+#' @param  showButton : see  \link[visNetwork]{visConfigure}
 #' 
 #' @return a \code{visNetwork} object
 #' 
@@ -26,7 +26,7 @@
 #' 
 #' @importFrom  utils packageVersion
 #' 
-#' @seealso \link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditorServer}
+#' @seealso  \link[visNetwork]{visConfigure},  \link[visNetwork]{visTree},  \link[visNetwork]{visNetworkEditorServer}
 #'
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'
@@ -56,15 +56,15 @@ visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
 }
 
 #' Module shiny for visualize and customize and get back a \code{visNetwork} object.
-#' Using the javascript interface \link[pkg:visNetwork]{visConfigure}.
+#' Using the javascript interface  \link[visNetwork]{visConfigure}.
 #'
 #' @param  input  \code{list} shiny input
 #' @param  output \code{list}, shiny output
 #' @param  session  \code{list}, shiny session
-#' @param  id \code{character} id of module, linked to  \link[pkg:visNetwork]{visNetworkEditorUI}
+#' @param  id \code{character} id of module, linked to   \link[visNetwork]{visNetworkEditorUI}
 #' @param  object a \code{visNetwork} object. Must be a reactive.
-#' @param  filter : see \link[pkg:visNetwork]{visConfigure}. Must be a reactive.
-#' @param  showButton : see \link[pkg:visNetwork]{visConfigure}. Must be a reactive.
+#' @param  filter : see  \link[visNetwork]{visConfigure}. Must be a reactive.
+#' @param  showButton : see  \link[visNetwork]{visConfigure}. Must be a reactive.
 #' @param  quitButton : logical. Add a button for quit shiny and get back network in R ?
 #' @param  height : height of the configuration div. Default to "700px"
 #' 
@@ -86,7 +86,7 @@ visNetworkEditor <- function(object, filter = NULL, showButton = NULL){
 #' 
 #' @export
 #' 
-#' @seealso \link[pkg:visNetwork]{visConfigure}, \link[pkg:visNetwork]{visTree}, \link[pkg:visNetwork]{visNetworkEditor}
+#' @seealso  \link[visNetwork]{visConfigure},  \link[visNetwork]{visTree},  \link[visNetwork]{visNetworkEditor}
 #' 
 #' @references See online documentation \url{https://datastorm-open.github.io/visNetwork/}
 #'

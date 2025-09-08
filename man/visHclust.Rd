@@ -91,11 +91,11 @@ visHclust(object, ...)
 
 \item{...}{Don't use}
 
-\item{main}{Title. See \link[pkg:visNetwork]{visNetwork}}
+\item{main}{Title. See  \link[visNetwork]{visNetwork}}
 
-\item{submain}{Subtitle. See \link[pkg:visNetwork]{visNetwork}}
+\item{submain}{Subtitle. See  \link[visNetwork]{visNetwork}}
 
-\item{footer}{Footer. See \link[pkg:visNetwork]{visNetwork}}
+\item{footer}{Footer. See  \link[visNetwork]{visNetwork}}
 
 \item{distColumns}{\code{numeric}, indice of columns used for compute distance. 
 If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
