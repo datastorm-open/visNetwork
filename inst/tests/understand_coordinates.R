@@ -1,4 +1,5 @@
 require(shiny)
+require(visNetwork)
 server <- function(input, output) {
   data <- reactive({
     input$go

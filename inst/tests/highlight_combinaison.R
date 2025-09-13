@@ -1,3 +1,5 @@
+require(visNetwork)
+
 # simple nodes, passing some information individually
 nodes <- data.frame(id = 1:5, color = c("blue", NA, "green", NA, NA))
 
