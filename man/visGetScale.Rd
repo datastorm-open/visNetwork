@@ -12,7 +12,7 @@ visGetScale(graph, input = paste0(graph$id, "_scale"))
 \item{input}{: name of shiny input created. Default to paste0(graph$id, "_scale")}
 }
 \description{
-Function to get current scale of network, with shiny only. Returns the current scale of the network. 1.0 is comparible to full, 0 is zoomed out infinitely.
+Function to get current scale of network, with shiny only. Returns the current scale of the network. 1.0 is comparable to full, 0 is zoomed out infinitely.
 }
 \examples{
 \dontrun{

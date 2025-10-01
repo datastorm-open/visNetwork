@@ -10,13 +10,13 @@
 #' @param main Title. See  \link[visNetwork]{visNetwork}
 #' @param submain Subtitle. See  \link[visNetwork]{visNetwork}
 #' @param footer Footer. See  \link[visNetwork]{visNetwork}
-#' @param distColumns \code{numeric}, indice of columns used for compute distance. 
+#' @param distColumns \code{numeric}, indices of columns used for compute distance. 
 #'  If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
 #'  If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns
 #' @param distMethod \code{character}, the distance measure to be used for \code{\link[stats]{dist}} function. Default to 'euclidean'.
 #' @param hclustMethod \code{character}, the agglomeration method to be used for \code{\link[stats]{hclust}} function. Default to 'complete'.
 #' @param cutree \code{numeric} or \code{integer}, desired number of groups. Default to 0.
-#' @param tooltipColumns \code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? Indice of columns used in tooltip. All by default.
+#' @param tooltipColumns \code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? indices of columns used in tooltip. All by default.
 #' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
 #' @param colorEdges \code{character}, color of edges. Default to 'black'.
 #' @param colorGroups \code{character}, color for group in hexa ("#00FF00"). Default rainbow.

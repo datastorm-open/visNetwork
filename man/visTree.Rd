@@ -53,7 +53,7 @@ visTree(
 
 \item{data}{\code{data.frame}, adding mini-graphics in tooltips using \code{sparkline} and \code{tooltipColumns} ?}
 
-\item{tooltipColumns}{\code{numeric}, indice of columns used in tooltip. All by default.
+\item{tooltipColumns}{\code{numeric}, indices of columns used in tooltip. All by default.
 So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}
 
 \item{main}{Title. See  \link[visNetwork]{visNetwork}}
@@ -119,7 +119,7 @@ if regression tree : \code{character}, 2 colors (min and max, in hexa)}
 
 \item{collapse}{\code{list}, collapse or not using double click on a node ? See  \link[visNetwork]{visOptions}}
 
-\item{updateShape}{\code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE}
+\item{updateShape}{\code{boolean}, in case of collapse, update cluster node shape as terminal node ? Default to TRUE}
 
 \item{tooltipDelay}{\code{numeric}, delay for tooltips in millisecond. Default 500}
 

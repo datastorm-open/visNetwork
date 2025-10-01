@@ -97,7 +97,7 @@ visHclust(object, ...)
 
 \item{footer}{Footer. See  \link[visNetwork]{visNetwork}}
 
-\item{distColumns}{\code{numeric}, indice of columns used for compute distance. 
+\item{distColumns}{\code{numeric}, indices of columns used for compute distance. 
 If \code{NULL} (default), keep all \code{numeric} and \code{integer} columns. 
 If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns}
 
@@ -107,7 +107,7 @@ If Not \code{NULL}, keep only  \code{numeric} and \code{integer} columns}
 
 \item{cutree}{\code{numeric} or \code{integer}, desired number of groups. Default to 0.}
 
-\item{tooltipColumns}{\code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? Indice of columns used in tooltip. All by default.
+\item{tooltipColumns}{\code{numeric}, adding mini-graphics in tooltips using \code{sparkline} ? Indices of columns used in tooltip. All by default.
 So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.}
 
 \item{colorEdges}{\code{character}, color of edges. Default to 'black'.}

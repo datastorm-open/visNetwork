@@ -27,7 +27,7 @@
 #' @param zoom : Fired when the user zooms in or out. The properties tell you which direction the zoom is in. The scale is a number greater than 0, which is the same that you get with network.getScale().
 #' @param showPopup : Fired when the popup (tooltip) is shown.
 #' @param hidePopup : Fired when the popup (tooltip) is hidden.
-#' @param startStabilizing : Fired when stabilization starts. This is also the case when you drag a node and the physics simulation restarts to stabilize again. Stabilization does not neccesarily imply 'without showing'.
+#' @param startStabilizing : Fired when stabilization starts. This is also the case when you drag a node and the physics simulation restarts to stabilize again. Stabilization does not neccessarily imply 'without showing'.
 #' @param stabilizationProgress : Fired when a multiple of the updateInterval number of iterations is reached. This only occurs in the 'hidden' stabilization. Passes an object with properties structured as:
 #' @param stabilizationIterationsDone : Fired when the 'hidden' stabilization finishes. This does not necessarily mean the network is stabilized; it could also mean that the amount of iterations defined in the options has been reached.
 #' @param stabilized : Fired when the network has stabilized or when the stopSimulation() has been called. The amount of iterations it took could be used to tweak the maximum amount of iterations needed to stabilize the network.

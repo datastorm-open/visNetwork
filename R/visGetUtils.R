@@ -216,7 +216,7 @@ visGetSelection <- function(graph, input = paste0(graph$id, "_selection")){
 
 #' Function to get current scale of network, with shiny only.
 #'
-#' Function to get current scale of network, with shiny only. Returns the current scale of the network. 1.0 is comparible to full, 0 is zoomed out infinitely.
+#' Function to get current scale of network, with shiny only. Returns the current scale of the network. 1.0 is comparable to full, 0 is zoomed out infinitely.
 #' 
 #' @param graph : a \code{ \link[visNetwork]{visNetworkProxy}}  object
 #' @param input : name of shiny input created. Default to paste0(graph$id, "_scale")

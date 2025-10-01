@@ -213,19 +213,19 @@ function resetOneEdge(edge, hideColor1, hideColor2, type){
   console.info("edge.hiddenColor")
   console.info(edge.hiddenColor)*/
   
-  var treat_egde = false;
+  var treat_edge = false;
   if(type === "cluster"){
     if(edge.isHardToRead !== undefined){ // we have to reset this node
       if(edge.isHardToRead){
-        treat_egde = true;
+        treat_edge = true;
       } else if(edge.isHardToRead === false && (edge.color.color === hideColor1 || edge.color.color === hideColor2)){
-        treat_egde = true;
+        treat_edge = true;
       }
     } else if(edge.color.color === hideColor1 || edge.color.color === hideColor2){
-      treat_egde = true;
+      treat_edge = true;
     }
     
-    if(treat_egde){
+    if(treat_edge){
       // get back color
       if (edge.hiddenColor !== undefined) {
         edge.color = edge.hiddenColor;
@@ -1886,7 +1886,7 @@ if (HTMLWidgets.shinyMode){
       
   Shiny.addCustomMessageHandler('visShinyCustomOptions', updateVisOptions);
   
-  // udpate nodes data
+  // update nodes data
   Shiny.addCustomMessageHandler('visShinyUpdateNodes', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
@@ -1952,7 +1952,7 @@ if (HTMLWidgets.shinyMode){
       }
   });
 
-  // udpate edges data
+  // update edges data
   Shiny.addCustomMessageHandler('visShinyUpdateEdges', function(data){
       // get container id
       var el = document.getElementById("graph"+data.id);
@@ -3952,13 +3952,13 @@ HTMLWidgets.widget({
 
     function saveEdge(data, callback, cmd) {
       if(cmd === "editEdge"){
-        callback(data); //must be first called for egde id !
+        callback(data); //must be first called for edge id !
         if (window.Shiny){
           var obj = {cmd: cmd, id: data.id, from: data.from, to: data.to};
           Shiny.onInputChange(el.id + '_graphChange', obj);
         }
       } else if(cmd === "addEdge"){
-        callback(data); //must be first called for egde id !
+        callback(data); //must be first called for edge id !
         if (window.Shiny){
           var obj = {cmd: cmd, id: data.id, from: data.from, to: data.to};
           Shiny.onInputChange(el.id + '_graphChange', obj);

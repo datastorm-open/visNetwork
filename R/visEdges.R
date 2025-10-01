@@ -39,7 +39,7 @@
 #'  \item "vadjust, multi, bold, ital, boldital, mono" See  \link[visNetwork]{visDocumentation}
 #'}
 #'
-#' @param arrows : Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. 
+#' @param arrows : Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any separating symbol is fine. 
 #' If you want to control the size of the arrowheads, you can supply an object. See  \link[visNetwork]{visDocumentation} 
 #'
 #' @param arrowStrikethrough :	Boolean. Default to True. 	When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.

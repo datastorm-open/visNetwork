@@ -17,7 +17,7 @@ visSave(graph, file, selfcontained = TRUE, background = "white")
 }
 \description{
 Save a a visNetwork object to an HTML file for sharing with others. The HTML can
-include it's dependencies in an adjacent directory or can bundle all
+include its dependencies in an adjacent directory or can bundle all
 dependencies into the HTML file (via base64 encoding).
 }
 \examples{

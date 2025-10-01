@@ -7,7 +7,7 @@
 #'@param name : name of imgage, default to "network"
 #'@param label : Label on button, default to "Export as png/jpeg/pdf"
 #'@param background : background color, default to white (#fff). Work only if network background is transparent.
-#'@param float : button postion, default to "right" 
+#'@param float : button position, default to "right" 
 #'@param style : button css style.
 #'@param loadDependencies / Boolean. TRUE by default. Load libraries for export (fileSaver, Blob, canvastoBlob, html2canvas, jsPDF)
 #'@param ... : arguments for  \link[visNetwork]{addExport}

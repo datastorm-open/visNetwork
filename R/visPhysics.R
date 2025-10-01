@@ -13,7 +13,7 @@
 #'  \item "theta" Number. Default to 0.5. This parameter determines the boundary between consolidated long range forces and individual short range forces. To oversimplify higher values are faster but generate more errors, lower values are slower but with less errors.
 #'  \item "gravitationalConstant" Number. Default to -2000. Gravity attracts. We like repulsion. So the value is negative. If you want the repuzsion to be stronger, decrease the value (so -10000, -50000).
 #'  \item "centralGravity" Number. Default to 0.3. There is a central gravity attractor to pull the entire network back to the center.
-#'  \item "springLength" Number. Default to 95. The edges are modelled as springs. This springLength here is the the rest length of the spring.
+#'  \item "springLength" Number. Default to 95. The edges are modelled as springs. This springLength here is the rest length of the spring.
 #'  \item "springConstant" Number. Default to 0.04. This is how 'sturdy' the springs are. Higher values mean stronger springs.
 #'  \item "damping" Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.
 #'  \item "avoidOverlap" Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.
@@ -24,7 +24,7 @@
 #'  \item "theta" Number. Default to 0.5. This parameter determines the boundary between consolidated long range forces and individual short range forces. To oversimplify higher values are faster but generate more errors, lower values are slower but with less errors.
 #'  \item "gravitationalConstant" Number. Default to -50. Gravity attracts. We like repulsion. So the value is negative. If you want the repulsion to be stronger, decrease the value (so -10000, -50000).
 #'  \item "centralGravity" Number. Default to 0.01. There is a central gravity attractor to pull the entire network back to the center.
-#'  \item "springLength" Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.
+#'  \item "springLength" Number. Default to 100. The edges are modelled as springs. This springLength here is the rest length of the spring.
 #'  \item "springConstant" Number. Default to 0.08. This is how 'sturdy' the springs are. Higher values mean stronger springs.
 #'  \item "damping" Number. Default to 0.4. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.
 #'  \item "avoidOverlap" Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.
@@ -34,7 +34,7 @@
 #'\itemize{
 #'  \item "nodeDistance" Number. Default to 100. This is the range of influence for the repulsion.
 #'  \item "centralGravity" Number. Default to 0.2. There is a central gravity attractor to pull the entire network back to the center.
-#'  \item "springLength" Number. Default to 200. The edges are modelled as springs. This springLength here is the the rest length of the spring.
+#'  \item "springLength" Number. Default to 200. The edges are modelled as springs. This springLength here is the rest length of the spring.
 #'  \item "springConstant" Number. Default to 0.05. This is how 'sturdy' the springs are. Higher values mean stronger springs.
 #'  \item "damping" Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.
 #'}
@@ -43,7 +43,7 @@
 #'\itemize{
 #'  \item "nodeDistance" Number. Default to 120. This is the range of influence for the repulsion.
 #'  \item "centralGravity" Number. Default to 0.0. There is a central gravity attractor to pull the entire network back to the center.
-#'  \item "springLength" Number. Default to 100. The edges are modelled as springs. This springLength here is the the rest length of the spring.
+#'  \item "springLength" Number. Default to 100. The edges are modelled as springs. This springLength here is the rest length of the spring.
 #'  \item "springConstant" Number. Default to 0.01. This is how 'sturdy' the springs are. Higher values mean stronger springs.
 #'  \item "damping" Number. Default to 0.09. Accepted range: [0 .. 1]. The damping factor is how much of the velocity from the previous physics simulation iteration carries over to the next iteration.
 #'  \item "avoidOverlap" Number. Default to 0. Accepted range: [0 .. 1]. When larger than 0, the size of the node is taken into account. The distance will be calculated from the radius of the encompassing circle of the node for both the gravity model. Value 1 is maximum overlap avoidance.

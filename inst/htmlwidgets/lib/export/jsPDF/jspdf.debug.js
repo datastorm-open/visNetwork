@@ -508,14 +508,14 @@ var jsPDF = function (global) {
     },
 
     /**
-     * FontObject describes a particular font as member of an instnace of jsPDF
+     * FontObject describes a particular font as member of an instance of jsPDF
      *
      * It's a collection of properties like 'id' (to be used in PDF stream),
      * 'fontName' (font's family name), 'fontStyle' (font's style variant label)
      *
      * @class
      * @public
-     * @property id {String} PDF-document-instance-specific label assinged to the font.
+     * @property id {String} PDF-document-instance-specific label assigned to the font.
      * @property PostScriptName {String} PDF specification full name for the font
      * @property encoding {Object} Encoding_name-to-Font_metrics_object mapping.
      * @name FontObject
@@ -1441,7 +1441,7 @@ var jsPDF = function (global) {
       }
       // Using "'" ("go next line and render text" mark) would save space but would complicate our rendering code, templates
 
-      // BT .. ET does NOT have default settings for Tf. You must state that explicitely every time for BT .. ET
+      // BT .. ET does NOT have default settings for Tf. You must state that explicitly every time for BT .. ET
       // if you want text transformation matrix (+ multiline) to work reliably (which reads sizes of things from font declarations)
       // Thus, there is NO useful, *reliable* concept of "default" font for a page.
       // The fact that "default" (reuse font used before) font worked before in basic cases is an accident
@@ -1693,7 +1693,7 @@ var jsPDF = function (global) {
     };
 
     /**
-     * Adds an circle to PDF
+     * Adds a circle to PDF
      *
      * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
      * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
@@ -3281,7 +3281,7 @@ AcroForm.ChoiceField = function () {
     this.combo = false;
     /**
      * Defines, whether the Choice Field is an Edit Field.
-     * An Edit Field is automatically an Combo Field.
+     * An Edit Field is automatically a Combo Field.
      */
     Object.defineProperty(this, 'edit', {
         enumerable: true,
@@ -3385,7 +3385,7 @@ AcroForm.internal.inherit(AcroForm.RadioButton, AcroForm.Button);
 window["RadioButton"] = AcroForm.RadioButton;
 
 /*
- * The Child classs of a RadioButton (the radioGroup)
+ * The Child class of a RadioButton (the radioGroup)
  * -> The single Buttons
  */
 AcroForm.ChildClass = function (parent, name) {
@@ -3563,7 +3563,7 @@ AcroForm.internal.calculateFontSpace = function (text, fontsize, fonttype) {
     context.fontcolor = 'black';
     // Calculate height:
     var context = canvas.getContext('2d');
-    res.height = context.measureText("3").width * 1.5; // 3 because in ZapfDingbats its a Hook and a 3 in normal fonts
+    res.height = context.measureText("3").width * 1.5; // 3 because in ZapfDingbats it's a Hook and a 3 in normal fonts
     context.restore();
 
     var width = res.width;
@@ -4285,7 +4285,7 @@ AcroForm.internal.setBitPosition = function (variable, position, value) {
   * @returns an Array containing the following
   * [0] the complete data URI
   * [1] <MIME-type>
-  * [2] format - the second part of the mime-type i.e 'png' in 'image/png'
+  * [2] format - the second part of the mime-type i.e. 'png' in 'image/png'
   * [4] <data>
   */
 	jsPDFAPI.extractInfoFromBase64DataURI = function (dataURI) {
@@ -4338,7 +4338,7 @@ AcroForm.internal.setBitPosition = function (variable, position, value) {
   * @see this discussion
   * http://stackoverflow.com/questions/6965107/converting-between-strings-and-arraybuffers
   *
-  * As stated, i imagine the method below is highly inefficent for large files.
+  * As stated, i imagine the method below is highly inefficient for large files.
   *
   * Also of note from Mozilla,
   *
@@ -5955,7 +5955,7 @@ AcroForm.internal.setBitPosition = function (variable, position, value) {
         },
 
         _gotoPage: function _gotoPage(pageOneBased) {
-            // This is a stub to be overriden if needed
+            // This is a stub to be overridden if needed
         },
 
         lineTo: function lineTo(x, y) {
@@ -9336,7 +9336,7 @@ MIT license.
  codes, NOT CIDs or other codes matching the StandardEncoding table of the
  standard PDF fonts.
  Future:
- Also included is the encoding maping table, converting Unicode (UCS-2, UTF-16)
+ Also included is the encoding mapping table, converting Unicode (UCS-2, UTF-16)
  char codes to StandardEncoding character codes. The encoding table is to be used
  somewhere around "pdfEscape" call.
  */
@@ -13854,7 +13854,7 @@ ImageLoader.prototype.fetch = function(nodes) {
     this.images = nodes.reduce(bind(this.findBackgroundImage, this), this.findImages(nodes));
     this.images.forEach(function(image, index) {
         image.promise.then(function() {
-            log("Succesfully loaded image #"+ (index+1), image);
+            log("Successfully loaded image #"+ (index+1), image);
         }, function(e) {
             log("Failed loading image #"+ (index+1), image, e);
         });
@@ -15238,7 +15238,7 @@ function documentFromHTML(src) {
                 doc.close();
             } catch(ee) {
                 log("createHTMLDocument write not supported, falling back to document.body.innerHTML");
-                doc.body.innerHTML = html; // ie9 doesnt support writing to documentElement
+                doc.body.innerHTML = html; // ie9 doesn't support writing to documentElement
             }
         }
 

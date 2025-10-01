@@ -90,7 +90,7 @@ visEvents(
 
 \item{hidePopup}{: Fired when the popup (tooltip) is hidden.}
 
-\item{startStabilizing}{: Fired when stabilization starts. This is also the case when you drag a node and the physics simulation restarts to stabilize again. Stabilization does not neccesarily imply 'without showing'.}
+\item{startStabilizing}{: Fired when stabilization starts. This is also the case when you drag a node and the physics simulation restarts to stabilize again. Stabilization does not neccessarily imply 'without showing'.}
 
 \item{stabilizationProgress}{: Fired when a multiple of the updateInterval number of iterations is reached. This only occurs in the 'hidden' stabilization. Passes an object with properties structured as:}
 

@@ -27,7 +27,7 @@ visExport(
 
 \item{background}{: background color, default to white (#fff). Work only if network background is transparent.}
 
-\item{float}{: button postion, default to "right"}
+\item{float}{: button position, default to "right"}
 
 \item{style}{: button css style.}
 

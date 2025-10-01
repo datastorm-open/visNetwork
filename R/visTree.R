@@ -4,7 +4,7 @@
 #' 
 #' @param object \code{rpart}, rpart object
 #' @param data \code{data.frame}, adding mini-graphics in tooltips using \code{sparkline} and \code{tooltipColumns} ?
-#' @param tooltipColumns \code{numeric}, indice of columns used in tooltip. All by default.
+#' @param tooltipColumns \code{numeric}, indices of columns used in tooltip. All by default.
 #' So, we add boxplot / pie focus on sub-population vs all population using \code{sparkline} package. \code{NULL} to disable.
 #' @param main Title. See  \link[visNetwork]{visNetwork}
 #' @param submain Subtitle. See  \link[visNetwork]{visNetwork}
@@ -37,7 +37,7 @@
 #' @param legendPosition \code{character}, one of "left" (Default) or "right"
 #' @param highlightNearest \code{list}, Highlight nearest nodes. See  \link[visNetwork]{visOptions}
 #' @param collapse \code{list}, collapse or not using double click on a node ? See  \link[visNetwork]{visOptions}
-#' @param updateShape \code{boolean}, in case of collapse, udpate cluster node shape as terminal node ? Default to TRUE
+#' @param updateShape \code{boolean}, in case of collapse, update cluster node shape as terminal node ? Default to TRUE
 #' @param tooltipDelay \code{numeric}, delay for tooltips in millisecond. Default 500
 #' @param rules \code{boolean}, add rules in tooltips ? Default to TRUE
 #' @param simplifyRules \code{boolean}, simplify rules writing

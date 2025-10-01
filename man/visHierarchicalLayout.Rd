@@ -33,7 +33,7 @@ visHierarchicalLayout(
 
 \item{edgeMinimization}{: Boolean. Default to true. Method for reducing whitespace. Can be used alone or together with block shifting. Enabling block shifting will usually speed up the layout process. Each node will try to move along its free axis to reduce the total length of it's edges. This is mainly for the initial layout. If you enable physics, they layout will be determined by the physics. This will greatly speed up the stabilization time though!}
 
-\item{parentCentralization}{: Boolean. Default to true. When true, the parents nodes will be centered again after the the layout algorithm has been finished.}
+\item{parentCentralization}{: Boolean. Default to true. When true, the parents nodes will be centered again after the layout algorithm has been finished.}
 
 \item{direction}{: String. Default to 'UD'. The direction of the hierarchical layout. The available options are: UD, DU, LR, RL. To simplify: up-down, down-up, left-right, right-left.}
 
