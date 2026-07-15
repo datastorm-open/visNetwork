@@ -1,6 +1,6 @@
 Package: visNetwork
 Title: Network Visualization using 'vis.js' Library
-Version: 2.1.4
+Version: 2.2.0
 Authors@R: c(
     person(family = "Almende B.V. and Contributors", role = c("aut", "cph"),
        comment = "vis.js library in htmlwidgets/lib, https://visjs.org/, https://github.com/visjs/vis-network"),
@@ -28,7 +28,7 @@ Encoding: UTF-8
 Suggests:
     knitr,
     rmarkdown,
-    webshot,
+    webshot2,
     igraph,
     rpart,
     shiny,
@@ -37,7 +37,9 @@ Suggests:
     sparkline,
     ggraph,
     tidygraph,
-    flashClust
+    flashClust,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr,
     rmarkdown
 RoxygenNote: 7.3.3
+Config/testthat/edition: 3

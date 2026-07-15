@@ -18,5 +18,14 @@ shiny::tabPanel(
       visNetworkOutput("network_icon"),
       verbatimTextOutput("code_network_icon")
     )
+  ),
+  hr(),
+  fluidRow(
+    column(
+      width = 12,
+      div(h3("Third network with images"), align = "center"),
+      visNetworkOutput("network_image"),
+      verbatimTextOutput("code_network_image")
+    )
   )
 )

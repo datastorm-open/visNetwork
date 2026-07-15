@@ -1,3 +1,17 @@
+visNetwork 2.2.0
+--------------------------------------------------------------------------------
+  * switch to vis-network 10.1.0 (from 9.1.0)
+  * update inst/docjs/network documentation to vis-network 10.1.0
+  * visPhysics : fix the guard that should forbid combining several force
+    models (barnesHut/repulsion/hierarchicalRepulsion/forceAtlas2Based) - it
+    never triggered (is.null() is not element-wise over a list)
+  * add a testthat test suite (constructors, validation, proxy API, layouts)
+  * NOTE: static image export now requires a modern browser engine. The legacy
+    'webshot' (PhantomJS) backend no longer renders networks (blank image) since
+    vis-network >= 9.1.8 dropped support for old browser engines. Use 'webshot2'
+    (headless Chrome) instead. Interactive use, Shiny, visSave() and visExport()
+    are not affected. 'webshot' replaced by 'webshot2' in Suggests.
+
 visNetwork 2.1.4
 --------------------------------------------------------------------------------
   * Fix CRAN Note documentation & link

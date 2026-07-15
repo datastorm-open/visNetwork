@@ -114,7 +114,7 @@ visPhysics <- function(graph,
     }
   }
   
-  if(length(which(!is.null(c(barnesHut, repulsion, hierarchicalRepulsion, forceAtlas2Based)))) > 1){
+  if(sum(!vapply(list(barnesHut, repulsion, hierarchicalRepulsion, forceAtlas2Based), is.null, logical(1))) > 1){
     stop("You can just use one of barnesHut, repulsion, hierarchicalRepulsion physics")
   }
 
